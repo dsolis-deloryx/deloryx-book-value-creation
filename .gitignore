@@ -20,8 +20,31 @@
 # Compiled output (build artifact — regenerate with `latexmk`)
 main.pdf
 
+# Generated figures (regenerate with tools/build-figures.sh)
+figures/*.pdf
+
+# Python tooling (regenerate with: uv venv .venv && uv pip install -r tools/requirements.txt)
+.venv/
+__pycache__/
+*.pyc
+
+# Research briefs (research/*.md) are intentionally TRACKED as the citation audit
+# trail. If this repo may ever go public, uncomment the next line instead:
+# research/
+
+# Local agent/tooling artifacts (ruflo/agentdb vector store) — not book content
+ruvector.db
+**/ruvector.db
+
+# Reference staging — intermediate, regenerable via tools/research/*.
+# Only references.bib is canonical; research/*.md briefs are the audit trail.
+references-*.bib
+*.resolved.bib
+
 # Editor / OS
 *.swp
 *~
 .DS_Store
 .vscode/
+
+.env*

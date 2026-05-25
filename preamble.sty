@@ -15,12 +15,16 @@
 \sisetup{group-separator={,},group-minimum-digits=4}
 \newcommand{\money}[1]{\$\num{#1}}   % currency helper: \money{1250000} -> $1,250,000
 
-%% ===== Tables =====
+%% ===== Tables & lists =====
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{longtable}
+\usepackage{multicol}            % two-up metric-card catalog layout
+\usepackage{enumitem}            % compact lists (scoped inside metric cards, not globally)
 
 %% ===== Graphics / diagrams (unification map, S-curves, five forces) =====
+\usepackage{graphicx}
+\graphicspath{{figures/}}        % bare \includegraphics{stem} resolves to figures/stem.pdf
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
@@ -43,6 +47,27 @@
 \newtcolorbox{trap}{conceptbox, colframe=orange!75!black, colbacktitle=orange!75!black, title=The Trap}
 \newtcolorbox{deeper}{conceptbox, colframe=gray!55,        colbacktitle=gray!55,        title=Going Deeper}
 \newtcolorbox{contested}{conceptbox, colframe=purple!55!black, colbacktitle=purple!55!black, title=Contested}
+
+%% ----- Platform-mechanics box (how Meta/Google actually work; grounded in official docs) -----
+\newtcolorbox{platform}{conceptbox, colframe=cyan!50!black, colbacktitle=cyan!50!black, title=Platform Mechanics}
+
+%% ----- Metric card: dense KPI reference (name + formula in title; \mcfield rows) -----
+%% Usage:
+%%   \begin{metriccard}{ROAS}{\text{Revenue}/\text{Ad Spend}}
+%%     \mcfield{Tells you}{Revenue per dollar of media spend}
+%%     \mcfield{Benchmark}{3--8$\times$ e-commerce; 1--2$\times$ brand}
+%%     \mcfield{Trap}{Blended ROAS hides branded-search subsidy}
+%%   \end{metriccard}
+%% Group two-up inside \begin{multicols}{2} ... \end{multicols}.
+%% Optional first arg overrides styling (e.g. red frame for a vanity-metric card):
+%%   \begin{metriccard}[colframe=red!60!black,colbacktitle=red!60!black]{Email open rate}{...}
+\newtcolorbox{metriccard}[3][]{conceptbox,
+  colframe=yellow!35!orange!85!black, colbacktitle=yellow!35!orange!85!black,
+  title={\textbf{#2}\quad\normalfont\footnotesize\ensuremath{#3}},
+  fontupper=\small, left=1.5mm, right=1.5mm, top=0.5mm, bottom=0.5mm,
+  before upper={\setlist{nosep,leftmargin=*,itemsep=0pt,topsep=0pt}},
+  #1}
+\newcommand{\mcfield}[2]{\noindent{\bfseries\sffamily\footnotesize #1:\enspace}\ignorespaces#2\par\smallskip}
 
 %% ===== Citations =====
 \usepackage{csquotes}

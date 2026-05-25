@@ -1,0 +1,30 @@
+% figures/funnel-awareness-to-purchase.tex
+% Standalone TikZ: marketing funnel (Awareness -> Consideration -> Purchase).
+% Compiled to figures/funnel-awareness-to-purchase.pdf via tools/build-figures.sh.
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+
+% Palette matching preamble.sty tcolorbox colours
+\definecolor{topblue}{HTML}{1A5276}
+\definecolor{midteal}{HTML}{0E6655}
+\definecolor{botgreen}{HTML}{117A65}
+
+\begin{document}
+\begin{tikzpicture}[
+    bar/.style={draw=none, fill=#1, text=white, font=\small\sffamily,
+                minimum height=7mm, inner sep=2pt, align=center},
+    note/.style={font=\scriptsize\sffamily, text=black!55},
+]
+  \node[bar=topblue, minimum width=62mm] (aw) at (0,0)     {Awareness};
+  \node[bar=midteal, minimum width=44mm] (co) at (0,-10mm) {Consideration};
+  \node[bar=botgreen, minimum width=26mm] (pu) at (0,-20mm) {Purchase};
+
+  \node[note, right=5mm of aw] {100\%};
+  \node[note, right=5mm of co] {$\sim$30\%};
+  \node[note, right=5mm of pu] {$\sim$5--15\%};
+
+  \draw[-{Stealth[length=3pt]}, gray!60] (aw.south) -- (co.north);
+  \draw[-{Stealth[length=3pt]}, gray!60] (co.south) -- (pu.north);
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,6 @@
+# Python tooling for deloryx-book-value-creation
+# Install into a project-local venv:  uv venv .venv && uv pip install -r tools/requirements.txt
+google-genai>=2.6.0       # Deep Research via Interactions API (tools/research/deep_research.py)
+matplotlib>=3.9.0         # data-plot figures (figures/src/*.py)
+numpy>=2.0.0
+pandas>=2.2.0

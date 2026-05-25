@@ -24,6 +24,10 @@ it works*. Not a summary of textbooks; a unification of them.
   | `trap`       | The classic misuse |
   | `deeper`     | Advanced extension |
   | `contested`  | Where the field genuinely disagrees |
+  | `platform`   | How Meta/Google actually work (grounded in official docs) |
+
+  The metrics catalog (Reference part) uses a compact `metriccard` environment
+  instead — formula, what it tells you, the trap/vanity flag, and a benchmark.
 
 ## Build
 
@@ -39,17 +43,22 @@ latexmk -c       # clean aux files
 
 ```
 main.tex           # master: \part + \input chapter files
-preamble.sty       # packages, template boxes, citation + cross-ref setup
-references.bib     # the source library (~19 books)
+preamble.sty       # packages, template boxes (incl. platform + metriccard), cross-ref setup
+references.bib     # source library: books + peer-reviewed papers (DOIs) + official docs (~98 entries)
 latexmkrc          # build config (LuaLaTeX, biber)
-chapters/          # one file per chapter, grouped into 5 parts + capstone
+chapters/          # one file per chapter, grouped into 8 parts (21 chapters)
+figures/           # TikZ (*.tex) + matplotlib (src/*.py) -> *.pdf via tools/build-figures.sh
+research/          # Deep-Research briefs per chapter (the drafting source)
+tools/             # research + diagram pipelines (see tools/README.md)
 ```
 
 ## Chapter arc
 
-1. **Foundations** — value & profit, decisions under uncertainty, microeconomics
-2. **Customers & Markets** — STP, brand growth, customer economics, pricing
-3. **Strategy** — competitive analysis, advantage & disruption, growth
-4. **Finance & Valuation** — corporate finance core, valuation, risk & capital structure
-5. **Execution** — operations, organizational behavior, business models
-6. **Capstone** — one company analyzed through every lens
+1. **Foundations of Value** — what business is for, decisions under uncertainty, microeconomics
+2. **Customer Understanding** — STP, brand growth, customer economics, pricing
+3. **Acquisition: Classical & Digital** — digital funnel & CRM, paid platforms (Meta/Google), attribution & measurement
+4. **Strategy** — competitive analysis, advantage & disruption, growth & moats
+5. **Finance & Valuation** — corporate finance core, valuation, risk & capital structure
+6. **Execution** — operations & constraints, organizational behavior, business models & unit economics
+7. **Reference** — business metrics catalog
+8. **Capstone** — one company analyzed through every lens
