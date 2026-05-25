@@ -1,17 +1,97 @@
 \chapter{Measurement, Attribution \& Closing the Loop}\label{ch:attribution-and-measurement}
 
-% Scope: the measurement problem (causal inference, not data collection); attribution
-%   models (last-/first-click, linear, time-decay, position-based, data-driven Shapley);
-%   attribution windows (1/7/28d click, 1d view); multi-touch limits (no counterfactual);
-%   media mix modelling (adstock carryover + Hill saturation); incrementality
-%   (geo-lift, holdout, conversion lift, iROAS); the iOS 14 / ATT privacy collapse;
-%   server-side tracking & the conversion feedback loop (Meta Conversions API + event
-%   match quality, Google Enhanced Conversions, offline conversion import); lead signal
-%   quality (click < lead < MQL < SQL < opportunity < closed-won).
-% Cross-links: data-driven attribution & Bayesian MMM <-> Bayes (\cref{ch:decisions-under-uncertainty});
-%   saturation / bid-response <-> elasticity (\cref{ch:microeconomics}); lead signal quality
-%   <-> CRM pipeline stages (\cref{ch:digital-funnel-and-crm}); CLV as the value signal fed
-%   back to platforms (\cref{ch:customer-economics}).
-% Figures: attribution-window flow (TikZ), signal-quality pyramid (TikZ), adstock/saturation curve (matplotlib).
-% TODO: draft per the per-concept template; use the \texttt{platform} box for platform mechanics;
-%   cite \textcite{meta2024capi}, \textcite{ga4-2024attribution}, etc.
+% Scope: the measurement problem, attribution models, MMM, incrementality, and the
+%   server-side conversion feedback that makes \cref{ch:paid-acquisition-platforms} optimise correctly.
+
+The auction and the bid strategy of \cref{ch:paid-acquisition-platforms} optimise toward whatever conversion you report. So the highest-leverage decision in paid acquisition is not the bid --- it is what counts as a conversion, and how truthfully you feed it back. That is a causal-inference problem dressed as a reporting one.
+
+\section{The Measurement Problem}\label{sec:measurement-problem}
+
+\begin{decision}
+A customer saw five touches before buying. How much credit does each get --- and would the sale have happened anyway?
+\end{decision}
+
+\begin{intuition}
+Attribution and incrementality answer different questions. Attribution \emph{divides} observed credit among touches; incrementality asks the only question that matters for spend --- what would have happened without the ad. The first is bookkeeping under uncertainty (\cref{ch:decisions-under-uncertainty}); the second needs a counterfactual you never directly observe.
+\end{intuition}
+
+\section{Attribution Models}\label{sec:attribution-models}
+
+\begin{derivation}
+A model is a rule that splits one conversion's credit across $n$ touches. Single-touch rules (last-click, first-click) put all weight on one; linear spreads it evenly; time-decay weights recency; position-based loads the first and last. The principled rule borrows the Shapley value from cooperative game theory --- each touch's credit is its average marginal contribution over all orderings of the others:
+\begin{equation}\label{eq:shapley}
+  \phi_j \;=\; \sum_{S\subseteq N\setminus\{j\}} \frac{|S|!\,(n-|S|-1)!}{n!}\,\bigl[v(S\cup\{j\})-v(S)\bigr].
+\end{equation}
+This is what platforms market as ``data-driven attribution'' \parencite{li2014attributing,gads6259715,ga10596866}.
+\end{derivation}
+
+\begin{breaks}
+Every attribution model in \cref{eq:shapley} is computed on \emph{observed} paths only --- it is correlational. It cannot see the conversions that would have occurred with no ads at all, so it systematically over-credits paid touches that intercept demand already in motion \parencite{anderl2016mapping,berman2018economics}.
+\end{breaks}
+
+\begin{trap}
+Steering budget by last-click ROAS. It hands all credit to the closing touch --- usually branded search or retargeting --- and starves the upper-funnel demand generation that created the click. The number looks precise and points the wrong way.
+\end{trap}
+
+\section{Media Mix Modeling}\label{sec:mmm}
+
+\begin{intuition}
+When you cannot track individuals, regress aggregate outcomes on aggregate spend. MMM is privacy-proof because it never needs a user ID --- but it must encode two facts every advertiser knows: advertising lingers, and it saturates.
+\end{intuition}
+
+\begin{derivation}
+Carryover is modelled as geometric adstock; diminishing returns as a Hill-type saturation \parencite{hanssens2001marketing}:
+\begin{equation}\label{eq:adstock}
+  a_t \;=\; x_t + \lambda\,a_{t-1},
+  \qquad
+  f(a) \;=\; \frac{a^{\,k}}{a^{\,k}+\theta^{\,k}} .
+\end{equation}
+The response curve $f$ is the elasticity of \cref{ch:microeconomics} in disguise: marginal spend buys less as you climb it, which is precisely where a bid or budget cap should bind (\cref{ch:paid-acquisition-platforms}).
+\end{derivation}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.84\linewidth]{adstock_saturation}
+  \caption{The saturation response of \cref{eq:adstock}: incremental conversions per dollar fall as spend rises. The efficient operating region sits before the curve flattens; beyond it, marginal ROAS collapses.}
+  \label{fig:saturation}
+\end{figure}
+
+\section{Incrementality: The Gold Standard}\label{sec:incrementality}
+
+\begin{decision}
+Is this channel \emph{causing} sales, or taking credit for them? Only an experiment answers.
+\end{decision}
+
+\begin{derivation}
+Hold out a randomised control --- a geo, an audience, or platform-native ghost ads that log the auction win without serving \parencite{johnson2017ghost} --- and measure incremental return:
+\begin{equation}\label{eq:iroas}
+  \mathrm{iROAS} \;=\; \frac{\text{revenue}_\text{test}-\text{revenue}_\text{control}}{\text{spend}_\text{test}} .
+\end{equation}
+\end{derivation}
+
+\begin{worked}
+A geo holdout: treated regions return \money{520000}, matched controls \money{400000}, on \money{60000} incremental spend. Then $\mathrm{iROAS}=(520000-400000)/60000=\num{2.0}$ --- against a platform-reported last-click ROAS of \num{4.5}. More than half the ``return'' was demand that would have converted anyway.
+\end{worked}
+
+\begin{breaks}
+Experiments cost reach and take time; large field tests at Facebook show observational methods can miss true effects by wide, inconsistent margins, so the test is worth running precisely when the budget at stake is large \parencite{gordon2019comparison}. Deciding whether to test is itself an expected-value calculation (\cref{ch:decisions-under-uncertainty}).
+\end{breaks}
+
+\section{Closing the Loop}\label{sec:closing-loop}
+
+\begin{platform}
+Post-ATT, browser pixels miss much of iOS, so conversions are sent server-to-server. Meta's Conversions API deduplicates against the pixel by \texttt{event\_id} and scores event match quality \parencite{metadev-deduplicate-pixel-and-se,metadev-verifying-setup}. Google's Enhanced Conversions hashes first-party data to recover signal \parencite{gads9888656,gads13258081}; offline conversion import feeds CRM-stage outcomes back for value-based bidding \parencite{gads2998031,gdev-upload-offline}; GA4 and consent mode govern how that signal is modelled and what is collected \parencite{ga10597962,gads13695607}.
+\end{platform}
+
+\begin{trap}
+Closing the loop with the wrong signal. Feed back ``lead'' and the algorithm of \cref{ch:paid-acquisition-platforms} optimises for cheap leads; feed back qualified-pipeline value or LTV (\cref{ch:customer-economics}) and it optimises for customers. The signal hierarchy --- click $<$ lead $<$ MQL $<$ SQL $<$ closed-won --- should climb toward revenue (\cref{fig:signal-quality}).
+\end{trap}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\linewidth]{signal-quality}
+  \caption{The conversion-signal hierarchy. Feeding a higher, scarcer signal back to the platforms trades volume for relevance --- and teaches the optimiser to find customers, not form-fills.}
+  \label{fig:signal-quality}
+\end{figure}
+
+Attribution divides the past, MMM models the aggregate, and only incrementality measures cause; the loop is closed when the signal you return is the value you actually want more of. That value is the customer lifetime value of \cref{ch:customer-economics}, the same quantity discounted in \cref{eq:gordon}. \textcite{hanssens2001marketing} develop the measurement side in full.

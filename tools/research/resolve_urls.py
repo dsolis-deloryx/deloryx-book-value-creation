@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import datetime
+import html
 import pathlib
 import re
 import sys
@@ -65,11 +66,11 @@ def fetch_title(url: str) -> str | None:
         r = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
         m = re.search(r"<title[^>]*>(.*?)</title>", r.text, re.S | re.I)
         if m:
-            t = re.sub(r"\s+", " ", m.group(1)).strip()
-            # strip trailing site suffixes
-            for sep in (" - Google Ads Help", " - Google Analytics Help", " | Meta", " - Meta for Developers"):
+            t = html.unescape(re.sub(r"\s+", " ", m.group(1)).strip())  # decode &nbsp; &amp; etc.
+            t = re.split(r"\s*[|–]\s*", t)[0].strip()              # drop breadcrumb / site tail
+            for sep in (" - Google Ads Help", " - Google Analytics Help", " - Meta for Developers"):
                 t = t.replace(sep, "")
-            return t
+            return t.replace("&", "\\&").strip()                        # escape for LaTeX
     except Exception:
         return None
     return None
