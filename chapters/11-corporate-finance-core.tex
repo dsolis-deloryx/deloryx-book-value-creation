@@ -1,0 +1,58 @@
+\chapter{Corporate Finance Core}\label{ch:corporate-finance-core}
+
+% Scope: time value of money, NPV, the discount rate as hurdle, the growing perpetuity.
+% This chapter demonstrates the per-concept template applied to the single most
+% reused formula in the book (its marketing twin lives in \cref{ch:customer-economics}).
+
+\section{The Growing Perpetuity}\label{sec:growing-perpetuity}
+
+\begin{decision}
+What is a stream of cash worth today if it grows at a constant rate \(g\) forever?
+This one model underlies DCF terminal value and customer lifetime value alike.
+\end{decision}
+
+\begin{intuition}
+A dollar next year is worth less than a dollar today --- today's dollar can be invested.
+Growth partly offsets that discount. When the discount rate beats the growth rate,
+an infinite stream still sums to a finite number.
+\end{intuition}
+
+\begin{derivation}
+Sum the discounted cash flows, recognising a geometric series with ratio
+\(\frac{1+g}{1+r}<1\):
+\begin{equation}\label{eq:gordon}
+  PV \;=\; \sum_{t=1}^{\infty}\frac{D\,(1+g)^{t-1}}{(1+r)^{t}}
+      \;=\; \frac{D}{\,r-g\,}.
+\end{equation}
+The denominator \((r-g)\) is the net drag: discount pressure minus the growth lift.
+\end{derivation}
+
+\begin{breaks}
+The series converges \emph{only} when \(r>g\). If \(g\ge r\) the denominator turns
+zero or negative and \cref{eq:gordon} returns nonsense. This is the single most
+common valuation error --- assuming a long-run growth rate at or above the discount rate.
+\end{breaks}
+
+\begin{worked}
+A subscriber cohort throws off \money{1250000} next year at a \qty{42}{\percent}
+contribution margin, growing \qty{3}{\percent} per year, discounted at \qty{11}{\percent}:
+\[
+  PV \;=\; \frac{\money{1250000}\times 0.42}{0.11-0.03}\;\approx\;\money{6562500}.
+\]
+\end{worked}
+
+\begin{trap}
+Reusing the same high \(g\) for ten explicit years \emph{and} the terminal value
+double-counts growth. The terminal \(g\) must reflect only the steady state ---
+usually at or below long-run GDP.
+\end{trap}
+
+\begin{deeper}
+Relax constant growth and the model becomes a two-stage or H-model; relax constant
+churn in its marketing twin and customer value needs a shifted-beta-geometric survival
+model. The clean formula is the \emph{floor} of the analysis, not the ceiling.
+\end{deeper}
+
+The identical algebra reappears as customer lifetime value in
+\cref{ch:customer-economics}: rename \(D\) the annual customer margin and \(g\) its
+growth rate. \textcite{brealey2020} develop the corporate-finance side in full.

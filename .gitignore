@@ -1,0 +1,27 @@
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.idx
+*.ind
+*.ilg
+*.xdy
+
+# Compiled output (build artifact — regenerate with `latexmk`)
+main.pdf
+
+# Editor / OS
+*.swp
+*~
+.DS_Store
+.vscode/

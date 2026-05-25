@@ -1,0 +1,55 @@
+\ProvidesPackage{preamble}[2026/05/25 Value-Creation book preamble]
+%% Compile with LuaLaTeX (fontspec + unicode-math). Build via `latexmk`.
+
+%% ===== Typography & math =====
+\usepackage{fontspec}
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{unicode-math}        % load after amsmath/mathtools; supersedes amssymb
+\setmainfont{Latin Modern Roman}
+\setmathfont{Latin Modern Math}
+
+%% ===== Numbers =====
+\usepackage{siunitx}
+\sisetup{group-separator={,},group-minimum-digits=4}
+\newcommand{\money}[1]{\$\num{#1}}   % currency helper: \money{1250000} -> $1,250,000
+
+%% ===== Tables =====
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+
+%% ===== Graphics / diagrams (unification map, S-curves, five forces) =====
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,positioning,calc}
+
+%% ===== Per-concept template boxes =====
+\usepackage[most]{tcolorbox}
+\tcbset{
+  conceptbox/.style={
+    enhanced, breakable, colback=white, boxrule=0.6pt,
+    coltitle=white, fonttitle=\bfseries\sffamily,
+    left=2mm, right=2mm, top=1mm, bottom=1mm,
+  }
+}
+\newtcolorbox{decision}{conceptbox, colframe=blue!55!black,   colbacktitle=blue!55!black,   title=The Decision}
+\newtcolorbox{intuition}{conceptbox, colframe=teal!60!black,   colbacktitle=teal!60!black,   title=Intuition}
+\newtcolorbox{derivation}{conceptbox, colframe=violet!60!black, colbacktitle=violet!60!black, title=Formula \& Derivation}
+\newtcolorbox{breaks}{conceptbox, colframe=red!60!black,    colbacktitle=red!60!black,    title=When It Breaks}
+\newtcolorbox{worked}{conceptbox, colframe=black!70,       colbacktitle=black!70,       title=Worked Example}
+\newtcolorbox{trap}{conceptbox, colframe=orange!75!black, colbacktitle=orange!75!black, title=The Trap}
+\newtcolorbox{deeper}{conceptbox, colframe=gray!55,        colbacktitle=gray!55,        title=Going Deeper}
+\newtcolorbox{contested}{conceptbox, colframe=purple!55!black, colbacktitle=purple!55!black, title=Contested}
+
+%% ===== Citations =====
+\usepackage{csquotes}
+\usepackage[backend=biber,style=authoryear,sorting=nyt,maxcitenames=2]{biblatex}
+\addbibresource{references.bib}
+
+%% ===== Cross-references (the unification-map wires) — load last =====
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue!55!black, citecolor=teal!50!black, urlcolor=blue!55!black}
+\usepackage{cleveref}
