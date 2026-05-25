@@ -61,7 +61,7 @@
 %% Group two-up inside \begin{multicols}{2} ... \end{multicols}.
 %% Optional first arg overrides styling (e.g. red frame for a vanity-metric card):
 %%   \begin{metriccard}[colframe=red!60!black,colbacktitle=red!60!black]{Email open rate}{...}
-\newtcolorbox{metriccard}[3][]{conceptbox,
+\newtcolorbox{metriccard}[3][]{conceptbox, breakable=false,
   colframe=yellow!35!orange!85!black, colbacktitle=yellow!35!orange!85!black,
   title={\textbf{#2}\quad\normalfont\footnotesize\ensuremath{#3}},
   fontupper=\small, left=1.5mm, right=1.5mm, top=0.5mm, bottom=0.5mm,
