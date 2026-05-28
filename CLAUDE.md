@@ -9,10 +9,13 @@ A single-volume **LaTeX book** — *Value Creation: An Applied Distillation of M
 ## Build
 
 ```bash
-latexmk        # LuaLaTeX + biber → main.pdf (driven by ./latexmkrc)
-latexmk -c     # remove aux files, keep main.pdf
-latexmk -C     # remove aux files AND main.pdf
+latexmk                  # LuaLaTeX + biber → book/main.pdf (English, driven by ./latexmkrc)
+latexmk main-es.tex      # → book/main-es.pdf (Spanish edition)
+latexmk -c               # remove aux files, keep PDFs
+latexmk -C               # remove aux files AND PDFs
 ```
+
+All `latexmk` output (PDFs, aux, log) is routed to `book/` via `$out_dir = 'book'` in `latexmkrc`. Aux/log files are gitignored at any depth; only `book/main.pdf` and `book/main-es.pdf` are tracked. Pre-built figures stay in `figures/` and `figures-es/`.
 
 Toolchain: TeX Live with `luatex`, `mathscience`, `bibtexextra`, `fontsrecommended`, `binextra`, `biber`.
 

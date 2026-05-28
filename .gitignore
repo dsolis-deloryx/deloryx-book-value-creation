@@ -18,7 +18,6 @@
 *.xdy
 
 # Compiled output (build artifact — regenerate with `latexmk`)
-main.pdf
 
 # Generated figures (regenerate with tools/build-figures.sh)
 figures/*.pdf
@@ -56,5 +55,4 @@ agentdb.rvf.lock
 references_bibertool.bib
 references-*-applied.bib
 references-*-applied.resolved.bib
-main-es.pdf
 figures-es/*.pdf
