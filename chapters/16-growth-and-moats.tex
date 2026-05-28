@@ -1,0 +1,352 @@
+\chapter{Growth \& Moats}\label{ch:growth}
+
+% Scope: the Ansoff matrix, the moat taxonomy (switching costs, network effects, scale,
+%   intangibles), network-effect mechanics, growth accounting.
+% Cross-link: network effects are the structural moat; the operational flywheel that generates
+%   them is in \cref{ch:digital-funnel-and-crm}. Product-market expansion <-> STP
+%   (\cref{ch:segmentation-targeting-positioning}).
+
+A positive advantage spread (\cref{eq:advantage-spread}) answers whether you have a moat;
+it does not say how you grew into it or how you protect and widen it. Growth strategy is
+the set of decisions about which markets and products to enter next; moat strategy is the
+set of structural choices that make the resulting position defensible. Both operate through
+the same financial bottleneck: every growth move must generate cohort NPV that exceeds its
+cost.
+
+\section{The Ansoff Matrix}\label{sec:ansoff-matrix}
+% complexity: 3
+
+Which of the four growth vectors --- sell more to existing customers, launch new products,
+enter new markets, or diversify --- offers the best return per unit of execution risk? Growth
+always involves a bet on something unfamiliar. The Ansoff matrix makes the bet explicit: you
+are betting on a known product in a known market (low risk), a new product in a known market,
+a known product in a new market, or a new product in a new market (high risk). The risk rises
+diagonally, and so does the required return.
+
+\textcite{kotler2021} present the matrix as a \(2\times2\) decision structure across
+product familiarity (existing / new) and market familiarity (existing / new):
+\begin{description}
+  \item[Market penetration] Existing product, existing market. Grow share via price,
+        promotion, or distribution. Lowest risk; highest resource efficiency; limited
+        ceiling in a mature market.
+  \item[Product development] New product, existing market. Extend the platform for
+        customers the firm already understands. Moderate risk (product uncertainty, but
+        customer knowledge retained).
+  \item[Market development] Existing product, new market. Replicate the value proposition
+        in a new geography, vertical, or segment. Moderate risk (product known, customer
+        unknown). Requires a new STP decision (\cref{ch:segmentation-targeting-positioning}).
+  \item[Diversification] New product, new market. The highest-risk quadrant; justified only
+        when core markets are saturated or declining, and usually executed via M\&A rather
+        than organic build.
+\end{description}
+
+``Market'' and ``product'' are definitional choices, not objective facts. The same move can
+be labelled penetration (``we're just adding features'') or product development (``this is
+a new product line'') depending on framing. The useful version of the matrix forces a
+concrete judgment: does the new offering require capabilities or go-to-market motions the
+firm does not currently have? If yes, it is a new-product or new-market move; if no, it is
+penetration. Without that rigor the matrix becomes a vocabulary, not a tool.
+
+\begin{example}
+\emph{Decision: which growth vector should the SaaS firm prioritise in the next 18 months?}
+
+Current state: \money{4000000} ARR, \num{200} new customers/month, \money{340000} MRR.
+The four options evaluated against cohort NPV:
+
+\begin{itemize}
+  \item \textbf{Market penetration}: the funnel converts \qty{2.5}{\percent}
+        (200/8000 qualified sessions). A/B testing landing pages and improving the
+        trial-to-paid step (\cref{ch:digital-funnel-and-crm}) could lift conversion to
+        \qty{3}{\percent} --- 240 paid/month --- at near-zero incremental cost.
+        Highest NPV per dollar invested at current scale.
+  \item \textbf{Product development}: a reporting add-on at \money{20}/month would raise
+        ARPU from \money{50} to \money{70}, lifting LTV from \money{3150} to
+        \(\money{70}\times 0.42/(0.11-0.03) = \money{4410}\). The constraint is
+        whether existing customers want it (\cref{ch:segmentation-targeting-positioning}).
+  \item \textbf{Market development}: entering the European SMB segment requires GDPR
+        compliance, local payment methods, and a localised onboarding flow ---
+        meaningful execution cost with uncertain CAC.
+  \item \textbf{Diversification}: premature at \money{4000000} ARR; reserves of
+        execution attention are the binding constraint.
+\end{itemize}
+
+Penetration and product development are the rational first moves; market development
+is a 24-month option once unit economics are proven.
+\end{example}
+
+\begin{admonition}{Warning}
+Using the Ansoff matrix as a menu rather than a sequencing tool. All four options are
+always theoretically available; the matrix's value is in forcing an explicit ranking by
+risk-adjusted return and execution capacity. Pursuing two high-risk quadrants simultaneously
+dilutes management attention below the minimum effective dose in either.
+\end{admonition}
+
+The Ansoff matrix is the corporate-strategy analogue of the segmentation decision in
+\cref{ch:segmentation-targeting-positioning}: both ask the same question (who are we serving
+and with what?), one at the portfolio level and one at the product level. Corporate-strategy
+research (\parencite{dranove7theconomics}) finds that \emph{related} diversification ---
+moving along a single dimension of the matrix at a time --- generates superior returns to
+unrelated diversification, consistent with the VRIN argument that advantage is resource-
+specific and does not transfer across unrelated businesses.
+
+The Ansoff sequencing should follow the moat taxonomy below: penetration first, product
+development once the moat is established, market development once the product is proven.
+\textcite{kotler2021} contextualise the matrix within modern growth strategy.
+
+\section{The Moat Taxonomy}\label{sec:moat-taxonomy}
+% complexity: 3
+
+Which structural barrier will protect the firm's returns once a competitor has the resources
+to match product quality and price? The moat must be built before it is needed. A moat is
+any structural advantage that makes it irrational for a well-resourced competitor to attack
+you directly. Unlike a product advantage, a moat is self-reinforcing: the more customers you
+serve, the harder it is for a rival to dislodge them. Moats turn a temporary lead into a
+sustained positive value spread (\cref{eq:advantage-spread}).
+
+Four moat types sustain ROIC $>$ WACC (\cref{eq:roic}) over a strategic horizon
+\parencite{porter1985,dranove7theconomics}:
+\begin{description}
+  \item[Switching costs] The direct and indirect cost a customer incurs when leaving for a
+        rival. Includes data migration, retraining, workflow disruption, and integration
+        rebuilds. Switching costs raise the effective price of leaving without raising the
+        nominal price of staying --- they expand the price band within which the incumbent
+        is safe from defection.
+  \item[Network effects] Each additional user makes the product more valuable to every
+        other user. This is the most powerful moat in technology markets (formalised in
+        \cref{sec:network-effects}): it is demand-side scale, not cost-side scale, and
+        it compounds automatically.
+  \item[Cost-side scale] Declining unit costs at large scale --- spreading fixed cost,
+        purchasing leverage, or learning-curve effects. Protects via price: incumbents can
+        profitably undercut an entrant who has not yet reached minimum efficient scale.
+  \item[Intangible assets] Patents, regulatory licences, or brand reputation that
+        competitors cannot replicate quickly. Brand is the weakest intangible moat in
+        B2B SaaS (buyers are professional and price-sensitive); patents require dense
+        IP investment.
+\end{description}
+
+Moats erode. Switching costs collapse when a standard data-portability layer emerges (e.g.\
+GDPR's right to data portability in SaaS). Network effects reverse when a platform reaches
+diseconomies of scale (spam, congestion). Cost-side scale is undermined by a disruptive
+technology that resets the cost structure. Treat a moat as a wasting asset that requires
+reinvestment, not a permanent barrier.
+
+\begin{example}
+\emph{Decision: what is the SaaS firm's primary moat and how much is it worth?}
+
+Primary moat: \emph{switching costs} from integration depth. A customer with 10 active
+integrations faces an estimated \money{3000}--\money{6000} of migration cost
+(engineering time, retraining, downtime risk) --- well above the annual subscription value
+of \money{600}. This means the customer's effective switching cost exceeds one full year of
+revenue, materially suppressing churn below the structural average.
+
+Financial expression: if the switching-cost moat reduces annual churn from
+\qty{10}{\percent} to \qty{7}{\percent}, the monthly net churn rate shifts from
+\qty{0.87}{\percent} to \qty{0.60}{\percent} and LTV rises:
+\[
+  \Delta\mathrm{LTV} \approx \frac{\money{252}}{0.08} - \frac{\money{252}}{0.11}
+                           = \money{3150} - \money{2291} \approx \money{860}.
+\]
+A \money{860} rise in LTV means the firm can spend \money{860} more per customer acquired
+without violating the LTV:CAC floor (\cref{eq:ltv-cac}), which at 200 customers/month
+unlocks \money{172000}/month of incremental CAC budget --- \qty{143}{\percent} of the
+current ad spend.
+\end{example}
+
+\begin{admonition}{Warning}
+Calling \emph{retention} a moat. Retention is the symptom; the moat is the structural
+cause. A product that retains customers because it is excellent loses them the day a
+competitor builds a better product. A product that retains customers because integrations
+make switching painful retains them even when a better product exists. Invest in the cause,
+not the symptom.
+\end{admonition}
+
+Moat analysis connects to the price-theory literature via the Lerner index
+(\cref{eq:lerner}): a firm with switching costs can price above marginal cost by an amount
+proportional to the switching cost divided by the contract horizon. The moat is, in
+price-theory terms, a source of inelasticity: it reduces the own-price elasticity of demand
+(\cref{eq:elasticity}) for the incumbent's product without changing the elasticity of the
+overall category.
+
+Switching costs are the SaaS firm's primary moat; network effects (\cref{sec:network-effects})
+are the potential secondary moat if an integration marketplace is built. Together they
+generate the sustained value spread that \cref{ch:advantage-and-disruption} defines.
+\textcite{porter1985} and \textcite{dranove7theconomics} are the primary sources.
+
+\section{Network-Effect Mechanics}\label{sec:network-effects}
+% complexity: 4 -> reuse figure growth-loop
+
+Does the product have network effects, how strong are they, and what does that imply for
+the CAC budget and the growth trajectory? Network effects create a demand-side moat that
+compounds: each new user raises the value of the product for all existing users, which makes
+the product easier to sell to the next user, which lowers CAC over time. The structural
+implication is that unit economics \emph{improve} with scale --- the opposite of most cost
+structures.
+
+Metcalfe's Law approximates the value of a network of \(n\) nodes as proportional to the
+number of distinct pairs:
+\begin{equation}\label{eq:metcalfe}
+  V(n) \;\propto\; n(n-1) \;\approx\; n^2 \quad\text{for large }n.
+\end{equation}
+The quadratic scaling is the economic core: doubling users more than doubles value,
+so value-per-user rises with network size. This means willingness to pay rises as the
+network grows, without any change in the product itself --- the demand curve shifts outward
+purely from the size of the installed base.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{growth-loop}
+  \caption{The self-reinforcing growth loop. New customers produce referrals, content, or
+    data that attract further new customers. When the viral coefficient \(k > 1\)
+    (\cref{eq:viral-k}), the loop is self-sustaining and CAC from paid channels falls as
+    organic acquisition rises.}
+  \label{fig:network-effects}
+\end{figure}
+
+\cref{eq:metcalfe} assumes all links are equally valuable, which is empirically false.
+Real networks are power-law distributed: a small number of high-value nodes (power users,
+enterprise accounts) contribute disproportionately to network value. The quadratic formula
+overstates value in sparse, heterogeneous networks. It also conflates \emph{direct} network
+effects (user benefits from other users directly) with \emph{indirect} network effects (user
+benefits from complements attracted by a large user base). Direct effects are stronger but
+rarer; indirect effects are more common in platform markets (\cref{ch:business-models}).
+
+\begin{example}
+\emph{Decision: if the SaaS firm builds an integration marketplace connecting vendors,
+what is the potential value at \(n = 100\) integrations?}
+
+From \cref{eq:metcalfe}, the number of distinct vendor pairs at \(n = 100\):
+\[
+  \frac{n(n-1)}{2} = \frac{100 \times 99}{2} = 4{,}950 \text{ pairs}.
+\]
+Each pair represents a potential data-sharing or workflow-automation opportunity that did
+not exist at \(n = 50\) (which offered only \num{1225} pairs). The \emph{marginal}
+value of the 100th integration is \(99\) new pairs --- 99 times the value of the first.
+This is why integration marketplaces justify a disproportionate share of engineering
+investment at early stages: the option value of the 100th node is embedded in the
+first node's decision to join.
+
+The growth loop (\cref{fig:network-effects}) captures the organisational expression: each
+integration attracts more vendors, whose participation attracts more customers, whose
+data improves the product, which attracts more integrations. The viral coefficient
+(\cref{eq:viral-k}) is the demand-side instantiation of the same loop applied to users
+rather than integrations. Both are channels to \cref{ch:digital-funnel-and-crm}.
+\end{example}
+
+\begin{admonition}{Warning}
+Treating weak same-side effects as Metcalfe-scale network effects. A SaaS product used
+independently by each customer (no shared data, no interactions between users) has zero
+direct network effect regardless of user count. The relevant test is: does user \(j\)'s
+experience change when user \(k\) joins? If not, it is not a network effect; it is a
+product feature that happens to scale. Overstating network effects misleads capital
+allocation.
+\end{admonition}
+
+Direct vs indirect network effects carry different implications for critical mass.
+Direct effects require a minimum viable network of active users before value exceeds the
+standalone product; indirect effects require a minimum viable set of complementors.
+The chicken-and-egg problem in platform launch (\cref{ch:business-models}) is the
+demand-side version of the critical-mass requirement in \cref{eq:metcalfe}.
+\parencite{dranove7theconomics} develop the welfare and pricing implications.
+
+Network effects are the strongest moat in technology markets but the hardest to build from
+scratch. The viral coefficient (\cref{eq:viral-k}) in \cref{ch:digital-funnel-and-crm}
+is the demand-side mechanism; the metrics for tracking it are in \cref{ch:metrics-catalog}.
+\textcite{dranove7theconomics} provide the theoretical foundation.
+
+\section{Growth Accounting}\label{sec:growth-accounting}
+% complexity: 4 -> figure mrr-waterfall
+
+Is the firm actually growing, or is new revenue simply replacing churned revenue? The
+decomposition of net MRR growth tells you which channels to invest in and where the
+leaks are. Aggregate revenue growth conflates four very different business activities. New
+customer acquisition, expansion of existing accounts, contraction of downgraded accounts,
+and churn of lost accounts all net to a single headline number that masks the underlying
+dynamics. A firm with strong new sales and high churn looks identical in the headline to
+a firm with modest new sales and strong retention, but they require completely different
+strategic responses.
+
+Let MRR at the start of a period be \(M_0\). The ending MRR is:
+\begin{equation}\label{eq:mrr-growth}
+  M_1 \;=\; M_0 \;+\; \Delta_{\text{new}}
+               \;+\; \Delta_{\text{expansion}}
+               \;-\; \Delta_{\text{contraction}}
+               \;-\; \Delta_{\text{churn}},
+\end{equation}
+where each \(\Delta\) is a positive number. Net new MRR is
+\(\Delta_{\text{new}} + \Delta_{\text{expansion}} - \Delta_{\text{contraction}} - \Delta_{\text{churn}}\).
+Net Revenue Retention (NRR), derived in \cref{ch:business-models}, is:
+\[
+  \mathrm{NRR} = \frac{M_0 + \Delta_{\text{expansion}} - \Delta_{\text{contraction}} - \Delta_{\text{churn}}}{M_0},
+\]
+i.e.\ what revenue retention looks like \emph{excluding} new customers. NRR $>$ 100\%
+means the existing base is expanding on net --- the firm could theoretically cease new
+sales and still grow.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{mrr-waterfall}
+  \caption{MRR waterfall for the running SaaS example. Starting MRR of \money{340000}
+    grows by new (\money{30000}) and expansion (\money{20000}), and shrinks by contraction
+    (\money{5000}) and churn (\money{22000}), ending at \money{363000} --- a \qty{6.8}{\percent} net gain.}
+  \label{fig:mrr-waterfall}
+\end{figure}
+
+\cref{eq:mrr-growth} is an identity --- it always holds by construction. The diagnostic
+power comes from assessing whether each component is healthy \emph{relative to the
+business model}. A high-velocity transactional product (e-commerce SaaS) is expected to
+have higher gross churn and lower expansion; a seat-expansion enterprise product is expected
+to have high expansion and low gross churn. Comparing absolute levels of churn without
+adjusting for business-model type produces false benchmarks. Relatedly, the equation
+treats all MRR as equally valuable; a churn dollar from a 36-month-tenure customer is more
+concerning than one from a one-month-old account (\cref{eq:clv}).
+
+\begin{example}
+\emph{Decision: where should the team invest --- new acquisition or churn reduction?}
+
+From the fact sheet: MRR = \money{340000}. Observed monthly movements:
+Observed monthly movements (stated assumptions; plan mix and expansion push
+\(\Delta_{\text{new}}\) above the simple \num{200}\(\times\)\money{50} product):
+\[
+  \begin{aligned}
+    \Delta_{\text{new}} &= +\money{30000} \quad (\text{new customers across plan mix})\\
+    \Delta_{\text{expansion}} &= +\money{20000} \quad (\text{seat adds, plan upgrades})\\
+    \Delta_{\text{contraction}} &= -\money{5000} \quad (\text{downgrades})\\
+    \Delta_{\text{churn}} &= -\money{22000} \quad (\approx\qty{6.5}{\percent}\text{ of }\money{340000})
+  \end{aligned}
+\]
+Net new MRR: $\money{30000}+\money{20000}-\money{5000}-\money{22000}=+\money{23000}$
+(+\qty{6.8}{\percent}/month).
+\[
+  \mathrm{NRR} = \frac{\money{340000}+\money{20000}-\money{5000}-\money{22000}}{\money{340000}}
+               = \frac{\money{333000}}{\money{340000}} \approx \qty{97.9}{\percent}.
+\]
+NRR of \qty{97.9}{\percent} indicates the existing base is slightly contracting without
+new sales --- the firm is net-retention negative. Even modest improvements to retention
+compound dramatically: reducing churn from \money{22000} to \money{15000}/month
+raises NRR to \qty{99.7}{\percent} and raises ending MRR by \money{7000}/month
+without acquiring a single new customer. That \money{7000} compounds. The investment
+priority is churn reduction --- specifically the VRIN resources (integrations) that
+raise switching costs (\cref{sec:moat-taxonomy}).
+\end{example}
+
+\begin{admonition}{Warning}
+Optimising \emph{gross} new MRR while ignoring churn. A firm adding \money{40000}/month
+in new MRR while churning \money{40000}/month is running in place: NRR $=$ \qty{100}{\percent}
+exactly, but the customer base has completely turned over in some finite horizon and the
+CAC has been spent with zero compound return. \emph{Net} MRR growth and NRR are the
+correct metrics; gross new MRR is a vanity number without the retention context.
+\end{admonition}
+
+The MRR waterfall is the operational version of the cohort-level LTV model in
+\cref{ch:customer-economics}: \cref{eq:clv} discounts a single cohort's expected cash
+flows; \cref{eq:mrr-growth} is the aggregate monthly manifestation of all overlapping
+cohorts summed in calendar time. The metrics catalog (\cref{ch:metrics-catalog}) provides
+benchmarks for each component. \textcite{ries2011} introduced the ``growth accounting''
+framing for product metrics; \textcite{bendle2020marketing} extend it to the marketing
+attribution context.
+
+Growth accounting closes the loop between the growth-strategy choices (Ansoff) and the
+moat investments (switching costs, network effects) by making the financial result of each
+visible in real time. \cref{eq:mrr-growth} and NRR are the primary dashboard for
+\cref{ch:metrics-catalog}. \textcite{ries2011} and \textcite{bendle2020marketing} are the
+primary sources.

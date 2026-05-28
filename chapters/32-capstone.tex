@@ -1,0 +1,522 @@
+\chapter{Capstone: One Company, Every Lens}\label{ch:capstone}
+
+% Scope: the running B2B SaaS company walked through every Part of the book in sequence,
+%   tracing how each discipline feeds the next along the value-creation spine.
+%   No new eq: labels. Cross-references only. One figure: value-spine.
+%   Structure: framing paragraph → fact-sheet table → 9 sections (one per Part + new 2026 additions).
+
+Every framework in this book was introduced independently. Here they converge. The same
+\money{4000000}-ARR B2B SaaS company that appeared in every worked example is now walked
+end-to-end across all 9 Parts and 32 chapters: from the first test of value creation and the
+accounting substrate that grounds every number, through customer economics and paid acquisition,
+into competitive position and strategic durability, then the financial model that prices the
+whole, and finally the execution disciplines that determine whether the plan survives contact
+with a quarter. The purpose is not repetition --- each section assumes its chapter has been
+read --- but integration: the connections the separate chapters could only promise are now
+explicit. The seven operational Parts (Foundations, Customer, Acquisition, Strategy, Finance,
+Execution, and the Founder) are followed by a Reference Part and this Capstone; the eleven
+chapters added in the 2026 edition --- covering financial statements, experiments, product
+management, channels and go-to-market, data and AI strategy, the operating model, fundraising
+mechanics, and the founder's own craft of persuasion, storytelling, psychology, and leadership
+--- are woven into every section below.
+
+\medskip
+\noindent\textbf{Running-company fact sheet.}
+
+\medskip
+\noindent\begin{tabularx}{\linewidth}{@{}l >{\raggedright\arraybackslash}X@{}}
+  \toprule
+  Parameter & Value \\
+  \midrule
+  Plan price (ARPU)                 & \money{50}/mo (\money{600}/yr) \\
+  LTV (growing perpetuity)          & \money{3150} \\
+  Contribution margin               & \qty{42}{\percent} → \money{21}/mo \\
+  Target CAC (operating)            & \money{600} → LTV:CAC 5.25× \\
+  Steady-state growth $g$           & \qty{3}{\percent}/yr \\
+  Monthly ad budget → new customers & \money{120000} → 200/mo \\
+  WACC / discount rate              & \qty{11}{\percent}/yr \\
+  Funnel                            & 10,000 sessions → 800 trials → 200 paid \\
+  NOPAT (approx.)                   & \money{600000} \\
+  ARR / MRR                         & \money{4000000} / \money{340000} \\
+  Invested capital                  & \money{3000000} \\
+  ROIC                              & \qty{20}{\percent} \\
+  Beta ($\beta$)                    & 1.4 → cost of equity \qty{11}{\percent} \\
+  Gross margin                      & \qty{70}{\percent} \\
+  Year-3 EBITDA margin              & \qty{+7}{\percent} (Rule-of-40 score: 37) \\
+  Series-A pre-money (market)       & \money{24000000} (\(6\times\) ARR × Rule-of-40 adj.) \\
+  Series-A pre-money (DCF floor)    & \money{15000000} (base scenario, \cref{eq:scenario-ev}) \\
+  Runway at current burn            & 8 months (\money{2500000} cash ÷ \money{310000} net burn) \\
+  SAFE outstanding                  & \money{500000} at \money{5000000} cap, \qty{20}{\percent} discount \\
+  \bottomrule
+\end{tabularx}
+\medskip
+
+% complexity: 5 -> figure value-spine
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.96\linewidth]{value-spine}
+  \caption{The value-creation spine. Each stage of the book feeds the next: Foundations set
+    the ROIC\,>\,WACC test; Customer economics set the CLV that caps acquisition spend; Acquisition
+    validates channel efficiency via ROAS and iROAS; Strategy sets the moat-driven growth rate $g$
+    used in the terminal value; Finance discounts the resulting cash flows at WACC; Execution
+    disciplines (Rule of 40, quick ratio) confirm the plan is being realised; the Founder skills
+    (influence, story, leadership) turn the plan into closed customers, a funded round, and a led
+    team; the Reference chapter closes the measurement loop.}
+  \label{fig:value-spine}
+\end{figure}
+
+%% ─────────────────────────────────────────────────────────────
+\section{Foundation: Does It Create Value?}\label{sec:capstone-value}
+%% ─────────────────────────────────────────────────────────────
+
+The master test is \cref{eq:economic-profit}: economic profit equals NOPAT minus the capital
+charge. The \money{600000} NOPAT, \money{3000000} invested capital, and \qty{20}{\percent}
+ROIC are not assumptions --- they are derived from the three-statement model of
+\cref{ch:financial-statements}. \Cref{sec:three-statements} and \cref{sec:statement-analysis}
+trace every dollar from the income statement through the NOPAT bridge of \cref{eq:nopat-bridge}:
+EBIT \(\times (1-30\%) = \money{860000}\times0.70 \approx \money{600000}\). Operators who
+cannot trace those numbers back to accounting statements are working from faith. The inference
+discipline of \cref{ch:experiments-and-inference} underlies every causal claim in the book:
+the statistical machinery of \cref{eq:z-test} and \cref{eq:sample-size} determines whether
+an observed ROIC improvement is real or sampling noise, and the OLS framework of \cref{eq:ols}
+controls for the covariates that would otherwise confound attribution.
+
+With NOPAT \(\approx\money{600000}\) and invested capital of \money{3000000},
+\cref{eq:roic} gives \(\mathrm{ROIC}=20\%\). WACC, derived in \cref{ch:risk-and-capital-structure}
+via \cref{eq:wacc} and \cref{eq:capm} at \(\beta=1.4\), is \qty{11}{\percent}:
+\[
+  \mathrm{EP}
+    = (0.20 - 0.11)\times\money{3000000}
+    = \qty{9}{\percent}\times\money{3000000}
+    = \money{270000}.
+\]
+The spread is positive and material. A \qty{9}{\percent} ROIC--WACC gap is not a rounding
+error; it is evidence that the business earns \money{270000} per year above the investors'
+opportunity cost. Every dollar of additional invested capital deployed at the current ROIC
+creates \money{0.09} of annual economic profit --- a compounding claim, not a one-time gain.
+
+The implication of \cref{eq:economic-profit} runs in both directions. If WACC rises --- say,
+because rising rates push \cref{eq:capm} from \qty{11}{\percent} to \qty{13}{\percent} ---
+the spread compresses from \qty{9}{\percent} to \qty{7}{\percent} and EP falls to \money{210000}
+without any operational deterioration. Conversely, cutting invested capital by \money{500000}
+(through tighter working-capital management) while holding NOPAT constant raises ROIC to
+\qty{24}{\percent} and EP to \money{325000}. The capital denominator is as important as the
+numerator.
+
+This verdict from \cref{ch:value-creation} frames every subsequent analysis. The chapters
+that follow each translate this single question into their own terms: CLV:CAC is its
+per-customer expression (\cref{ch:customer-economics}); the DCF enterprise value is its
+cumulative present value (\cref{ch:valuation}); the moat is the mechanism that sustains it
+(\cref{ch:advantage-and-disruption}). \textcite{brealey2020} and \textcite{damodaran2012}
+develop the corporate-finance architecture behind \cref{eq:economic-profit,eq:roic,eq:wacc}.
+
+%% ─────────────────────────────────────────────────────────────
+\section{Customer Understanding: Who, and How Much?}\label{sec:capstone-customer}
+%% ─────────────────────────────────────────────────────────────
+
+Value creation begins with a choice of whom to serve. \cref{eq:segment-score} applied in
+\cref{ch:segmentation-targeting-positioning} scores mid-market (50--500 seats) at 7.70
+versus SMB at 6.20 across market size, competitive intensity, LTV potential, and sales-cycle
+fit. The decisive criterion is LTV potential: mid-market ARR is roughly \(10\times\) the
+SMB level, which cascades into every downstream number.
+
+With the target segment fixed, the pricing headroom is bounded by the economic value to
+customer (\cref{eq:evc} in \cref{ch:pricing}): the product's contribution to the
+customer's outcome sets the theoretical price ceiling above which willingness to pay
+collapses. Our \money{50}/month price sits well below that ceiling for mid-market buyers ---
+the primary justification for the product-development move toward a \money{299}/month enterprise
+tier explored in \cref{ch:growth}.
+
+The per-customer financial case is \cref{eq:clv}. At \qty{42}{\percent} contribution margin
+(\money{252}/year), WACC \qty{11}{\percent}, and steady-state margin growth \qty{3}{\percent}:
+\[
+  \mathrm{CLV} \;=\; \frac{\money{252}}{0.11 - 0.03} \;=\; \money{3150}.
+\]
+This is the ceiling on rational acquisition spend. \cref{eq:ltv-cac} converts it into the
+operating constraint: at a \money{600} target CAC, LTV:CAC\,=\,5.25×, well above the
+3× floor that proxies the ROIC\,>\,WACC test at the customer level. The gap between
+5.25× and the 3× floor represents the buffer that absorbs model uncertainty in CLV ---
+the practical equivalent of the margin of safety in \cref{ch:corporate-finance-core}.
+
+The brand lens from \cref{ch:brand-growth} adds a demand-side observation: brand salience
+reduces the mental effort buyers expend at category entry points, lowering effective
+CAC at the margin. A firm that earns the \money{3150} CLV but spends only \money{400} in
+CAC because buyers arrive already primed has a structurally superior unit-economics position
+--- the same ROIC test, run at lower capital cost.
+
+\Cref{ch:product-management} establishes \emph{what} to build before pricing sets what to
+charge. The enterprise tier --- the \money{299}/month product expansion referenced in
+\cref{ch:pricing} --- did not emerge from intuition. It passed the RICE prioritisation gate
+of \cref{eq:rice}, which scored it higher than alternatives by reaching more users with
+higher confidence per unit of engineering effort. The Bass launch model (\cref{eq:bass})
+then forecasts how quickly the enterprise segment will absorb the new tier: with an addressable
+ceiling of 500 mid-market accounts and an imitation coefficient of \(q=0.3\), new-adopter
+volume peaks around month 10, before which outreach must be front-loaded to seed the social
+term. Product-market fit itself is measured through \cref{eq:retention}: the asymptotic
+survival curve that confirms genuine fit is the same cohort-retention curve that drives CLV.
+
+Together, \cref{ch:segmentation-targeting-positioning}, \cref{ch:brand-growth},
+\cref{ch:pricing}, \cref{ch:product-management}, and \cref{ch:customer-economics} answer
+the customer half of the value equation: who creates \money{3150} of value, what to build to
+sustain it, and at what acquisition cost.
+\textcite{gupta2004customer} is the authoritative treatment of CLV as a firm-value driver.
+
+%% ─────────────────────────────────────────────────────────────
+\section{Acquisition: Buying Demand Profitably}\label{sec:capstone-acquisition}
+%% ─────────────────────────────────────────────────────────────
+
+Customer economics sets what a conversion is worth; acquisition channels determine
+what one costs. \cref{eq:funnel-chain} in \cref{ch:digital-funnel-and-crm} traces the
+conversion cascade: 10,000 sessions produce 800 free trials at an \qty{8}{\percent}
+trial rate, and 200 of those trials convert to paid at \qty{25}{\percent}. The overall
+conversion rate is \qty{2}{\percent}. The binding constraint at steady state is the
+trial-to-paid gate, not the top of funnel --- a theory-of-constraints
+finding that \cref{ch:operations} generalises: elevating the non-binding session step
+from \qty{8}{\percent} to \qty{10}{\percent} adds only 50 additional customers per
+month; elevating the trial-to-paid rate from \qty{25}{\percent} to \qty{35}{\percent}
+adds 80.
+
+On the paid side, \cref{eq:roas-cpa} from \cref{ch:paid-acquisition-platforms} governs
+the efficiency test. A target CPA of \money{600} at \money{120000}/month delivers 200
+conversions --- precisely the learning-phase volume the platform delivery algorithms require
+to stabilise. Setting the target at \money{300} to ``improve efficiency'' halves the
+event volume, traps the ad set in Learning Limited, and causes realised CPA to rise rather
+than fall: the platform cannot estimate \(\hat{p}\) accurately below roughly 50 conversion
+events per week.
+
+The harder question is whether the \money{600} CPA reflects truly incremental customers or
+includes organic demand that would have converted anyway. \cref{eq:iroas} from
+\cref{ch:attribution-and-measurement} answers it via geo-holdout or ghost-bidding
+experiments: the incremental ROAS isolates the lift attributable to paid media, stripped
+of last-click inflation. A business running at iROAS substantially below its
+target-ROAS assumption is subsidising organic demand with paid budget and overstating
+channel efficiency.
+
+\Cref{ch:channels-gtm-and-sales} sits upstream of the funnel itself: the go-to-market motion
+chosen in \cref{sec:gtm-motion} determines which funnel the firm builds. A product-led growth
+(PLG) motion fills the top of the funnel with self-serve trial activations; a sales-led motion
+fills it with MQL handoffs. For this company, a hybrid product-led-sales motion is optimal
+--- PLG for SMB, SDR-assisted for mid-market PQLs. Sales-force sizing flows through
+\cref{eq:sales-productivity}: to add \money{2000000} in ARR with \money{500000} quotas at
+\qty{80}{\percent} attainment, five account executives are required, at a blended
+sales-assisted CAC of approximately \money{180} --- still well within the LTV:CAC floor of
+\cref{eq:ltv-cac}. That headcount and compensation cost feed directly into the operating
+model of \cref{ch:operating-model} as line items in the S\&M expense projection.
+
+The three chapters of Part~III (\cref{ch:digital-funnel-and-crm}, \cref{ch:paid-acquisition-platforms},
+\cref{ch:attribution-and-measurement}) form a closed loop: the funnel quantifies what is
+converted; the platform mechanics determine what it costs; attribution confirms whether the
+spend was causal. \Cref{ch:channels-gtm-and-sales} extends the loop one stage earlier, to the
+structural choice of \emph{how} to reach the market before any dollar of acquisition spend is
+committed.
+
+%% ─────────────────────────────────────────────────────────────
+\section{Strategy: Position and Defend}\label{sec:capstone-strategy}
+%% ─────────────────────────────────────────────────────────────
+
+Good unit economics in a structurally weak market are temporary. \cref{eq:hhi} in
+\cref{ch:competitive-analysis} places the B2B SaaS market at approximately
+\num{2260} (percentage-point-squared), just below the highly-concentrated threshold ---
+moderately concentrated, with meaningful rivalry and low entry barriers. In Porter's
+Five Forces language (\cref{ch:competitive-analysis}): buyer power is high (switching costs
+are low without integrations), the threat of entry is high (infrastructure costs have
+fallen sharply), and rivalry is intense at a \money{50}/month price point where feature
+parity is common. The structural diagnosis is clear: the firm cannot win on price or
+feature completeness at its current scale. It must build structural barriers.
+
+The moat taxonomy from \cref{ch:growth} identifies switching costs as the primary lever.
+Each API integration added to a customer's workflow increases the migration cost of leaving
+by an estimated \money{3000}--\money{6000} --- several years of subscription value at
+the current price. A deeply integrated customer faces a genuinely irrational defection
+decision even if a nominally superior product arrives. The secondary moat is the integration
+marketplace's network effect: \cref{eq:metcalfe} shows that at \(n=100\) vendor integrations,
+\(n(n-1)/2 = 4{,}950\) unique interaction pairs exist, versus only 1,225 at \(n=50\). Each
+new integration makes every existing integration more valuable, which attracts more vendors,
+which attracts more customers --- the demand-side compounding that is absent from a pure
+product-quality advantage.
+
+The VRIN test from \cref{ch:advantage-and-disruption} applies: the proprietary usage data
+accumulated across the integration marketplace is \emph{valuable} (it enables benchmarking
+features), \emph{rare} (competitors cannot observe the same cross-customer data set),
+\emph{inimitable} (the data accumulates only through operating at scale over time), and
+\emph{non-substitutable} (no public dataset replicates what is created by the network).
+A data asset satisfying VRIN supports the sustained ROIC\,>\,WACC spread of \cref{eq:roic}
+beyond the horizon where any single feature advantage would have eroded.
+
+\Cref{ch:data-and-ai-strategy} operationalises the VRIN test of \cref{sec:rbv-vrin} for the
+data layer specifically. The proprietary multi-tenant usage telemetry (\cref{sec:data-asset})
+passes all four VRIN tests: the benchmark feature it enables is valuable, the corpus is rare
+and inimitable, and no public dataset substitutes for it. The AI build-vs-buy decision
+(\cref{sec:ai-build-buy}) applies \cref{eq:npv} to determine that fine-tuning on this corpus
+is only positive-NPV if retention improves by roughly \money{50} per customer, not just a
+marginal quality increment. AI governance (\cref{sec:ai-governance}) frames model risk as an
+agency problem and concentrates human-in-the-loop review where the product of error probability
+and CLV is largest. ESG materiality (\cref{sec:esg-data}) is treated as a measurement problem
+with double-materiality boundaries, where the primary financial mechanism at \money{4000000}
+ARR is WACC reduction through reduced fundraising friction, not NOPAT directly.
+
+The strategy section's financial output feeds directly into valuation: the moat justifies
+a non-zero terminal growth rate $g$ in \cref{eq:terminal-value}. Without a moat,
+competition compresses $g$ toward zero; with an integration network effect and a
+VRIN-positive data flywheel, $g$ can persist at \qty{3}{\percent} or above through the
+terminal period. \textcite{porter1985} grounds the competitive-analysis framework;
+\textcite{dranove7theconomics} connects HHI and moat strength to sustainable margins.
+
+%% ─────────────────────────────────────────────────────────────
+\section{Finance: Value Quantified}\label{sec:capstone-finance}
+%% ─────────────────────────────────────────────────────────────
+
+\cref{ch:risk-and-capital-structure} grounds the discount rate. \cref{eq:capm} with
+\(\beta=1.4\), a \qty{4}{\percent} risk-free rate, and a \qty{5}{\percent} equity risk
+premium yields a cost of equity of \qty{11}{\percent}. Because the firm is equity-financed,
+\cref{eq:wacc} collapses to that same \qty{11}{\percent}. This single number propagates
+through every present-value calculation in the book: it is the denominator of \cref{eq:clv},
+the discount rate in \cref{eq:dcf}, and the growth-rate benchmark in \cref{eq:terminal-value}.
+
+\cref{eq:dcf} in \cref{ch:valuation} discounts five explicit forecast years of free cash
+flow. Year-1 FCF is \money{600000}; the trajectory grows at \qty{30}{\percent} in years 1--3
+then decelerates to \qty{10}{\percent} in years 4--5, producing a sum of explicit-year
+present values of approximately \money{3380000}. The terminal value is the larger component:
+
+\begin{example}[Terminal-value calculation]
+\cref{eq:terminal-value} at year-5 normalised FCF of \money{1263748} (\money{1226940}
+grown one period at \qty{3}{\percent}), discounted at \(\mathrm{WACC}-g = 0.11-0.03 = 0.08\):
+\[
+  \mathrm{TV} \;=\; \frac{\money{1263748}}{0.08} \;\approx\; \money{15800000}.
+\]
+Adding the PV of the terminal value (\(\approx\money{9400000}\) after discounting 5 years
+at \qty{11}{\percent}) to the explicit-year sum gives enterprise value
+\(\approx\money{12800000}\). Terminal value is \qty{74}{\percent} of the total --- it is
+a bet on the steady-state, not on the next five years.
+\end{example}
+
+Scenario analysis via \cref{eq:scenario-ev} converts this point estimate into a probability-weighted
+distribution. Three scenarios --- bear (\(p=0.25\), EV \money{8000000}), base (\(p=0.50\),
+EV \money{15000000}), bull (\(p=0.25\), EV \money{28000000}) --- yield:
+\[
+  EV^* \;=\; 0.25\times\money{8000000}
+           + 0.50\times\money{15000000}
+           + 0.25\times\money{28000000}
+         \;=\; \money{16500000}.
+\]
+The \money{3700000} gap between the single-point DCF (\money{12800000}) and the expected EV
+(\money{16500000}) reflects the bull scenario's weight: its upside spread exceeds the bear's
+downside, so probability-weighting lifts the expectation above the conservative point estimate.
+Capturing the bull case --- platform network effects --- is as valuable as managing the
+bear-case risk of moat erosion from data-portability regulation.
+
+\Cref{ch:operating-model} builds the DCF's explicit free cash flows from the ground up rather
+than taking them as given. \Cref{eq:cohort-revenue} stacks the survival mechanics of every
+monthly cohort into an ARR forecast --- the \money{4000000} ARR itself is the output of 38
+months of \num{200} new customers per month at \qty{0.65}{\percent} monthly churn. The
+three-driver EBITDA model of \cref{eq:op-model} then converts ARR and cost rates into the FCF
+that feeds \cref{eq:dcf}. By Year~3, with S\&M falling from \qty{50}{\percent} to
+\qty{35}{\percent} of ARR as the channel matures, the EBITDA margin reaches \qty{+7}{\percent}
+and the Rule-of-40 score climbs to 37 --- approaching the benchmark threshold. Sensitivity
+analysis via \cref{eq:sensitivity} shows that a \money{100} rise in CAC reduces annual EBITDA
+by \money{240000}; a \qty{0.35}{\percent} churn increase reduces the steady-state revenue
+ceiling by \money{1400000} --- an order of magnitude larger than a year of CAC overspend.
+The operating model converts these sensitivities into the bear, base, and bull FCF trajectories
+that \cref{eq:scenario-ev} probability-weights.
+
+\Cref{ch:fundraising-and-dilution} turns the \money{12800000} DCF enterprise value into a
+Series~A pre-money. Investors do not use DCF in isolation; they apply \cref{eq:arr-multiple}
+to anchor the pre-money to market comparables. At ARR \money{4000000} and a Rule-of-40 score
+of 15 (Year~1), the market multiple is discounted from \(8\times\) to \(6\times\), yielding a
+market-implied pre-money of \money{24000000} --- comfortably between the base (\money{15000000})
+and bull (\money{28000000}) scenarios of \cref{eq:scenario-ev}. The \money{12800000} DCF
+point estimate thus serves as a conservative floor; the probability-weighted EV of
+\money{16500000} and the \(6\times\) market multiple both sit above it. The SAFE outstanding
+--- \money{500000} at a \money{5000000} cap, \qty{20}{\percent} discount (\cref{eq:safe-conversion})
+--- converts at the cap, giving the SAFE investor \qty{10}{\percent} pre-Series-A, before the
+new institutional money is admitted. Runway of 8 months against a 4--6-month process means the
+fundraising trigger has already been crossed: \cref{eq:runway} with \money{2500000} cash and
+\money{310000} net burn leaves no buffer for delay.
+
+\textcite{damodaran2012} provides the most systematic treatment of terminal-value sensitivity;
+\textcite{brealey2020} covers scenario break-even as a complement to point-estimate DCF.
+
+%% ─────────────────────────────────────────────────────────────
+\section{Execution: Constraints and Incentives}\label{sec:capstone-execution}
+%% ─────────────────────────────────────────────────────────────
+
+Financial value is a present-value claim on future execution. The operations lens asks
+whether the processes exist to deliver it. \cref{eq:littles-law} in \cref{ch:operations}
+states \(L = \lambda W\): with 40 open deals in the mid-market pipeline and 10 closed per
+month, the average sales cycle is exactly 4 months. Compressing it to 2 months requires
+either halving the pipeline (eliminating unqualified deals) or doubling the close rate ---
+but not adding SDR headcount to inflate \(L\) while \(\lambda\) is fixed, which would
+lengthen \(W\) mechanically.
+
+On the growth-efficiency side, \cref{ch:business-models} provides two real-time tests.
+In a given month, the SaaS adds \money{30000} in new MRR and \money{20000} in expansion;
+it loses \money{5000} to contraction and \money{22000} to churn. \cref{eq:quick-ratio} gives:
+\[
+  \text{Quick Ratio} \;=\; \frac{\money{30000}+\money{20000}}{\money{5000}+\money{22000}}
+    \;=\; \frac{50000}{27000} \;\approx\; 1.85.
+\]
+Growth is positive but the denominator (\money{27000} lost) nearly offsets the expansion
+inflow (\money{20000}), revealing that the existing base is close to self-defeating. The
+primary bottleneck is churn, not new acquisition.
+
+\cref{eq:rule40} confirms the growth-profitability profile: at \qty{30}{\percent} ARR
+growth and \(\qty{-15}{\percent}\) EBITDA margin, Rule of 40 scores \(30 + (-15) = 15\)
+--- below the \qty{40}{\percent} benchmark but consistent with a capital-efficient
+investment phase. \cref{eq:burn-multiple} at \money{1500000} net cash burned against
+\money{1200000} net new ARR gives a burn multiple of \(1.25\times\), which is strong:
+the business generates more than one dollar of new ARR for every dollar-and-a-quarter
+consumed, well below the caution threshold of 2.
+
+The organisational risk is the incentive misalignment that \cref{ch:organizational-behavior}
+names after Kerr: rewarding what is measurable (gross new MRR, funnel volume) rather than
+what matters (net economic profit, ROIC). A sales team compensated on closed deals has no
+incentive to avoid poor-fit customers with high churn probability; a product team rewarded
+on feature velocity has no incentive to build the integration depth that reduces churn.
+Board governance (\cref{sec:board-governance}) provides the structural backstop: a board
+constituted with independent members, an audit committee, and compensation tied to long-run
+ROIC --- not to quarterly ARR bookings --- creates the oversight architecture that holds the
+Kerr incentive logic together. Aligning the board, management, and individual contributor
+incentives with the metric that unifies the whole system --- ROIC, or its per-customer proxy
+LTV:CAC --- resolves the misalignment structurally rather than by managerial monitoring.
+
+%% ─────────────────────────────────────────────────────────────
+\section{The Founder: Influence, Story \& Team}\label{sec:capstone-founder}
+%% ─────────────────────────────────────────────────────────────
+
+Every number above is produced by people the founder must persuade, fund, and lead. Part~VII
+treats those capabilities not as soft skills but as inputs to the same ROIC test --- each one
+moves a variable the finance chapters hold fixed.
+
+Persuasion and negotiation (\cref{ch:persuasion-influence}) set where, inside the bargaining
+range, value is captured. The Series~A term sheet is a negotiation whose zone of possible
+agreement (\cref{eq:zopa}) runs from the founder's reservation value (\cref{eq:reservation})
+--- the \money{15000000} DCF floor below which raising destroys more ownership than it buys ---
+up to the investor's ceiling near the \money{28000000} bull case. Where the round prices inside
+that band is pure distributive surplus: a founder who anchors on the \(6\times\)-ARR comparable
+rather than the bear case captures millions in retained ownership that no operating improvement
+could match. The same chapter's trust equation (\cref{eq:trust}) governs the demand side ---
+buyers who arrive pre-trusted through referrals convert below the \money{600} CAC target ---
+and is the reason the manipulative ``laws of power'' genre is rejected outright: eroded trust
+raises churn and collapses the very CLV the whole model rests on.
+
+Storytelling (\cref{ch:storytelling-communication}) is the delivery mechanism for that
+persuasion. The pitch that converts the \money{15000000} floor into a funded \money{24000000}
+pre-money is a narrative, not a spreadsheet read aloud; the same narrative discipline lifts
+trial-to-paid conversion at the binding funnel gate of \cref{eq:funnel-chain} and seeds the
+word-of-mouth that lowers blended CAC. A true value proposition that cannot be transmitted is,
+to the market, indistinguishable from one that does not exist.
+
+Founder psychology (\cref{ch:founder-psychology}) is the discipline that holds the plan together
+across the eight-month runway, and its claims are the ones that survive meta-analysis:
+self-efficacy predicts performance, specific and difficult goals beat vague intention,
+task-relevant human capital predicts venture success more than generic experience, and
+implementation-intention habits convert resolve into routine. These are precisely what sustain
+the execution discipline that \cref{eq:quick-ratio} and \cref{eq:burn-multiple} measure. The
+enterprise value of \money{12800000} is built from cohort-survival curves, learning-phase signal
+density, and an explicit scenario distribution --- it is realised by a founder who installs those
+routines, not one who visualises the outcome.
+
+Leadership (\cref{ch:leadership-charisma}) closes the loop back to ROIC through the workforce.
+Transformational leadership and the trainable charismatic tactics that
+\cref{ch:storytelling-communication} supplies recruit and retain the five account executives the
+operating model of \cref{ch:operating-model} assumes; psychological safety determines whether
+the churn-reduction finding of the execution section is implemented or quietly ignored; and the
+founder's-dilemma decisions about co-founder equity splits set the cap table that
+\cref{eq:safe-conversion} later dilutes. A team that cannot be led at \money{4000000} ARR cannot
+deliver the plan the \money{24000000} pre-money is pricing. Leadership is not adjacent to the
+financial model --- it is the mechanism that produces the NOPAT.
+
+%% ─────────────────────────────────────────────────────────────
+\section{Data, AI \& ESG: The 2026 Additions}\label{sec:capstone-new}
+%% ─────────────────────────────────────────────────────────────
+
+The three themes added most prominently in the 2026 edition --- data as a strategic asset
+(\cref{sec:data-asset}), AI governance (\cref{sec:ai-governance}), and ESG as a
+capital-allocation discipline (\cref{sec:esg-capital}) --- are not separate strategic agendas.
+They reduce to the same ROIC\,>\,WACC test that the rest of the book applies to every decision.
+A data flywheel is strategically valuable only if it generates product improvements that move
+NOPAT upward or allow the firm to defend a price premium that sustains contribution margin; if
+it does neither, it is an infrastructure cost dressed as a moat. AI governance is worth its
+overhead if and only if the expected value of errors caught exceeds the review cost ---
+precisely the NPV calculation the book applies to any investment decision, and exactly the
+calculation \cref{sec:ai-governance} sets up with CLV as the value-at-risk denominator. ESG
+spend creates economic profit only through two specific channels: reducing WACC by lowering
+the risk premium investors assign to regulatory or talent disruption, or improving NOPAT by
+reducing churn (talent retention) or raising pricing power (brand trust). At \money{4000000}
+ARR the dominant channel is WACC reduction through Series~A fundraising friction --- ESG
+data quality is a diligence gate, not an altruistic exercise. All three themes are strategic
+only when they move NOPAT, WACC, or invested capital. When they do not, they are costs.
+
+%% ─────────────────────────────────────────────────────────────
+\section{The Synthesis}\label{sec:capstone-synthesis}
+%% ─────────────────────────────────────────────────────────────
+
+The value-creation spine in \cref{fig:value-spine} is not a metaphor; it is a causal chain.
+Start at the left.
+
+\emph{Foundations} establish the test: ROIC must exceed WACC. That test is abstract until
+the firm fills in its own numbers. For this company, the verdict is \money{270000} of annual
+economic profit --- positive, but not secure. The spread is \qty{9}{\percent} today; the
+question is whether it persists.
+
+\emph{Customer economics} give the test its operational content. The mid-market segment was
+chosen because its LTV potential (\money{3150}) provides enough headroom over a \money{600}
+CAC to sustain a 5.25× ratio --- the per-customer expression of ROIC\,>\,WACC. Brand work
+lowers the effective CAC over time; pricing discipline keeps the margin structure that
+generates the \money{252}/year of contribution. Without both, CLV shrinks and the ratio
+falls toward the 3× floor.
+
+\emph{Acquisition} converts the unit-economics model into real demand. The funnel delivers
+200 new customers per month at the target cost, but only because the platform's learning
+phase has enough signal density to bid intelligently. The acquisition machine is fragile:
+fragment the budget across ten ad sets, or set the CPA target below the learning-phase
+minimum, and the whole engine stalls. Attribution discipline --- iROAS rather than last-click
+ROAS --- ensures that reported efficiency is real, not borrowed from organic demand.
+
+\emph{Strategy} determines how long the economics last. A product without a moat earns
+its ROIC\,>\,WACC spread until a competitor replicates the features; typically that window
+is two to four years. The integration switching costs and the nascent network effect of
+the vendor marketplace extend the window by raising the cost of defection and by
+compounding value with each new node. These are not nice-to-haves; they are the mechanism
+by which the \qty{3}{\percent} terminal growth rate in the DCF is defensible rather than
+arbitrary. Strategy sets $g$.
+
+\emph{Finance} discounts the whole system at the appropriate rate, translating the
+operating story into an enterprise value. The DCF is not a valuation model; it is a
+discipline that forces every assumption about growth, margin, and durability into a
+single number that can be stress-tested. The scenario analysis reveals that the bear case
+--- regulation collapses the switching-cost moat, growth stalls, EV falls to \money{8000000}
+--- is a \qty{25}{\percent} probability event. Managing that risk explicitly, rather than
+assuming the base case, is the difference between finance as a reporting function and
+finance as a strategic tool.
+
+\emph{Execution} is where strategy and finance are either realised or not. The quick ratio
+of 1.85 and the burn multiple of 1.25 are not grades; they are coordinates. They locate the
+business on the efficiency frontier and reveal the next constraint: churn reduction, not
+new acquisition volume, is the lever that moves both metrics toward elite territory. Little's
+Law says the 4-month sales cycle can be cut to 2 months, but only by reducing unqualified
+pipeline, not by adding salespeople to a pipeline the close team cannot clear faster.
+Incentive structures must reinforce these findings, or the organisation will optimise the
+metric it is paid on --- which is rarely the metric that matters.
+
+\emph{The founder} is the variable the model cannot hold constant. Persuasion sets where in the
+bargaining range the round prices; story decides whether the pitch and the funnel convert;
+psychology supplies the discipline --- and the refusal of wishful thinking --- that keeps the
+forecast honest; leadership recruits and retains the team that turns the plan into NOPAT. These
+are not a softer epilogue to the financial chapters; they are the human inputs to every number
+the spine carries.
+
+The full loop closes at ROIC. Position determines whether customers are willing to pay the
+price that generates the contribution margin. Customer economics determine whether the
+acquisition cost is recoverable within the product's life. Acquisition efficiency determines
+whether the CAC is actually \money{600} or quietly \money{900}. Strategic durability
+determines whether the margin and growth persist long enough to justify the terminal value
+that dominates the DCF. Execution discipline determines whether the plan arrives on time.
+Every instrument in the book is pointing at the same reading: \(\mathrm{ROIC}>\mathrm{WACC}\)
+--- sustained, not just today, but through the terminal horizon the market is pricing.
+
+\textcite{brealey2020}, \textcite{damodaran2012}, \textcite{gupta2004customer},
+\textcite{porter1985}, and \textcite{osterwalder2010} are the five pillars whose frameworks
+this chapter weaves together. The integration is the book's contribution; the sources are
+theirs.

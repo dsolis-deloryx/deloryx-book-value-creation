@@ -1,0 +1,434 @@
+\chapter{Founder Psychology: Traits, Habits \& Expert Cognition}\label{ch:founder-psychology}
+
+% Scope: the EVIDENCE-BASED psychology of the entrepreneur --- self-efficacy (Bandura +
+%   Stajkovic & Luthans meta-analysis), goal-setting (Locke & Latham), personality traits
+%   matched to the entrepreneurial task (Rauch & Frese), human capital outcomes vs.\ investments
+%   (Unger et al.), deliberate practice with bounded-effect caveat (Ericsson; Charness;
+%   Macnamara), effectuation (Sarasvathy), habit formation at 66 days (Lally), implementation
+%   intentions (Gollwitzer & Sheeran), behavioral wealth-building (Thaler & Benartzi).
+%   No debunk sections; only validated, actionable science.
+% Cross-link heavily to \cref{ch:decisions-under-uncertainty} (biases) and
+%   \cref{ch:organizational-behavior} (motivation/SDT) --- do NOT restate; \cref.
+
+The entrepreneur-psychology literature is large, contentious, and often written backwards: it
+starts with successful founders and reverse-engineers what they claim to have believed, done, or
+felt. This chapter does the opposite. It starts from peer-reviewed meta-analyses and
+pre-registered field studies, extracts the mechanisms and effect sizes that survive rigorous
+scrutiny, and maps them onto the decisions a founder actually faces. The findings are more
+modest than the bestseller covers imply, but they are more useful because they are
+actionable: specific goals, domain-anchored confidence, traits matched to the entrepreneurial
+task, expertise built through structured feedback, decisions calibrated to affordable loss, and
+behavior wired into systems rather than left to willpower. These are the constructs with
+replication behind them. They are also, as the sections below demonstrate, tightly wired to the
+operating metrics of the running SaaS company that carries every worked example in this book.
+
+\section{Self-Efficacy \& Goal-Setting}\label{sec:self-efficacy-goals}
+% complexity: 2
+
+What separates a founder who attempts a hard problem from one who merely discusses it? The
+proximate answer is not talent, capital, or luck --- it is the belief that a specific course
+of action, taken by them, will produce a result they can influence. Albert Bandura formalised
+this construct as \emph{self-efficacy}: the judgment an individual makes about their capacity
+to organise and execute the courses of action required by a specific situation
+\parencite{bandura1997self}. Two features distinguish self-efficacy from vaguer concepts like
+general confidence or optimism. First, it is domain-specific: a founder can have high
+self-efficacy for product iteration and low self-efficacy for enterprise sales in the same
+week. Second, it predicts behaviour via mechanism rather than correlation --- people high in
+self-efficacy for a task approach obstacles as problems to be mastered, extend effort longer
+when they encounter resistance, and recover faster after setbacks.
+
+The meta-analytic evidence on this mechanism is unusually strong. Stajkovic and Luthans
+synthesised \num{114} independent studies encompassing \num{21616} participants and found a
+weighted average correlation between task-specific self-efficacy and work-related performance
+of $r \approx .38$ % source: stajkovic1998self, Psychological Bulletin 1998, k=114, N=21,616
+\parencite{stajkovic1998self}. In practical terms, moving from low to high self-efficacy in a
+given domain is associated with roughly a \qty{28}{\percent} increase in output, operating
+through three channels: high-efficacy individuals select more difficult and higher-yield goals,
+exert greater initial effort when they begin a task, and persist longer when they encounter
+resistance or market rejection. The channel matters as much as the correlation: self-efficacy
+does not improve performance by making founders feel better; it improves performance by
+changing the goals they set and the effort they sustain. Achievement motivation --- the intrinsic
+drive to overcome challenges and meet high objective standards --- amplifies this further.
+Collins, Hanges, and Locke's meta-analysis demonstrated that achievement motivation is
+significantly correlated with both the choice of an entrepreneurial career and entrepreneurial
+performance, with particularly strong differentiation when comparing high-performing founders
+against lesser-performing peers % source: collins2004achievement, Human Performance 2004
+\parencite{collins2004achievement}.
+
+Self-efficacy answers \emph{whether} to act. Goal-setting answers \emph{where} to aim. Locke
+and Latham's meta-analytic synthesis, built over thirty-five years of field and laboratory
+studies, reached a deceptively simple conclusion: specific, difficult goals produce
+systematically higher performance than vague exhortations to ``do your best,'' with effect
+sizes ($d$) ranging from \num{0.52} to \num{0.82} across the synthesised trials
+\parencite{locke2002building}. The mechanism runs through four channels: goals direct
+attention to relevant activities and away from irrelevant ones; high goals raise the energy
+applied to the task; difficult goals sustain effort longer because the gap between the current
+state and the target keeps motivation active; and goals trigger strategy discovery --- when
+existing approaches fall short, the goal creates pressure to search for better ones.
+
+Two conditions gate the effect. First, goal commitment: if a target feels politically imposed
+or genuinely impossible, the four-channel mechanism never engages. Second, task complexity:
+for routine tasks, the ``specific and difficult'' rule is robust; for genuinely novel problems ---
+a common situation in early-stage ventures --- rigid performance goals can produce panicked,
+unsystematic behaviour. In those conditions, Locke and Latham recommend substituting a
+\emph{learning goal} (``discover the three drivers of trial-to-paid conversion'') for a
+performance goal (``reach \qty{25}{\percent} conversion this month''). The distinction matters
+for founders because their environment mixes both: execution against known processes deserves
+hard performance targets; genuine exploration deserves learning-goal framing.
+
+\begin{example}[SaaS founder setting a milestone structure]
+The SaaS founder running \money{340000} in monthly recurring revenue decides to lift the
+trial-to-paid conversion rate, currently at \qty{25}{\percent}. She recognises that the channel
+dynamics and attribution issues are already well-understood from the work in
+\cref{ch:attribution-and-measurement}; the execution question is settled enough that a
+performance goal is appropriate.
+
+Following Locke and Latham, she sets a specific, difficult goal: reach \qty{30}{\percent}
+trial-to-paid conversion within ninety days. She then decomposes it into weekly milestones ---
+instrument the onboarding flow by day seven; run the first A/B test of the activation email by
+day fourteen; assess cohort retention differences by day thirty. Each milestone has a
+measurable output and a deadline, preserving the directive and energising functions of
+goal-setting theory. Because the conversion process itself is well-understood (not novel), she
+stays with performance framing throughout. She pairs the goal with a deliberate self-efficacy
+check: having shipped three previous A/B experiments, she has domain-specific evidence that she
+can execute this kind of project, which raises the probability that she will sustain effort when
+the first test disappoints.
+
+The implication: goal-setting works precisely because the goal structure --- specific, dated,
+decomposed --- makes it impossible to substitute vague intention for concrete action. The
+\qty{28}{\percent} performance lift associated with high task-specific self-efficacy compounds
+with the goal-setting effect when both are present; neither operates well in the other's absence.
+\end{example}
+
+\begin{admonition}{Note}
+Self-efficacy is built, not born. Bandura identifies four sources: mastery experiences (prior
+successes in the same domain), vicarious modelling (watching comparable others succeed),
+social persuasion (credible feedback from people who have observed the performance), and
+physiological state (interpreting anxiety as arousal rather than incompetence). The practical
+implication for founders is that self-efficacy in a new domain --- enterprise sales, financial
+modelling, public speaking --- is raised most reliably by accumulating small, domain-specific
+wins, not by general motivational input.
+\end{admonition}
+
+The intrinsic-motivation literature, surveyed in \cref{sec:motivation}, converges with
+Bandura's model: autonomy and competence are the two self-determination-theory needs most
+directly activated by a well-structured goal system. The goal gives the task a clear structure
+(competence), while the founder's choice of the goal and method preserves ownership (autonomy).
+\textcite{bandura1997self}, \textcite{stajkovic1998self}, and \textcite{locke2002building}
+together supply the empirical ground; the practical question is always whether the task is
+settled enough for a performance goal or novel enough to require a learning goal first.
+
+\section{Traits \& Human Capital That Predict Venture Performance}\label{sec:traits-human-capital}
+% complexity: 3
+
+If self-efficacy and goal commitment explain how founders sustain effort, what personal
+characteristics predict whether they will succeed at the task of business ownership in the first
+place? For decades, entrepreneurship research produced inconsistent answers because it asked the
+wrong question: whether broad personality traits --- extraversion, agreeableness, openness ---
+predicted venture outcomes. They largely do not. The breakthrough came from reframing the
+question: which traits are logically \emph{matched} to the specific task demands of running a
+business, and which human capital dimensions are actually \emph{deployed} rather than merely
+accumulated?
+
+Rauch and Frese's meta-analysis provided the definitive quantification. Analysing personality
+variables across a large set of independent samples, they found a stark contrast between traits
+matched versus unmatched to the entrepreneurial task. Matched traits --- need for achievement,
+stress tolerance, proactive personality, need for autonomy, innovativeness, and generalised
+self-efficacy --- produced correlations with business creation of $r = .247$ ($K = 47$,
+$N = \num{13280}$) and with business success of $r = .250$ ($K = 42$, $N = \num{5607}$).
+Unmatched traits showed negligible predictive validity for success ($r = .028$, $K = 13$,
+$N = \num{2777}$). % source: rauch2007person, European Journal of Work & Org Psychology 2007
+The practical implication is that general extraversion or conscientiousness as abstract traits
+are weak predictors; stress tolerance and proactive initiation --- traits structurally matched to
+the demands of a volatile, high-stakes environment --- carry real signal
+\parencite{rauch2007person}.
+
+The human capital findings run parallel. Conventional business assumptions conflate two things
+that are meaningfully distinct: the \emph{investments} an individual has made in human capital
+(years of formal education, general management tenure, an MBA) versus the \emph{outcomes} those
+investments may or may not have produced (specific, demonstrable, task-related knowledge and
+skills). Unger, Rauch, Frese, and Rosenbusch synthesised \num{70} independent samples totalling
+$N = \num{24733}$ businesses and found an overall relationship between general human capital and
+venture success of $r_c = .098$ --- small in absolute terms
+\parencite{unger2011human}. % source: unger2011human, Journal of Business Venturing 2011, N=24,733
+But the aggregate masks the operationally critical finding: human capital \emph{outcomes}
+predicted success at substantially higher rates than human capital \emph{investments}, and
+task-related human capital vastly outperformed low task-related capital. A decade of general
+management experience is a weak predictor; the specific ability to run a full-cycle enterprise
+software sales process or architect a scalable data pipeline is a strong one. The reason is
+direct: venture success is determined by the quality of decisions made in specific, high-stakes
+contexts, and generic credentials signal little about performance in those contexts.
+
+For founders, these two findings --- matched traits and outcome-oriented human capital --- have
+concrete implications for self-assessment and early hiring. The trait that deserves attention is
+not how extroverted or likeable a co-founder is, but whether they demonstrate the stress
+tolerance and proactive orientation that Rauch and Frese identified as task-matched. The hiring
+criterion that deserves attention is not credentials or years of experience, but the ability to
+demonstrate task-relevant skill in a structured assessment.
+
+\begin{example}[Trait and human-capital audit for a SaaS hiring decision]
+The SaaS founder, at \money{340000} monthly recurring revenue with \money{3000000} in invested
+capital and an \qty{11}{\percent} hurdle rate, is evaluating two candidates for a head-of-sales
+role. Candidate A holds an MBA from a recognised institution and spent eight years in corporate
+account management. Candidate B has a shorter general resume but has demonstrably closed six
+enterprise SaaS contracts in the past two years at average contract values above \money{60000},
+and handles the structured sales-call roleplay in the interview without avoidance.
+
+The Unger et al.\ framework directs her to weight Candidate B's outcome-oriented human capital
+--- specific, deployed, task-related skill --- over Candidate A's investment credentials. The
+Rauch and Frese framework reinforces this: if Candidate B also scores higher on observable
+stress tolerance and proactive task initiation during the interview process (responding to
+rejection with a revised approach rather than withdrawal), those matched traits multiply the
+human-capital advantage. The contribution margin at stake --- \money{21} per month per customer
+converted by the sales hire --- gives the founder a quantitative frame for what the hiring
+decision is worth. An additional hundred customers per year at \money{252} annual margin each,
+discounted at the \qty{11}{\percent} hurdle rate as a growing perpetuity with \qty{3}{\percent}
+growth, represents approximately \money{315000} of present value. A hiring decision calibrated
+to outcome evidence rather than credential signalling is directly traceable to that number.
+
+The implication: matched-trait and outcome-capital assessments are not soft add-ons to a hiring
+process; they are the quantitatively best-supported predictors of whether the hire will produce
+the metric outcomes the firm needs.
+\end{example}
+
+\begin{admonition}{Note}
+The cognitive-bias literature is directly relevant to this domain. The overweighting of
+credentials and general experience in hiring reflects both the representativeness heuristic
+(``this person looks like successful people I know'') and availability bias (the successes of
+well-credentialled leaders are more visible than the failures). The Rauch and Frese data are an
+empirical antidote: the relevant question is not whether the candidate matches the prototype of
+a successful leader, but whether their traits and demonstrated skills are matched to the
+specific task demands of the role. The decision-theoretic scaffolding in
+\cref{ch:decisions-under-uncertainty} develops this directly.
+\end{admonition}
+
+Both sets of findings connect to the value-creation spine: human capital outcomes are not a
+fixed endowment but the cumulative product of deliberate, feedback-rich experience, which is
+the subject of the following section. \textcite{rauch2007person} and \textcite{unger2011human}
+supply the meta-analytic foundation; \textcite{collins2004achievement} connects the
+achievement-motivation thread from \cref{sec:self-efficacy-goals} to the broader personality
+picture.
+
+\section{How Expertise Is Built \& How Founders Decide}\label{sec:practice-effectuation}
+% complexity: 3
+
+If matched traits and outcome-oriented human capital predict venture performance, the next
+question is practical: how does a founder build those outcomes, and how should the resulting
+expertise be deployed in the genuinely uncertain environment of an early-stage venture? The
+answer comes from two bodies of research that are usually taught separately --- expertise
+science and entrepreneurial cognition --- but are logically sequential.
+
+Ericsson, Krampe, and Tesch-R{\"o}mer introduced deliberate practice to distinguish expert
+performance from mere accumulated experience \parencite{ericsson1993role}. The key properties
+are specificity, immediate feedback, and progressively increasing difficulty. Practice must
+target a well-defined weakness; feedback on performance must be rapid and accurate; and the
+challenge must be calibrated just above the current competence level. Work that falls within
+established competence consolidates it but does not extend it. Ericsson spent the later part
+of his career frustrated by the popular reduction of his findings to ``ten thousand hours of
+anything,'' because the research shows that ten thousand hours of unstructured experience
+produces a very good amateur, not an expert.
+
+Field evidence from chess expertise confirms the mechanism. Charness, Tuffiash, Krampe,
+Reingold, and Vasyukova demonstrated that solitary, serious study --- deliberate practice in the
+technical sense --- was the single strongest predictor of skill level among players, accounting
+for large variance in Elo ratings that accumulated experience alone could not explain
+\parencite{charness2005practice}. % source: charness2005practice, Applied Cognitive Psychology 2005
+The chess domain is instructive precisely because it has stable rules, clear objective
+metrics, and rapid feedback loops --- the conditions under which deliberate practice is most
+powerful.
+
+Practitioners must apply a critical caveat when translating this to the business environment.
+Macnamara, Hambrick, and Oswald's meta-analysis quantified the proportion of performance
+variance explained by deliberate practice across multiple domains. % source: macnamara2014practice, Psychological Science 2014
+In games with stable rules (including chess), deliberate practice explained \qty{26}{\percent}
+of variance in performance. In music, it explained \qty{21}{\percent}. In less structured
+professional domains with noisy, slow feedback, the figure falls substantially
+\parencite{macnamara2014practice}. For founders, the implication is calibrated rather than
+discouraging: deliberate practice is highly effective for isolated, well-defined sub-skills ---
+objection handling in enterprise sales, financial modelling in a spreadsheet, writing a customer
+discovery interview script --- but it is not the primary mechanism for ``company building'' as
+a holistic, ambiguous activity. The Unger et al.\ human-capital finding (\cref{sec:traits-human-capital})
+reinforces this: the human capital that predicts venture success is task-related and deployable,
+not generic.
+
+The entrepreneurial environment makes genuine deliberate practice difficult to construct at the
+firm level because feedback loops are slow, noisy, and expensive. A surgeon knows within minutes
+whether a procedure succeeded; an entrepreneur may wait twelve months to learn whether a product
+decision was correct. The practical response is to create artificial feedback structures: rigorous
+A/B testing provides the rapid, objective signal that a coach provides in a traditional expertise
+domain; financial modelling exposes assumptions to falsification before the market does; advisory
+relationships with experienced operators function as the expert coach the environment does not
+automatically provide.
+
+Expert entrepreneurial decision-making has a second distinguishing feature, identified by
+Sarasvathy through a landmark study of thirty expert founders --- entrepreneurs with at least
+fifteen years of experience who had taken at least one company public \parencite{sarasvathy2001causation}.
+Given the same business case, expert founders did not reason the way MBA textbooks prescribe.
+They did not start from a target market, project returns, and marshal resources toward the goal.
+Instead, they started from their available means --- who they are, what they know, who they know
+--- and allowed goals to emerge from what those means could plausibly produce. Losses were
+bounded by an ``affordable loss'' threshold: not the maximum expected return, but the maximum
+they were willing to put at risk. Sarasvathy called this pattern \emph{effectuation}, contrasted
+with the \emph{causation} logic of standard strategic planning.
+
+The distinction matters because it is not simply a stylistic preference. Expert founders use
+effectuation because it is better adapted to environments of genuine uncertainty, where the
+probability distributions required by expected-value reasoning do not exist. In that regime,
+controlling the downside and exploiting contingencies as they arise dominates trying to predict
+and optimise. The causal approach --- market research, projected return, resource acquisition ---
+is appropriate when the future is sufficiently predictable and the market is sufficiently stable.
+Early-stage entrepreneurship rarely satisfies either condition. This connects directly to the
+decision-theoretic scaffolding in \cref{ch:decisions-under-uncertainty}: effectuation is, in
+essence, the practitioner's implementation of robust decision-making under deep uncertainty.
+
+\begin{example}[Effectual vs.\ causal framing for the SaaS]
+The SaaS founder, currently at \money{340000} monthly recurring revenue with a
+\qty{92.5}{\percent} twelve-month retention rate, is considering entering a new vertical ---
+small law firms. A causal decision-maker would begin by estimating the total addressable market,
+project a penetration rate, model the contribution margin from the new vertical (\money{21} per
+month per customer, as established in the firm's cost structure), compute the net present value
+of the expansion using the \qty{11}{\percent} hurdle rate, and acquire resources to execute if
+NPV is positive.
+
+An effectual founder asks different first questions: Do we know any partners at small law firms
+who would try this for free and give us honest feedback? Can we configure the existing product
+for the vertical within the current engineering sprint, or does it require a separate codebase?
+What is the maximum time and budget we are willing to lose if this turns out to be a dead end ---
+and is that amount genuinely affordable against current runway? She does not refuse to model
+returns, but she treats the model as one input among several and weights the accessible evidence
+from means --- relationships, existing capability, affordable exposure --- more heavily than the
+projected evidence from a market forecast.
+
+The implication: the two frameworks are not competitors for all situations. The causal approach
+becomes appropriate once market response is better understood; effectuation is the right posture
+when the uncertainty is genuine rather than resolvable through more research.
+\end{example}
+
+\begin{admonition}{Note}
+Deliberate practice and effectuation are not in tension; they are sequential. Effectuation is
+the decision logic for entering an uncertain situation with bounded risk. Deliberate practice is
+what builds the domain competence that makes future effectuation richer --- because the founder's
+means (what they know, what they can do) expand with each feedback-rich iteration. The expert
+entrepreneurs in Sarasvathy's study had extensive deliberate-practice histories in their domains;
+effectuation was how they leveraged that expertise in new situations, not a substitute for having
+built it.
+\end{admonition}
+
+\section{Habits \& Behavioral Wealth-Building}\label{sec:habits-wealth}
+% complexity: 2
+
+The framing of high performance as a product of willpower and motivation is one of the most
+reliably wrong assumptions in popular psychology. Willpower depletes; motivation fluctuates;
+neither is a dependable foundation for the long-run behaviour change that compound growth ---
+personal or financial --- requires. The behavioural science of habit formation and choice
+architecture offers a more durable alternative: design the environment so that the desired
+behaviour is the path of least resistance, and the undesired behaviour requires an active
+decision to access.
+
+The foundational scientific model for understanding how habits interact with goals is provided by
+Wood and Neal, who demonstrated that habits emerge through the gradual learning of associations
+between responses and specific features of performance contexts --- time of day, physical location,
+or preceding action sequences \parencite{wood2007habits}. Once a habit is formed, the perception
+of the contextual cue triggers the associated behavioural response without the mediation of an
+active goal state. Goals are required to motivate the initial repetitions that establish the
+habit, but once automaticity is achieved, the behaviour becomes substantially resistant to
+changes in the individual's motivational state. For founders, this automaticity preserves
+executive function for complex problem-solving --- the cognitive resource most at risk during the
+high-stress phases of a venture.
+
+The practical question that popular habit books do not answer rigorously is how long this
+formation process takes. Charles Duhigg, James Clear, and B.\ J.\ Fogg have all described habit
+architecture compellingly, and their frameworks are useful design guides at the structural level
+\parencite{duhigg2012power,clear2018atomic,fogg2020tiny}. But the ``21-day habit'' claim
+embedded in popular culture is not empirically grounded. Lally, van Jaarsveld, Potts, and Wardle
+tracked ninety-six volunteers over eighty-four days as they attempted to adopt a new health
+behaviour linked to a daily cue, mapping automaticity using the Self-Report Habit Index
+\parencite{lally2010habit}. % source: lally2010habit, European Journal of Social Psychology 2010, N=96, 84 days
+The automaticity curve was asymptotic: large gains in early repetitions, diminishing returns
+thereafter, plateauing at an individual maximum. The average time required to reach
+\qty{95}{\percent} of the automaticity asymptote was \textbf{66 days}, with individual variance
+ranging from 18 to 254 days depending on the complexity of the behaviour. Crucially, missing a
+single opportunity to perform the behaviour did not materially affect the formation process or
+alter the final asymptote --- meaning rigid unbroken streaks are not neurologically necessary,
+but a sustained sixty-plus-day horizon is.
+
+Because habits take a median of two months to form, founders require a reliable bridge between
+intention and automaticity. That bridge is the implementation intention. Gollwitzer and Sheeran
+analysed this mechanism across ninety-four independent tests and found a robust, medium-to-large
+effect on goal attainment ($d \approx .65$) \parencite{gollwitzer2006implementation}.
+% source: gollwitzer2006implementation, Advances in Experimental Social Psychology 2006, 94 tests, d≈.65
+An implementation intention is an explicit ``if-then'' plan that specifies when and where a
+goal-directed behaviour will be initiated: ``If it is 8:00 AM on a weekday, then I will open the
+MRR dashboard before any other application.'' This format transfers the trigger for action from
+internal willpower to an external environmental cue, promoting rapid initiation of goal-directed
+behaviour, shielding ongoing goal pursuit from competing demands, and reducing the cognitive load
+required to begin. The key mechanism is specificity: the ``if-then'' format pre-commits the
+response to a context cue, so that when the cue appears, the behaviour executes without
+requiring a decision.
+
+The behavioural-finance application extends the same logic to personal financial decisions.
+Entrepreneurs face an acute version of the standard self-control problem: irregular income,
+strong present-biased preferences, and the constant temptation to redeploy personal savings into
+the business. Thaler and Benartzi's ``Save More Tomorrow'' programme provides the
+evidence-based counter-strategy \parencite{thaler2004save}. The programme's key design insight
+is that loss aversion --- the asymmetry by which losses loom larger than equivalent gains in
+subjective experience --- makes immediate cuts to take-home pay painful even when the long-term
+benefit is obvious. Save More Tomorrow sidesteps this by asking participants to pre-commit to
+directing a fixed fraction of their \emph{future} raises to savings. Because the deduction
+coincides with an increase in gross pay, take-home income never falls; there is no loss-aversion
+trigger. Thaler and Benartzi tracked participants over forty months and observed average saving
+rates rise from \qty{3.5}{\percent} to \qty{13.6}{\percent} --- a nearly four-fold improvement
+achieved without willpower, through architecture alone. The mechanism is identical to the habit
+and implementation-intention literature: remove the decision from the domain of in-the-moment
+deliberation; encode it in advance as an automatic commitment.
+
+\begin{example}[Implementation intentions and automated saving for the SaaS founder]
+The SaaS founder wants to establish two reliable routines: a weekly financial review and a
+personal wealth-building protocol. She applies the Lally et al.\ finding that habit
+automaticity requires a sixty-six-day median horizon, and the Gollwitzer and Sheeran finding
+that an explicit ``if-then'' format ($d \approx .65$) bridges the gap while the habit forms.
+
+For the financial review, she writes the implementation intention explicitly: ``If it is Friday
+morning and my calendar shows 9:00 AM, then I will open the MRR dashboard, check burn rate
+against the \money{3000000} invested-capital base, and record one decision or updated hypothesis
+before closing it.'' The cue (Friday 9:00 AM) is stable and external. The routine (three-item
+sequence) is specific enough to execute without further deliberation. After ten weeks --- within
+the Lally et al.\ range --- the review has become context-cued rather than motivation-dependent:
+it happens whether or not she feels engaged with it.
+
+On the wealth-building side, she applies Thaler and Benartzi's architecture directly: each
+time the business makes a quarterly distribution, \qty{20}{\percent} routes automatically to a
+personal investment account before it reaches her operating account. The instruction is locked
+in the bank's standing-order system and requires deliberate action to cancel. The trigger is an
+incoming-cash event, not a spending decision, so loss aversion does not engage. The equivalent
+of pre-committing to future salary increases is pre-committing to future distribution fractions:
+the sacrifice is prospective, not immediate.
+
+The implication is general: both the professional habit and the savings rule work because they
+are architecture, not resolve. The implementation-intention format handles the forty-to-sixty-
+day bridge before automaticity; the choice-architecture lock handles the long-run default. The
+moment either requires the founder to decide in real time, under competing pressures, they
+become unreliable.
+\end{example}
+
+\begin{admonition}{Note}
+The autonomy need identified in self-determination theory (\cref{sec:motivation}) is not
+undermined by habit automation --- it is expressed at the moment of designing the system. The
+founder who pre-commits to a saving schedule and writes an implementation intention for a weekly
+financial review has exercised high autonomy in constructing the choice architecture; what is
+automated afterward is the execution, not the choice. The distinction matters because founders
+sometimes resist systematic approaches as constraints on their agency, when in fact designing
+effective systems is one of the highest-leverage exercises of agency available to them.
+\end{admonition}
+
+The chapter's argument closes where it opened: the entrepreneurial psychology that survives
+contact with replication is not a personality profile or a belief system. It is a set of
+practices --- structured goals paired with domain-specific confidence built through evidence,
+traits and human capital matched to the task demands, decision logic adapted to genuine
+uncertainty, and behaviour encoded in systems rather than resolved in real time. These are the
+tools. \textcite{bandura1997self}, \textcite{stajkovic1998self}, \textcite{locke2002building},
+\textcite{rauch2007person}, \textcite{unger2011human}, \textcite{ericsson1993role},
+\textcite{sarasvathy2001causation}, \textcite{lally2010habit}, \textcite{gollwitzer2006implementation},
+and \textcite{thaler2004save} provide the empirical foundation; the frameworks in
+\cref{ch:decisions-under-uncertainty} and \cref{sec:motivation} locate them within the broader
+decision-making and motivation science the book has already developed.

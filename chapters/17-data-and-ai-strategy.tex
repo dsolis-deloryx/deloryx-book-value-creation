@@ -1,0 +1,309 @@
+\chapter{Data \& AI as Strategic Capability}\label{ch:data-and-ai-strategy}
+
+% Scope: data as a strategic asset (data flywheel/network effects), AI build-vs-buy-vs-API,
+%   AI governance & model risk, ESG as a strategic data problem (double materiality).
+%   NEW chapter (closes the data-&-AI strategy gap + part of ESG depth).
+% Operationalises VRIN (\cref{ch:advantage-and-disruption}) and moats (\cref{ch:growth}) for the AI context.
+% Draft per house style: flowing prose + example/admonition set-offs; running-SaaS worked examples.
+% This chapter is QUALITATIVE: no new eq: labels are defined here. All equations are \cref'd from existing labels.
+
+\section{Data as a Strategic Asset}\label{sec:data-asset}
+% complexity: 3
+
+What makes a dataset competitively valuable? The intuition that ``more data is always better''
+overstates the case: most data collections plateau in predictive accuracy long before they are
+large enough to constitute a moat. The rarer phenomenon — a data flywheel — is a self-reinforcing
+feedback loop in which a product attracts users, users generate data, data trains better predictions,
+better predictions improve the product, and the improved product attracts more users. Each cycle
+widens the gap against a competitor who must start the loop from scratch. The network-value logic
+of \cref{eq:metcalfe} captures why this compounds: as the user base grows linearly, the combinatorial
+space of behavioural signals grows quadratically, producing algorithmic improvements no static
+dataset can replicate.
+
+The strategic test for whether a data asset actually sustains advantage is the VRIN framework of
+\cref{sec:rbv-vrin}: is it \emph{Valuable} (does it improve predictions customers care about?),
+\emph{Rare} (can competitors acquire an equivalent corpus?), \emph{Inimitable} (is the data
+path-dependent or historically contingent?), and \emph{Non-substitutable} (can a different
+resource deliver the same product outcome?). For most internal operational data — server logs,
+help-desk tickets, generic CRM activity — the answer to at least three of those four tests is no,
+and the data advantage is illusory. A genuine data moat requires all four to be yes
+\parencite{agrawal2018prediction}.
+
+\begin{example}[SaaS multi-tenant benchmark data and the VRIN test]
+A SaaS platform with \money{4000000} ARR collects anonymised usage telemetry across every tenant: feature
+adoption rates, workflow completion times, error frequencies, and session-depth patterns. The product
+team proposes a \emph{benchmarking} feature that shows each customer how their usage compares to
+the peer cohort in their industry vertical. Run the VRIN test explicitly.
+
+\textbf{Valuable?} Yes: benchmarks reduce customers' uncertainty about whether they are extracting
+full value from the product, which increases stickiness. The improved retention lifts CLV directly
+via \cref{eq:roic}: if monthly churn falls from \qty{0.65}{\percent} to \qty{0.55}{\percent} and
+the discount rate is \qty{11}{\percent}, the present value of the customer base rises materially.
+
+\textbf{Rare?} Yes: multi-tenant usage data at this granularity requires a live, consented customer
+base at scale. A new entrant cannot synthesise it; they must earn it year by year.
+
+\textbf{Inimitable?} Yes: the corpus embeds historical context — seasonal patterns, version-migration
+behaviour, industry-specific onboarding paths — that took years to accumulate. Replicating the
+algorithm is straightforward; replicating the training set is not.
+
+\textbf{Non-substitutable?} Yes: no publicly available dataset delivers per-account, real-time
+SaaS workflow telemetry at the feature level. Survey benchmarks and analyst reports are too coarse
+and too lagged to serve the same purpose.
+
+All four tests pass. This data asset sustains ROIC\,>\,WACC (\cref{eq:roic}) beyond any single
+feature's life, because each new cohort of customers enriches the corpus and strengthens the
+benchmark signal that differentiates the product.
+\end{example}
+
+\begin{admonition}{Warning}
+Data advantage degrades under data-portability regulation. Article~20 of the GDPR grants individuals
+the right to receive their personal data in a portable format and to transmit it to a competing
+provider. The EU Digital Markets Act extends a structurally similar obligation to gatekeepers. A
+data moat whose feedstock is personal data rather than aggregated behavioural signal can be
+eroded by portability rights faster than a new product cycle can refresh the competitive advantage.
+Audit whether your data flywheel survives a portability regime before pricing it into your
+strategic plan.
+\end{admonition}
+
+The data flywheel and the network-effects model of \cref{eq:metcalfe} share the same structural
+logic: value accrues non-linearly as the user base grows, but only when the marginal datum
+genuinely improves the core output. Both mechanisms connect back to the sustainable ROIC spread of
+\cref{eq:economic-profit}: the data asset is valuable only insofar as it generates a product
+improvement that customers will pay to retain. \textcite{agrawal2018prediction} develop the
+economics of prediction as a falling-cost input and its implications for competitive advantage.
+
+\section{AI Build vs.\ Buy vs.\ API}\label{sec:ai-build-buy}
+% complexity: 4
+
+Every AI investment decision reduces to a version of the same question: at what level of the
+stack should the firm own the capability rather than purchase it? The economics of AI have shifted
+dramatically since the early 2020s: the cost of running inference on a powerful general-purpose
+model has fallen by orders of magnitude, making the API option the correct default for most tasks
+and raising the bar for when building proprietary capability is justified. The decision is
+best framed as a two-dimensional mapping: how proprietary is the firm's training data, and how
+task-specific is the application?
+
+The 2×2 in \cref{fig:ai-build-buy} organises the four quadrants. When both data and task are
+generic, buying an API wrapper is correct: the economics of commodity inference dominate and no
+sustainable moat exists. When the task is generic but the firm owns proprietary data, fine-tuning
+a base model on that data can provide mild differentiation at moderate cost. When neither data
+nor task is proprietary, orchestrating a vendor SaaS layer is usually the right answer: the firm
+captures the productivity gain without the maintenance burden. Only in the upper-right quadrant —
+high proprietary data, high task specificity — does a full build create a defensible asset; this
+is the regime of the VRIN-positive data flywheel in \cref{sec:data-asset}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.62\linewidth]{ai-build-buy}
+  \caption{AI procurement framework. Horizontal axis: task specificity (generic to proprietary
+           use case). Vertical axis: proprietary data advantage (low to high). The build quadrant
+           is the only one where full ownership generates a VRIN-positive asset;
+           the other three favour buying or orchestrating external capability.}
+  \label{fig:ai-build-buy}
+\end{figure}
+
+The financial discipline is \cref{eq:npv}: build is justified only when the present value of
+the differentiated benefit exceeds the present value of the total cost of ownership — upfront
+training, ongoing inference, and the maintenance cost that compounds as model drift requires
+retraining. The buy option has a near-zero upfront cost and a fully known per-unit price; it
+carries no moat but also no engineering debt.
+
+\begin{example}[AI report summaries: API vs.\ fine-tune]
+The SaaS firm is evaluating two options for an AI-generated narrative summary feature that
+appears in each customer's monthly analytics report.
+
+\textbf{Option A — API wrapper:} Use a commodity large-language model via API at
+\money{0.002} per thousand tokens. At typical report volume, this yields approximately
+\money{10} per month in inference costs (\money{120} per year). Implementation takes two
+engineering weeks; no moat is created, because any competitor can call the same endpoint.
+
+\textbf{Option B — Fine-tune on usage data:} Adapt a base model on the firm's proprietary
+multi-tenant telemetry corpus. One-time training cost: \money{15000}. Ongoing inference
+and retraining overhead: \money{2000} per month (\money{24000} per year). The fine-tuned
+model generates summaries that cite the customer's own benchmarks and workflow patterns,
+mild VRIN because the training data passes three of the four tests in \cref{sec:data-asset}.
+
+The decision horizon is three years at the firm's \qty{11}{\percent} WACC. The incremental
+cost of Option B over Option A is the \money{15000} upfront plus the annual differential
+of \money{23880} (\money{24000} minus \money{120}), discounted at \qty{11}{\percent}:
+\[
+  \Delta\mathrm{Cost} \;=\; \money{15000}
+    \;+\; \money{23880}\times
+    \underbrace{\sum_{t=1}^{3}\frac{1}{(1.11)^{t}}}_{=\;2.4437}
+  \;\approx\; \money{73360}.
+\]
+
+The benefit of the fine-tuned model flows through retention: a subset of approximately 600
+report-active customers responds to the richer summaries, and the differentiation reduces
+churn for that cohort. The NPV is positive only if the CLV lift from this retention
+exceeds roughly \money{50} per customer, because
+\[
+  \underbrace{600\;\times\;\money{50}}_{\text{customers}\;\times\;\Delta\mathrm{CLV}}
+  \;\times\; 2.4437
+  \;\approx\; \money{73300},
+\]
+which barely clears the incremental cost. If the feature produces only modest
+stickiness — say \money{30}/customer — the NPV is firmly negative and Option A is correct.
+The implication: do not build unless a plausible mechanism exists by which the fine-tuned
+model creates \emph{meaningful} differentiated retention, not just a marginal quality
+improvement.
+\end{example}
+
+\begin{admonition}{Note}
+The total cost of ownership for a custom AI system is systematically underestimated at the
+prototype stage. The ``last five percent'' — security hardening, latency SLAs, drift monitoring,
+retraining pipelines, and compliance logging — routinely represents the majority of lifetime
+engineering spend. An \cref{eq:npv} analysis that captures only upfront training cost will
+always favour building; one that amortises the full maintenance burden typically does not.
+Model the full cost before committing.
+\end{admonition}
+
+The build-versus-API choice is structurally a moat test: only build when the output of building
+clears the VRIN hurdle of \cref{sec:rbv-vrin} and produces a sustained ROIC\,>\,WACC spread.
+In the SaaS context, the proprietary-data axis of \cref{fig:ai-build-buy} maps directly onto
+the data-flywheel logic of \cref{sec:data-asset}: without proprietary data, fine-tuning buys
+a temporary quality improvement, not a moat. \textcite{agrawal2018prediction} analyse the
+complementarity between cheap prediction and scarce human judgment as the governing logic of
+AI investment prioritisation.
+
+\section{AI Governance \& Model Risk}\label{sec:ai-governance}
+% complexity: 3
+
+Deploying AI in a commercial context introduces a category of risk that does not appear in a
+traditional software risk register. A conventional software bug produces a wrong output in a
+known and testable way; a generative AI model produces a wrong output \emph{confidently}, in
+natural language, in a way that looks correct and may not be caught before it affects a decision.
+The risk taxonomy has four principal dimensions: \emph{bias} (systematic error correlated with
+protected or sensitive attributes), \emph{hallucination} (confident generation of factually
+incorrect content), \emph{intellectual property} (training-data provenance and output ownership),
+and \emph{regulatory} (jurisdiction-specific prohibitions on high-risk AI use cases, exemplified
+by the EU AI Act's risk classification system).
+
+The governance question is an agency problem in the sense of \cref{sec:agency-theory}: the model
+is an agent whose objective function (next-token probability) is not perfectly aligned with the
+firm's objective (accurate, useful output). The principal — the firm deploying the model — must
+design oversight mechanisms to catch misalignment before it causes harm. This is precisely the
+control-system logic that \cref{sec:agency-theory} applies to human agents: incentive design,
+monitoring, and bounded discretion. For AI systems, bounded discretion becomes \emph{human-in-the-loop}
+for high-stakes outputs, and monitoring becomes automated output validation.
+
+The expected-value framework of \cref{sec:expected-value} provides the correct risk-triage tool.
+For each AI-assisted output category, the firm should estimate the probability of a material error,
+the value at risk if that error propagates undetected, and the cost of the human-review layer.
+Governance resources should be concentrated where the product of probability and value-at-risk
+is largest.
+
+\begin{example}[Revenue projection hallucination and expected value at risk]
+The SaaS firm has deployed the AI summary feature from the previous section. In one case, the
+model emits a confidently-worded revenue projection in a customer's report that overstates
+the customer's projected growth by \qty{40}{\percent}. The customer uses the projection to
+plan headcount, discovers the error three months later, and churns.
+
+The expected value at risk of a single such incident is the CLV of a churned customer. At the
+firm's standard parameters (\cref{eq:clv}: \money{252}/yr contribution margin, \qty{11}{\percent}
+WACC, \qty{3}{\percent} growth), CLV\,=\,\money{3150}. If the model's rate of material
+projection errors is estimated at one per 1{,}050 report runs per month, and each error
+has a \qty{50}{\percent} probability of triggering churn, then the expected monthly churn
+cost attributable to the feature is \(\money{3150}\times 0.50\approx\money{1575}\).
+
+A governance design that catches the error before customer delivery requires one analyst to
+review all financial-output summaries for approximately 30 minutes per week — a cost well
+below \money{1575}/month. More precisely: the \emph{worst-case} scenario of three simultaneous
+uncaught errors producing three churned customers creates an expected value at risk of
+\(3\times\money{3150}=\money{9450}\), which is the financial floor for the governance
+investment. Human-in-the-loop review of financial outputs is clearly positive-NPV. For
+operational summaries (feature adoption, workflow completions) where an error is visible to
+the customer but carries low financial consequence, automated guardrails and downstream
+correction are sufficient.
+\end{example}
+
+\begin{admonition}{Warning}
+``AI-generated'' is not a legal defence. If a model emits a materially misleading financial
+projection, an incorrect medical recommendation, or a defamatory statement in a customer-facing
+document, the liability attaches to the firm that deployed the model, not to the model or its
+vendor. Contractual disclaimers shift some commercial risk but do not displace statutory or
+tortious liability. This is the regulatory dimension of the VRIN test: a non-substitutable data
+moat may simultaneously be a non-substitutable regulatory exposure.
+\end{admonition}
+
+The governance framework connects to attribution in \cref{ch:attribution-and-measurement}: just
+as attribution models require a closed feedback loop between model output and ground-truth
+outcome, AI governance requires a systematic mechanism for flagging model errors, routing them
+to human review, and using the resulting signal to retrain or constrain the model.
+\textcite{jensen1976agency} establish the principal-agent structure underlying these control
+problems; the AI context is a new instantiation of the alignment challenge they analyse.
+
+\section{ESG as a Strategic Data Problem}\label{sec:esg-data}
+% complexity: 3
+
+Environmental, social, and governance reporting is usually framed as a compliance obligation.
+Its strategic significance is different and larger: ESG is a \emph{measurement problem} with
+the same structure as attribution (\cref{ch:attribution-and-measurement}). Both require the
+firm to trace multi-period causal effects through indirect channels, aggregate data from
+heterogeneous sources, and report on metrics that affect capital allocation decisions. Both
+are subject to misattribution, cherry-picking, and model uncertainty. The discipline required
+to measure carbon footprint accurately is exactly the discipline required to measure marketing
+incrementality accurately: clear counterfactuals, boundary conditions, and auditability.
+
+The governing framework is \emph{double materiality}, codified in ISSB standards S1 and S2
+and in the European Sustainability Reporting Standards (ESRS). Double materiality requires
+a firm to disclose sustainability topics from two perspectives simultaneously. \emph{Financial
+materiality} (outside-in) asks how ESG factors — physical climate risk, supply-chain
+disruptions, talent shortages, regulatory tightening — affect the firm's enterprise value
+and cash flows. \emph{Impact materiality} (inside-out) asks how the firm's operations affect
+people and the environment, irrespective of whether those impacts currently flow back to the
+income statement. A topic is reportable if it clears the threshold on \emph{either}
+dimension; the union, not the intersection, determines the disclosure boundary.
+
+The stakeholder-value logic of \cref{sec:stakeholder-value} provides the strategic rationale.
+\textcite{freeman2010strategic} argues that sustainable value creation requires managing
+obligations to employees, customers, suppliers, communities, and investors simultaneously.
+Double materiality is the reporting architecture that makes that obligation measurable and
+auditable.
+
+\begin{example}[Scope 1/2/3 and Series~A diligence for the SaaS firm]
+The SaaS firm with \money{4000000} ARR operates on cloud infrastructure. Scope~1 and
+Scope~2 emissions (direct combustion and purchased electricity) are near-zero: the firm
+owns no physical plant, and its cloud vendor reports renewable-energy coverage exceeding
+\qty{90}{\percent}. On a pure financial-materiality analysis, carbon risk is not material
+at this stage: no carbon tax or physical climate event is plausibly large enough to affect
+a \money{4000000} ARR business within a five-year horizon.
+
+The material ESG risks are different in character. Scope~3 emissions in the upstream supply
+chain (hardware manufacturing, data-centre embodied carbon) are difficult to measure but
+are increasingly expected in investor diligence. On the social dimension, talent equity —
+pay equity across gender and ethnicity, stock-option distribution — is a genuine strategic
+risk: at \money{120000}/month in acquisition spend and a 200 customer/month target, the
+firm depends on a small, high-skill team; equity disputes or attrition create direct
+operating risk. Neither item is financially material against \money{4000000} ARR in
+isolation, but \emph{impact materiality} requires disclosure for Series~A diligence under
+ISSB-aligned frameworks: institutional and strategic investors applying ISSB S1/S2 will
+expect a double-materiality assessment, even from a company well below the CSRD reporting
+threshold.
+
+The economic-profit identity of \cref{eq:economic-profit} is the correct numerator for
+evaluating ESG spend: any ESG investment that does not produce a reduction in WACC
+(through lower regulatory risk or lower cost of capital) or an increase in NOPAT (through
+improved talent retention or reduced churn) does not create economic profit and should be
+evaluated accordingly. At \money{4000000} ARR, most ESG spend falls into the
+cost-of-capital channel — the reduction in fundraising friction — rather than the NOPAT
+channel.
+\end{example}
+
+\begin{admonition}{Note}
+A high ESG score does not imply ROIC\,>\,WACC. The relationship between ESG performance
+and economic profit runs through two specific mechanisms: reduced cost of capital (lower
+risk premium from investors screening ESG exposure) and reduced operating risk (lower
+probability of regulatory penalties or talent disruption). Neither mechanism is automatic;
+both are measurable. The warning against conflating stakeholder optics with shareholder
+value is developed fully in \cref{ch:value-creation} and is not restated here.
+\end{admonition}
+
+The attribution parallel is more than structural: the methodological tools are largely the
+same. Measuring Scope~3 emissions requires a value-chain model with counterfactual baselines —
+what would the emissions have been absent the firm's operations? — which is the same question
+attribution models ask about media spend. Building ESG measurement capability therefore
+compounds with attribution measurement capability; the two investments share infrastructure.
+\textcite{freeman2010strategic} and \textcite{jensen1976agency} together define the
+governance and value-creation tension that double materiality is designed to resolve.

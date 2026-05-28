@@ -1,0 +1,148 @@
+\chapter{Business Models \& Unit Economics}\label{ch:business-models}
+
+% Scope: the Business Model Canvas, the Lean Startup build-measure-learn loop, and SaaS /
+%   recurring-revenue model mechanics (MRR, ARR, churn, NRR, quick ratio, Rule of 40).
+% Cross-link: the metric lookup forms for these KPIs live in \cref{ch:metrics-catalog};
+%   unit economics tie back to \cref{ch:customer-economics}.
+
+A business model is a theory of how the firm creates, delivers, and captures value. Unit economics test whether the theory holds at the transaction level. The two must be consistent: a compelling canvas with a \qty{40}{\percent} gross margin is a strategic plan that cannot fund itself.
+
+\section{The Business Model Canvas}\label{sec:bmc}
+% complexity: 3
+
+How do you represent the logic of your business on a single page, and which of the nine blocks is currently the weakest link in the value-creation chain? The canvas forces strategic trade-offs to coexist visually. A startup can describe its entire go-to-market, cost structure, and revenue logic in one document, making internal contradictions visible before they consume capital. Its limitation is that it is a snapshot, not a dynamic system.
+
+\textcite{osterwalder2010} define nine interdependent blocks:
+\begin{description}
+  \item[Customer Segments] Who are the users and buyers? One canvas per distinct segment if economics differ materially.
+  \item[Value Propositions] What problem is solved or gain delivered for each segment? The hook for the entire right side.
+  \item[Channels] How does the value proposition reach the customer? Owned (website, SDR) vs partner (reseller, API integration).
+  \item[Customer Relationships] How is the relationship initiated, maintained, and grown? Self-serve PLG vs high-touch enterprise.
+  \item[Revenue Streams] What and how does the customer pay? Subscription, usage, licence, transactional.
+  \item[Key Resources] What assets are required to deliver the value proposition? Proprietary data, brand, talent, IP.
+  \item[Key Activities] What must the firm do well? Product development, demand generation, customer success.
+  \item[Key Partnerships] What is better sourced externally? Cloud infrastructure, payment rails, distribution partners.
+  \item[Cost Structure] What are the largest cost categories, and are they fixed or variable? R\&D, S\&M, G\&A.
+\end{description}
+The right side (segments, propositions, channels, relationships, revenue) is the value-creation and capture story. The left side (resources, activities, partnerships, cost) is the value-delivery engine. The two sides must be causally connected: the cost structure must fund the activities that deliver the propositions that earn the revenue.
+
+The canvas is a static snapshot. It does not capture feedback loops (network effects, switching costs, data flywheels) that \textcite{zott2011business} argue are the dynamic core of modern business models. Treating the canvas as a strategy rather than a hypothesis leads to month-old assumptions being treated as validated facts. Every block should carry a confidence level and a date.
+
+\begin{example}
+The SaaS canvas, distilled:
+\begin{itemize}
+  \item \textbf{Segments:} self-serve SMB; target mid-market (50--500 employees).
+  \item \textbf{Value proposition:} eliminate manual reporting; payback in 30 days.
+  \item \textbf{Channels:} organic search, paid acquisition (\money{120000}/month), SDR outbound for mid-market.
+  \item \textbf{Revenue:} \money{50}/month subscription; \money{299}/month enterprise tier (in test).
+  \item \textbf{Key resource:} proprietary usage data enabling benchmark features.
+  \item \textbf{Cost structure:} R\&D \qty{30}{\percent}, S\&M \qty{50}{\percent}, G\&A \qty{20}{\percent} of ARR (\money{4000000}).
+\end{itemize}
+The weakest block is Channels: \qty{50}{\percent} of cost going to S\&M at a \money{600} target CAC means the business is bought, not pulled. A stronger Key Resource (the proprietary data benchmark) should be driving organic referral and reducing S\&M intensity over time. That feedback loop is not visible in the canvas but is captured in the viral coefficient (\cref{ch:growth}) and the MRR waterfall below.
+\end{example}
+
+\begin{admonition}{Warning}
+Canvas completeness as progress. Filling in all nine blocks with plausible text is not validation. The canvas is a hypothesis document; each block is a belief about the world that must be tested, preferably with the Build--Measure--Learn loop of \cref{sec:lean-startup}.
+\end{admonition}
+
+\textcite{zott2011business} extend the canvas to model the business model as an activity system with interdependencies and feedback. Their ``business model design themes'' --- novelty, lock-in, complementarities, efficiency --- are the mechanisms by which a canvas description becomes a competitive advantage. A business model that scores high on lock-in (switching costs, network effects) sustains higher margins and lower churn, which flows directly into the lifetime value formula of \cref{eq:clv}.
+
+The canvas provides the vocabulary; the unit economics below test the arithmetic. \textcite{osterwalder2010} define the framework; \textcite{zott2011business} provide the dynamic extension linking canvas design to value capture.
+
+\section{SaaS Recurring-Revenue Mechanics}\label{sec:saas-mrr}
+% complexity: 3
+
+Is the recurring-revenue engine healthy --- does new and expansion revenue materially outrun contraction and churn, and at what rate? MRR is a stock, not a flow. It moves through a waterfall each month: new revenue fills it, expansion stretches it, contraction and churn drain it. A business with high gross churn can still show flat MRR if expansion is strong, hiding a customer base that is hollowing out at the bottom while a few large customers inflate the top.
+
+The MRR waterfall (\cref{eq:mrr-growth} in \cref{ch:growth}) decomposes the month-on-month change. The quick ratio summarises the waterfall's health in a single number:
+\begin{equation}\label{eq:quick-ratio}
+  \text{Quick Ratio} \;=\; \frac{\Delta\text{MRR}_{\text{new}} + \Delta\text{MRR}_{\text{expansion}}}{\Delta\text{MRR}_{\text{contraction}} + \Delta\text{MRR}_{\text{churn}}},
+\end{equation}
+where new and expansion are inflows, and contraction (downgrades) plus churn (cancellations) are outflows. A quick ratio above 1 means the engine is growing; above 4 is considered elite at scale. The quick ratio is an efficiency measure: it rewards expansion revenue because expansion requires no new CAC, and penalises churn because churn destroys previously invested CAC (\cref{eq:cac} in \cref{ch:customer-economics}).
+
+\cref{eq:quick-ratio} does not distinguish the mix of inflows. A high quick ratio driven entirely by new-customer acquisition at high CAC is less valuable than the same ratio driven by expansion: net revenue retention (NRR $> \qty{100}{\percent}$) means the existing base grows without further acquisition spend. Track the quick ratio alongside NRR and gross churn separately. The quick ratio can also be gamed: aggressive discounting of expansions inflates the numerator while reducing long-run margin.
+
+\begin{example}
+In a given month, the SaaS adds \money{30000} in new MRR and \money{20000} in expansion (upsell and seat additions). Contraction is \money{5000} and churn is \money{22000}:
+\[
+  \text{Quick Ratio} \;=\; \frac{\money{30000}+\money{20000}}{\money{5000}+\money{22000}}
+    \;=\; \frac{50000}{27000} \;\approx\; 1.85.
+\]
+Growth is positive but below the elite \(\ge 4\) threshold. The denominator (\money{27000} lost) is close to the expansion (\money{20000} gained), meaning the existing base is nearly self-defeating. The decision: churn at \money{22000}/month is the bottleneck (exactly the constraint logic of \cref{ch:operations}). A one-percentage-point reduction in monthly churn at \money{340000} MRR base saves \money{3400}/month --- more than any reasonable expansion campaign. Cross-link: churn feeds directly into \cref{eq:clv} in \cref{ch:customer-economics} and the metrics reference in \cref{ch:metrics-catalog}.
+\end{example}
+
+\begin{admonition}{Warning}
+Reporting blended MRR growth without decomposing the waterfall. A flat MRR quarter can hide strong new acquisition masked by catastrophic churn. The waterfall is the diagnostic; the aggregate is the symptom.
+\end{admonition}
+
+Net revenue retention (NRR) is the annual analogue of the quick ratio: NRR \(= (\text{start ARR} + \text{expansion} - \text{contraction} - \text{churn}) / \text{start ARR}\). NRR above \qty{120}{\percent} means the existing customer base compounds without any new customer acquisition --- the closest the SaaS model comes to the growing perpetuity's self-reinforcing growth (\cref{eq:gordon} in \cref{ch:corporate-finance-core}).
+
+The quick ratio is the waterfall's compression into one number; the full LTV calculation it feeds is \cref{eq:clv}. \textcite{bendle2020marketing} catalogue the metric in operational context; \textcite{ries2011} connects recurring-revenue health to the build--measure--learn loop.
+
+\section{The Lean Startup --- Build--Measure--Learn}\label{sec:lean-startup}
+% complexity: 2
+
+Before scaling a new revenue stream or product tier, how do you determine whether your assumptions about customer behaviour are correct at the lowest cost? Every new initiative rests on a stack of assumptions: the customer has this problem, they will pay this price, they will use the feature this way. Each assumption is a falsifiable hypothesis. The lean startup's contribution is to treat the company as a hypothesis-testing machine rather than a plan-execution machine.
+
+The BML loop (\cref{sec:lean-bml} in \cref{ch:operations}) in its product-strategy form:
+\begin{description}
+  \item[Hypothesis] Articulate one falsifiable assumption with a measurable outcome: ``\qty{20}{\percent} of mid-market trials will upgrade to the \money{299}/month enterprise tier within 30 days if offered SSO and priority support.''
+  \item[MVP] Build the minimum version that tests the hypothesis --- not the full product. For the price test: a landing page with a manual-provisioned trial.
+  \item[Measure] Instrument the one metric the hypothesis depends on. Use \emph{innovation accounting}: compare actual conversion against the baseline.
+  \item[Validated learning] Did the metric move in the direction and magnitude hypothesised? Pivot (change an assumption) or persevere (build further).
+\end{description}
+Innovation accounting replaces vanity metrics (total signups, page views) with metrics anchored to a specific hypothesis. A vanity metric can rise while every assumption underlying revenue remains unvalidated.
+
+BML in product strategy assumes each hypothesis can be isolated. In complex products with multiple interdependent assumptions, testing one variable changes the context of others. The framework also assumes the MVP is a valid test of the full product: customers may convert on a hand-crafted MVP that they would reject from an automated system, producing false validation.
+
+\begin{example}
+The SaaS team hypothesises an enterprise \money{299}/month SSO tier. MVP: manually provision SSO for any mid-market trial that requests it, without engineering the full self-serve flow. Offer it as a checkbox in the trial upgrade email.
+
+Results after 4 weeks: \num{50} mid-market trials received the offer; \num{10} upgraded (\qty{20}{\percent}). Hypothesis: \qty{20}{\percent}. Result: \qty{20}{\percent}. Decision: persevere --- the assumption is confirmed at a threshold rate. Next hypothesis: do these customers retain at higher rates than the \money{50}/month cohort, justifying the higher LTV used in the CAC ceiling calculation (\cref{eq:ltv-cac} in \cref{ch:customer-economics})? That test runs months 2--4.
+
+Cost of learning: approximately \money{2000} in manual provisioning time versus \money{60000} to build the self-serve SSO tier. If the hypothesis had failed, the money saved funds the next test.
+\end{example}
+
+\begin{admonition}{Warning}
+Treating the MVP as the product. Once a hypothesis is validated, the MVP must be replaced with a scalable implementation. Organisations that ship MVPs and move on accumulate technical debt that eventually constrains throughput (\cref{eq:throughput} in \cref{ch:operations}).
+\end{admonition}
+
+\textcite{ries2011} connects BML explicitly to lean manufacturing's pull system and Toyota's built-in quality. The deeper implication is that validated learning is the output of the BML loop, not features or code. A team that produces ten invalidated hypotheses per quarter is generating negative value; a team that produces two validated ones is compounding strategic knowledge. This is the product-strategy expression of the knowledge-production framing in \cref{ch:decisions-under-uncertainty}.
+
+The BML loop is the operational mechanism by which the canvas of \cref{sec:bmc} becomes a tested business model rather than a set of plausible beliefs. \textcite{ries2011} is the definitive treatment.
+
+\section{Rule of 40 \& Burn Multiple}\label{sec:rule40-burn}
+% complexity: 3
+
+Is the business balancing growth and profitability efficiently, and is each dollar of capital being converted to recurring revenue at a rate that justifies continued investment? Early-stage SaaS is valued on growth; late-stage on profitability; the Rule of 40 bridges the two by asserting that their sum should exceed \qty{40}{\percent}. The burn multiple asks the complementary question: how much cash must be consumed to add one dollar of net new ARR?
+
+Both metrics are defined at the ARR level:
+\begin{equation}\label{eq:rule40}
+  \text{Rule of 40} \;=\; \Delta\text{ARR\%} \;+\; \text{EBITDA margin\%},
+\end{equation}
+\begin{equation}\label{eq:burn-multiple}
+  \text{Burn Multiple} \;=\; \frac{\text{Net cash burned}}{\text{Net new ARR}}.
+\end{equation}
+In \cref{eq:rule40}, ARR growth and EBITDA margin are both expressed as percentages of current ARR. A business at \qty{40}{\percent} growth and \qty{0}{\percent} EBITDA margin scores 40; one at \qty{10}{\percent} growth and \qty{30}{\percent} EBITDA margin scores the same. The framework is neutral between the two paths as long as the sum clears 40. In \cref{eq:burn-multiple}, a multiple below 1 means the business is generating more new ARR than it is burning --- self-financing growth. Above 2 is a caution; above 3 signals capital inefficiency. Both metrics connect to the ROIC framework of \cref{eq:roic} in \cref{ch:value-creation}: the Rule of 40 is the SaaS-sector proxy for the ROIC test applied to the growth--profitability trade-off.
+
+\cref{eq:rule40} uses EBITDA, not free cash flow, which flatters capital-intensive SaaS businesses that are heavy on infrastructure capex. A business with \qty{30}{\percent} EBITDA margin but \qty{25}{\percent} capex intensity has a free-cash-flow margin of \qty{5}{\percent} and a materially different financing reality. The burn multiple (\cref{eq:burn-multiple}) does use cash and is therefore less gameable --- but is sensitive to timing: a large upfront infrastructure investment in month 1 inflates the multiple for that period without signalling structural inefficiency.
+
+\begin{example}
+Current ARR is \money{4000000}; the business grew at \qty{30}{\percent} over the last 12 months (adding \money{1200000} net new ARR). EBITDA was negative at \(\qty{-15}{\percent}\) margin (\money{-600000}). Applying \cref{eq:rule40}:
+\[
+  \text{Rule of 40} \;=\; 30 + (-15) \;=\; 15.
+\]
+Below 40, but in the growth phase where \qty{30}{\percent} growth is prioritised. The gap to 40 requires either lifting growth or cutting losses. Burn multiple: net cash burned was \money{1500000} (including \money{900000} operating loss and \money{600000} capex) against \money{1200000} net new ARR:
+\[
+  \text{Burn Multiple} \;=\; \frac{\money{1500000}}{\money{1200000}} \;=\; 1.25\times.
+\]
+A burn multiple of \(1.25\times\) is excellent --- the business is capital-efficient even while Rule of 40 is sub-par. The implication: the path to 40 is accelerating growth (the numerator), not cutting burn (which is already lean). Cross-link: full KPI definitions and benchmarks live in \cref{ch:metrics-catalog}.
+\end{example}
+
+\begin{admonition}{Warning}
+Treating Rule of 40 as a binary pass/fail gate. A business at score 39 is not categorically different from one at 41. The metric's value is as a directional trend over time and as a comparison to peers at the same stage, not as an absolute threshold. Cutting growth investment to push the score above 40 destroys long-run value if the unit economics (\cref{eq:ltv-cac}) are sound.
+\end{admonition}
+
+The Rule of 40 is connected to the terminal-value logic of \cref{ch:valuation}: a business that sustains Rule of 40 $\ge$ 40 at scale can justify a growth-rate assumption in a DCF that exceeds the risk-free rate, because the profitability half of the equation funds the growth. Businesses that score on growth alone are implicitly assuming they will eventually earn the right margin at scale --- an assumption the burn multiple can validate or refute in real time.
+
+Unit economics and business model design are not separate disciplines: the canvas determines the cost structure, the BML loop validates the revenue assumptions, the MRR waterfall tracks the resulting recurring revenue, and the Rule of 40 and burn multiple assess the capital efficiency of the whole system. \textcite{bendle2020marketing} situate these metrics in the broader marketing accountability framework.

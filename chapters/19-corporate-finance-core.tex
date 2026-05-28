@@ -1,0 +1,162 @@
+\chapter{Corporate Finance Core}\label{ch:corporate-finance-core}
+
+% Scope: time value of money, NPV, the discount rate as hurdle, the growing perpetuity.
+% Canonical reference for the book's house style: flowing prose under headings, with
+% worked numbers set off in `example` and sharp cautions in `admonition`.
+% The growing perpetuity's marketing twin lives in \cref{ch:customer-economics}.
+
+\section{The Growing Perpetuity}\label{sec:growing-perpetuity}
+% complexity: 3
+
+What is a stream of cash worth today if it grows at a constant rate \(g\) forever? The
+question is not academic: this single model underlies discounted-cash-flow terminal value
+and customer lifetime value alike, and getting it wrong propagates through every valuation
+that depends on them. The intuition is the foundation of all of finance. A dollar next year
+is worth less than a dollar today, because today's dollar can be invested; growth only
+partly offsets that discount. When the discount rate beats the growth rate, an infinite
+stream of growing cash still sums to a finite number.
+
+Summing the discounted cash flows and recognising a geometric series with ratio
+\(\frac{1+g}{1+r}<1\) collapses the infinite sum to a single ratio:
+\begin{equation}\label{eq:gordon}
+  PV \;=\; \sum_{t=1}^{\infty}\frac{D\,(1+g)^{t-1}}{(1+r)^{t}}
+      \;=\; \frac{D}{\,r-g\,}.
+\end{equation}
+The denominator \((r-g)\) is the net drag: discount pressure minus the growth lift. The
+series converges \emph{only} when \(r>g\). If \(g\ge r\) the denominator turns zero or
+negative and \cref{eq:gordon} returns nonsense --- the single most common valuation error,
+and one a sceptical reader should check first in any model they are handed.
+
+\begin{example}
+A subscriber cohort throws off \money{1250000} next year at a \qty{42}{\percent} contribution
+margin, growing \qty{3}{\percent} per year, and the firm discounts at \qty{11}{\percent}. The
+margin is what actually accrues to the firm, so it is the \(D\) in \cref{eq:gordon}; the
+\(\qty{11}{\percent}\) is the opportunity cost of the capital tied up in serving the cohort:
+\[
+  PV \;=\; \frac{\money{1250000}\times 0.42}{0.11-0.03}\;\approx\;\money{6562500}.
+\]
+The cohort is worth roughly \money{6562500} today. Note how sensitive that figure is to the
+gap \(r-g\): widen it to \qty{10}{\percent} and the value falls by a fifth, which is why the
+growth assumption deserves more scrutiny than any other input.
+\end{example}
+
+\begin{admonition}{Warning}
+Reusing the same high \(g\) for ten explicit forecast years \emph{and} the terminal value
+double-counts growth. The terminal \(g\) must reflect only the steady state --- usually at
+or below long-run GDP growth. A terminal rate pulled from a company's recent hypergrowth is
+the fastest way to manufacture a valuation that cannot survive contact with reality.
+\end{admonition}
+
+Relax constant growth and the model becomes a two-stage or H-model; relax constant churn in
+its marketing twin and customer value needs a shifted-beta-geometric survival model. The
+clean formula is the \emph{floor} of the analysis, not the ceiling. The identical algebra
+reappears as customer lifetime value in \cref{ch:customer-economics}: rename \(D\) the annual
+customer margin and \(g\) its growth rate, and \cref{eq:gordon} values a customer exactly as
+it values a cohort. \textcite{brealey2020} develop the corporate-finance side in full.
+
+\section{Time Value of Money}\label{sec:time-value-of-money}
+% complexity: 2
+
+How much is a future cash payment worth today? Every capital-allocation decision --- whether
+to invest, acquire, or repurchase --- rests on answering this before anything else. A dollar
+in hand today can be reinvested at rate \(r\), compounding to \((1+r)^n\) dollars in \(n\)
+years; running that logic backward, a future payment is worth less than its face value by
+exactly the factor compounding would have produced.
+
+If a sum \(\mathrm{FV}\) arrives in \(n\) years and the opportunity cost of capital is \(r\)
+per period, its present value follows by discounting:
+\begin{equation}\label{eq:pv}
+  PV \;=\; \frac{\mathrm{FV}}{(1+r)^{n}}.
+\end{equation}
+The denominator \((1+r)^{n}\) is the future-value factor; its reciprocal is the
+\emph{discount factor}. \Cref{eq:gordon} is nothing but repeated application of \cref{eq:pv}
+across an infinite, growing stream. The formula assumes \(r\) is constant and known, cash
+arrives on the stated date, and the investor can actually reinvest at \(r\); for short
+horizons or near-riskless flows the error from these assumptions is small, but for
+long-dated, illiquid cash flows it can dominate the answer.
+
+\begin{example}
+What is a \money{252} payment arriving in three years worth today, at the firm's
+\qty{11}{\percent} discount rate? That rate is the opportunity cost of equity capital derived
+in \cref{ch:risk-and-capital-structure}; applying \cref{eq:pv},
+\[
+  PV \;=\; \frac{\money{252}}{(1.11)^{3}}
+      \;=\; \frac{\money{252}}{1.3676}
+      \;\approx\; \money{184}.
+\]
+The \money{68} gap between face value and present value is the cost of waiting --- not
+inflation, but forgone compounding. The decision this informs: a promise to pay \money{252}
+in three years is worth accepting only if the alternative use of \money{184} today earns less
+than \qty{11}{\percent}.
+\end{example}
+
+\begin{admonition}{Warning}
+Discounting nominal cash flows at a real rate, or vice versa, is the classic error.
+Consistency between the flow and the rate is the only invariant of the present-value formula:
+nominal flows need a nominal \(r\); inflation-adjusted flows need a real \(r\). Mixing them
+misstates value by roughly the inflation rate per year, compounding quietly across a
+multi-year project.
+\end{admonition}
+
+For risky cash flows the ``right'' \(r\) is itself a model output, not a given --- see
+\cref{eq:capm} in \cref{ch:risk-and-capital-structure}. The present-value formula is the
+atomic unit of all valuation work in this book; \textcite{brealey2020} derive it from first
+principles and extend it to bonds, annuities, and the growing-perpetuity case of
+\cref{eq:gordon}.
+
+\section{Net Present Value}\label{sec:net-present-value}
+% complexity: 3
+
+Should the firm make an investment? Net present value converts an entire cash-flow schedule
+--- outlay today, returns over time --- into a single number whose sign settles the question.
+Positive means the investment earns more than the hurdle rate; negative means it destroys
+value at that rate. The underlying question is plain: how much richer does this make the
+investor, measured in today's dollars, after fully charging for the capital deployed?
+
+Let \(\mathrm{FCF}_t\) be the free cash flow in period \(t\), \(I_0\) the initial outlay at
+\(t=0\), and \(r\) the discount rate:
+\begin{equation}\label{eq:npv}
+  \mathrm{NPV} \;=\; \sum_{t=1}^{T}\frac{\mathrm{FCF}_t}{(1+r)^{t}} \;-\; I_0.
+\end{equation}
+Each term \(\mathrm{FCF}_t/(1+r)^t\) is \cref{eq:pv} applied to period \(t\). The discount
+rate \(r\) is the firm's weighted average cost of capital, derived in
+\cref{ch:risk-and-capital-structure} as \cref{eq:wacc}: it captures both the cost of equity
+(\cref{eq:capm}) and the tax-shielded cost of debt, weighted by capital structure. The
+formula assumes cash flows are known, \(r\) is constant, and the project carries no embedded
+optionality --- no ability to expand, abandon, or defer --- so it can misprice investments
+whose chief value is the flexibility they create.
+
+\begin{example}
+Does acquiring a customer at \money{600} create value at the firm's \qty{11}{\percent} hurdle
+rate? Treat the \money{600} acquisition cost as the outlay \(I_0\). The customer's annual
+contribution margin of \money{252} grows at \qty{3}{\percent}, so the inflow stream is a
+growing perpetuity, valued by \cref{eq:gordon}:
+\[
+  \sum_{t=1}^{\infty}\frac{\mathrm{FCF}_t}{(1.11)^t}
+  \;=\; \frac{\money{252}}{0.11-0.03}
+  \;=\; \money{3150}.
+\]
+Applying \cref{eq:npv},
+\[
+  \mathrm{NPV} \;=\; \money{3150} \;-\; \money{600} \;=\; \money{2550}.
+\]
+Every dollar of acquisition cost returns \money{5.25} of present value --- a surplus far above
+the hurdle. The implication is that the binding constraint here is not capital cost but
+customer supply: the firm should raise its acquisition budget until the marginal cost of a
+customer approaches the \money{3150} that customer is worth.
+\end{example}
+
+\begin{admonition}{Warning}
+Using a too-low discount rate to manufacture a positive NPV is the cardinal sin of investment
+appraisal. A project that looks attractive at \qty{6}{\percent} but is negative at the correct
+\qty{11}{\percent} does not create value --- it destroys it slowly, until the true cost of
+capital reasserts itself through refinancing pressure or equity dilution. Anchoring the hurdle
+rate to the actual cost of capital is the discipline \cref{eq:npv} exists to enforce.
+\end{admonition}
+
+NPV is the corporate analogue of the customer-economics decision in
+\cref{ch:customer-economics}: both ask whether a present outlay --- \(I_0\) or acquisition
+cost --- is justified by the discounted stream it buys. The equivalence is not a coincidence;
+it is the unifying logic of the value-creation spine. \textcite{brealey2020} prove NPV's
+consistency with shareholder-value maximisation, and \textcite{ross2022} work through its
+comparison with the internal rate of return and the conditions under which the two diverge.

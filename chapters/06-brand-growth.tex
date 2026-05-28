@@ -1,0 +1,126 @@
+\chapter{How Brands Actually Grow}\label{ch:brand-growth}
+
+% Scope: Keller's CBBE vs Sharp's empirical laws (mental & physical availability).
+% Cross-link: brand equity lowers branded-search CPC (\cref{ch:paid-acquisition-platforms}) and lifts the
+%   terminal growth rate g used in valuation (\cref{ch:valuation}).
+
+Brand is the residual that explains why two objectively similar products command different prices. Whether that residual flows from structured associations (Keller) or from reach-driven mental availability (Sharp) is the field's live dispute --- and the answer changes what a brand budget should buy.
+
+\section{Customer-Based Brand Equity}\label{sec:cbbe}
+% complexity: 3
+
+What specific customer knowledge structures produce a price premium, and how does the firm audit whether those structures are building or eroding? Brand equity lives in customers' heads, not on the balance sheet. It is the set of associations, feelings, and judgements attached to a brand name that make customers willing to pay more, search less, or forgive more. Keller's model traces the path from simple awareness to deep loyalty as a four-rung pyramid.
+
+The Customer-Based Brand Equity (CBBE) pyramid (\textcite{keller1993customer}) structures equity building as four sequential layers:
+
+\begin{description}
+  \item[Salience (Who are you?)] Depth and breadth of brand awareness: unaided recall and recognition across category entry points (\cref{sec:jtbd}).
+  \item[Performance \& Imagery (What are you?)] Functional associations (reliability, ease of implementation) and user-imagery associations (``serious RevOps team uses it'').
+  \item[Judgements \& Feelings (What do I think/feel about you?)] Perceived quality, credibility, and the emotional texture of the brand experience.
+  \item[Resonance (What about you and me?)] Behavioural loyalty, attitudinal attachment, sense of community --- the state where customers actively advocate.
+\end{description}
+
+Building resonance requires satisfying every rung below it. Investing in advocacy campaigns before achieving strong salience is the most common sequencing error. The pyramid assumes a rational, sequential build --- but customers can skip rungs (viral products achieve resonance before broad salience) or regress (a data breach collapses judgement without touching performance associations). In categories where buyers do not invest attention (FMCG, commodity SaaS), the judgement/feeling distinction collapses and only salience and performance drive choice.
+
+\begin{example}[Auditing CBBE for a year-two SaaS]
+Map the running SaaS up the CBBE pyramid as of year two:
+\begin{itemize}
+  \item \textbf{Salience:} \qty{22}{\percent} unaided recall among mid-market RevOps buyers (measured by survey). Breadth is narrow --- recall fires mainly on the functional CEP (``need a CRM'') but rarely on social CEPs.
+  \item \textbf{Performance:} Strong associations with fast implementation; weak on enterprise-grade reporting.
+  \item \textbf{Judgements:} Net Promoter Score 42 (promoters minus detractors) --- above category average but not exceptional.
+  \item \textbf{Resonance:} Low; fewer than \qty{5}{\percent} of customers have written a review or referred a peer unprompted.
+\end{itemize}
+Implication: the next brand investment should target the social CEP (lifting salience breadth) and referral mechanics (lifting resonance), not more awareness advertising.
+\end{example}
+
+\begin{admonition}{Warning}
+Using NPS as a substitute for a full brand health tracker. NPS captures satisfaction and advocacy intent but is blind to awareness, associations, and the reasons behind judgements. See \cref{sec:brand-tracking} for the fuller instrument.
+\end{admonition}
+
+Keller's revised Brand Resonance model (\textcite{keller2019}) integrates digital touchpoints: each rung can now be energised or eroded by individual interactions (a support ticket, a G2 review, a LinkedIn post) rather than only mass-media campaigns. This accelerates both building and erosion, requiring higher-frequency brand-health measurement. The CBBE pyramid translates brand investment into a structured audit: at which rung is equity being destroyed? That diagnosis drives budget allocation. The financial consequence of rung-by-rung equity follows in \cref{sec:brand-multiplier}. \textcite{keller1993customer} and \textcite{keller2019} develop the model; \textcite{aaker1996} provides the parallel financial-asset framing.
+
+\section{Brand Equity as a Financial Asset}\label{sec:brand-multiplier}
+% complexity: 4 -> formula eq:brand-multiplier is the visual (multi-variable partial derivative)
+
+How much is a one-percentage-point lift in steady-state customer growth worth in present-value terms --- and how does brand investment produce that lift? Brand equity is not a soft intangible: it manifests in the growth rate \(g\) of the customer base and in the discount rate \(r\) (through lower churn and higher switching costs). A small, permanent lift in \(g\) compounds to a large present-value gain because the lift affects every future period.
+
+Start from the growing-perpetuity formula \cref{eq:gordon}: \(PV = D/(r-g)\). Differentiate with respect to \(g\):
+\begin{equation}\label{eq:brand-multiplier}
+  \frac{\partial PV}{\partial g} \;=\; \frac{D}{(r-g)^{2}} .
+\end{equation}
+\cref{eq:brand-multiplier} is the \emph{brand multiplier}: each additional percentage point of sustainable growth \(g\) is worth \(D/(r-g)^2\) in incremental present value. The denominator is squared, so the multiplier grows rapidly as \(g\) approaches \(r\).
+
+\cref{eq:brand-multiplier} assumes the growth lift is permanent and does not increase the required discount rate \(r\). If brand investment is funded with debt, \(r\) (via \cref{eq:wacc}) rises and the formula understates the net effect. The perpetuity model also overstates value if the elevated \(g\) cannot be sustained beyond a finite window --- use a two-stage model in that case. The terminal value as a full DCF construct is developed in \cref{ch:valuation}.
+
+\begin{example}[Quantifying a brand investment in growth-rate terms]
+The SaaS has annual customer margin \(D = \money{252}\), discount rate \(r = \qty{11}{\percent}\), and baseline growth \(g = \qty{3}{\percent}\). From \cref{eq:gordon}:
+\[
+  LTV_{\text{base}} \;=\; \frac{\money{252}}{0.11-0.03} \;=\; \money{3150}.
+\]
+A brand investment lifts \(g\) from \qty{3}{\percent} to \qty{4}{\percent} --- one percentage point. Applying \cref{eq:brand-multiplier}:
+\[
+  \frac{\partial PV}{\partial g} \;=\; \frac{\money{252}}{(0.11-0.03)^2} \;=\; \frac{\money{252}}{0.0064} \;\approx\; \money{39375} \text{ per percentage point}.
+\]
+At \(g=\qty{4}{\percent}\): \(LTV_{\text{new}} = \money{252}/(0.11-0.04) = \money{3600}\). Relative lift: \qty{14}{\percent} on LTV from a single percentage point of \(g\). If the brand campaign costs \money{50000} and lifts \(g\) by one point permanently across 200 new customers per month, the NPV of the lift exceeds the campaign cost within six months. The implication: brand is not a cost centre; it is a \(g\)-rate investment whose payoff is captured by \cref{eq:brand-multiplier}.
+
+A parallel channel effect: stronger brand equity lifts organic click-through rates on branded search, raising Google Quality Score \(Q\) and lowering effective CPC via \cref{eq:ecpc} (\cref{ch:paid-acquisition-platforms}). The cost reduction compounds the PV lift.
+\end{example}
+
+\begin{admonition}{Warning}
+Treating brand spend as a one-period expense. The accounting treatment is expensing; the economic reality is a multi-period asset that shifts the \(g\) parameter in every future LTV calculation. A CFO who cuts the brand budget to hit an EBITDA target is liquidating a \(g\)-rate asset --- exactly the same error as cutting maintenance capex.
+\end{admonition}
+
+\cref{eq:brand-multiplier} also illuminates M\&A brand premiums: an acquirer pays a control premium in part because brand equity raises the target's long-run \(g\) above what the acquirer could achieve organically. The brand valuation consultancies (Interbrand, BrandZ) estimate \(g\) increments from brand tracking and discount them at a brand-specific \(r\) adjusted for the volatility of the brand's earnings stream --- a refinement of \cref{eq:brand-multiplier} at scale. The financial discipline of \cref{eq:brand-multiplier} connects brand investment to the terminal value that \cref{ch:valuation} will discount. \textcite{keller1993customer}, \textcite{keller2019}, and \textcite{aaker1996} each address the equity-to-value chain from different angles; the growing-perpetuity mechanics are in \textcite{brealey2020}.
+
+\section{Sharp's Empirical Laws}\label{sec:sharp}
+% complexity: 3
+
+Should the firm invest in differentiation and tight targeting (the Keller prescription) or in reach-maximising salience across all category buyers (the Sharp prescription) --- and does the answer depend on the brand's current size? Sharp's laws are derived from scanner-panel data across dozens of categories. They describe what brands \emph{actually do} rather than what brand theory says they should do. The headline finding --- that most brand growth comes from acquiring light buyers, not deepening loyalty --- overturns much of the CRM-first intuition.
+
+Two empirical regularities hold across categories and countries:
+
+\begin{description}
+  \item[Double Jeopardy] Small brands have both fewer buyers \emph{and} lower purchase frequency than large brands. Loyalty metrics (frequency, NPS) are almost entirely explained by market share: loyalty does not cause share, share causes loyalty. Implication: growing share requires growing the buyer base, not extracting more from loyalists.
+  \item[Mental and Physical Availability] Brands grow by being easy to think of (mental availability --- linked to many CEPs, \cref{sec:jtbd}) and easy to buy (physical availability --- distribution points, format diversity). Investment in either without the other is wasted.
+\end{description}
+
+Sharp's data are primarily FMCG and repeat-purchase consumer categories. B2B software has longer cycles, deliberate switching, and relationship-based selling --- conditions under which differentiation and targeting matter more than the laws suggest. The laws describe the \emph{central tendency}; high-switching-cost categories deviate from it.
+
+\begin{example}[Applying Double Jeopardy at 22\% recall]
+At \qty{22}{\percent} unaided recall, the SaaS is a small brand in its category. Double Jeopardy predicts that its purchase frequency and NPS are \emph{structurally low} relative to Salesforce --- not because of product failure but because of size. The implication is that investing in loyalty programs before growing mental availability is exactly backwards. The priority is expanding CEP breadth (more situations where the brand fires) rather than deepening the existing \qty{22}{\percent} cohort.
+\end{example}
+
+\begin{admonition}{Warning}
+Celebrating high NPS at low market share. At small size, NPS is high because only the most enthusiastic buyers have adopted --- selection bias. As the brand scales to light buyers, NPS will mechanically fall toward the category average. This is normal, not a quality problem.
+\end{admonition}
+
+The Sharp-vs-Keller debate is partly a measurement debate. Sharp measures market-level purchase behaviour; Keller measures individual-level associations and feelings. Both can be right simultaneously: differentiated associations may generate the first trial that Sharp's reach amplifies. \textcite{keller2019} acknowledges empirical regularities while defending the structural model.
+
+Sharp argues that differentiation is largely illusory --- that customers perceive brands as similar and choose on salience alone. Keller argues that differentiated associations produce price premiums that are empirically observable. The resolution in most market studies is that both operate: salience drives \emph{consideration set entry}, differentiation drives \emph{choice within the set}. A brand that has reach but no differentiation competes on price; a brand with differentiation but no reach is simply not retrieved. The actionable implication for \cref{sec:positioning}: nail the positioning first, then expand reach --- do not sacrifice distinctiveness for coverage before the positioning is defensible.
+
+Sharp's laws are the empirical complement to the CBBE pyramid: the pyramid describes the mechanism, the laws describe the outcome. Together they bound the expected return on brand investment. \textcite{sharp2010} is the primary source; \textcite{keller2019} is the response.
+
+\section{Brand Tracking}\label{sec:brand-tracking}
+% complexity: 2
+
+What is the minimum measurement apparatus that converts brand investment from a leap of faith into a managed asset --- and which metrics connect brand to the funnel? Brand equity is not observable directly; it must be inferred from proxy metrics measured at regular intervals. The key signal is whether spontaneous (unaided) awareness is rising --- it is the first gate of the conversion funnel and the leading indicator of future revenue.
+
+A minimal brand-tracking system measures three constructs quarterly:
+
+\begin{description}
+  \item[Unaided awareness] ``Which brands in [category] can you name?'' Rising unaided awareness lifts the first gate of \cref{eq:funnel-chain} (\cref{ch:digital-funnel-and-crm}): more potential buyers enter the funnel.
+  \item[Associations] Open-ended ``what comes to mind when you think of [brand]?'' coded against the positioning axes. Tracks whether the desired associations are building.
+  \item[Net Promoter Score] \emph{Would you recommend?} A convenient summary of judgement and resonance, comparable quarter-over-quarter and against category benchmarks.
+\end{description}
+
+Brand tracking surveys require consistent methodology --- same panel, same wording, same timing --- to be interpretable as trends. Ad-hoc brand studies with inconsistent designs are not comparable. NPS is especially susceptible to survey timing (immediately post-interaction inflates it) and response-rate bias (unhappy customers opt out).
+
+\begin{example}[Translating a brand-tracker result into funnel impact]
+The SaaS runs a quarterly brand tracker on 400 mid-market RevOps buyers (panel recruited from intent-data providers). Unaided awareness rises from \qty{22}{\percent} to \qty{27}{\percent} over two quarters following a LinkedIn thought-leadership campaign targeting the situational CEP. The \qty{5}{\percent} point lift translates, via the funnel model, to roughly 500 additional qualified sessions per month at current conversion rates --- a measurable revenue impact from a brand activity.
+\end{example}
+
+\begin{admonition}{Warning}
+Optimising NPS in isolation. NPS is a lagging, aggregated metric. A brand can hold NPS steady while unaided awareness collapses --- losing the market while satisfying existing buyers. Always pair NPS with awareness and association metrics.
+\end{admonition}
+
+NPS as a growth predictor has been both widely adopted and severely criticised. \textcite{bendle2020marketing} document the fragility of NPS's correlation with growth across categories. A fuller brand-health instrument (brand equity index, consideration rate, preference share) is more predictive but costly. The metrics catalog in \cref{ch:metrics-catalog} lists the full instrument with benchmarks. Brand tracking closes the loop between the positioning set in \cref{sec:positioning} and the performance measured in \cref{ch:metrics-catalog}. Unaided awareness is the leading indicator; LTV growth (\cref{eq:brand-multiplier}) is the lagging one. \textcite{kotler2021} covers the brand-tracking design; \textcite{bendle2020marketing} evaluates the metrics.

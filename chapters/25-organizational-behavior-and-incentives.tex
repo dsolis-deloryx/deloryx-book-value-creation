@@ -1,0 +1,229 @@
+\chapter{Organizational Behavior \& Incentives}\label{ch:organizational-behavior}
+
+% Scope: agency theory, motivation, incentive design.
+% Cross-link: agency cost (\cref{eq:agency-cost}) ties to the boundary-of-the-firm logic
+%   in \cref{ch:microeconomics}; the Kerr trap reappears wherever a misaligned metric
+%   is rewarded — see \cref{ch:attribution-and-measurement}.
+
+Firms are not monolithic optimisers; they are collections of agents whose private incentives only partially overlap with owners'. The gap between what principals want and what agents do is the central problem of organizational design, and it cannot be solved by aspiration alone.
+
+\section{Agency Theory}\label{sec:agency-theory}
+% complexity: 3
+
+When an employee's private interests diverge from the firm's, what contractual and governance mechanisms close the gap at the lowest cost? The answer begins with information: the principal hires an agent to act on their behalf but cannot observe every action. The agent knows more about their own effort than the principal does. This information asymmetry is the root of every governance problem, from board oversight to sales compensation.
+
+\textcite{jensen1976agency} define the total agency cost as three components:
+\begin{equation}\label{eq:agency-cost}
+  C_{\text{agency}} \;=\; C_{\text{monitor}} \;+\; C_{\text{bond}} \;+\; C_{\text{residual}},
+\end{equation}
+where \(C_{\text{monitor}}\) is the principal's cost of observing the agent (audits, dashboards, management time), \(C_{\text{bond}}\) is the agent's cost of credibly committing to aligned behaviour (forfeited equity, deferred comp, reputational pledge), and \(C_{\text{residual}}\) is the welfare loss that persists even after optimal monitoring and bonding --- the irreducible divergence. The task of incentive design is to minimise \(C_{\text{agency}}\), not just one component: cutting monitoring costs by eliminating dashboards raises residual loss. The equation treats agency costs as addable, which obscures their interaction; heavier monitoring crowds out trust and can raise bonding and residual costs simultaneously. The model is most useful as a decomposition framework, not a calculation.
+
+\begin{example}
+A sales VP is compensated on booked ARR. Each deal she closes adds \money{50} per month to MRR. The problem: customers acquired at quarter-end through heavy discounting churn at month 3, leaving \money{0} per month by month 4. The VP's incentive is maximally misaligned with long-run value.
+
+Fix: pay on \emph{3-month-retained} ARR. A booked deal that churns contributes \money{0} to the bonus pool. This shifts \(C_{\text{residual}}\) toward zero at the cost of a higher \(C_{\text{bond}}\) (the VP must wait 3 months to know her payout) and higher \(C_{\text{monitor}}\) (finance must track cohort-level retention to compute the bonus). The question is whether the reduction in residual loss exceeds the increased monitoring and bonding costs --- almost always yes when churn is material.
+\end{example}
+
+\begin{admonition}{Warning}
+Measuring outputs that are easy to count rather than outputs that capture value. When the metric and the goal diverge, the agent optimises the metric. This is Kerr's folly (\cref{sec:kerr-trap}): rewarding A while hoping for B.
+\end{admonition}
+
+The formal principal--agent model introduces a participation constraint (the agent must prefer the contract to outside options) and an incentive-compatibility constraint (the agent must prefer the desired action to any alternative). Optimal risk-sharing then trades off insurance (the agent is risk-averse, so bears less variable pay) against incentive provision (enough variable pay to motivate effort). The tension is why a flat salary does not work and a \qty{100}{\percent} commission does not work either.
+
+Agency costs are not limited to employment contracts; they appear wherever ownership is separated from control --- shareholders vs managers, investors vs founders, franchisor vs franchisee. \textcite{jensen1976agency} is the foundational treatment; \textcite{robbins2022} integrates the behavioural literature.
+
+\section{Incentive Design --- the Kerr Trap}\label{sec:kerr-trap}
+% complexity: 3
+
+Is the metric you are rewarding actually the behaviour you want, and what distortions does the reward itself create? Every measurement creates an incentive to optimise the measurement rather than the underlying goal. The gap between what is rewarded and what is wanted is not a management failure; it is a structural consequence of any metric that can be gamed. The discipline is to design metrics that are simultaneously measurable, hard to game, and closely correlated with value.
+
+The Kerr Trap is a qualitative diagnostic. Assess any incentive system along three axes:
+\begin{description}
+  \item[Measure] What is actually being tracked and rewarded? Is it observable and attributable to the individual?
+  \item[Reward] What behaviour does maximising the measure rationally produce? Follow the incentive, not the stated goal.
+  \item[Want] What behaviour does the organisation actually need for value creation?
+\end{description}
+When Measure $\ne$ Want, the agent who optimises Reward is doing exactly what was asked --- and exactly not what was needed. The fix is redesigning Measure, not lecturing agents about alignment. Multi-dimensional performance is difficult to reduce to a single Measure without distortion; composite scores (balanced scorecards) help but introduce weighting decisions that are themselves gameable. The framework also assumes the agent has information and control over the outcome; rewarding a metric the agent cannot materially influence produces effort displacement, not alignment.
+
+\begin{example}
+Marketing is rewarded on MQL volume. The team runs broad, low-CPM campaigns and generates \num{10000} MQLs per month. Sales qualifies \qty{5}{\percent}: \num{500} SQLs. CAC blows out to \money{1200} (\money{120000} budget $\div$ \num{100} closed deals at \qty{20}{\percent} SQL-to-close). The Measure was MQL count; the Want was closed revenue at or below \money{600} CAC.
+
+Fix: reward MQL$\to$SQL \emph{conversion rate} (currently \qty{5}{\percent}; target \qty{15}{\percent}). Marketing now has an incentive to qualify intent before passing leads, narrowing campaigns to higher-intent channels. Volume falls from \num{10000} to \num{3000} MQLs, but SQL output rises to \num{450}, SQL-to-close holds at \qty{20}{\percent}, and \num{90} closed deals at \money{120000} spend yields \money{1333} CAC --- worse. The correct fix is to reward on \emph{closed revenue per dollar of MQL spend}, linking marketing's metric to the outcome it contributes to.
+\end{example}
+
+\begin{admonition}{Warning}
+Adding more metrics to patch a broken primary metric. Each additional metric is another thing to optimise against, producing ever more elaborate gaming strategies. The correct response is a better primary metric, not a longer scorecard.
+\end{admonition}
+
+\begin{admonition}{Contested}
+Extrinsic rewards (money, recognition) can crowd out intrinsic motivation (Deci and Ryan's self-determination theory). The evidence is most robust for tasks with inherent interest and clear right answers: pay a creative person per idea and idea quality falls. Agency theory's prescription --- increase variable pay to close the residual gap --- can therefore backfire when the work requires intrinsic motivation. The reconciliation: use variable pay for measurable, extrinsic-friendly outputs (sales quotas, error rates); use autonomy and meaning signals for complex, creative work. \textcite{kerr1975folly} flags the measurement problem; \textcite{robbins2022} surveys the motivation evidence.
+\end{admonition}
+
+The Kerr Trap is how \cref{eq:agency-cost}'s residual loss materialises in practice: the gap between what is rewarded and what is wanted is the residual. Measurement design is therefore incentive design, with direct consequences for CAC (\cref{ch:customer-economics}) and attribution (\cref{ch:attribution-and-measurement}).
+
+\section{Organisational Structure}\label{sec:org-structure}
+% complexity: 3
+
+As the firm grows, what structural form minimises the coordination costs of specialisation without sacrificing the speed a smaller team has? Structure determines who talks to whom, who owns which decisions, and what information reaches whom. Coase's logic (\cref{ch:microeconomics}) --- that firms exist to economise on transaction costs --- applies internally: the right structure minimises the cost of coordinating specialised roles while preserving accountability.
+
+Four canonical forms, each a different balance of coordination cost against specialisation:
+\begin{description}
+  \item[Functional] Roles grouped by skill: engineering, sales, marketing, finance. Deep specialisation; slow cross-functional coordination; suits stable, well-defined products.
+  \item[Divisional] Roles grouped by product or segment: each division is a mini-firm. Fast internal coordination; duplicated overhead; suits large, differentiated product portfolios.
+  \item[Matrix] Dual reporting: functional home plus project/product owner. Access to specialisation without duplication; ambiguous authority creates conflict; suits complex projects with short lifecycles.
+  \item[Flat / Pod] Autonomous cross-functional pods, each owning a user segment or outcome. Fast iteration; coordination cost is borne by product design (APIs, shared data) rather than hierarchy; suits product-led, experiment-heavy businesses.
+\end{description}
+These archetypes are idealisations. Real organisations are hybrids, and the optimal form shifts with scale: a flat pod structure breaks down above roughly 150 people (Dunbar's number) without explicit coordination mechanisms. The typology also ignores power dynamics and cultural inertia, which often determine which structure actually operates regardless of the org chart.
+
+\begin{example}
+At 50 people, the SaaS company runs functionally: an engineering team, a sales team, a marketing team. Coordination cost is low because the product is one SKU --- \money{50}/month --- sold one way. As the company considers adding an enterprise tier at \money{299}/month with different onboarding, support SLAs, and sales motion, the functional structure creates bottlenecks: enterprise sales needs product features the engineering team queues as standard tickets, and marketing cannot segment messaging without a dedicated resource.
+
+The fix is a pod-per-segment: a \emph{self-serve pod} (PLG motion, \money{50} tier) and an \emph{enterprise pod} (sales-led, \money{299} tier), each with a dedicated engineer, marketer, and sales rep. Overhead rises slightly; coordination cost of the new segment falls sharply. The test: is the value of faster enterprise iteration greater than the duplicated overhead? At \money{3150} LTV per enterprise customer and \num{200} per month target, the maths usually say yes.
+\end{example}
+
+\begin{admonition}{Warning}
+Reorganising as a substitute for strategy. A new org chart does not fix a broken product or a misaligned incentive; it just reroutes the coordination costs. Structure should follow strategy, not precede it.
+\end{admonition}
+
+\textcite{coase1937nature} frames the boundary of the firm as the point at which the transaction cost of using markets equals the coordination cost of internalising an activity. The same logic applies to internal boundaries: a division exists when the cost of coordinating it within the firm is less than the cost of purchasing its output externally. Williamson's transaction cost economics extends this to vertical integration decisions.
+
+Structure, incentives, and agency costs are interdependent: a flat pod structure with outcome-based incentives can substantially reduce \cref{eq:agency-cost}'s monitoring component, but only if the outcome metrics are well-designed (avoiding the Kerr Trap of \cref{sec:kerr-trap}). \textcite{robbins2022} surveys the empirical literature; \textcite{coase1937nature} provides the theoretical foundation.
+
+\section{Motivation \& Performance}\label{sec:motivation}
+% complexity: 2
+
+What non-financial levers actually sustain high performance after financial compensation is adequate? The classical entry points are Maslow and Herzberg, but both have been substantially revised. The durable insight from Herzberg is the hygiene-motivator distinction: adequate pay, working conditions, and job security prevent dissatisfaction but do not create engagement. The drivers of engagement are intrinsic. Self-determination theory (Deci and Ryan) offers the most empirically robust current account.
+
+Three canonical frameworks, in order of empirical durability:
+\begin{description}
+  \item[Maslow's hierarchy] Physiological $\to$ safety $\to$ belonging $\to$ esteem $\to$ self-actualisation. Widely cited; weak empirical support for the fixed hierarchy. Useful as a rough priority map, not a causal model.
+  \item[Herzberg's two-factor theory] Hygiene factors (pay, conditions) prevent dissatisfaction; motivators (achievement, recognition, growth) create engagement. The distinction is more robust than Maslow's ordering; the claim that money is only a hygiene factor is contested in sales roles.
+  \item[Self-determination theory (SDT)] Intrinsic motivation is driven by three universal needs: \textbf{autonomy} (control over one's work), \textbf{mastery} (growth in competence), and \textbf{purpose} (connection to a meaningful goal). SDT has the strongest experimental base and the most direct design implications: structure jobs to satisfy these three needs.
+\end{description}
+Hackman and Oldham's job-characteristics model operationalises SDT: skill variety, task identity, task significance (autonomy + mastery surrogates), plus feedback and autonomy directly, predict experienced meaningfulness and thus intrinsic motivation. SDT's predictions hold most strongly for complex, cognitive work; for highly repetitive or externally constrained tasks, extrinsic incentives dominate and the autonomy-mastery-purpose frame adds little. The model also assumes baseline compensation is adequate; below a satiation threshold, financial incentives overwhelm intrinsic ones.
+
+\begin{example}
+The SaaS retains engineers effectively: median tenure is 3.2 years, above industry average, despite paying at the \qty{60}{\percent}ile of market rather than the \qty{80}{\percent}ile. Exit interviews attribute retention to high autonomy (engineers own product decisions end-to-end in their pod), clear mastery progression (public technical ladder), and mission connection (the product serves a sector the team cares about).
+
+Attrition is concentrated in the sales team: annual turnover is \qty{45}{\percent}. Salespeople report the highest financial compensation in the company but low autonomy (scripted demos, rigid pricing), low mastery growth (no clear seniority path beyond quota tier), and weak purpose connection. Adding \money{10000} to OTE does not solve an SDT problem. The fix is structural: a seniority path with coaching responsibilities, discretion on deal structure within a band, and explicit territory ownership.
+\end{example}
+
+\begin{admonition}{Warning}
+Conflating retention with motivation. An employee who stays but disengages (quiet quitting) shows up in headcount, not in performance. Retention metrics pass the check; output metrics reveal the gap.
+\end{admonition}
+
+The Kerr Trap (\cref{sec:kerr-trap}) and SDT interact: extrinsic rewards for intrinsically motivated work can crowd out the intrinsic motivation precisely when the work is high-quality and hard to measure. A star engineer given a per-feature bonus may produce more features and fewer good decisions. The implication is to use financial incentives at the team or company level (shared upside, equity) rather than at the individual task level for knowledge-workers.
+
+Motivation theory connects directly to incentive design through the Kerr Trap: the right measure, correctly rewarded, can satisfy both the agency constraint (\cref{eq:agency-cost}) and the SDT conditions simultaneously. \textcite{robbins2022} synthesises the full literature; \textcite{kerr1975folly} remains the practitioner's caution.
+
+\section{Board Structure \& Governance Mechanisms}\label{sec:board-governance}
+% complexity: 3
+
+Who monitors the monitors? Once ownership is separated from control, the board of directors
+becomes the primary institutional mechanism for closing the principal--agent gap between
+shareholders and management. Its effectiveness depends not on the fact of its existence but on
+its composition, independence, and structural authority. A board that functions merely as a
+ceremonial ratifier of management decisions cannot reduce the monitoring component of
+\cref{eq:agency-cost}; a well-structured board can.
+
+The canonical governance architecture rests on three structural features. First, independent
+directors --- those without material business relationships with the firm or its executives ---
+provide monitoring credibility that insiders cannot: they have no financial incentive to approve
+executive pay or acquisitions that are value-destructive to shareholders. Second, separation of
+the CEO and board-chair roles removes the principal--agent conflict at its apex: a CEO who also
+chairs the board supervises their own oversight, which structurally inflates residual agency
+cost. Third, specialist committees --- audit, compensation, and nominating --- concentrate the
+relevant expertise where accountability is deepest. The audit committee's authority over
+financial statements (see \cref{ch:financial-statements}) is the board's primary tool for
+ensuring the NOPAT and IC figures that underlie ROIC calculations are clean. The compensation
+committee translates the agency-cost framework into executive pay design: base salary, annual
+incentive, and long-term equity grants are calibrated so that the CEO's wealth co-moves with
+shareholder wealth, reducing \(C_{\text{residual}}\) at the cost of some risk imposition.
+
+The chain of accountability runs from shareholders, through the board, to the CEO. At each link,
+a principal--agent relationship obtains. Shareholders elect the board (imperfectly, given
+collective-action problems among dispersed holders). The board hires, evaluates, and if necessary
+removes the CEO. The CEO manages operating teams. \cref{eq:agency-cost}'s decomposition applies
+at each link: monitoring costs accumulate, bonding mechanisms are layered, and residual losses
+persist. The governance literature's empirical finding is that independent directors, particularly
+on the audit and compensation committees, do reduce the residual loss on average --- though the
+effect is strongest when directors have relevant industry or financial expertise and weakest when
+independence is formal but boards are socially captured by the CEO.
+
+\begin{example}
+The SaaS company reaches Series~A with a \money{4000000} ARR run rate. Its investors require
+a formal board as a condition of term. The founding configuration is a five-person board: two
+founders (executive directors), two investor representatives (affiliated directors), and one
+independent director. The independent seat is the key governance addition: the independent
+director chairs the audit committee, reviewing the financial statements in \cref{ch:financial-statements}
+and providing the investor syndicate with assurance that the reported ARR and NOPAT figures are
+reliable --- reducing the monitoring cost component of \cref{eq:agency-cost} that each investor
+would otherwise bear individually.
+
+The compensation committee, chaired by one of the investor directors, designs the CEO's equity
+vesting schedule: four-year vest with a one-year cliff, tied to ARR milestones. This is a
+bonding mechanism: the CEO's wealth is locked into long-run performance, raising \(C_{\text{bond}}\)
+voluntarily to reduce \(C_{\text{residual}}\). The board's quality --- specifically the presence
+of the independent director and the rigour of its audit function --- is itself a pre-money
+valuation signal at the next financing round (\cref{sec:investor-metrics}): investors price
+governance risk, and a board that provides genuine oversight commands a lower risk discount.
+\end{example}
+
+\begin{admonition}{Warning}
+Confusing formal independence with genuine independence. A director who is legally unaffiliated
+but was recruited by the CEO, who chairs the nominating committee, is socially captured: they
+will not vote to remove the person who selected them. Board capture of this kind is endemic and
+is the principal explanation for the gap between what governance codes prescribe and what boards
+deliver in practice. The audit committee's independence from management must be assessed
+behaviourally, not only structurally.
+\end{admonition}
+
+The theoretical foundations are in \textcite{jensen1976agency}: they show that debt, equity
+structures, and monitoring mechanisms are all partial substitutes in reducing agency costs, and
+that the board is one node in a network of governance devices that also includes auditors,
+analysts, and market discipline. \textcite{robbins2022} integrates the organisational literature
+on board dynamics: group composition, cohesion, and information processing determine whether a
+board's nominal structure translates into effective oversight.
+
+\section{ESG Governance \& the Board's Role}\label{sec:esg-governance}
+% complexity: 2
+
+If ESG factors are a capital-allocation input when they pass the financial-materiality test
+(\cref{sec:esg-capital}), then ESG governance is the board's problem, not management's alone.
+The board's oversight role is twofold: it receives the ESG data and decides what to disclose,
+and it integrates financially material ESG risks into the firm's capital-allocation and
+risk-management processes. The ISSB's IFRS~S1 and S2 standards --- and, for in-scope companies,
+the ESRS under the CSRD --- make this a board-level accountability, not a sustainability-team
+reporting exercise.
+
+In the principal--agent structure of \cref{eq:agency-cost}, ESG governance adds a specific
+information-asymmetry problem. Management observes the ESG risks that are material to
+operations --- a rising attrition rate in the engineering team, a concentration in a climate-
+exposed data centre region, a compliance exposure under the EU AI Act --- before the board does.
+The board's monitoring task is to receive timely, decision-grade ESG data and to distinguish
+between disclosures that represent genuine risk pricing and those that represent reputational
+signalling without capital impact. Whistleblower-protection mechanisms are a concrete governance
+instrument here: they reduce the cost for employees to surface material ESG risks that management
+may have incentives to suppress, raising the quality of the information the board receives.
+
+The data infrastructure that makes decision-grade ESG information available is the subject of
+\cref{sec:esg-data} in \cref{ch:data-and-ai-strategy}: materiality assessments, data pipelines
+for Scope~1/2 emissions, pay-equity analysis, and governance-risk registers all require the
+same data-quality standards as financial reporting. The board that discharges its ESG oversight
+function is, in effect, demanding that the ESG data pipeline meets audit-grade standards --- the
+same demand its audit committee places on the financial data pipeline.
+
+\begin{admonition}{Note}
+Board oversight of ESG disclosure does not resolve the contested empirical question of whether
+ESG commitments improve or impair shareholder returns. It resolves a narrower question: who is
+accountable for ensuring that what is disclosed is accurate and that what is financially material
+is reflected in the capital plan. The answer --- the board --- is the same as for any other
+material financial disclosure.
+\end{admonition}
+
+\textcite{jensen1976agency} show that governance structures are complements to market and
+contractual mechanisms in reducing agency costs; ESG disclosure oversight is the extension of
+that logic to a class of risks that were previously treated as externalities. \textcite{freeman2010strategic}
+provides the stakeholder-theory foundation for why the board's constituency is broader than
+shareholders: the same stakeholder relationships that generate long-run cash flows also generate
+the ESG exposures the board must govern.

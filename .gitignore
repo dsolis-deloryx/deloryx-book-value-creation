@@ -48,3 +48,11 @@ references-*.bib
 .vscode/
 
 .env*
+.claude/
+agentdb.rvf
+agentdb.rvf.lock
+*.bbl-SAVE-ERROR
+*.bcf-SAVE-ERROR
+references_bibertool.bib
+references-*-applied.bib
+references-*-applied.resolved.bib

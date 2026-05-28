@@ -1,0 +1,143 @@
+\chapter{Operations \& Constraints}\label{ch:operations}
+
+% Scope: theory of constraints, drum-buffer-rope, Little's Law, throughput, bottlenecks.
+% Cross-link: Little's Law (throughput = arrival rate x cycle time) governs funnel and pipeline
+%   throughput (\cref{ch:digital-funnel-and-crm}).
+
+Operations does not begin with process optimisation; it begins with finding the one constraint that limits output, then refusing to improve anything else until that constraint is resolved.
+
+\section{The Theory of Constraints}\label{sec:toc}
+% complexity: 3
+
+Which single step limits how much value you can produce, and is fixing it worth more than fixing every other inefficiency combined? The answer almost always traces to one node in the process --- the constraint --- and the central insight is that strengthening every other link in the chain leaves the load unchanged. Goldratt's observation is that most organisations spend most of their improvement budget on non-bottlenecks, yielding zero throughput gain.
+
+Define throughput as the rate at which a system generates money through sales. The binding constraint is the step whose capacity is fully consumed first; all other steps operate below capacity, and their slack is waste only after the constraint has been elevated:
+\begin{equation}\label{eq:throughput}
+  \text{Throughput} \;=\; \min_{i}\bigl(\text{capacity of step }i\bigr).
+\end{equation}
+Goldratt's five focusing steps cycle until the constraint shifts:
+\begin{description}
+  \item[Identify] Find the binding constraint --- the step at \qty{100}{\percent} utilisation.
+  \item[Exploit] Squeeze every unit of throughput from the constraint as-is before investing.
+  \item[Subordinate] Align every other step to serve the constraint; do not overproduce inventory that piles before it.
+  \item[Elevate] Only now invest to raise the constraint's capacity.
+  \item[Repeat] Once elevated, the constraint shifts; return to step one.
+\end{description}
+\cref{eq:throughput} assumes a single binding constraint at any time --- a reasonable approximation for well-managed production lines but fragile when multiple steps are near-saturated simultaneously. It also treats throughput as output rate, ignoring that quality failures can convert apparent throughput into waste downstream.
+
+\begin{example}
+The SaaS funnel runs \num{10000} sessions \(\to\) \num{800} trials \(\to\) \num{200} paid per month, yielding three conversion gates:
+\[
+  \text{session}\to\text{trial}=\qty{8}{\percent},\quad
+  \text{trial}\to\text{paid}=\qty{25}{\percent},\quad
+  \text{overall}=\qty{2}{\percent}.
+\]
+The decision is where to invest. Elevating trial\(\to\)paid from \qty{25}{\percent} to \qty{35}{\percent} yields \num{280} new customers per month --- a \qty{40}{\percent} gain. Elevating session\(\to\)trial from \qty{8}{\percent} to \qty{10}{\percent} grows trials to \num{1000}, but trial\(\to\)paid is still the binding rate: output rises to only \(0.25\times1000=250\) --- a \qty{25}{\percent} gain. The constraint is identified; exploit and elevate it first.
+\end{example}
+
+\begin{admonition}{Warning}
+Heroic non-bottleneck optimisation: cutting cost-per-click to drive cheaper sessions while the trial-to-paid conversion is stuck at \qty{25}{\percent} adds pipeline that piles in front of the constraint and produces no additional revenue. The improvement registers in one team's dashboard while system throughput is flat.
+\end{admonition}
+
+Drum-buffer-rope (DBR) is Goldratt's scheduling mechanism: the constraint (drum) sets the system's pace; a buffer of work-in-progress protects it from starvation; a rope ties input release to the constraint's consumption rate. For knowledge-work, Critical Chain replaces task buffers with a shared project buffer at the end, preventing student-syndrome padding.
+
+The theory of constraints frames every capacity decision as a throughput question, which is also how \textcite{goldratt2014} frames manufacturing and how \textcite{cachon2024matching} generalises it to service operations. The funnel step rates above link directly to \cref{ch:digital-funnel-and-crm}.
+
+\section{Little's Law}\label{sec:littles-law}
+% complexity: 4 -> figure littles-law
+
+How many active items must sit in your system at steady state, and what is the shortest cycle time consistent with your desired throughput? Any stable system in which items arrive, reside for some average time, and then depart satisfies a remarkably simple relationship: the number of items present equals the rate of arrival multiplied by the average time each spends inside. The relationship is distribution-free --- it demands only steady-state balance.
+
+Let \(L\) be the long-run average number of items in the system, \(\lambda\) the steady-state arrival (or throughput) rate, and \(W\) the average time each item spends in the system. Conservation of flow at steady state forces:
+\begin{equation}\label{eq:littles-law}
+  L \;=\; \lambda \, W.
+\end{equation}
+Algebraically obvious once written; the content is that the identity holds regardless of arrival distribution, service-time distribution, or number of servers --- a result proved rigorously by \textcite{cachon2024matching}. Any two of \(\{L, \lambda, W\}\) determine the third.
+
+\cref{eq:littles-law} requires the system to be in steady state: \(\lambda\) in equals \(\lambda\) out. During a ramp-up or wind-down, or with batch arrivals that are never worked off, the law does not hold instantaneously. It also says nothing about variance: a pipeline with average \(W=4\) months can hide a distribution spanning two weeks to eight months.
+
+\begin{example}
+The sales pipeline carries \(L=40\) open deals; the team closes \(\lambda=10\) per month. By \cref{eq:littles-law}:
+\[
+  W \;=\; \frac{L}{\lambda} \;=\; \frac{40}{10} \;=\; 4\text{ months average sales cycle.}
+\]
+Management wants to cut the average cycle to 2 months. There are exactly two levers: reduce \(L\) (cut unqualified pipeline) or increase \(\lambda\) (close more deals per month). Doubling close rate to 20 per month with pipeline held constant achieves the target; so does halving pipeline to 20 deals while holding close rate. Hiring more SDRs to fill pipeline further would \emph{lengthen} the cycle if close-rate capacity is fixed.
+\end{example}
+
+\begin{admonition}{Warning}
+Building pipeline as a vanity metric: adding \(L\) without adding \(\lambda\) mechanically extends \(W\). A CRM dashboard celebrating ``record pipeline'' may be announcing a lengthening sales cycle.
+\end{admonition}
+
+In a queueing system with Poisson arrivals and exponential service (M/M/1), Little's Law gives \(L = \lambda / (\mu - \lambda)\), where \(\mu\) is service rate --- exploding as utilisation approaches 1. This is why operating near \qty{100}{\percent} utilisation produces not \qty{100}{\percent} throughput but near-infinite queues. For knowledge-work queues (product backlogs, approval chains), Reinertsen's \emph{Principles of Product Development Flow} applies the same maths to show why slack capacity is an investment, not waste.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{littles-law}
+  \caption{Little's Law: arrivals at rate \(\lambda\) fill a system holding \(L\) items on average; each item departs after average time \(W = L/\lambda\). Cutting cycle time without cutting pipeline widens the ratio.}
+  \label{fig:littles-law}
+\end{figure}
+
+Little's Law is the queueing twin of the pipeline-expected-value model in \cref{eq:pipeline-ev} and governs the funnel arithmetic of \cref{ch:digital-funnel-and-crm}. \textcite{cachon2024matching} provide the formal proof and service-operations applications.
+
+\section{The Bullwhip Effect}\label{sec:bullwhip}
+% complexity: 4 -> figure bullwhip
+
+Why does a small wobble in end-customer demand produce wild swings in upstream orders, and how do you dampen the amplification before it triggers a hiring binge or a stockout? Each echelon in a supply chain sees the orders placed by the echelon below it --- not end-customer demand. When each link adds its own safety stock and reacts to order noise, small demand signals are progressively amplified upstream. The chain whips.
+
+Let \(\sigma^2_D\) be the variance of end-customer demand and \(\sigma^2_O\) the variance of orders placed by any echelon. The bullwhip ratio measures demand amplification:
+\begin{equation}\label{eq:bullwhip}
+  \text{Bullwhip ratio} \;=\; \frac{\operatorname{Var}(\text{orders})}{\operatorname{Var}(\text{demand})} \;\ge\; 1.
+\end{equation}
+\textcite{lee1997bullwhip} identify four root causes: demand signal processing (each echelon forecasts from its own noisy order data), rationing gaming (buyers inflate orders during shortage), order batching (lumpy ordering intervals amplify variance), and price variation (promotions trigger demand spikes). For SaaS, the operative cause is demand-signal processing: internal capacity plans are built from lagged, aggregated conversion data that bears little resemblance to actual pipeline arrivals.
+
+\cref{eq:bullwhip} assumes independent echelons making local forecasts. Sharing point-of-sale or pipeline data upstream collapses the ratio toward 1 --- the logic behind vendor-managed inventory and shared CRM visibility. The model also treats demand variance as exogenous; seasonal businesses must separate structural seasonality from noise before applying the ratio.
+
+\begin{example}
+The SaaS baseline is \num{200} new customers per month. One month's conversion rate spikes anomalously to \qty{37.5}{\percent} (from \qty{25}{\percent}), yielding \num{300} customers. A capacity team reading this signal without smoothing plans a hiring round for \qty{50}{\percent} more support headcount.
+
+A 3-month rolling average over months \(t-2, t-1, t\) gives:
+\[
+  \bar{\lambda} \;=\; \frac{200 + 200 + 300}{3} \;=\; \num{233}\text{ customers/month}.
+\]
+The smoothed signal implies a \qty{17}{\percent} uplift in demand, not \qty{50}{\percent}. Planned headcount scales accordingly, and the anomalous month is treated as a one-time event unless sustained. Measuring \(\operatorname{Var}(\text{planned hires})/\operatorname{Var}(\text{actual demand})\) month-on-month tracks whether the bullwhip ratio is improving.
+\end{example}
+
+\begin{admonition}{Warning}
+Acting on single-period conversion anomalies: a one-month jump in trial-to-paid from \qty{25}{\percent} to \qty{37.5}{\percent} is statistically consistent with sampling variation at \num{800} trials. Treating it as a structural shift and over-hiring is textbook bullwhip --- variance in your actions exceeds variance in the environment.
+\end{admonition}
+
+Lee et al.'s prescription is information centralisation (share demand signals), stable pricing (eliminate promotion-induced spikes), and coordination of order quantities. In SaaS, the equivalent is a shared data warehouse giving finance, recruiting, and customer success access to the same real-time pipeline, rather than each function forecasting from its own lagged report.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{bullwhip}
+  \caption{Demand variance amplifies at each echelon: end-customer demand (bottom) shows a modest wobble; orders placed upstream (top) swing far wider. A 3-month rolling average (dashed) substantially dampens the signal.}
+  \label{fig:bullwhip}
+\end{figure}
+
+The bullwhip effect is an information problem as much as an inventory problem; \textcite{lee1997bullwhip} is the canonical treatment and \textcite{cachon2024matching} extends the queueing interpretation.
+
+\section{Lean Operations \& the Build--Measure--Learn Loop}\label{sec:lean-bml}
+% complexity: 2
+
+How do you reduce the time between forming a hypothesis and knowing whether it was right? Lean's core lever is reducing work-in-progress. By \cref{eq:littles-law}, less WIP means shorter cycle time at the same throughput. Shorter cycles compress the feedback loop: you learn faster, which is itself a form of throughput.
+
+The Build--Measure--Learn (BML) loop is a qualitative framework, not an equation. Its logic:
+\begin{description}
+  \item[Build] Implement the minimum feature or change that can test the hypothesis.
+  \item[Measure] Instrument the system; collect the metric the hypothesis depends on.
+  \item[Learn] Was the hypothesis supported? Pivot (change direction) or persevere (double down).
+\end{description}
+The loop is a knowledge-production system: each cycle converts uncertainty into validated learning, analogous to Bayesian updating (\cref{ch:decisions-under-uncertainty}). BML's speed advantage comes from minimising batch size --- the startup analogue of the lean pull system. The model's limitation is that it does not guarantee the right metric is being measured. Optimising a proxy (page views, sign-up clicks) that is disconnected from value creation produces confident, wrong conclusions --- vanity metrics pass the BML loop without generating real learning.
+
+\begin{example}
+The SaaS team hypothesises that in-app onboarding tooltips lift trial-to-paid from \qty{25}{\percent} to \qty{30}{\percent}. Build: instrument tooltips for a random \qty{50}{\percent} of trials. Measure: conversion rate over 4 weeks (enough volume at \num{800} trials/month). Learn: the treatment group converts at \qty{28}{\percent} --- directionally positive but not yet decisive; persevere with a higher-engagement variant. WIP is one hypothesis at a time; running six simultaneous experiments fragments signal and extends the effective cycle time.
+\end{example}
+
+\begin{admonition}{Warning}
+Feature-factory mode: building too fast without measuring. High output of shipped features is not high throughput if none of them moves the conversion rate. WIP balloons, \cref{eq:littles-law} guarantees cycle time rises, and the team loses track of what it is trying to learn.
+\end{admonition}
+
+\textcite{ries2011} frames BML explicitly as a lean-manufacturing analogy. The deeper connection is to the business model layer: a single BML cycle is a micro-test of one assumption embedded in the business model canvas (\cref{ch:business-models}). Accumulated validated learnings are what justify the canvas's revenue streams and cost structure.
+
+Lean's throughput logic, Little's Law, and the BML loop are three expressions of the same underlying principle: reduce batch size and cycle time to accelerate the conversion of uncertainty into value. \textcite{cachon2024matching} provide the operations-management foundations; \textcite{ries2011} the startup application.

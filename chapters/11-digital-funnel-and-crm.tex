@@ -1,0 +1,76 @@
+\chapter{Digital Marketing: Funnel, Lifecycle \& Growth Loops}\label{ch:digital-funnel-and-crm}
+
+% Scope: the funnel as a probability chain; lead scoring & the CRM pipeline;
+%   growth loops vs the flywheel. Sits before the platform mechanics of \cref{ch:paid-acquisition-platforms}.
+
+Before you buy traffic you need the architecture that turns it into customers. The digital funnel is not a metaphor; it is a chain of conditional probabilities, and every downstream decision --- which platform, which bid, which audience (\cref{ch:paid-acquisition-platforms}) --- is an attempt to move one of its terms.
+
+\section{The Funnel as a Probability Chain}\label{sec:funnel-chain}
+
+Spend is wasted unless it survives every step from first impression to paid customer. The binding constraint is almost never where teams think it is, and identifying it changes every budget decision that follows.
+
+Awareness, consideration, and conversion are not stages you ``move down''; they are gates, each with a pass-through probability. The whole funnel multiplies, so the smallest-probability gate dominates the outcome --- doubling a \qty{2}{\percent} step beats squeezing a \qty{40}{\percent} one. The idea that persuasion proceeds in measurable stages is the hierarchy-of-effects model \parencite{lavidge1961model,barry1987development}.
+
+Decomposing the path from impression to sale by the chain rule of probability (\cref{ch:decisions-under-uncertainty}):
+\begin{equation}\label{eq:funnel-chain}
+  P(\text{sale}) \;=\; P(\text{click}\mid\text{impression})\,\cdot\,P(\text{lead}\mid\text{click})\,\cdot\,P(\text{sale}\mid\text{lead}).
+\end{equation}
+Each factor is one funnel gate; the product is the end-to-end conversion rate. Expected new customers are simply impressions $\times$ \cref{eq:funnel-chain}. The chain assumes the gates are independent and the path is linear. Neither holds exactly: a retargeted user re-enters mid-funnel, and a strong brand lifts every gate at once. Treat \cref{eq:funnel-chain} as the first-order model, not the territory --- multi-touch reality is the subject of \cref{ch:attribution-and-measurement}.
+
+\begin{example}
+Our running subscription business sends \num{10000} sessions to a trial page. \qty{8}{\percent} start a trial (\num{800}); \qty{25}{\percent} of trials convert to paid (\num{200}). End-to-end that is a \qty{2}{\percent} session-to-customer rate. Lifting trial-start from \qty{8}{\percent} to \qty{12}{\percent} yields \num{300} customers --- a \qty{50}{\percent} gain --- whereas a same-effort bump in the already-healthy trial-to-paid gate moves far fewer.
+\end{example}
+
+\begin{admonition}{Warning}
+Optimise the loudest gate, not the binding one, and budget leaks quietly. Teams pour creative spend into top-of-funnel click-through while a broken trial-onboarding gate halves the product. Find the lowest-probability, highest-traffic gate first.
+\end{admonition}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.72\linewidth]{funnel-awareness-to-purchase}
+  \caption{The awareness-to-purchase funnel. Each narrowing is a conditional-probability gate in \cref{eq:funnel-chain}; benchmark rates vary widely by category and channel.}
+  \label{fig:funnel}
+\end{figure}
+
+\section{Lead Scoring \& the CRM Pipeline}\label{sec:lead-scoring}
+
+Not every lead deserves a salesperson's hour. The question is which leads to work now --- and what the pipeline is worth before any of them closes.
+
+A CRM pipeline is the funnel made discrete: named opportunities sitting in stages, each with a historical close probability. Lead scoring ranks them by fit and behaviour (the MQL$\to$SQL handoff) so scarce sales effort meets the leads most likely to convert \parencite{jarvinen2016harnessing}. The same logic recurs across the customer lifecycle, not just at acquisition \parencite{lemon2016understanding,kumar2018customer}.
+
+Valuing the pipeline as a probability-weighted sum over open deals:
+\begin{equation}\label{eq:pipeline-ev}
+  \mathbb{E}[\text{pipeline}] \;=\; \sum_{i} D_i\,p_i,
+\end{equation}
+where $D_i$ is deal size and $p_i$ the stage close-probability. Past behaviour is the strongest predictor of future value; recency, frequency, and monetary value (RFM) remain the workhorse scoring features \parencite{fader2005rfm,bult1995optimal}.
+
+\begin{example}
+Forty opportunities average \money{1200} at a stage close-rate of \qty{30}{\percent}: \cref{eq:pipeline-ev} values the pipeline at $40\times\money{1200}\times0.30=\money{14400}$. Raising the MQL bar lifts the close-rate to \qty{45}{\percent} but admits only \num{28} deals: $28\times\money{1200}\times0.45=\money{15120}$ --- more expected revenue from less sales effort.
+\end{example}
+
+\begin{admonition}{Warning}
+Scoring on fit alone misses intent. A perfect-fit account that never opens an email is not sales-ready; behaviour gates intent. And feeding raw, unqualified leads back to ad platforms teaches them to find more unqualified leads (\cref{ch:paid-acquisition-platforms}) --- pass back the \emph{qualified} signal.
+\end{admonition}
+
+\section{Growth Loops \& the Flywheel}\label{sec:growth-loops}
+
+A funnel spends to fill itself and stops when spend stops. The more durable question is whether the output of acquisition can fund its own next input.
+
+A loop feeds back: customers produce something --- referrals, content, data --- that acquires the next customers. Where a funnel is linear and leaky, a loop compounds; Collins' flywheel is the same image of accumulating momentum \parencite{collins2001good,ellis2017hacking}.
+
+For a referral loop, define the coefficient
+\begin{equation}\label{eq:viral-k}
+  k \;=\; i \times c,
+\end{equation}
+the invites sent per user $i$ times the conversion per invite $c$. When $k>1$ each cohort more than replaces itself and growth is self-sustaining; when $k<1$ the loop amplifies paid acquisition but does not replace it \parencite{leskovec2007dynamics}. The coefficient $k$ is the marketing twin of the network-effect multiplier in \cref{ch:growth}: both ask whether each user makes the next one cheaper or more likely. Loop throughput also obeys the same queue logic as \cref{ch:operations} --- cycle time between invite and conversion bounds how fast the loop spins.
+
+Whether ``funnel'' or ``flywheel'' is the right primitive is genuinely disputed \parencite{meyer2019marketing,vazirani2023flywheel}. The honest synthesis: loops do not abolish the funnel, they re-feed its top --- you still need \cref{eq:funnel-chain} to convert the traffic a loop delivers.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.62\linewidth]{growth-loop}
+  \caption{A growth loop: acquisition output (customers) re-enters as input (referrals, content, data). With loop coefficient $k>1$ (\cref{eq:viral-k}) the cycle is self-sustaining.}
+  \label{fig:growth-loop}
+\end{figure}
+
+A funnel sized by \cref{eq:funnel-chain}, a pipeline valued by \cref{eq:pipeline-ev}, and a loop measured by \cref{eq:viral-k} are the three shapes of digital demand. Which traffic to buy for them, and how, is \cref{ch:paid-acquisition-platforms}. \textcite{kumar2018customer} develop the CRM and customer-equity side in full.

@@ -1,0 +1,420 @@
+\chapter{Persuasion, Influence \& Negotiation}\label{ch:persuasion-influence}
+
+% Scope: evidence-based influence — field-experiment-validated principles, dual-process
+%   framing, principled negotiation (BATNA/reservation/ZOPA), organizational power,
+%   the trust equation. NEW (Part VII).
+% Value hook: influence converts a true value proposition into closed customers (CAC down),
+%   funded rounds, hires, and surplus captured (margin up) — all toward ROIC > WACC.
+%   Manipulation inverts it (short-term win, trust/LTV collapse). Closes the negotiation gap.
+% Draft per house style: flowing prose + example/admonition; running-SaaS worked examples.
+
+A product that creates genuine value still fails to capture it without the ability to
+persuade. The value-creation spine in this book runs from economic insight to operational
+execution, but every node on that spine --- closing a customer, funding a round, hiring an
+engineer, settling a supplier price --- requires a human decision to move in the right
+direction. Influence is the mechanism that converts a true value proposition into a closed
+sale (reducing CAC, as in \cref{eq:cac}), a signed term sheet, and captured surplus
+(widening margin and pushing ROIC above WACC, per \cref{eq:roic}). When influence
+techniques are instead used to manufacture a sale that the underlying product cannot
+sustain, the short-term conversion is reversed in the medium term through churn that
+collapses customer lifetime value (see \cref{eq:clv}). This chapter builds the
+evidence-based toolkit that separates legitimate persuasion from manipulation, and
+principled negotiation from zero-sum positional bargaining.
+
+
+\section{The Architecture of Influence}\label{sec:influence-principles}
+% complexity: 3
+
+Why do some messages move people while others dissolve into noise? The question has a
+structural answer grounded in field experiments, not anecdote. The popular treatment
+of this domain, \textcite{cialdini2021influence}, catalogues seven principles of compliance;
+the scientific foundation beneath those principles is a body of randomised field
+experiments that measure actual compliance behaviour in real environments, with
+pre-registered control conditions and quantified effect sizes.
+
+The most direct experimental evidence concerns descriptive norms --- the signal that
+``people like you, in your situation, behave this way.'' \textcite{goldstein2008field}
+conducted a field experiment inside a hotel, randomising towel-reuse messages across
+occupied rooms without guests' awareness. The standard environmental appeal (``Help save
+the environment'') produced a reuse rate of \qty{35.1}{\percent}. A general descriptive
+norm (``The majority of guests reuse their towels'') raised compliance to
+\qty{44.1}{\percent} --- a \qty{9}{\percent}point absolute lift, representing a roughly
+\qty{25.6}{\percent} relative increase over the control.
+% goldstein2008field: descriptive-norm lift vs control, hotel-towel field experiment
+A second condition tightened the norm to the individual's immediate context: ``\qty{75}{\percent}
+of guests who stayed in this room have reused their towels.'' This provincial norm lifted
+compliance further to \qty{49.3}{\percent}.
+% goldstein2008field: provincial-norm rate, second experiment
+The mechanism is the same one that governs conversion-rate optimisation: people use
+the observed behaviour of a reference group to resolve uncertainty about the correct
+action, and the more closely the reference group mirrors their own situation, the
+stronger the pull.
+
+Reciprocity has been measured with equivalent rigour in the field.
+\textcite{strohmetz2002field} randomised how restaurant servers delivered the final bill,
+introducing small unexpected gifts to measure tipping lift. A single mint raised tips by
+\qty{3.3}{\percent} relative to the no-gift control; two mints raised them by
+\qty{14.1}{\percent}.
+% strohmetz2002field: single-mint lift 3.3%, two-mint lift 14.1%, tipping field experiment
+The largest effect --- approximately a \qty{23}{\percent} relative increase --- occurred
+when the server delivered one mint, turned away, then returned to offer a second as a
+personalised exception.
+% strohmetz2002field: personalised-sequence peak ~23% relative lift
+Two features of this result matter for practitioners. First, magnitude: the gift was
+trivial in monetary terms; the compliance lift was not. Second, personalisation: the
+perception that the concession was tailored to this specific counterpart amplified the
+effect substantially. For a SaaS sales motion, a feature trial extension framed as an
+exclusive, unexpected accommodation for this prospect's specific evaluation context
+activates both properties simultaneously.
+
+These heuristic cues sit at the peripheral route of the Elaboration Likelihood Model
+(ELM), developed in full by \textcite{petty1986elaboration}. The ELM posits that persuasion
+travels one of two routes: when a buyer has high motivation and ability to think carefully,
+they follow the \emph{central route} --- weighing argument quality, scrutinising evidence,
+updating beliefs rationally. When motivation or ability is low --- distracted, time-poor,
+unfamiliar with the domain --- they follow the \emph{peripheral route}, relying on heuristic
+cues such as descriptive norms, authority signals, or the liking they feel for the sender.
+Central-route attitude change is durable and resistant to counter-argument; peripheral
+attitude change fades when the cue disappears. \textcite{carpenter2015meta} synthesised 134
+effect estimates from the ELM literature and confirmed this asymmetry quantitatively:
+argument quality yields a substantially larger persuasion effect when elaboration is high
+(central processing) than when it is low (peripheral processing).
+% carpenter2015meta: 134 effects, central-route argument-quality effect >> peripheral
+
+The practical design implication for a B2B pitch is the simultaneous satisfaction of both
+routes: rigorous economic evidence for the buyer who digs into the unit economics, and
+credible social-proof signals for the first thirty seconds before they decide to dig.
+Generic case studies (``thousands of teams use us'') exploit social proof poorly because
+the norm is too distant from the prospect's situation. The \textcite{goldstein2008field}
+finding points to a concrete prescription: segment social proof to match the prospect's
+exact context --- industry, company stage, regulatory environment --- and the compliance
+lift follows from the provincial-norm mechanism rather than from a broader but weaker
+authority halo.
+
+Connecting influence to the acquisition funnel (\cref{eq:funnel-chain}): each stage in
+the chain --- session to trial, trial to paid --- is a compliance decision. Social proof
+and reciprocity are conversion-rate multipliers operating on the denominator of CAC. A
+trial-to-paid conversion rate of \qty{25}{\percent} implies that three in four trials are
+lost without further action; adding a contextualised social-proof signal to the trial-end
+moment and a genuine reciprocity cue can shift that rate materially. The same mechanisms
+apply to each funnel gate.
+
+\begin{example}[Contextualised social proof at the trial-to-paid gate]
+The SaaS funnel converts \num{10000} sessions to \num{800} trials to \num{200} paid
+accounts per month, yielding a \qty{25}{\percent} trial-to-paid rate. CAC sits at
+\money{600} against a target LTV:CAC of \num{5.25}\texttimes{} (\cref{eq:ltv-cac}).
+
+The team adds two messages at the trial day-7 touchpoint: (1)~a provincial norm from
+a customer in the exact segment of the prospect (``\qty{73}{\percent} of Series~B
+fintech SaaS teams in your region converted to paid this quarter''), activating the
+\textcite{goldstein2008field} provincial-norm mechanism; (2)~a personalised reciprocity
+cue from a named account executive offering an extended onboarding session, framed as
+an exception specific to this prospect's integration complexity, activating the
+\textcite{strohmetz2002field} personalised-concession mechanism. Suppose a conservative
+\qty{4}{\percent}point improvement in trial-to-paid, from \qty{25}{\percent} to
+\qty{29}{\percent}, substantially below the field-experiment ceilings. That converts
+\num{800} trials to \num{232} paid accounts --- \num{32} incremental customers --- without
+changing sessions, trials, or the acquisition spend of \money{120000}. Effective CAC drops
+from \money{600} to approximately \money{517}. At a CLV of \money{3150} (\cref{eq:clv}),
+those \num{32} additional customers represent \money{100800} in present-value customer
+equity created at zero marginal outlay. The lever is framing at a bottleneck gate, not
+additional media spend.
+\end{example}
+
+\begin{admonition}{Warning}
+The same mechanisms that enable ethical persuasion can be weaponised. Fake scarcity
+(``only 3 left'' when the shelf is full), fabricated social proof (purchased reviews,
+inflated user counts), or manufactured urgency are dark patterns: they lift the immediate
+conversion metric and collapse the two things that sustain it. Trust evaporates on the
+first contradiction, driving churn that destroys the CLV (\cref{eq:clv}) the conversion
+was meant to create. The genre of business literature that treats manipulation as strategy
+--- \textcite{greene1998laws} being one prominent example --- mistakes the short-term
+tactical win for durable competitive advantage. The long-run evidence, discussed in
+\cref{sec:power-trust}, runs in the opposite direction: trust compounds into LTV;
+manipulation compounds into churn and reputation damage.
+\end{admonition}
+
+
+\section{The Psychology of the Pitch}\label{sec:pitch-psychology}
+% complexity: 3
+
+Every pitch is an exercise in framing: the same facts, presented differently, produce
+different decisions. This is not a trick of rhetoric --- it is the documented structure of
+human value perception. The deeper structural mechanism is the asymmetric value function
+formalised in \emph{cumulative prospect theory} by \textcite{tversky1992cumulative}. The
+popular treatment of this insight appears in \textcite{kahneman2011}; the primary
+quantitative evidence is the 1992 paper, which derives the loss-aversion coefficient from
+experimental choices over real monetary outcomes.
+
+People do not evaluate outcomes in absolute magnitudes; they evaluate them as gains or
+losses relative to a reference point, and losses weigh approximately \num{2.25} times as
+heavily as equivalent gains ($\lambda \approx 2.25$, \cref{eq:prospect}).
+% tversky1992cumulative: loss-aversion coefficient lambda ~= 2.25, cumulative prospect theory
+The mental-accounting effects formalised by \textcite{thaler1985mental} --- and discussed
+in the pricing chapter's treatment of psychological framing at \cref{sec:psych-pricing}
+--- are the direct application to purchase and payment decisions: the same dollar amount
+evoking loss feels worse than the same amount evoking gain, so positioning an offer as an
+avoided loss rather than a captured gain increases the felt urgency to act. With
+$\lambda \approx 2.25$, a pitch that frames a benefit as ``you are currently losing
+\money{400}/month'' exerts more than twice the psychological gravity of a pitch that
+frames the identical benefit as ``you could gain \money{400}/month''.
+% tversky1992cumulative: lambda ~= 2.25 implies loss framing ~2x gain framing in persuasive gravity
+
+The anchoring heuristic, identified by \textcite{tversky1974judgment}, is the companion
+mechanism: the first number in a conversation exerts a gravitational pull on all subsequent
+estimates. \textcite{galinsky2001anchoring} demonstrated in controlled experiments that
+the first offer in a negotiation correlates with the final settlement price at
+$r = .93$ in undefended conditions, accounting for over half --- and in some specifications
+up to \qty{80}{\percent} --- of the variance in the final price.
+% galinsky2001anchoring: first-offer / final-settlement r = .93, up to 80% variance explained
+\textcite{northcraft1987anchoring} extended the result to domain experts: professional
+real-estate agents given different listing-price anchors produced property appraisals that
+tracked the anchor, even when they believed their assessments were based on objective
+market analysis.
+% northcraft1987anchoring: expert anchoring, real-estate professionals susceptible to listing-price anchor
+In a pitch context, anchoring works before any negotiation begins: naming the cost of
+inaction, or the full value of the outcome, before naming the price sets the reference
+against which the price will be judged. In a negotiation context the same logic applies
+within the ZOPA, treated in full in \cref{sec:negotiation}.
+
+Dual-process theory distinguishes System~1 (fast, automatic, pattern-driven, emotionally
+weighted) from System~2 (slow, deliberate, effortful, logical). System~1 fires first and
+shapes the frame within which System~2 then operates. A slide deck that opens with a
+visceral customer pain activates System~1 empathy before the investor's System~2 begins
+evaluating the unit economics. Reversing the order --- leading with the spreadsheet ---
+forces System~2 into a posture of critique before any emotional foothold exists. The
+practical prescription is to sequence: hook System~1 with a vivid problem, then satisfy
+System~2 with rigorous evidence. The ELM (\cref{sec:influence-principles}) explains why
+both routes must be satisfied for the attitude change to persist.
+
+For a pitch, loss-aversion translates to a disciplined reframing of the value proposition.
+The question is not ``what will you gain?'' but ``what are you currently losing, and for
+how long?'' The reference point is the status quo, and the status quo should cost the
+counterpart something visible.
+
+\begin{example}[Framing the enterprise tier as an avoided loss]
+The SaaS offers an enterprise tier at \money{299}/month (against the standard tier at
+\money{50}/month). Under a gain frame, the pitch reads: ``Upgrade to get advanced
+analytics, priority support, and SSO --- value worth roughly \money{200}/month to teams
+your size.'' Under a loss frame anchored to the cost of the status quo: ``Teams at your
+scale without a unified analytics layer typically lose \qty{15}{\percent} of their
+implementation efficiency to manual reconciliation --- at your headcount that is roughly
+\money{400} of unproductive labour per month. The enterprise tier closes that gap for
+\money{299}.''
+
+The substance is identical; the reference point has shifted from zero-gain to an ongoing
+loss. With $\lambda \approx 2.25$ \parencite{tversky1992cumulative}, prospect theory
+(\cref{eq:prospect}) predicts that a buyer in the loss domain becomes risk-seeking ---
+more willing to pay for certainty of avoiding the loss than they would be in the gain
+domain for an equivalent upside. The \money{299} tier is now priced below the
+\money{400} monthly pain, framing it not as a cost but as a \money{101}-per-month
+recovery. System~1 closes the argument before System~2 re-opens it. To support that
+System~2 close, the central route (\cref{sec:influence-principles}) demands rigorous
+ROI evidence: a testimonial from a named customer with attributed efficiency outcomes
+and a time-to-payback figure that a finance approver can verify.
+\end{example}
+
+
+\section{Negotiation: BATNA, Reservation Value \& ZOPA}\label{sec:negotiation}
+% complexity: 4
+
+Persuasion shifts beliefs; negotiation allocates the surplus that follows. The principled
+negotiation framework developed at the Harvard Negotiation Project --- the popular
+treatment being \textcite{fisher2011getting} --- rests on a quantitative scaffold whose
+formal derivation is due to \textcite{raiffa1982art}. Its structural prescriptions ---
+separate people from the problem, focus on interests not positions, invent options for
+mutual gain, insist on objective criteria --- are mechanisms for reaching agreements that
+are efficient (no value left on the table) and durable (both parties perceive the process
+as fair, sustaining the relationship through future transactions).
+
+Before entering any negotiation, a party must answer three questions privately. What is
+my BATNA --- Best Alternative to a Negotiated Agreement, the outcome I can achieve without
+this deal? What, in money terms, does my BATNA imply as a walk-away price? And where does
+the counterpart's equivalent boundary lie? \textcite{kim2005power} establish from the
+organisational-behaviour literature that structural power in a negotiation derives from the
+strength of the BATNA: a party who can credibly walk away holds position without bluffing,
+because the threat is real.
+% kim2005power: BATNA strength as source of negotiation power, structural account
+The monetary expression of the BATNA is the \emph{reservation value} --- the point at or
+beyond which the deal is worse than no deal.
+
+\begin{equation}\label{eq:reservation}
+  RV \;=\; U(\mathrm{BATNA}),
+\end{equation}
+where \(U(\mathrm{BATNA})\) is the monetary utility of the best outside alternative, fully
+costed (including transition costs, time, and forgone optionality). The reservation value
+is not a negotiating position; it is a private calculation, fixed before the conversation
+begins. Revealing it is almost always a mistake.
+
+The \emph{Zone of Possible Agreement} (ZOPA) is the interval between the two parties'
+reservation values in which both prefer a deal to their outside option:
+\begin{equation}\label{eq:zopa}
+  \mathrm{ZOPA} \;=\; [\,RV_{\text{seller}},\; RV_{\text{buyer}}\,],
+\end{equation}
+with width \(\Delta = RV_{\text{buyer}} - RV_{\text{seller}}\). If \(\Delta > 0\) a deal
+is rationally possible and the negotiation is about how to split the surplus \(\Delta\).
+If \(\Delta \leq 0\) no single-issue deal exists at face value, and the parties must either
+introduce new variables (payment timing, volume commitments, service terms) to shift one
+or both reservation values, or walk away. Every tactic --- anchoring, concession pacing,
+packaging --- is ultimately a mechanism for moving the eventual settlement point within
+the ZOPA toward the tactician's reservation value.
+
+The anchoring results of \textcite{galinsky2001anchoring} bear directly on the question of
+who makes the first offer inside the ZOPA. The high $r = .93$ correlation between first
+offer and final settlement in undefended conditions means that the party who anchors first
+--- at an ambitious but ZOPA-respecting value --- structurally advantages itself.
+% galinsky2001anchoring: first-offer anchor advantage applies within the ZOPA
+\textcite{northcraft1987anchoring} confirm that even expert negotiators absorb the anchor
+and adjust insufficiently; the defence, also identified by \textcite{galinsky2001anchoring},
+is to focus exclusively on one's own target price and the counterpart's BATNA rather than
+engaging with the anchor as a reference point.
+% galinsky2001anchoring: focusing on own target / counterpart BATNA nullifies anchor effect
+
+\begin{example}[Enterprise deal and a Series-A term sheet]
+\textbf{Enterprise deal.} The SaaS is negotiating an enterprise contract. The seller's
+BATNA is to close three additional mid-market accounts at \money{18000} each (total
+\money{54000} annually), with lower support overhead; \(RV_{\text{seller}} = \money{60000}\)
+after netting transition costs. The enterprise buyer's BATNA is a custom internal build
+estimated at \money{110000} in engineering and maintenance;
+\(RV_{\text{buyer}} = \money{100000}\) after a \qty{10}{\percent} risk haircut on build
+uncertainty. The ZOPA is \([\money{60000}, \money{100000}]\), width
+\(\Delta = \money{40000}\). The seller opens at \money{95000} --- an anchor near the
+buyer's ceiling, grounded in stated platform value and named comparable deployments ---
+and the negotiation settles at \money{82000}: within the ZOPA, above both reservation
+values, and sustainable for both. The \money{22000} surplus above the seller's reservation
+value and the \money{18000} surplus below the buyer's reflect the anchoring advantage of
+the first move and the concession discipline of both parties.
+
+\textbf{Series-A term sheet.} The same logic applies to equity financing
+(\cref{ch:fundraising-and-dilution}). Suppose the founder's BATNA is a competing term
+sheet at a \money{12000000} pre-money valuation. \(RV_{\text{founder}}\) is the dilution
+implied by that valuation plus the cost of delaying. The lead investor's BATNA is
+deploying capital in a comparable company at a \money{15000000} pre-money; their
+\(RV_{\text{investor}}\) is the maximum pre-money at which the deal still meets their
+return hurdle. The ZOPA is the valuation band between those two thresholds. The founder
+who anchors first with a specific pre-money figure supported by a named comparable ---
+objective-criteria-backed, per \textcite{raiffa1982art} --- pulls the settlement toward
+their reservation value. The investor who delays revealing their portfolio-wide hurdle
+rate protects theirs. Both are operating within the principled-negotiation framework.
+\end{example}
+
+\begin{admonition}{Warning}
+Two failure modes are common. First, anchoring beyond the counterpart's reservation
+value --- opening so aggressively that the other party exits rather than counters ---
+collapses the ZOPA by signalling bad faith. The anchor must be ambitious but plausible,
+grounded in objective criteria. Second, the winner's curse: in competitive bidding, the
+winner is systematically the party that most overestimated the asset's value
+\parencite{thaler1988winnerscurse}. A founder who ``wins'' a hire by bidding far above
+the candidate's reservation value has overpaid relative to market; a venture firm that
+wins a deal by bidding far above its return hurdle has destroyed expected return.
+% thaler1988winnerscurse: winner's curse — winning bidder overestimates asset value
+Both errors are cured by anchoring the reservation value to the BATNA's monetary utility,
+not to desire.
+\end{admonition}
+
+
+\section{Power \& Sustainable Influence}\label{sec:power-trust}
+% complexity: 3
+
+The negotiation frameworks of \cref{sec:negotiation} assume that the parties meet at the
+table. Before the table, power determines whether the meeting happens, what agenda gets
+set, and whose framing shapes the opening anchor. \textcite{pfeffer2010power} provides the
+evidence-based organisational account: power accrues to those who control critical resource
+dependencies, build broad coalitions, and demonstrate competence visibly. The contrast with
+the popular mythology of the genre is worth naming briefly. \textcite{greene1998laws}
+constructs a taxonomy of Machiavellian tactics from historical anecdotes; it is not
+derived from systematic evidence. The strategies it endorses --- concealment, strategic
+dependence-creation --- are precisely those that destroy the trust required to retain
+employees, partners, and customers over time. Pfeffer's structural account describes
+dynamics that compound; anecdotal manipulation tactics erode.
+
+The durable foundation of sustainable influence is trust. \textcite{maister2000trusted}
+decompose trust into its structural components as a practitioner heuristic:
+\begin{equation}\label{eq:trust}
+  T \;=\; \frac{C + R + I}{S},
+\end{equation}
+where \(C\) is credibility (the quality of what you say), \(R\) is reliability (the
+consistency between what you say and what you do), \(I\) is intimacy (the degree to which
+the counterpart believes you will handle sensitive information with discretion), and \(S\)
+is self-orientation (the degree to which the counterpart perceives your interest as being
+in yourself rather than in them). The structure of the equation is the operational insight:
+\(S\) is in the denominator, meaning that even high credibility and reliability collapse
+if the counterpart reads the advisor as self-serving.
+
+The practitioner heuristic of \cref{eq:trust} is grounded in the integrative organisational
+model of \textcite{mayer1995model}, who formalise trustworthiness as an additive structure
+of three independently observable dimensions: ability (domain-specific competence),
+benevolence (the perception that the trustee desires the trustor's success, not merely their
+own), and integrity (word--deed consistency and perceived adherence to acceptable principles).
+\textcite{colquitt2007meta} provide the meta-analytic validation across 132 independent
+samples: the corrected correlation between each dimension and the resulting level of trust
+is \(r_c = .67\) for ability, \(r_c = .63\) for benevolence, and \(r_c = .62\) for
+integrity.
+% colquitt2007meta: ability r_c=.67, benevolence r_c=.63, integrity r_c=.62, N~6800–7300 per dimension
+The three components contribute with near-equal weight --- no single dimension dominates ---
+which matches the balanced numerator structure of \cref{eq:trust}. Critically, trust
+translates directly into the risk-taking behaviour that makes a procurement officer sign a
+multi-year contract: the corrected correlation between trust and risk-taking is
+\(r_c = .42\) (\(N = 1{,}384\)) \parencite{colquitt2007meta}.
+% colquitt2007meta: trust -> risk-taking r_c=.42, N=1384
+
+Reducing self-orientation --- asking questions rather than pitching, disclosing conflicts
+proactively, occasionally directing a client to a competitor who is a better fit ---
+multiplies the trust numerator without adding to it. This is not mere altruism: a customer
+who enters a contract with high trust (\(T\)) exhibits lower churn (the monthly churn rate
+of \qty{0.65}{\percent} assumed in the running model is predicated on customers remaining
+convinced of the vendor's benevolence through each renewal cycle), higher willingness to
+expand (moving from the standard \money{50}/month tier toward the enterprise tier), and
+lower CAC through referrals that originate inside the trust network rather than from paid
+acquisition (\cref{eq:cac}). The ROIC implication (\cref{eq:roic}) follows directly: trust
+lowers the CAC numerator, lowers churn-driven attrition in the CLV denominator, and widens
+margin --- each of which raises the return on invested capital.
+
+\begin{admonition}{Contested}
+\Cref{eq:trust} is a practitioner heuristic, not an estimated regression equation.
+\textcite{maister2000trusted} derive it from consulting practice, not from a controlled
+empirical study. Its virtue is structural --- it correctly identifies \(S\) as the
+multiplicative divisor --- but the precise ratio is not empirically calibrated. The
+underlying science is \textcite{mayer1995model} and \textcite{colquitt2007meta}; the
+equation is the mnemonic that makes the science operational. Use the component correlations
+from \textcite{colquitt2007meta} to prioritise where to invest: because ability, benevolence,
+and integrity contribute nearly equally, a deficit in any single dimension is not
+compensated by surplus in the others.
+\end{admonition}
+
+\begin{example}[Founder trust as a compounding asset]
+Consider a SaaS founder building investor and talent relationships over two years before
+a Series-A raise (\cref{ch:fundraising-and-dilution}). The founder takes four visible
+steps, each corresponding to a component of \cref{eq:trust}:
+
+\begin{itemize}
+  \item \textbf{Credibility (\(C\)):} publishes monthly metrics updates to a small list
+    of angel investors and operators, including months when growth was below target, with
+    honest attribution of root cause. This builds the \emph{ability} signal of
+    \textcite{mayer1995model} through demonstrated domain competence and the integrity
+    signal through word--deed consistency.
+  \item \textbf{Reliability (\(R\)):} delivers every commitment made to early investors
+    --- product roadmap dates, hiring milestones, callback timelines --- without exception
+    over eight quarters. The \(r_c = .62\) integrity channel \parencite{colquitt2007meta}
+    compounds with each kept promise.
+    % colquitt2007meta: integrity r_c=.62, trust antecedent
+  \item \textbf{Intimacy (\(I\)):} advises two prospective hires, in confidence, not to
+    join the company yet because the role is not well-defined; both join one year later
+    when the role is real. This demonstrates benevolence (the \(r_c = .63\) channel)
+    at a visible cost to short-term hiring velocity.
+    % colquitt2007meta: benevolence r_c=.63, trust antecedent
+  \item \textbf{Self-orientation (\(S\)):} in investor meetings, opens with questions
+    about the firm's current portfolio concerns before describing the company's needs.
+\end{itemize}
+
+The measurable consequences appear at the raise. Referral-sourced inbound from the trust
+network costs zero in paid CAC (\cref{eq:cac}). Two of the three Series-A investors the
+founder most wanted take meetings without a warm introduction, because the credibility
+record is already legible. The lead closes at a pre-money valuation in the upper half of
+the modelled range, partly because investors with high \(T\) scores command a lower
+uncertainty discount. Three of the six key engineering hires come through talent referrals
+from the candidate the founder previously advised away --- trust converting into recruitment
+CAC elimination. The compounding mechanism is the same as in \cref{eq:clv}: each period
+of trust-reinforcing behaviour raises the relationship's net present value by lowering
+the implicit discount rate the counterpart applies to future interactions.
+\end{example}

@@ -1,0 +1,140 @@
+\chapter{Customer Economics}\label{ch:customer-economics}
+
+% Scope: CLV, CAC, LTV:CAC, payback, cohort retention curves, shifted-beta-geometric survival.
+% Cross-link: CLV is the growing-perpetuity twin -- \cref{eq:gordon} in \cref{ch:corporate-finance-core};
+%   its discount rate is the WACC (\cref{ch:risk-and-capital-structure}); LTV:CAC mirrors ROIC > WACC
+%   (\cref{ch:value-creation}). Metric lookup forms live in \cref{ch:metrics-catalog}.
+
+Every business is a portfolio of customer relationships. The discipline of customer economics translates that portfolio into four numbers that determine whether the business model works: how much a customer is worth (CLV), how much acquiring one costs (CAC), how long until acquisition pays back, and whether the underlying retention rate supports the assumed value.
+
+\section{Customer Lifetime Value}\label{sec:clv}
+% complexity: 3
+
+How much can the firm rationally spend to acquire a customer --- and what is the ceiling beyond which acquisition destroys value regardless of volume? A customer relationship is a stream of margin payments that decays over time as customers churn. If that stream grows at rate \(g\) and is discounted at rate \(r\), its present value is identical in structure to the Gordon Growth Model for a stock. CLV is the marketing twin of \cref{eq:gordon}.
+
+Let \(m\) be the annual margin per customer (contribution after variable costs), \(r\) the firm's discount rate, and \(g\) the annual growth rate of \(m\) (from upsell, price increases, and expanded usage). The CLV growing perpetuity is:
+\begin{equation}\label{eq:clv}
+  \mathrm{CLV} \;=\; \frac{m}{\,r - g\,} .
+\end{equation}
+This mirrors \cref{eq:gordon} exactly: \(D \to m\), the cash yield becomes the annual customer margin. The net drag \((r-g)\) is the churn-equivalent denominator --- under constant churn \(c\), the annual retention rate is \((1-c)^{12}\) and in continuous time \(r-g\) absorbs \(c\) as well as the discount rate.
+
+\cref{eq:clv} converges only when \(r > g\); equivalently, when the net churn-plus-discount rate exceeds the margin growth rate. For contractual SaaS with net revenue retention above \qty{100}{\percent}, \(g\) can exceed \(r\) in the near term --- the perpetuity formula then overstates value and a finite-horizon model is required. The perpetuity is also exact only under constant churn; heterogeneous-churn cohorts require the shifted-beta-geometric model (\textcite{fader2005rfm}).
+
+\begin{example}[Computing the CLV ceiling for a SaaS product]
+The SaaS contributes \qty{42}{\percent} margin on \money{50}/month ARPU: \(m = \money{21}/\text{month} = \money{252}/\text{year}\). Discount rate (WACC) \(r = \qty{11}{\percent}\) (\cref{eq:wacc}), steady-state margin growth \(g = \qty{3}{\percent}\):
+\[
+  \mathrm{CLV} \;=\; \frac{\money{252}}{0.11 - 0.03} \;=\; \frac{\money{252}}{0.08} \;=\; \money{3150}.
+\]
+The decision this number informs: \money{3150} is the \emph{ceiling} on economically rational acquisition spend per customer. Each step that follows tightens that ceiling toward an operational target. Cross-check against \cref{ch:corporate-finance-core}: the cohort PV worked there (\money{6562500}) is the \emph{aggregate} form; \money{3150} is the per-customer equivalent, consistent once the cohort size is accounted for.
+\end{example}
+
+\begin{admonition}{Warning}
+Conflating gross revenue with margin. CLV uses \emph{contribution margin}, not ARR or revenue. Including cost of goods sold, hosting, and customer success in \(m\) requires subtracting them explicitly. A \money{600}/year contract at \qty{70}{\percent} gross margin and \qty{60}{\percent} contribution margin has \(m = \money{360}\), not \money{600} --- a \qty{40}{\percent} overstatement that cascades into every downstream calculation.
+\end{admonition}
+
+The shifted-beta-geometric (sBG) model (\textcite{fader2005rfm}) is the non-contractual counterpart: it models individual-level churn probability as drawn from a beta distribution, producing a survival curve that is concave from above (high early churn, slower attrition among survivors). The sBG gives a closed-form expected CLV without the perpetuity assumption and is more accurate for cohorts with heterogeneous engagement. CLV is the cornerstone of \cref{eq:ltv-cac} and sets the acquisition ceiling for every channel in \cref{ch:paid-acquisition-platforms}. Its discount rate is the WACC developed in \cref{ch:risk-and-capital-structure}. \textcite{gupta2004customer} is the canonical CLV derivation; the corporate-finance foundations are in \textcite{brealey2020}.
+
+\section{Customer Acquisition Cost}\label{sec:cac}
+% complexity: 2
+
+What does the firm actually spend, fully loaded, to bring one new customer from cold to contracted --- and which cost items are being illegitimately excluded? CAC has one job: to be compared against CLV. Its accuracy depends entirely on including all the spend required to generate a conversion --- including the spend that does not feel like marketing.
+
+In a given period, let \(S\) be total sales-and-marketing expenditure (salaries, tools, media spend, agency fees, events) and \(N\) the number of \emph{new} customers acquired:
+\begin{equation}\label{eq:cac}
+  \mathrm{CAC} \;=\; \frac{S}{N} .
+\end{equation}
+The period should match the average sales cycle length (not the calendar month if cycles span multiple months). \(N\) counts \emph{new} logos only --- upsells and expansions are not acquisitions.
+
+\cref{eq:cac} is a period average. During investment phases (ramping a sales team, launching a new channel), CAC will be elevated before the resulting pipeline closes --- lagging attribution makes it look worse than it is. In blended metrics, a high organic/referral channel can suppress blended CAC, masking a paid channel that is uneconomic on its own.
+
+\begin{example}[Fully loaded vs blended CAC]
+The SaaS spends \money{120000}/month on paid acquisition (media + agency + tooling), plus \money{40000}/month in sales salaries attributable to new-logo acquisition. Total \(S = \money{160000}\). New customers \(N = 200\). But if the \money{40000} in sales salaries is excluded:
+\[
+  \mathrm{CAC}_{\text{blended}} \;=\; \frac{\money{120000}}{200} \;=\; \money{600}.
+\]
+\[
+  \mathrm{CAC}_{\text{fully\ loaded}} \;=\; \frac{\money{160000}}{200} \;=\; \money{800}.
+\]
+At CLV = \money{3150}, the fully loaded \(\mathrm{LTV:CAC} = 3150/800 = 3.94\times\) --- still above the 3× floor, but materially below the 5.25× reported on media spend alone. The decision: is the sales-assisted motion worth the cost premium versus self-serve? The answer requires cohort analysis by acquisition channel.
+\end{example}
+
+\begin{admonition}{Warning}
+Two cardinal sins. First, \emph{excluding salaries and tooling}: if two salespeople close the deal, their loaded cost belongs in \(S\). Second, \emph{blending new and existing}: a customer success expansion that books as a new order is not a new acquisition. Both errors inflate apparent efficiency and lead to chronic under-investment in marketing.
+\end{admonition}
+
+Channel-level CAC (paid search CAC, outbound CAC, referral CAC) is more actionable than blended CAC. Pair channel CAC with channel-level CLV (do customers from channel \(X\) retain better?) to compute channel-level LTV:CAC. The channel mix that maximises portfolio LTV:CAC is the right answer; the channel with the lowest headline CAC is rarely it. CAC feeds directly into the payback and ratio calculations below. Its accuracy is a prerequisite for rational budget allocation across the paid channels in \cref{ch:paid-acquisition-platforms}. \textcite{bendle2020marketing} covers the measurement conventions.
+
+\section{LTV:CAC and Payback Period}\label{sec:ltv-cac}
+% complexity: 3
+
+Is the business generating more value per customer than it spends to acquire them --- and how long is capital tied up before the acquisition is recovered? LTV:CAC is the per-customer form of the ROIC/WACC test: does the return on the marginal acquisition exceed the cost of the capital deployed? A ratio below 1 destroys value by definition; a ratio of 3 is the industry floor because it leaves room for the uncertainty in both LTV and CAC estimates. Payback period converts the same test into a liquidity question: how long until the firm has its money back?
+
+The ratio:
+\begin{equation}\label{eq:ltv-cac}
+  \mathrm{LTV:CAC} \;=\; \frac{\mathrm{CLV}}{\mathrm{CAC}} .
+\end{equation}
+LTV:CAC \(\ge 3\) is the conventional floor --- not an arbitrary rule, but an approximation of the ROIC \(>\) WACC condition of \cref{eq:roic} when CLV uncertainty is roughly \(\pm 30\%\). The payback period, in months:
+\begin{equation}\label{eq:cac-payback}
+  \mathrm{Payback} \;=\; \frac{\mathrm{CAC}}{\text{monthly margin}} ,
+\end{equation}
+where monthly margin is \(m/12\). Payback \(< 12\) months is the SaaS benchmark for an efficient, capital-light model; above 24 months requires substantial growth capital to bridge the gap.
+
+LTV:CAC ignores time: a ratio of 5 with a 36-month payback is worse than a ratio of 3 with a 12-month payback from a working-capital standpoint. Use both metrics together. The ratio also inherits all the model uncertainty in CLV: a perpetuity-based CLV with optimistic \(g\) produces a misleadingly high ratio.
+
+\begin{example}[Diagnosing the ratio/payback disconnect]
+Using the media-spend CAC of \money{600} and CLV of \money{3150}:
+\[
+  \mathrm{LTV:CAC} \;=\; \frac{\money{3150}}{\money{600}} \;=\; 5.25\times .
+\]
+Monthly margin: \(m/12 = \money{252}/12 = \money{21}\). Payback:
+\[
+  \mathrm{Payback} \;=\; \frac{\money{600}}{\money{21}} \;\approx\; 28.6 \;\text{months}.
+\]
+The ratio is strong (5.25×); the payback is long (28.6 months). The disconnect arises because ARPU is low (\money{50}/month) and margin is thin (\money{21}/month). The business has a good unit economics ratio but a capital-intensive path to that return. Implications: (a) the firm needs growth capital to sustain \money{120000}/month in spend before recovering it; (b) any price increase or upsell that lifts ARPU to \money{70}/month cuts payback to \(\approx 20\) months, a qualitative improvement. This is exactly the ROIC \(>\) WACC test of \cref{eq:roic}: the per-customer spread is positive, but the capital velocity is slow. The business model implications are in \cref{ch:business-models}; the WACC denominator is developed in \cref{ch:risk-and-capital-structure}.
+\end{example}
+
+\begin{admonition}{Warning}
+Using LTV:CAC to justify indefinite growth spend. The ratio says nothing about the \emph{marginal} customer. The 201st customer acquired in a month may have a much lower CLV than the first 200 (diminishing returns to the channel). Track LTV:CAC at the marginal unit, not the average, by auditing cohort quality by acquisition month and channel.
+\end{admonition}
+
+The theoretically correct version of \cref{eq:ltv-cac} accounts for the time pattern of the LTV cash flows and the time pattern of CAC spending (some spend precedes the sale by months). A proper NPV of acquisition (\(NPV_{\text{acq}} = CLV - CAC\)) captures this and reduces to \cref{eq:ltv-cac} only when CAC is a lump sum at time zero. For long-cycle enterprise sales, the NPV form materially differs from the ratio. The LTV:CAC and payback metrics are the dashboards of \cref{ch:metrics-catalog} and the primary constraints on the paid-channel budgets of \cref{ch:paid-acquisition-platforms}. The ROIC parallel is in \cref{ch:value-creation}. \textcite{gupta2004customer} and \textcite{bendle2020marketing} provide the canonical treatments.
+
+\section{Cohort Retention and Survival}\label{sec:retention}
+% complexity: 4 -> reuse figure retention_curve
+
+Is the CLV model's assumed churn rate consistent with what cohorts actually do --- and how does the survival curve shape change the value estimate? CLV is only as reliable as its churn assumption. Most models assume a constant monthly churn rate, producing an exponential survival curve. Real cohorts exhibit \emph{concave} survival (high early churn, slower attrition among survivors): new customers who survive month 3 are systematically more loyal than the average customer at month 0. Fitting a constant rate to a concave curve overestimates early-period churn and underestimates tail retention.
+
+Under constant monthly churn rate \(c\), the fraction of an initial cohort still active after \(t\) months is:
+\begin{equation}\label{eq:retention}
+  S(t) \;=\; (1 - c)^{t} .
+\end{equation}
+The area under the survival curve \(S(t)\) from \(t=0\) to \(\infty\) equals the expected customer lifetime in months; multiplied by monthly margin \(m/12\), it recovers CLV. For a constant-churn model, \(\int_0^\infty (1-c)^t\,dt = 1/c\) and CLV \(= m/(12c)\) --- consistent with \cref{eq:clv} when \(g=0\) and \(r\approx 12c\) (small-\(c\) approximation).
+
+\cref{eq:retention} assumes all customers in a cohort have the same churn probability \(c\) at every period --- the constant-hazard assumption. It implies the survival curve is exponential and memoryless (a customer who has survived 24 months is no safer than one at month 1). Empirically, B2B SaaS survival is strongly concave: high-risk customers leave early, so survivors are a selected, lower-risk pool. The sBG model (\textcite{fader2005rfm}) relaxes both assumptions.
+
+\begin{example}[Reading the survival curve against the CLV area]
+Monthly churn \(c = \qty{0.65}{\percent}\) (consistent with the fact sheet: net retention rate \(r - g = \qty{8}{\percent}/\text{yr}\)). From \cref{eq:retention}:
+
+\[
+  S(12) \;=\; (1 - 0.0065)^{12} \;\approx\; 0.9247.
+\]
+
+After 12 months, \qty{92.5}{\percent} of the cohort remains --- roughly \qty{7.5}{\percent} lost. At 36 months:
+\[
+  S(36) \;=\; (1 - 0.0065)^{36} \;\approx\; 0.792.
+\]
+About \qty{21}{\percent} lost by year three. \cref{fig:retention_curve} shows the survival curve for this cohort against the CLV area it implies: the shaded area under the curve (weighted by monthly margin) converges to \money{3150} per customer (\cref{eq:clv}). The curve is nearly linear at this low churn rate --- a warning sign that the constant-hazard assumption may \emph{over}-predict early churn for a B2B product with high switching costs. A careful cohort study would re-examine month-1 and month-2 dropout rates separately.
+\end{example}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{retention_curve}
+  \caption{Monthly cohort survival curve at \(\qty{0.65}{\percent}\) monthly churn (\cref{eq:retention}). The shaded area under the curve, weighted by monthly margin \money{21}, converges to the CLV of \money{3150} (\cref{eq:clv}). The near-linear shape at low churn rates is characteristic of B2B products with high switching costs.}
+  \label{fig:retention_curve}
+\end{figure}
+
+\begin{admonition}{Warning}
+Measuring churn on monthly active users rather than on contracted customers. Usage churn (a customer who stops logging in) leads contracted churn (formal cancellation) by weeks or months in SaaS. Track both, treat usage churn as the early-warning signal, and intervene before the contractual event.
+\end{admonition}
+
+Survival analysis from the biostatistics literature (Kaplan-Meier estimator, Cox proportional hazards) applies directly to customer cohorts. Kaplan-Meier gives a non-parametric survival curve that handles censored observations (customers still active at the measurement date); Cox regression identifies covariates (segment, acquisition channel, product tier) that predict churn hazard. These are the production-grade tools behind the constant-hazard simplification of \cref{eq:retention}. The retention curve is the empirical test of every assumption in \cref{eq:clv}. Run it on every cohort quarterly. Deviations from the expected curve are the earliest signal of product-market fit problems or competitive erosion --- before they show up in ARR. \textcite{fader2005rfm} develop the survival models; \textcite{gupta2004customer} connects retention to value.

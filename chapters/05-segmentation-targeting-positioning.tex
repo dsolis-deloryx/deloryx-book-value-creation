@@ -1,0 +1,143 @@
+\chapter{Segmentation, Targeting, Positioning}\label{ch:segmentation-targeting-positioning}
+
+% Scope: STP, perceptual maps, category entry points, jobs-to-be-done.
+% Cross-link: the target segment is operationalised as a paid audience (\cref{ch:paid-acquisition-platforms}).
+
+Markets are not homogeneous. STP is the mechanism that converts a heterogeneous market into a single beachhead position: segment it, score and choose a target, and then stake a claim in the customer's mind that competitors cannot cheaply replicate.
+
+\section{Segmentation}\label{sec:segmentation}
+% complexity: 3
+
+Which cuts of the market are distinct enough that different value propositions and go-to-market motions are required --- and which differences are noise that a single offering can span? A segment is only useful if it is addressable and actionable. Sorting customers by height is a valid partition but not a useful one. The goal is to find groupings where customers within a segment respond to the same offer and customers across segments respond differently enough to justify a different one.
+
+Four complementary bases identify the dominant cut for most B2B and B2C markets:
+
+\begin{description}
+  \item[Demographic / firmographic] Age, income, company size, industry vertical, ARR band. Cheap to measure; weak predictor of need.
+  \item[Psychographic] Values, risk tolerance, growth orientation. Stronger predictor; harder to operationalise in media buying.
+  \item[Behavioral] Usage rate, feature adoption, purchase recency, switching history. The strongest predictor of response; directly observable in product data.
+  \item[Needs-based] Underlying job the customer is trying to accomplish. Cuts across demographic groups; maps cleanly to JTBD (\cref{sec:jtbd}).
+\end{description}
+
+A useful segment passes the \emph{MASAD} criteria: \textbf{M}easurable (you can size it), \textbf{A}ccessible (you can reach it with a channel), \textbf{S}ubstantial (big enough to justify a dedicated offer), \textbf{A}ctionable (you can respond to its needs), and \textbf{D}ifferentiated (responds differently from adjacent segments). Segments that are too granular produce offers too narrow to scale; too broad and the single value proposition satisfies nobody fully. Needs-based segmentation depends on customer articulation --- customers often do not know or cannot state what job they are hiring the product to do.
+
+\begin{example}[Segmenting a B2B SaaS]
+The running B2B SaaS serves two candidate segments: \emph{SMB} (1--50 seats, median ARR \money{6000}, self-serve motion) and \emph{mid-market} (50--500 seats, median ARR \money{60000}, field-sales motion). Both pass MASAD. The behavioral difference is decisive: SMB customers activate within a week on self-serve; mid-market requires a 90-day implementation with an onboarding lead. The same offer cannot serve both without degrading one. The decision is which to prioritise --- that requires scoring (\cref{sec:targeting}).
+\end{example}
+
+\begin{admonition}{Warning}
+Demographic segmentation masquerading as needs-based. Splitting by company size is a firmographic cut, not a needs cut. Two 200-person companies may want completely different outcomes from project-management software. Always ask: do they respond differently to the same message, or just look different?
+\end{admonition}
+
+Latent-class analysis and k-means clustering on behavioral telemetry can surface segments the product team did not know existed. The output still needs the MASAD filter: a statistically coherent cluster is not automatically a commercially viable segment. Segmentation sets the menu of possible targets. Whether each candidate segment can support the economics required --- particularly the LTV:CAC floor of \cref{ch:customer-economics} --- is determined in the scoring step below. \textcite{kotler2021} provide the canonical treatment of bases and criteria.
+
+\section{Targeting --- Weighted Scoring}\label{sec:targeting}
+% complexity: 3
+
+Given multiple segments that each pass MASAD, which one (or two) maximises risk-adjusted return on investment in go-to-market resources? All segments are not equal. One may be large but fiercely competitive; another small but winnable and high-margin. A weighted scoring model makes the trade-off legible and auditable --- each segment gets a score, and the highest-scoring segment gets the go-to-market budget.
+
+Assign \(n\) evaluation criteria each a weight \(w_i\) (weights sum to 1) and rate each candidate segment on criterion \(i\) with a score \(r_i \in [0,10]\). The segment score is:
+\begin{equation}\label{eq:segment-score}
+  S \;=\; \sum_{i=1}^{n} w_i\, r_i .
+\end{equation}
+Criteria typically include: market size, competitive intensity (inverse --- low intensity scores high), strategic fit, and LTV potential. The weights encode the firm's strategic priorities; the ratings encode market facts.
+
+\cref{eq:segment-score} is only as good as its inputs. Consensus weighting can mask internal disagreements about strategy. Ratings should be anchored to observable proxies (e.g.\ competitive intensity = number of well-funded direct competitors), not gut feel. The model does not capture switching costs of repositioning mid-stream.
+
+\begin{example}[Scoring SMB versus mid-market]
+Score SMB versus mid-market on four criteria (weights in parentheses):
+
+\medskip
+{\small
+\begin{tabular}{lrrrrr}
+  \toprule
+  Criterion & Weight & SMB score & SMB wtd & MM score & MM wtd \\
+  \midrule
+  Market size          & 0.30 & 7 & 2.10 & 9 & 2.70 \\
+  Competitive intensity (inv.) & 0.25 & 6 & 1.50 & 7 & 1.75 \\
+  LTV potential        & 0.25 & 4 & 1.00 & 9 & 2.25 \\
+  Sales-cycle fit      & 0.20 & 8 & 1.60 & 5 & 1.00 \\
+  \midrule
+  \textbf{Total}       &      &   & \textbf{6.20} & & \textbf{7.70} \\
+  \bottomrule
+\end{tabular}}
+\medskip
+
+Mid-market wins on \cref{eq:segment-score} = 7.70 vs 6.20. The deciding factors are LTV potential (mid-market ARR is 10$\times$ SMB) and market size. The implication: direct the \money{120000}/month ad budget to mid-market audiences on LinkedIn and direct channels rather than self-serve paid social (\cref{ch:paid-acquisition-platforms}). Verify this against the ROIC test in \cref{ch:value-creation}: does mid-market CAC leave enough spread over WACC to justify the capital commitment (\cref{eq:roic})?
+\end{example}
+
+\begin{admonition}{Warning}
+Choosing the segment the team is comfortable with, then reverse-engineering the weights to justify it. The model requires criteria and weights to be set before ratings are entered. Lock the weights first.
+\end{admonition}
+
+Portfolio targeting --- serving multiple segments simultaneously with distinct value propositions --- is feasible but demands separate P\&Ls to prevent resource cannibalism. Most early-stage firms should resist it: one segment mastered is worth more than three segments half-served. The scoring converts the segment choice into an operational audience definition. On Meta, the mid-market segment becomes a Lookalike audience seeded on CRM contacts; on LinkedIn, it becomes a company-size and seniority filter. The auction mechanics are in \cref{ch:paid-acquisition-platforms}. \textcite{kotler2021} develops the multi-factor targeting framework; the financial link to ROIC runs through \cref{eq:roic}.
+
+\section{Positioning --- Perceptual Maps and Jobs-to-be-Done}\label{sec:positioning}
+% complexity: 4 -> figure perceptual-map
+
+On which two or three attributes should the firm claim superiority --- and how does it make that claim credible to mid-market buyers evaluating alternatives? A position is a location in the customer's mental map of the category. You cannot own every dimension simultaneously, so you choose the axes where you have a genuine advantage and where the target segment weights most heavily. A perceptual map makes the competitive white space visible.
+
+Positioning is qualitative, but its structure is precise. A well-formed positioning statement takes the form:
+
+\begin{description}
+  \item[For] \textit{[target segment]},
+  \item[who] \textit{[the job they need done / the problem they have]},
+  \item[our product is] \textit{[frame of reference / category]},
+  \item[that] \textit{[point of difference / benefit claim]},
+  \item[unlike] \textit{[alternative / competitor]},
+  \item[we] \textit{[reason to believe]}.
+\end{description}
+
+The \emph{Jobs-to-be-Done} lens (\cref{sec:jtbd}) provides the ``who'' and ``job'' clauses; competitive analysis (\cref{ch:competitive-analysis}) provides the ``unlike'' clause. Choose at most two axes of differentiation; more dilutes salience. A positioning statement that is true but indistinct from competitors' statements confers no advantage. Claimed differentiation must be (a) valued by the target segment, (b) deliverable by the firm, and (c) hard for competitors to copy quickly. Missing any one of these three conditions makes the position unstable.
+
+\begin{example}[Positioning the mid-market SaaS]
+The SaaS is positioned against Salesforce (enterprise, expensive, high implementation burden) and HubSpot (SMB-first, feature-light at scale). The two axes that mid-market buyers weight: \emph{ease of implementation} and \emph{price per seat}. The perceptual map (\cref{fig:perceptual-map}) shows the SaaS occupying the low-price / high-ease quadrant --- a white space at the mid-market tier. Positioning statement draft: \emph{For mid-market revenue operations teams (50--500 seats) who need enterprise-grade pipeline visibility without a six-month implementation, [SaaS] is the CRM that deploys in two weeks at half the per-seat cost of Salesforce, because our migration tooling handles 90\% of data mapping automatically.}
+\end{example}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{perceptual-map}
+  \caption{Perceptual map on price vs ease of implementation for the mid-market CRM category. The SaaS occupies the low-price / high-ease quadrant --- white space between the SMB players (HubSpot) and the enterprise stack (Salesforce). Axes reflect mid-market buyer weights from the targeting model (\cref{eq:segment-score}).}
+  \label{fig:perceptual-map}
+\end{figure}
+
+\begin{admonition}{Warning}
+Confusing internal product roadmap priorities with external positioning axes. Positioning axes must reflect what the \emph{target segment} weighs, not what the product team believes is impressive. Validate axes with customer interviews before committing.
+\end{admonition}
+
+Perceptual maps are estimated empirically from multi-dimensional scaling of customer survey data or from conjoint analysis attribute importances. The two-axis version shown here is a management summary, not the raw output. Dynamic maps track how positions shift as competitors respond --- a stable quadrant today can be crowded in 18 months.
+
+Sharp's critique (\cref{sec:sharp}) challenges whether differentiation is the right goal at all. Sharp argues that differentiation is less important than \emph{distinctive assets} and \emph{mental availability} across all category buyers --- not just the target segment. On this view, narrow positioning to mid-market buyers actively harms long-run brand growth by narrowing the brand's mental footprint. The Keller/positioning tradition replies that distinctiveness without differentiation produces parity pricing and margin compression. The debate resolves differently by category maturity: early-stage firms benefit from tight positioning; scale-stage firms risk over-segmenting. See \cref{ch:brand-growth} for Sharp's empirical evidence.
+
+The perceptual map is not static: competitors reposition, buyers' weights shift, and new entrants occupy vacated quadrants. Refreshing the map annually with updated conjoint or survey data is standard practice. \textcite{ries2001} formalise the mental-map model; \textcite{kotler2021} covers the full STP sequence; \textcite{sharp2010} provides the empirical counterweight from \cref{ch:brand-growth}.
+
+\section{Category Entry Points}\label{sec:jtbd}
+% complexity: 3
+
+In which consumption situations should the brand be the first that comes to mind --- and how does the firm engineer that mental availability across all of them? Customers do not think about brands constantly. They think about them at the moment a \emph{category entry point} (CEP) fires: a situation, goal, or social context that triggers the category need. Being mentally linked to more CEPs means being retrieved in more buying situations --- regardless of whether the buyer is in the firm's narrowly defined target segment.
+
+CEPs can be typed along three axes:
+
+\begin{description}
+  \item[Functional] The job the product does. \emph{``We need to track pipeline.''} The brand that fires first wins the evaluation set.
+  \item[Situational] The context of use. \emph{``New sales VP joining --- need a system everyone already knows.''} Brand familiarity lowers switching risk.
+  \item[Social] The peer or identity referent. \emph{``What does a serious RevOps team use?''} Category association with professional identity (cf.\ JTBD: ``when I'm onboarding a new sales hire, I want to look competent'').
+\end{description}
+
+The firm's content and brand marketing budget should be allocated proportionally to how frequently each CEP fires in the target segment and how weak the current mental link is. CEPs are the demand-side input to the brand-tracking system (\cref{sec:brand-tracking}). CEP mapping requires primary research (survey or in-depth interview) to identify which situations buyers actually experience, not which ones the firm imagines. Internal assumptions about CEPs are frequently wrong.
+
+\begin{example}[Mapping CEPs for a mid-market CRM]
+Three high-frequency CEPs for the mid-market CRM SaaS:
+\begin{enumerate}
+  \item \textbf{Functional:} ``Our spreadsheet CRM is breaking --- we need a real system before Q3 board.'' Implication: content targeting this CEP = ``migrate from Excel in 48 hours'' case studies.
+  \item \textbf{Situational:} ``We just hired a VP of Sales and need something that looks serious.'' Implication: analyst-report placement (Gartner Peer Insights) and LinkedIn social proof.
+  \item \textbf{Social:} ``The new RevOps manager at the acquiree used [SaaS] at her last job.'' Implication: conference presence and community content --- the brand travels with the person.
+\end{enumerate}
+Each CEP maps to a distinct content type and channel. Splitting the top-of-funnel budget by CEP frequency prevents over-investing in the most obvious (functional) while ignoring the highest-conversion (social).
+\end{example}
+
+\begin{admonition}{Warning}
+CEP lists that are aspirational rather than measured. A firm that wants to be associated with a CEP is not the same as a firm that \emph{is} associated with it. Start with the CEPs where unaided brand recall already exists, then expand.
+\end{admonition}
+
+The JTBD framework (\textcite{christensen1997}) and the Byron Sharp CEP construct are complementary but not identical. JTBD focuses on the causal mechanism of switching; CEPs focus on the frequency and diversity of mental retrieval moments. Together they provide both a switching theory and a coverage map for brand investment. CEPs are the demand-side complement to the paid-media audience (\cref{ch:paid-acquisition-platforms}): a CEP identifies \emph{when} buyers are in-market; a paid audience identifies \emph{who} they are. Aligning the two --- firing the right message at the right CEP moment --- is the operational translation of STP into media planning. \textcite{sharp2010} develops the CEP framework empirically; \textcite{kotler2021} situates it within the broader positioning doctrine.

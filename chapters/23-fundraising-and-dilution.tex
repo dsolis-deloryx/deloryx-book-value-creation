@@ -1,0 +1,336 @@
+\chapter{Fundraising, Dilution \& Runway}\label{ch:fundraising-and-dilution}
+
+% Scope: cap tables & dilution (pre/post-money), SAFEs & convertible notes, term sheets &
+%   liquidation preferences, investor metrics & the ARR multiple. NEW chapter (closes the
+%   founder-finance gap). Follows valuation (\cref{ch:valuation}) and capital structure
+%   (\cref{ch:risk-and-capital-structure}): from enterprise value to how founders actually finance.
+% Cross-links: eq:scenario-ev (ch.20 bear-case anchor for Seed pre-money); eq:dcf / eq:ev-revenue
+%   (valuation chain reused as investor frame); eq:rule40 / eq:burn-multiple / eq:runway (ch.21/26
+%   efficiency metrics that drive the fundraising narrative).
+
+\section{Cap Tables \& Ownership Dilution}\label{sec:cap-table}
+% complexity: 3
+
+What does raising a round actually cost the founders? The cap table --- the ledger recording
+every share, option, and convertible security --- answers that question precisely, and its
+arithmetic is unforgiving. Understanding dilution before signing means knowing the
+post-money formula cold.
+
+When a company issues new shares to investors at an agreed valuation, the existing owners'
+percentage shrinks even as the total value of their stake may rise. The two quantities a
+founder must track are (i) the \emph{post-money valuation}, which fixes the price per share,
+and (ii) the \emph{founder ownership percentage} after the new shares are absorbed into the
+fully diluted count. The core identity is:
+\begin{equation}\label{eq:post-money}
+\begin{gathered}
+  \mathrm{PostMoney} \;=\; \mathrm{PreMoney} \;+\; \mathrm{Investment}, \\
+  \text{Investor\%} \;=\; \frac{\mathrm{Investment}}{\mathrm{PostMoney}}, \qquad
+  \text{Founder\%}_{\mathrm{post}} \;=\; \text{Founder\%}_{\mathrm{pre}}\,\bigl(1 - \text{Investor\%}\bigr).
+\end{gathered}
+\end{equation}
+Founders begin at \qty{100}{\percent} and dilute multiplicatively with every round. Each
+successive financing multiplies the surviving percentage by \((1 - \text{new investor\%})\);
+the percentages of all existing holders --- founders, angels, and prior-round investors ---
+shrink proportionally to make room for the incoming capital.
+
+A subtlety that \cref{eq:post-money} conceals is the \emph{option pool shuffle}. Investors
+typically require that the unallocated employee option pool be expanded \emph{before} the new
+money is counted, which means that dilution falls entirely on founders rather than being
+shared with the new investor \parencite{feld2019venture}. A term sheet requiring a
+\qty{15}{\percent} post-money pool from a \money{10000000} pre-money company effectively
+forces the founder to absorb the pool dilution before the price per share is struck. Founders
+who miss this arithmetic pay for it twice.
+
+\begin{example}[Two-round cap table]
+The company's scenario-probability-weighted enterprise value was estimated at approximately
+\money{16500000} (see \cref{eq:scenario-ev}), but the bear case of \money{8000000} is the
+conservative anchor for a Seed pre-money negotiation. The company raises a Seed round at a
+\money{6000000} pre-money valuation on \money{2000000} of investment.
+
+Applying \cref{eq:post-money}:
+\[
+  \mathrm{PostMoney}_{\text{Seed}} \;=\; \money{6000000} + \money{2000000} \;=\; \money{8000000}.
+\]
+The Seed investor's stake: \(\money{2000000}/\money{8000000} = \qty{25}{\percent}\). The
+founder's stake falls from \qty{100}{\percent} to \qty{75}{\percent}.
+
+Now the company raises a Series~A at a \money{10000000} pre-money valuation, issuing
+\money{2000000} of new equity.
+\[
+  \mathrm{PostMoney}_{\text{Series A}} \;=\; \money{10000000} + \money{2000000} \;=\; \money{12000000}.
+\]
+The Series~A investor's stake: \(\money{2000000}/\money{12000000} \approx \qty{16.7}{\percent}\).
+Applying the multiplicative rule from \cref{eq:post-money}:
+\[
+  \text{Founder\%}_{\text{post-A}}
+  \;=\; \qty{75}{\percent} \;\times\; (1 - 0.167)
+  \;=\; \qty{75}{\percent} \;\times\; 0.833
+  \;\approx\; \qty{62.5}{\percent}.
+\]
+The cumulative post-Series~A cap table: founder \qty{62.5}{\percent}; Seed investor \qty{20.8}{\percent};
+Series~A investor \qty{16.7}{\percent}. Total: \qty{100}{\percent}.
+
+The implication is not that the founder ``lost'' \qty{37.5}{\percent}: on a \money{12000000}
+post-money, their \qty{62.5}{\percent} is worth \money{7500000} --- more than the entire
+company was valued at pre-Seed.
+\end{example}
+
+\begin{admonition}{Warning}
+The percentage a founder holds after a round is almost irrelevant in isolation. What matters
+is the absolute outcome: \qty{62.5}{\percent} of a \money{200000000} exit is worth more than
+\qty{90}{\percent} of a \money{10000000} exit by a factor of 11. Optimising for ownership
+retention at the cost of capital that accelerates growth is a common founder error. The
+correct frame is the expected value of the founder's dollar position, not the fraction of the
+pie --- a distinction the DCF logic of \cref{eq:dcf} makes rigorous.
+\end{admonition}
+
+Dilution compounds across rounds as the product of survival fractions; option pools, warrants,
+and convertible instruments further expand the denominator. The full picture requires tracking
+the \emph{fully diluted} share count rather than issued shares alone.
+\textcite{metrick2021venture} develop the complete multi-round mechanics, including option-pool
+and warrant adjustments, and show that late-stage founders with strategic investors often
+retain between \qty{10}{\percent} and \qty{30}{\percent} at IPO.
+
+\section{SAFEs \& Convertible Notes}\label{sec:safes-convertibles}
+% complexity: 3
+
+Early-stage companies rarely have the operating history to justify a hard pre-money
+negotiation. Two instruments defer that conversation: the Simple Agreement for Future Equity
+(SAFE), introduced by Y Combinator in 2013, and the older convertible note. Both inject cash
+immediately and convert into equity at a future priced round, but their economic structures
+differ materially. A convertible note is debt --- it accrues interest, carries a maturity
+date, and can force a founder into default if no priced round arrives in time. A SAFE is not
+debt; it carries no interest and no maturity. The economic protection for early investors
+comes instead from two parameters: a \emph{valuation cap} (the maximum valuation at which
+the SAFE converts, regardless of how high the Series~A is priced) and a \emph{discount rate}
+(a percentage reduction off the Series~A price per share). Most SAFEs use one or both.
+
+The conversion price --- the price per share the SAFE investor pays --- is:
+\begin{equation}\label{eq:safe-conversion}
+  P_{\mathrm{conv}}
+  \;=\; \min\!\bigl(\mathrm{Cap},\;\mathrm{SeriesA}_{\mathrm{pre}}\bigr)
+        \;\times\; (1 - \delta),
+  \qquad
+  N_{\mathrm{new}}
+  \;=\; \frac{\mathrm{Investment}}{P_{\mathrm{conv}}},
+\end{equation}
+where \(\delta\) is the discount rate and \(N_{\mathrm{new}}\) is the number of new shares
+issued to the SAFE holder upon conversion. When the Series~A pre-money exceeds the cap, the
+cap binds; when it falls below the cap, the Series~A price (discounted by \(\delta\)) governs.
+The bound that produces the larger share count --- and therefore the lower effective price per
+share --- will always be the one the investor prefers.
+
+\begin{example}[SAFE conversion with cap and discount]
+An angel invests \money{500000} on a SAFE with a \money{5000000} cap and a \qty{20}{\percent}
+discount. The company subsequently raises a Series~A at a \money{12000000} pre-money
+valuation.
+
+First, determine which bound governs:
+\begin{itemize}
+  \item Cap-based effective valuation: \money{5000000}.
+  \item Discount-based effective valuation: \(\money{12000000} \times (1 - 0.20) = \money{9600000}\).
+\end{itemize}
+The cap (\money{5000000}) is lower, so the cap binds --- the SAFE investor converts as if
+the pre-money were only \money{5000000}. Applying \cref{eq:safe-conversion} with
+\(\delta = 0\) once the cap governs (the cap already embeds the economic benefit; using the
+cap and the discount simultaneously would double-count):
+\[
+  P_{\mathrm{conv}} \;=\; \money{5000000} \;\times\; 1.00
+                   \;=\; \money{5000000} \text{ (effective valuation).}
+\]
+The SAFE holder's ownership fraction at conversion:
+\[
+  \text{SAFE\%}
+  \;=\; \frac{\mathrm{Investment}}{\mathrm{Cap}}
+  \;=\; \frac{\money{500000}}{\money{5000000}}
+  \;=\; \qty{10}{\percent} \;\text{(on a pre-Series-A, post-SAFE basis).}
+\]
+After the Series~A investor takes \qty{16.7}{\percent} (as in the prior example), all existing
+holders --- SAFE investor plus founders --- dilute proportionally:
+\[
+  \text{SAFE\%}_{\text{post-A}}
+  \;=\; \qty{10}{\percent} \;\times\; (1 - 0.167)
+  \;\approx\; \qty{8.3}{\percent}.
+\]
+The SAFE investor ends up at \qty{8.3}{\percent} of a \money{12000000} post-money, an
+implied value of roughly \money{1000000} on a \money{500000} investment --- a \qty{2}{\times}
+mark-up at the moment of the Series~A close, before any exit.
+\end{example}
+
+\begin{admonition}{Warning}
+Multiple SAFEs at different caps and different discounts convert at different prices,
+issuing different numbers of shares. Founders who raise a \money{250000} SAFE at a
+\money{3000000} cap, then a \money{500000} SAFE at a \money{5000000} cap, and then a
+\money{1000000} SAFE at an \money{8000000} cap must model the full conversion waterfall
+before signing the Series~A term sheet --- the interaction can be far more dilutive than
+any individual SAFE implied. Each SAFE is solved independently using \cref{eq:safe-conversion},
+and the resulting share counts stack before the new institutional money is admitted.
+\end{admonition}
+
+SAFEs and notes trade cheapness and speed against complexity at the conversion event. The
+economics are governed entirely by the cap and discount parameters; the legal structure is
+standardised \parencite{feld2019venture}. Once the Series~A is priced, the SAFE disappears
+into the cap table as preferred stock, subject to the same liquidation mechanics described in
+the next section.
+
+\section{Term Sheets \& Investor Economics}\label{sec:term-sheets}
+% complexity: 3
+
+A venture term sheet allocates cash-flow rights, control rights, and downside protection
+simultaneously. The economic core is the \emph{liquidation preference}: the right of
+preferred stockholders to recover their investment (or a multiple of it) before common
+shareholders receive anything in a sale, merger, or dissolution. Understanding the preference
+is understanding who gets paid in every realistic exit scenario.
+
+Two preference structures dominate. In \emph{non-participating preferred}, the investor
+chooses the better of two outcomes: take the stated preference or convert to common stock and
+share pro-rata. In \emph{participating preferred}, the investor takes the preference
+\emph{and} then participates pro-rata in the remainder --- the ``double-dip.'' Non-participating
+is the market standard; participating appears in competitive markets and distress rounds, and
+is materially worse for founders. The formula for exit proceeds to the investor is:
+\begin{equation}\label{eq:liquidation-preference}
+  \mathrm{Investor}_{\text{non-part}}
+  \;=\; \max\!\bigl(\mathrm{Pref},\; p \cdot \mathrm{Exit}\bigr),
+  \qquad
+  \mathrm{Investor}_{\text{part}}
+  \;=\; \mathrm{Pref} \;+\; p \cdot (\mathrm{Exit} - \mathrm{Pref}),
+\end{equation}
+where \(\mathrm{Pref} = m \times \mathrm{Investment}\) is the liquidation preference
+(multiple \(m\), typically \(1\times\)) and \(p\) is the investor's ownership fraction.
+Founders receive what remains after investors are satisfied.
+
+\begin{example}[Non-participating vs.\ participating preference]
+A Series~A investor puts in \money{5000000} for \qty{25}{\percent} of the company. The
+liquidation preference is \(1\times\) non-participating. The company sells for \money{8000000}.
+
+\emph{Non-participating}: the investor's preference is \money{5000000}; pro-rata conversion
+would yield \(25\% \times \money{8000000} = \money{2000000}\). Applying \cref{eq:liquidation-preference}:
+\[
+  \mathrm{Investor}_{\text{non-part}}
+  \;=\; \max(\money{5000000},\;\money{2000000})
+  \;=\; \money{5000000}.
+\]
+Founders and common stockholders receive \(\money{8000000} - \money{5000000} = \money{3000000}\).
+
+\emph{Participating}: the investor first takes \money{5000000}, then participates in the
+remainder:
+\[
+  \begin{aligned}
+    \mathrm{Investor}_{\text{part}}
+    &\;=\; \money{5000000} \;+\; 0.25 \times (\money{8000000} - \money{5000000}) \\
+    &\;=\; \money{5000000} \;+\; \money{750000} \;=\; \money{5750000}.
+  \end{aligned}
+\]
+Founders receive \(\money{8000000} - \money{5750000} = \money{2250000}\). The participation
+clause transferred \money{750000} from founders to the investor --- the ``double-dip'' is
+\money{750000} in this scenario, or roughly \qty{25}{\percent} of the incremental upside
+above the preference threshold.
+
+The magnitude of the double-dip grows with exit size: at a \money{20000000} exit the
+participating investor would take \(\money{5000000} + 25\%\times\money{15000000} =
+\money{8750000}\), versus \(\max(\money{5000000},\,\money{5000000}) = \money{5000000}\)
+non-participating. Participation always costs founders at intermediate exits.
+\end{example}
+
+\begin{admonition}{Warning}
+Anti-dilution provisions compound the preference structure. Broad-based weighted-average
+anti-dilution --- the market standard --- adjusts the conversion price of existing preferred
+shares proportionally if a down round occurs, limiting, but not eliminating, the effective
+repricing. Full-ratchet anti-dilution reprices the \emph{entire} prior preferred block to the
+new low price regardless of volume, which can obliterate founder equity in a single down
+round. The punitive arithmetic makes full-ratchet provisions a founder-unfriendly red flag;
+insist on broad-based weighted-average \parencite{feld2019venture}. In distressed markets,
+the combination of a \(1\times\) participating preference and full-ratchet anti-dilution can
+leave common stockholders with near-zero proceeds even at moderate exit values.
+\end{admonition}
+
+Kaplan and Strömberg's empirical analysis of venture contracts shows that the allocation of
+cash-flow rights (preferences, anti-dilution), control rights (board seats, voting vetoes),
+and liquidation rights are deliberately decoupled to align incentives under
+uncertainty \parencite{kaplan2003financial}. A preference that looks protective at round
+close can become punitive at exit; modelling the full waterfall across plausible exit
+scenarios before signing is not optional.
+
+\section{Investor Metrics \& the Fundraising Narrative}\label{sec:investor-metrics}
+% complexity: 4
+
+How should a founder frame the company's value to an investor? The answer is not the
+narrative alone; it is the narrative \emph{grounded in the numbers} that investors actually
+use to benchmark and price startups. In 2026 the primary quantitative filter is not growth
+rate in isolation but the relationship between growth and capital consumption, expressed
+through the Rule of 40 (\cref{eq:rule40}) and the burn multiple (\cref{eq:burn-multiple}).
+The valuation anchor, in turn, is the EV/ARR multiple from \cref{eq:ev-revenue}:
+\begin{equation}\label{eq:arr-multiple}
+  \mathrm{PreMoney} \;\approx\; \mathrm{ARR} \;\times\; \frac{\mathrm{EV}}{\mathrm{ARR}},
+\end{equation}
+where the EV/ARR multiple (\cref{eq:ev-revenue}) is the market's current clearing price per
+dollar of recurring revenue, adjusted for the company's growth-efficiency profile. A
+high-growth, capital-efficient company commands a premium multiple; a slow-growing, high-burn
+company faces a steep discount. The Rule of 40 score and the burn multiple are the two
+levers investors use to move the multiple \parencite{metrick2021venture}.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.92\linewidth]{cap-table-waterfall}
+  \caption{%
+    \textbf{Cap-table dilution and liquidation waterfall.}
+    \emph{Left panel:} founder ownership across three financing rounds (Pre-seed
+    \qty{100}{\percent} $\to$ Seed \qty{75}{\percent} $\to$ Series~A \qty{62.5}{\percent}).
+    \emph{Right panel:} exit proceeds to founders vs.\ the Series~A investor under
+    non-participating and participating \(1\times\) liquidation preferences, across exit
+    values from \money{5000000} to \money{30000000} (Series~A: \money{5000000} invested,
+    \qty{25}{\percent} ownership). The participation kink is visible around \money{20000000},
+    where the investor's conversion value overtakes the preference.%
+  }
+  \label{fig:cap-table-waterfall}
+\end{figure}
+
+\begin{example}[Investor-metrics narrative for a Series~A pitch]
+The running company: ARR = \money{4000000}; trailing ARR growth = \qty{30}{\percent};
+gross margin = \qty{70}{\percent}. In isolation, \qty{30}{\percent} growth at this ARR
+could support an \(8\times\) EV/ARR multiple, implying a pre-money of
+\[
+  \money{4000000} \;\times\; 8 \;=\; \money{32000000}.
+\]
+But the investor looks at \cref{eq:rule40}: Rule of 40 score = \qty{30}{\percent} growth
+$+ (-\qty{15}{\percent})$ EBITDA margin $= 15$. A score of 15 is well below the 40-point
+threshold where growth and profitability are balanced; the investor discounts the multiple
+from $8\times$ to $6\times$:
+\[
+  \mathrm{PreMoney} \;=\; \money{4000000} \;\times\; 6 \;=\; \money{24000000}.
+\]
+The burn multiple (\cref{eq:burn-multiple}): the company added \money{1200000} net new ARR
+(30\% of \money{4000000}) while burning \money{1500000} net cash, yielding a burn multiple
+of \(\money{1500000}/\money{1200000} = 1.25\times\). At $1.25\times$ the burn multiple is
+acceptable --- below the $2\times$ threshold that triggers material haircuts --- and the
+founder should lead with it. Combined with the runway forecast from \cref{eq:runway} (cash
+/ net burn rate), the narrative becomes: ``We have 18 months of runway at current burn, a
+$1.25\times$ burn multiple, and a clear path to Rule of 40 parity by month 24 as gross
+margin leverage kicks in.''
+
+The \money{24000000} pre-money sits comfortably between the base and bull DCF scenarios of
+\cref{eq:scenario-ev} (\money{15000000}--\money{28000000}), providing investors with a
+market-comparable anchor for the DCF they will run independently. Cross-linking the
+multiple to the DCF removes the appearance of arbitrary pricing and aligns the conversation
+around fundamentals.
+\end{example}
+
+\begin{admonition}{Note}
+ARR multiples vary significantly by sector, growth tier, and market conditions; the
+\(6\times\) figure in the example reflects a moderate-efficiency, mid-growth profile in the
+2026 environment. Best-in-class companies scoring above 60 on the Rule of 40 have commanded
+multiples of \(10\times\)--\(15\times\) ARR. The appropriate multiple is not a formula
+output but a market observation; the EV/ARR frame of \cref{eq:ev-revenue} provides the
+theoretical anchor (growth rate, margin, and discount rate determine value), while comparable
+transactions provide the empirical check.
+\end{admonition}
+
+The fundraising narrative is a translation layer: it renders the DCF logic of \cref{eq:dcf}
+into the operating metrics investors actually track. Rule of 40, burn multiple, and ARR
+multiple are not alternatives to discounted-cash-flow thinking; they are shortcuts to the
+same present-value conclusion. A founder who understands why \cref{eq:arr-multiple} is just
+a compressed version of \cref{eq:ev-revenue} --- which is itself a compressed version of
+\cref{eq:dcf} --- can defend any metric a sophisticated investor challenges, because the
+chain leads back to first principles. \textcite{metrick2021venture} document how institutional
+investors build their own DCF models alongside the multiples, using the gap between the two
+as a signal of whether the founder understands their own business.

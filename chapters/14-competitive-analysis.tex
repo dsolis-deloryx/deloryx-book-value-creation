@@ -1,0 +1,236 @@
+\chapter{Industry \& Competitive Analysis}\label{ch:competitive-analysis}
+
+% Scope: the five forces, the value chain, industry structure and profitability (HHI).
+% Cross-link: durable advantage that survives these forces is the subject of
+%   \cref{ch:advantage-and-disruption}; price power traced here roots in
+%   \cref{ch:pricing} (Lerner index) and \cref{ch:customer-economics} (LTV).
+
+Industry profitability is not random. The structural conditions that surround a firm
+--- supplier leverage, buyer leverage, substitutes, new entrants, and internal rivalry ---
+set a ceiling on returns before strategy even begins. The value chain then asks where,
+within that industry, the firm captures what remains.
+
+\section{Porter's Five Forces}\label{sec:five-forces}
+% complexity: 4 -> figure five-forces
+
+Before allocating capital or entering a market, a strategist needs to know which structural
+features will cap returns and which will support them. Five Forces answers that question before
+a single customer is signed. The mechanism is straightforward: a high-margin market attracts
+entrants and powerful buyers until returns compress to the cost of capital. Five Forces names
+the five channels through which that compression happens and asks how fierce each is right now
+--- not whether the industry is attractive in the abstract, but whether \emph{this firm} can
+hold a position in it.
+
+The framework is qualitative; its analytical work is a diagnostic sequence applied to each
+force in turn \parencite{porter1980}:
+\begin{description}
+  \item[Rivalry among existing competitors] Concentration (see \cref{eq:hhi}),
+        price transparency, product differentiation, exit costs, and capacity increments.
+        High fixed costs and commodity products make rivalry intense.
+  \item[Threat of new entrants] Minimum efficient scale, proprietary technology,
+        network effects, brand loyalty, switching costs, and regulatory barriers.
+        Low capital requirements and mature technology lower this barrier.
+  \item[Threat of substitutes] Products from adjacent categories that fulfil the same
+        job-to-be-done; assessed by cross-price elasticity (\cref{eq:elasticity}).
+        Substitutes set a soft price ceiling.
+  \item[Bargaining power of buyers] Buyer concentration, switching costs, backward-
+        integration threat, share of buyer's spend, and price sensitivity.
+  \item[Bargaining power of suppliers] Supplier concentration, uniqueness of input,
+        forward-integration threat, and switching cost of changing supplier.
+\end{description}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{five-forces}
+  \caption{The Five Forces. Rivalry sits at the centre; four forces exert inward pressure on
+    industry profitability. Strength of each arrow represents the aggregate bargaining or
+    threat intensity.}
+  \label{fig:five-forces}
+\end{figure}
+
+\begin{admonition}{Warning}
+Five Forces is a static, industry-level snapshot. It misses three things that matter
+increasingly in technology markets. First, \emph{platform complements}: a marketplace's
+profitability depends on complementor investment, which is neither supplier nor buyer in the
+traditional sense. Second, \emph{dynamic competition}: the model has no clock; a force that
+looks weak today (e.g.\ entry) may be irrelevant in a rapidly restructuring market.
+Third, the resource-based view (\cref{ch:advantage-and-disruption}) argues that
+firm-level capability heterogeneity --- not industry structure alone --- explains return
+differences inside an industry. Use Five Forces to pick the arena; use VRIN to ask whether
+you can win in it.
+\end{admonition}
+
+\begin{example}
+Apply to the running B2B SaaS market. \emph{Decision: should we invest in differentiation
+or compete on price?}
+
+\begin{itemize}
+  \item \textbf{Buyer power --- high.} Buyers are SMBs with low switching costs (data exports
+        are standard), multiple alternatives, and low per-seat spend relative to their budgets.
+        This compresses price power toward the Lerner index floor (\cref{eq:lerner}).
+  \item \textbf{Entry threat --- high.} No-code infrastructure and open APIs mean a credible
+        point solution can be assembled for well under \money{500000}. Network effects are
+        weak at launch.
+  \item \textbf{Rivalry --- intense.} The market is fragmented (HHI $\approx$\num{2150},
+        see \cref{eq:hhi}); feature parity is common; price comparison sites make switching
+        visible. At \money{50}/month the product is fully in the commodity danger zone.
+  \item \textbf{Substitutes --- moderate.} Spreadsheets and lighter SaaS tools serve the
+        same job; threat is real but manageable if integrations create stickiness.
+  \item \textbf{Supplier power --- low.} Cloud infrastructure (AWS, GCP) is competitive;
+        no proprietary input is captive to one vendor.
+\end{itemize}
+
+High buyer power plus high entry threat in a fragmented market forces a differentiation
+response --- product uniqueness that raises switching costs --- rather than a cost-leadership
+race the firm cannot win at its scale.
+\end{example}
+
+\begin{admonition}{Warning}
+Treating the five forces as equally weighted and averaging them into a single
+``attractiveness score.'' A market can be \emph{structurally unattractive} on four
+dimensions yet highly profitable for a firm that has neutralised the fifth (e.g.\ a patent
+wall erasing entry threat). Score each force separately; then ask which one your strategy
+addresses.
+\end{admonition}
+
+\textcite{dranove7theconomics} extend Five Forces with game-theoretic analysis of rivalry:
+when competitors interact repeatedly, tit-for-tat strategies can sustain supra-competitive
+pricing without collusion. The model also sits inside a broader ``structure--conduct--
+performance'' (SCP) paradigm whose empirical validity is debated (see
+\cref{ch:advantage-and-disruption} for the resource-based critique).
+
+The Five Forces diagnosis sets the context for every pricing decision in
+\cref{ch:pricing} and every segmentation choice in
+\cref{ch:segmentation-targeting-positioning}: enter only where at least one force is
+genuinely manageable. \textcite{porter1980} and \textcite{dranove7theconomics} develop the
+empirical industry-economics underpinning.
+
+\section{The Value Chain}\label{sec:value-chain}
+% complexity: 3
+
+Which activities inside the firm generate the cost or differentiation that matters to the
+customer, and which are overhead that should be minimised or outsourced? A firm is not just
+a product; it is a sequence of activities. Cost and differentiation both originate in specific
+links of that chain. Knowing which link matters is the precondition for allocating investment
+correctly --- and for understanding where a competitor with a different chain structure will
+undercut or outperform you.
+
+\textcite{porter1985} organises firm activities into two tiers:
+\begin{description}
+  \item[Primary activities] Those that directly touch the product or service:
+    inbound logistics $\to$ operations $\to$ outbound logistics $\to$
+    marketing \& sales $\to$ service.
+  \item[Support activities] Those that enable primaries: firm infrastructure,
+    human-resource management, technology development, and procurement.
+\end{description}
+For a B2B SaaS firm the primary chain compresses to four links:
+product development $\to$ sales \& marketing $\to$ customer success $\to$
+infrastructure/operations. Support activities (finance, legal, HR) apply unchanged.
+``Margin'' is the aggregate surplus left after the combined cost of all links.
+
+The value chain is \emph{not} a supply chain: supply chains trace physical inputs and
+outputs across firms; the value chain maps value-adding activities \emph{within} a single
+firm. Conflating them leads to outsourcing decisions based on cost alone, ignoring the
+differentiation and tacit-knowledge embedded in the activity. The model also assumes
+activities are separable, which overstates in highly integrated digital products.
+
+\begin{example}
+\emph{Decision: where is the SaaS firm spending and where is it building advantage?}
+
+Observed operating expense mix (approximation, consistent with gross margin
+$\approx$\qty{70}{\percent}):
+\begin{itemize}
+  \item Sales \& marketing: $\approx$\qty{50}{\percent} of revenue
+        (the dominant link --- consistent with a \money{120000}/month ad budget
+        plus a sales team).
+  \item R\&D / product: $\approx$\qty{30}{\percent} of revenue.
+  \item Customer success / infrastructure: $\approx$\qty{15}{\percent} of revenue.
+  \item G\&A: $\approx$\qty{5}{\percent}.
+\end{itemize}
+S\&M dominates because the firm is pre-moat: it must buy customers it cannot yet retain
+organically. A post-moat firm (\cref{ch:growth}) shifts spend toward product and CS as
+switching costs reduce the marginal cost of retention. The value-chain lens makes this
+trajectory visible as a shift in which link carries the investment.
+\end{example}
+
+\begin{admonition}{Warning}
+Equating the value chain with an activity cost breakdown and then ``optimising'' each link
+independently. The chain's value comes from \emph{linkages}: a superior service activity
+raises the value of the product activity by reducing churn (see \cref{eq:retention} in
+\cref{ch:customer-economics}). Cutting CS to reduce cost-per-link destroys the linkage
+value --- and lifts churn.
+\end{admonition}
+
+The value chain predates the platform-business model, where the primary activities are
+reversed: the platform produces a matching infrastructure, and value is created in the
+interactions between third-party participants rather than in the firm's own operations.
+The implications for cost structure and competitive analysis are explored in
+\cref{ch:business-models}.
+
+The value chain's cost concentration in S\&M reflects the competitive structure Five Forces
+diagnosed above: when entry threat and buyer power are both high, demand must be acquired
+expensively. The path to margin improvement runs through building the moat first
+(\cref{ch:growth}) and then shifting the chain. \textcite{porter1985} is the primary source.
+
+\section{Industry Structure \& Profitability}\label{sec:industry-structure}
+% complexity: 3
+
+How concentrated is the market we compete in, and what does that imply about sustainable
+price levels and competitive intensity? A market with four roughly equal rivals behaves
+differently from one with one dominant firm and a fringe. Concentration is not destiny ---
+a concentrated market can be fiercely competitive (see: airlines) --- but it is the first
+structural fact to establish. The Herfindahl--Hirschman Index translates market shares into
+a single number that regulators and strategists both use.
+
+Let firm \(i\) hold share \(s_i \in [0,1]\) (expressed as a fraction). The HHI is:
+\begin{equation}\label{eq:hhi}
+  \mathrm{HHI} \;=\; \sum_{i} s_i^2.
+\end{equation}
+Expressed in percentage-point shares (i.e.\ \(s_i\) in \([0,100]\)), the HHI ranges from
+near 0 (atomistic) to \num{10000} (pure monopoly). US antitrust guidelines
+\parencite{dranove7theconomics} flag markets above \num{2500} as highly concentrated and
+mergers that raise HHI by more than \num{200} in a market above \num{1500}.
+
+\cref{eq:hhi} assumes market shares proxy for competitive intensity, but two firms with
+50\%\ each can collude tacitly or compete brutally. It is also sensitive to how the market
+is defined: a broad definition deflates HHI and can hide local dominance. The index says
+nothing about entry barriers or cost asymmetries; it is a starting point, not a conclusion.
+
+\begin{example}
+\emph{Decision: is our market concentrated enough to support price leadership, or must we
+compete on value?}
+
+Suppose the market has four players with shares
+\(s = (0.30,\,0.25,\,0.20,\,0.15)\) and a competitive fringe summing to \(0.10\):
+\[
+  \begin{aligned}
+    \mathrm{HHI} &= 0.30^2 + 0.25^2 + 0.20^2 + 0.15^2 + 0.10^2 \\
+                 &= 0.090 + 0.063 + 0.040 + 0.023 + 0.010 \\
+                 &= 0.226 \;\approx\; \num{2260}\text{ (pp-squared)}.
+  \end{aligned}
+\]
+At \num{2260} the market is \emph{moderately concentrated} --- below the \num{2500}
+highly-concentrated threshold. Price leadership is weak; the leading firm cannot safely
+raise price without triggering share loss. A startup entering at \(s \approx 0.02\)
+contributes \(0.0004\) to HHI --- negligible to the aggregate, but not to its own P\&L.
+The entry is viable precisely because the concentration cliff has not been reached: no
+single firm has the scale to retaliate crushingly.
+\end{example}
+
+\begin{admonition}{Warning}
+Using HHI alone to conclude a market is ``competitive.'' A fragmented market of 50 firms
+each with \qty{2}{\percent} share (HHI = \num{200}) can still be \emph{structurally
+unattractive} if entry costs are zero and substitutes are abundant --- Five Forces says what
+HHI cannot.
+\end{admonition}
+
+The Lerner index (\cref{eq:lerner}) connects HHI to price-cost margins through the
+industry-average price elasticity of demand: in a symmetric Cournot oligopoly,
+\(\mathcal{L} = \mathrm{HHI}/|\varepsilon|\). This links market structure directly to
+pricing power and is the bridge between industrial organisation and \cref{ch:pricing}.
+\parencite{mankiw2020,dranove7theconomics}.
+
+Market concentration quantifies the arena; the value chain reveals where within it the firm
+creates and captures value. Both feed the advantage analysis in
+\cref{ch:advantage-and-disruption}. \textcite{mankiw2020} and \textcite{dranove7theconomics}
+ground the empirical IO literature behind \cref{eq:hhi}.

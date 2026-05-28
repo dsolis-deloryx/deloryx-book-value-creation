@@ -1,0 +1,336 @@
+\chapter{Advantage \& Disruption}\label{ch:advantage-and-disruption}
+
+% Scope: resource-based view, VRIN, Blue Ocean, the innovator's dilemma.
+% Cross-link: durable advantage is what sustains LTV > CAC over time (\cref{ch:customer-economics}).
+
+Structural analysis (\cref{ch:competitive-analysis}) explains industry-level returns;
+it cannot explain why some firms earn above-average returns \emph{inside} unattractive
+industries for decades. The resource-based view, Blue Ocean Strategy, and the innovator's
+dilemma each offer a different answer to that question --- and each implies a different
+strategic response when the answer changes.
+
+\section{The Resource-Based View \& VRIN}\label{sec:rbv-vrin}
+% complexity: 3
+
+Which of the firm's assets and capabilities will sustain a competitive advantage, and
+which will be competed away? The audit must precede any growth bet. Industries compete for
+customers; firms compete for resources. If the resources that drive performance can be
+copied or bought, returns revert to the cost of capital regardless of market share. Durable
+advantage requires resources that are, in a specific technical sense, not replicable by
+rivals.
+
+\textcite{barney1991resource} defines a resource as a source of sustained competitive
+advantage only when it satisfies all four criteria simultaneously:
+\begin{description}
+  \item[Valuable] The resource enables the firm to exploit opportunities or neutralise threats
+        in its environment --- i.e.\ it is linked to customer willingness to pay or cost
+        reduction. A resource that passes no Five Forces test (\cref{ch:competitive-analysis})
+        is not valuable in Barney's sense.
+  \item[Rare] The resource is not possessed by a large number of current or potential
+        competitors. Common resources generate competitive parity, not advantage.
+  \item[Inimitable] Rivals cannot easily copy or acquire the resource. Inimitability stems
+        from path dependence (accumulated via unrepeatable history), causal ambiguity
+        (competitors cannot identify which resource causes performance), or social complexity
+        (e.g.\ organisational culture, trust-based partnerships).
+  \item[Non-substitutable] No strategically equivalent alternative resource exists. Even a
+        rare, inimitable resource loses value if a substitute delivers the same strategic
+        outcome.
+\end{description}
+These four criteria form a decision tree, not a checklist: fail any one and the resource
+earns at most a transient advantage. Resources that pass all four generate
+\emph{Ricardian rents} --- returns above the opportunity cost of the resource that persist
+because the supply of the resource is inelastic.
+
+VRIN is diagnostic, not prescriptive: it identifies where advantage currently lives but
+offers no theory of how to build new resources. The framework also understates the
+importance of \emph{dynamic capabilities} --- the firm's ability to reconfigure its resource
+base as the environment shifts. A resource that is VRIN today may be rendered obsolete by
+a technological discontinuity (\cref{sec:innovators-dilemma}), at which point Barney's
+static audit returns the wrong answer.
+
+\begin{example}
+\emph{Decision: where should the SaaS firm invest to protect its margin?}
+
+Audit of candidate resources against VRIN:
+
+\begin{itemize}
+  \item \textbf{Proprietary customer data (behaviour + integration logs)}: Valuable
+        (enables personalisation and expansion revenue); Rare (each firm's data set is
+        unique); Inimitable (path-dependent accumulation --- cannot be purchased wholesale);
+        Non-substitutable (third-party intent data does not replicate longitudinal usage
+        signals). \emph{Verdict: VRIN --- the defensible core.}
+  \item \textbf{Integration ecosystem (50 + native connectors)}: Valuable and Rare at launch;
+        Inimitable if integration depth exceeds a replication threshold; Non-substitutable
+        if switching cost (\cref{ch:growth}) is high enough. \emph{Verdict: partially VRIN
+        --- invest to deepen.}
+  \item \textbf{Brand name}: Valuable (lowers CAC via organic search); not yet Rare in a
+        fragmented market. \emph{Verdict: not VRIN --- supports, does not protect.}
+  \item \textbf{Codebase}: Not rare (modern frameworks are standardised) and imitable with
+        sufficient engineering spend. \emph{Verdict: competitive parity, not advantage.}
+\end{itemize}
+
+R\&D investment should deepen data infrastructure and integrations
+(VRIN-passing resources) rather than rebuild generic features rivals already offer.
+This directly raises LTV via lower churn (\cref{ch:customer-economics}) and is
+the mechanism through which \cref{eq:roic} exceeds WACC sustainably.
+\end{example}
+
+\begin{admonition}{Warning}
+Listing everything in the firm as a ``strategic resource.'' The VRIN criteria are
+restrictive by design. Most resources are \emph{competitive necessities} --- required to
+compete but conferring no advantage. Confusing a necessity (a CRM) with an advantage (the
+proprietary data inside it) misdirects capital toward maintaining parity rather than
+building rents.
+\end{admonition}
+
+\textcite{dranove7theconomics} synthesise RBV with industrial organisation: Ricardian rents
+require both VRIN resources \emph{and} some barriers to resource market competition.
+A resource cannot be VRIN in the product market if it is freely traded in the resource
+market at its full NPV --- competitive resource markets dissipate rents before the product
+market sees them.
+
+The VRIN audit completes the structural picture that Five Forces began: \cref{ch:competitive-analysis}
+identifies the threats from outside; VRIN identifies the resources that withstand them.
+Sustainable ROIC exceeding WACC (\cref{eq:advantage-spread} below) is the financial
+expression of a resource passing this test. \textcite{barney1991resource} is the
+primary source; \textcite{dranove7theconomics} supply the IO integration.
+
+\section{Blue Ocean Strategy}\label{sec:blue-ocean}
+% complexity: 3
+
+Rather than competing harder in an existing contested market, can we define a new value
+curve that makes the competition temporarily irrelevant? Most strategy is about winning a
+bigger share of an existing pie. Blue Ocean asks whether the pie can be reshaped by
+simultaneously reducing cost \emph{and} raising buyer value --- eliminating features that
+the industry competes on but customers do not value, and creating features that customers
+want but no one offers.
+
+\textcite{kim2015} propose the ERRC grid as the operational tool:
+\begin{description}
+  \item[Eliminate] Which factors the industry takes for granted should be removed entirely?
+        These add cost without adding perceived value; removing them funds the ``Create''
+        column.
+  \item[Reduce] Which factors should be reduced well below the industry standard?
+        Competitors over-deliver on these; the cost saving is re-deployable.
+  \item[Raise] Which factors should be raised well above the industry standard?
+        These address genuine unmet needs.
+  \item[Create] Which factors should be introduced that the industry has never offered?
+        This is the demand-creation mechanism; it targets non-consumption rather than
+        poaching from rivals.
+\end{description}
+The result is a \emph{value curve} --- a plot of offering level across competitive factors
+--- that diverges visibly from the industry average. Divergence is the test: a curve that
+merely scores higher everywhere is not a Blue Ocean move, it is a premium strategy.
+
+The ERRC grid is directional and qualitative; it provides no mechanism for estimating
+whether the new value curve generates sufficient demand to cover the investment. A redesigned
+offer that no customer segment values passes the ERRC test but fails commercially.
+Pair with the segmentation lens of \cref{ch:segmentation-targeting-positioning} to verify
+which non-consumers the move actually reaches.
+
+\begin{example}
+\emph{Decision: can the SaaS firm create a Blue Ocean relative to Salesforce and similar
+enterprise CRMs?}
+
+\begin{itemize}
+  \item \textbf{Eliminate}: Complex implementation (6--12 month deployments), dedicated
+        admin roles, on-premise data options.
+  \item \textbf{Reduce}: Price relative to enterprise CRM (Salesforce runs
+        \money{150}--\money{300}/user/month; our \money{50}/seat is a deliberate undercut),
+        feature set relative to the full Salesforce Sales Cloud.
+  \item \textbf{Raise}: Time-to-first-value (target: live in one day), native integrations
+        with modern productivity tools, transparent usage-based billing.
+  \item \textbf{Create}: Self-serve onboarding with no sales touchpoint required; in-product
+        guided workflows built for non-technical operators.
+\end{itemize}
+
+The curve targets \emph{non-consumers} of CRM --- SMBs that could not absorb enterprise
+implementation cost --- rather than Salesforce's existing customers. If successful, CAC
+from this segment is lower (no sales team required for self-serve) and churn is lower
+(faster time-to-value). Both improve the LTV:CAC ratio in \cref{ch:customer-economics}.
+\end{example}
+
+\begin{admonition}{Warning}
+Applying ERRC post-hoc to rationalise existing positioning rather than as a \emph{forward-
+looking design tool}. Critics (\parencite{dranove7theconomics}) note that most Blue Ocean
+case studies are written after the fact, when the value curve that happened to succeed gets
+labelled a deliberate ERRC move. Used rigorously the grid is a hypothesis about demand;
+validate with market experiments before committing capital.
+\end{admonition}
+
+\begin{admonition}{Contested}
+Blue Ocean is the most contested strategic framework in this book. The critics' core
+objection: successful Blue Ocean cases are distinguishable from lucky product bets only
+in retrospect. The ERRC grid does not tell you \emph{which} factors to eliminate or
+create --- that requires demand-side insight the framework does not supply. Proponents
+respond that the value-curve visualisation disciplines a management team away from
+incremental thinking. Both sides are right; treat Blue Ocean as a creativity prompt
+validated by customer evidence, not as a planning methodology.
+\end{admonition}
+
+Blue Ocean Strategy intersects with the jobs-to-be-done (\cref{ch:customer-economics})
+view of demand: the ``Create'' column succeeds when it addresses a job no existing product
+does well. The mechanism is closer to disruptive innovation (below) than to traditional
+differentiation, because it targets different success criteria rather than outperforming
+incumbents on shared ones.
+
+The ERRC grid answers the design question; the VRIN audit (\cref{sec:rbv-vrin}) then asks
+whether the resulting offer is defensible once rivals can observe it. A Blue Ocean that is
+VRIN-passing is durable; one that is not will be imitated and the advantage compressed.
+\textcite{kim2015} is the primary source.
+
+\section{The Innovator's Dilemma}\label{sec:innovators-dilemma}
+% complexity: 5 -> figure disruption-scurve
+
+Is an apparently inferior entrant a genuine disruption threat, or merely a different product?
+The answer determines whether to respond aggressively, ignore, or acquire. Incumbents lose
+not because they are badly managed but because they are well managed: they listen to their
+best customers, invest where margins are highest, and improve performance on the dimensions
+their customers most care about. Disruptors enter on dimensions no current customer asks for,
+serve non-consumers or the underserved, and improve until they overtake the mainstream. The
+danger is invisible until it is too late.
+
+\textcite{christensen1997} identifies two innovation types:
+\begin{description}
+  \item[Sustaining innovations] Improve performance on dimensions existing customers value.
+        Incumbents almost always win these contests; they have scale, established channels,
+        and the right incentives.
+  \item[Disruptive innovations] Introduce a different performance dimension --- often
+        initially lower on the established metric (performance, features, reliability) but
+        superior on accessibility, price, or simplicity. They enter in non-consumption or
+        low-end segments the incumbent does not defend.
+\end{description}
+The disruption mechanism is an S-curve mismatch: the incumbent's sustaining trajectory
+overshoots the mainstream market's demand ceiling. The disruptor's improvement trajectory
+starts below the threshold but, as it rises on the S-curve of its own technology, it
+eventually crosses the mainstream performance threshold --- at which point the incumbent's
+customer base switches en masse because the disruptor is now ``good enough'' and cheaper.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{disruption-scurve}
+  \caption{The innovator's dilemma as dual S-curves. The incumbent's trajectory overshoots
+    the mainstream demand threshold; the disruptor enters below it in an underserved segment
+    and crosses the threshold as its S-curve matures. The crossing point is when disruption
+    occurs.}
+  \label{fig:disruption-scurve}
+\end{figure}
+
+Christensen's criterion for disruption is entry in \emph{underserved or non-consumption}
+segments --- not just ``entry from below'' in a price sense. Every incumbent calls every
+low-price entrant ``disruptive''; the framework's predictive power depends on correctly
+identifying whether the entrant's performance trajectory will eventually satisfy mainstream
+demand. Many low-end entrants remain confined to low-end segments permanently (low-end
+encroachment, not disruption). The test is trajectory, not current price.
+
+\begin{example}
+\emph{Decision: should the SaaS firm treat no-code automation tools (Zapier, Make,
+Airtable) as a disruption threat?}
+
+No-code tools currently score low on the dimensions the SaaS's existing customers value
+(data depth, reporting, compliance). They are not competitive \emph{today} for the
+mid-market buyer.
+
+The disruptive question is: is the no-code S-curve improving fast enough to reach
+mid-market performance requirements within a planning horizon? Evidence suggests yes:
+Airtable's 2022 funding explicitly targets mid-market workflows. Christensen's test is
+whether no-code tools are improving on the \emph{right} trajectory, not whether they are
+competitive today.
+
+Response: invest in the VRIN resources (data depth, integrations) that no-code tools
+cannot replicate quickly, while watching the no-code improvement rate as a leading indicator.
+A two-year lag between ``enters non-consumption'' and ``crosses mainstream threshold'' is
+historically common --- that is the response window.
+\end{example}
+
+\begin{admonition}{Warning}
+Every incumbent labels every entrant ``disruptive'' because the word has become a compliment.
+\emph{Disruptive} in Christensen's sense is a precise technical term: it means the entrant
+initially competes on different performance criteria in a different market segment. A
+premium entrant that targets the incumbent's best customers is a \emph{sustaining} threat
+(harder to beat on features, not disruption). Misclassifying the threat type produces the
+wrong response: disruption requires a separate low-end business unit; sustaining threats
+require direct product investment.
+\end{admonition}
+
+The dilemma is organisational as well as technological: a rational incumbent allocates
+resources toward its highest-margin customers, precisely the ones the disruptor does not
+initially target. Christensen's solution --- a structurally separate unit with different
+cost structure and metrics --- is a corporate-governance problem (\cref{ch:organizational-behavior}).
+The financial expression of the dilemma is an ROIC that looks excellent right up until the
+disruption crossing, then collapses (\cref{eq:advantage-spread}).
+
+Disruption resets the VRIN audit: a previously inimitable resource (physical distribution,
+in the case of music) can be substituted by a new technological infrastructure. The chapter's
+final section ties the disruption dynamic to the financial metric that makes it legible.
+\textcite{christensen1997} is the primary source.
+
+\section{Advantage as a Value Spread}\label{sec:advantage-spread}
+% complexity: 3
+
+How do we know whether the firm currently possesses a competitive advantage, and whether
+it is widening or narrowing over time? Qualitative frameworks diagnose the \emph{source} of
+advantage; a financial metric is needed to confirm its \emph{magnitude} and track whether
+strategy is working. The natural measure is whether returns exceed the cost of capital by
+enough to justify the risk --- the same test a shareholder would apply.
+
+Competitive advantage is operationally defined as a sustained positive value spread:
+\begin{equation}\label{eq:advantage-spread}
+  \text{Advantage spread} \;=\; \mathrm{ROIC} - \mathrm{WACC},
+\end{equation}
+where ROIC is defined in \cref{eq:roic} and WACC in \cref{eq:wacc}. When the spread is
+positive, the firm earns Ricardian rents and creates economic profit (\cref{eq:economic-profit}).
+When it is zero or negative, the firm earns competitive parity or destroys value regardless
+of accounting profit.
+
+The spread connects directly to customer economics: sustained ROIC $>$ WACC requires
+sustained LTV $>$ CAC (\cref{eq:ltv-cac} in \cref{ch:customer-economics}), because the
+net present value of every cohort must be positive and growing. A widening advantage spread
+is the aggregate expression of a deepening moat.
+
+ROIC can be manipulated through accounting choices (expensing vs capitalising R\&D, off-balance-sheet
+liabilities). A firm that capitalises software development inflates the invested capital base
+and suppresses ROIC; one that expenses it deflates the base. Normalise before comparing
+across firms or across time. Similarly, a single-year positive spread may reflect a cyclical
+peak rather than structural advantage --- the spread must be persistent to be evidence of a
+moat.
+
+\begin{example}
+\emph{Decision: does the SaaS firm currently have a measurable advantage?}
+
+From the fact sheet: NOPAT $\approx$\money{600000}, invested capital $\approx$\money{3000000},
+giving ROIC $= \money{600000}/\money{3000000} = \qty{20}{\percent}$. WACC $= \qty{11}{\percent}$
+(\cref{eq:wacc}).
+\[
+  \text{Advantage spread} = \qty{20}{\percent} - \qty{11}{\percent} = \qty{9}{\percent}.
+\]
+The spread is positive and material. But it must be assessed against the moat analysis:
+if the VRIN audit shows only transient advantages, the spread will compress as rivals
+replicate. A \qty{9}{\percent} spread sustained for five years at \money{3000000}
+invested capital creates $5 \times 0.09 \times \money{3000000} = \money{1350000}$
+of cumulative economic profit --- the reward for genuine VRIN resources.
+
+If moat investment (\cref{ch:growth}) raises LTV by \money{500} (e.g.\ lower churn from
+deeper integrations), the firm can profitably spend \money{500} more per customer
+acquired without violating the LTV:CAC floor (\cref{eq:ltv-cac}).
+\end{example}
+
+\begin{admonition}{Warning}
+Comparing ROIC to the accounting cost of debt rather than to WACC. Debt is cheap in nominal
+terms; WACC blends in the much higher required return on equity. A firm earning
+\qty{8}{\percent} ROIC that funds itself at \qty{5}{\percent} nominal debt \emph{appears}
+profitable but destroys equity value if WACC $=\qty{11}{\percent}$.
+\end{admonition}
+
+McKinsey's valuation framework (\parencite{dranove7theconomics}) shows that market value
+is the discounted present value of future economic profits, not accounting profits.
+A firm trading at a premium to book value has positive NPV of future advantage spread;
+a firm trading at a discount signals the market's expectation that ROIC will fall below WACC.
+The EV multiples in \cref{ch:valuation} are the market's forecast of future spread, not
+a snapshot of current spread.
+
+The advantage spread (\cref{eq:advantage-spread}) ties the qualitative frameworks of this
+chapter --- VRIN, Blue Ocean, disruption --- to the financial language of
+\cref{ch:corporate-finance-core} and \cref{ch:valuation}. Sustained spread is the
+empirical test that distinguishes durable advantage from temporary good fortune.
+\cref{ch:growth} then asks how to widen it through moat-building.

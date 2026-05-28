@@ -1,0 +1,309 @@
+\chapter{The Operating Model \& Startup Projections}\label{ch:operating-model}
+
+% Scope: unit-economics-to-P&L bridge (cohort revenue build), the three-driver EBITDA model,
+%   scenario budgeting & sensitivity, runway. NEW chapter (closes the financial-modeling gap).
+% Bridges unit economics (\cref{ch:customer-economics}) to the DCF (\cref{ch:valuation}):
+%   builds the FCF projections the DCF takes as given.
+% Cross-links: \cref{ch:customer-economics} (CLV/CAC), \cref{ch:valuation} (DCF),
+%   \cref{ch:fundraising-and-dilution} (runway trigger), \cref{ch:financial-statements} (three-statement).
+% Draft per house style: flowing prose + example/admonition set-offs; running-SaaS worked examples.
+
+\section{The Unit-Economics-to-P\&L Bridge}\label{sec:unit-econ-to-pl}
+% complexity: 3
+
+How does a pile of unit-economics assumptions turn into a revenue forecast? The answer is the
+cohort stack: each month's new customers enter a cohort that shrinks by attrition each
+subsequent month, contributing to ARR for as long as they remain active. Add up the surviving
+contributions of every cohort and you have the firm's current ARR. This is not a top-down
+TAM-share exercise; it is a bottom-up accounting identity that makes every revenue projection
+traceable to two operational levers --- new-customer inflow and retention --- and one pricing
+lever, ARPU.
+
+Let $N_s$ be the number of new customers acquired in month $s$, ARPU the annualised revenue per
+customer, and $c$ the monthly churn rate. The ARR at the end of period $t$ is the sum over all
+prior cohorts of those customers still active:
+\begin{equation}\label{eq:cohort-revenue}
+  \mathrm{ARR}_{t}
+  \;=\;
+  \mathrm{ARPU}
+  \sum_{s=1}^{t}
+  N_{s}\,(1-c)^{\,t-s}.
+\end{equation}
+When $N_s$ is constant at $N$ and the series has been running long enough to approach steady
+state, the sum collapses to $N\,\mathrm{ARPU}/c$; the exact steady-state ceiling is reached only
+asymptotically, so real firms are always somewhere on the growth curve below it.
+\Cref{eq:cohort-revenue} is the revenue twin of the CLV formula: \cref{eq:clv} values a single
+customer, while \cref{eq:cohort-revenue} stacks the same survival mechanics across every cohort
+in the book. The MRR growth rate identity in \cref{eq:mrr-growth} is the derivative of
+\cref{eq:cohort-revenue} with respect to time.
+
+\begin{example}[Cohort stack to ARR and Year-1 FCF]
+The firm acquires \num{200} new customers per month at ARPU \money{600}/yr, with monthly churn
+\qty{0.65}{\percent}. After \num{38} months of ramp, \cref{eq:cohort-revenue} yields:
+\[
+  \mathrm{ARR}_{38}
+  \;=\; \money{600}\times
+        \frac{200\,\bigl(1-0.9935^{38}\bigr)}{0.0065}
+  \;\approx\; \money{4050000},
+\]
+which rounds to the \money{4000000} ARR in the operating plan. At this base, with invested
+capital \money{3000000} and ROIC \qty{20}{\percent} (\cref{eq:roic}), NOPAT equals
+\(\money{3000000}\times 0.20=\money{600000}\). Because a SaaS firm carries near-zero capital
+expenditure and minimal working-capital swings, free cash flow is approximately equal to NOPAT;
+\emph{Year-1 FCF \money{600000}} feeds directly into the DCF in \cref{eq:dcf} as the anchor
+of the explicit forecast period, whose present-value sum is approximately \money{3377825}.
+
+The implication is operational: both the \money{4000000} ARR and the \money{600000} FCF are
+downstream outputs of three observable rates --- inflow, retention, and price. A founder who
+cannot name the current value of all three cannot close the loop from marketing spend to
+firm value.
+\end{example}
+
+\begin{admonition}{Warning}
+Blended retention statistics hide cohort heterogeneity. A company that acquires half its
+customers through a low-retention channel will report acceptable aggregate churn while the
+healthy cohorts subsidise the leaky ones. Model retention \emph{by acquisition cohort}; the
+top-of-funnel mix is as important as the rate itself.
+\end{admonition}
+
+The cohort stack connects directly to the P\&L: ARR is the revenue line; the variable cost
+structure from \cref{ch:financial-statements} --- gross margin \qty{70}{\percent}, contribution
+margin \qty{42}{\percent} --- determines what fraction of each cohort's revenue flows to
+EBITDA. The next section turns those rates into an explicit driver model.
+
+
+\section{The Three-Driver Model}\label{sec:three-driver-model}
+% complexity: 3
+
+Once ARR is projected from the cohort stack, the P\&L follows from three rates: gross margin,
+the fixed-cost base, and its composition across the three operating expense buckets. Gross
+margin reflects the engineering of the product and cannot be changed quickly; the cost
+composition reflects management choices about where to invest. The EBITDA line is nothing but
+the arithmetic residual of these rates applied to a growing ARR base. The discipline of
+expressing the model this way is that it forces the team to be explicit about when operating
+leverage kicks in --- the point at which ARR growth outpaces the growth of the fixed-cost
+base and EBITDA turns positive.
+
+Formalise the relationship as:
+\begin{equation}\label{eq:op-model}
+  \mathrm{EBITDA}_{t}
+  \;=\;
+  \mathrm{ARR}_{t}\cdot g_{\mathrm{m}}
+  \;-\;
+  \mathrm{FixedCosts}_{t},
+\end{equation}
+where $g_{\mathrm{m}}$ is the gross margin rate and $\mathrm{FixedCosts}_{t}$ is the sum of
+Sales \& Marketing (S\&M), Research \& Development (R\&D), and General \& Administrative (G\&A)
+costs. In a SaaS business the gross margin is relatively stable (the cost of serving one more
+customer at scale is near zero), so EBITDA expansion is primarily a function of how quickly
+ARR growth outpaces fixed-cost growth --- the textbook definition of operating leverage.
+\textcite{koller2025valuation} trace this dynamic through the NOPAT bridge; \textcite{ross2022}
+give the corporate-finance treatment of operating leverage and its implications for equity risk.
+
+\begin{example}[Three-driver progression: EBITDA margin and Rule of 40]
+Starting from \money{4000000} ARR growing at \qty{30}{\percent} per year, with gross margin
+\qty{70}{\percent}, the operating expense mix evolves as the firm scales:
+
+\medskip
+\noindent\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+ & Year~0 & Year~1 & Year~2 & Year~3 \\
+\midrule
+ARR              & \money{3077000} & \money{4000000} & \money{5200000} & \money{6760000} \\
+Gross profit (70\%) & \money{2154000} & \money{2800000} & \money{3640000} & \money{4732000} \\
+S\&M (\% of ARR) & 50\%       & 50\%       & 45\%       & 35\%       \\
+R\&D (\% of ARR) & 25\%       & 25\%       & 25\%       & 20\%       \\
+G\&A (\% of ARR) & 10\%       & 10\%       & 15\%\textsuperscript{*} & 8\%        \\
+Total opex       & 85\%       & 85\%       & 85\%       & 63\%       \\
+EBITDA margin    & \(-15\%\)  & \(-15\%\)  & \;\;0\%    & \;\,+7\%   \\
+\bottomrule
+\end{tabular}%
+}
+
+\medskip
+\noindent\textsuperscript{*}G\&A rises temporarily in Year~2 as the firm invests in finance
+and legal infrastructure ahead of a fundraise; it compresses to \qty{8}{\percent} in Year~3
+as ARR scales past the G\&A step function.
+
+\medskip
+The Rule-of-40 score (\cref{eq:rule40}) is the sum of ARR growth rate and EBITDA margin: Year~1
+scores \(30+(-15)=15\), Year~2 scores \(30+0=30\), and Year~3 scores \(30+7=37\) --- a
+progression from deeply unprofitable to approaching the benchmark threshold. The implication:
+the operating-leverage story is only credible if the G\&A and R\&D curves genuinely flatten as
+ARR scales. Any model that holds opex percentages constant as ARR grows is not modelling
+operating leverage; it is modelling a cost-plus business.
+\end{example}
+
+\begin{admonition}{Warning}
+Operating leverage cuts both ways. The same fixed-cost base that produces EBITDA expansion at
+\qty{30}{\percent} growth produces accelerating losses if growth slows to \qty{15}{\percent}.
+Stress-test the model at \qty{50}{\percent} of planned growth before presenting it to a board:
+at \qty{15}{\percent} ARR growth the Year-3 EBITDA margin in the example above stays near
+\(-5\%\) and the Rule-of-40 score does not cross the threshold. A plan that requires full
+execution to avoid a cash crisis is a plan without margin for error.
+\end{admonition}
+
+\Cref{eq:op-model} outputs the EBITDA that feeds into the NOPAT bridge (\cref{eq:nopat-bridge})
+and ultimately into the free cash flow that \cref{eq:dcf} discounts. The next section asks how
+sensitive that output is to the assumptions driving it.
+
+
+\section{Scenario Budgeting \& Sensitivity}\label{sec:scenario-budget}
+% complexity: 4
+
+A single-scenario operating model is a forecast in disguise. The honest version of the same
+work is a sensitivity surface that maps the model's output across a range of input assumptions,
+so management knows which lever matters most and by how much. The two most dangerous drivers in
+a SaaS unit-economics model are CAC and churn: CAC governs the cost of filling the top of the
+cohort stack; churn governs the speed at which it empties. Both can move independently, and
+their interaction is non-linear.
+
+The partial derivative of EBITDA with respect to CAC (holding all else constant) is simply the
+number of new customers acquired per period. At \num{200} new customers per month:
+\begin{equation}\label{eq:sensitivity}
+  \begin{aligned}
+    \frac{\partial\,\mathrm{EBITDA}}{\partial\,\mathrm{CAC}} \;=\; -N
+    \quad&\Longrightarrow\quad \Delta\mathrm{CAC}=\money{100} \\
+    &\Rightarrow\; \Delta\mathrm{EBITDA} = -\money{100}\times 200 = -\money{20000}\text{ per month},
+  \end{aligned}
+\end{equation}
+or \money{240000} per year. The minus sign is load-bearing: CAC is an outflow that hits EBITDA
+before a single dollar of lifetime value is realised. Churn operates through the ARR line via
+\cref{eq:cohort-revenue}: a churn rate rise of \qty{0.35}{\percent} per month (from
+\qty{0.65}{\percent} to \qty{1.00}{\percent}) reduces the steady-state customer count by roughly
+\qty{35}{\percent}, which at \money{4000000} ARR is a structural \money{1400000} reduction in the
+revenue ceiling --- an order of magnitude larger than a single year of CAC overspend.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\textwidth]{op-model-bridge}
+  \caption{Operating-model waterfall: from unit-economics inputs (ARPU, gross margin, churn,
+    new customers per month) through ARR and EBITDA to free cash flow. The bar heights show
+    how each driver contributes or subtracts; the rightmost bar is Year-1 FCF \money{600000}.}
+  \label{fig:op-model-bridge}
+\end{figure}
+
+\begin{example}[Two-way sensitivity: 3-year NPV across CAC and churn]
+The table below holds ARR\textsubscript{0} at \money{4000000}, annual new-customer
+acquisition at \num{2400}, R\&D\,+\,G\&A at \money{2000000}, gross margin at \qty{70}{\percent},
+and the discount rate at \qty{11}{\percent}. Each cell is the three-year net present value of
+NOPAT, with a \qty{30}{\percent} tax rate applied to positive EBITDA.
+
+\medskip
+\noindent\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrr}
+\toprule
+\multicolumn{1}{c}{CAC}
+  & \multicolumn{1}{c}{Churn 0.50\%/mo}
+  & \multicolumn{1}{c}{Churn 0.75\%/mo}
+  & \multicolumn{1}{c}{Churn 1.00\%/mo} \\
+\midrule
+\money{400} & \money{2410000}  & \money{2120000}  & \money{1840000} \\
+\money{500} & \money{2000000}  & \money{1710000}  & \money{1430000} \\
+\money{600} & \money{1590000}  & \money{1300000}  & \money{1020000} \\
+\money{700} & \money{1170000}  & \money{860000}   & \money{560000}  \\
+\money{800} & \money{700000}   & \money{380000}   & \money{90000}   \\
+\bottomrule
+\end{tabular}%
+}
+
+\medskip
+The base case (CAC \money{600}, churn \qty{0.65}{\percent}) produces a three-year NPV near
+\money{1400000}, consistent with the \money{3377825} explicit-period PV in the full five-year
+DCF (\cref{eq:scenario-ev}). The bear case --- CAC \money{800} and monthly churn
+\qty{1.00}{\percent} --- reduces NPV to just \money{90000}, a \qty{94}{\percent} collapse
+from base, illustrating that the two drivers compound: higher CAC raises the cost side at
+exactly the moment higher churn is compressing the revenue base. Note that no cell in the table
+is negative; even the bear case generates positive cumulative FCF over three years. The risk
+at \money{800}/\qty{1.00}{\percent} is therefore not insolvency on this time horizon but
+insufficient FCF to justify the valuation multiple required for a fundraise.
+\end{example}
+
+\begin{admonition}{Warning}
+A model that is sensitive to only one driver is miscalibrated. If toggling CAC by
+\qty{30}{\percent} changes NPV by \qty{50}{\percent} while toggling churn by the same
+fraction changes it by only \qty{5}{\percent}, one of the two inputs is not being modelled with
+enough granularity. Sensitivity analysis is not just a risk-communication tool; it is a
+diagnostic that reveals whether the model's structure matches the actual drivers of the
+business.
+\end{admonition}
+
+The sensitivity surface feeds the scenario logic. Three internally consistent scenarios ---
+bear, base, and bull --- should each carry their own EBITDA trajectory and their own implied
+runway, because the question the board asks after seeing the sensitivity table is always the
+same: how long before we need to raise?
+
+
+\section{Runway \& the Financing Decision}\label{sec:runway}
+% complexity: 2
+
+Runway is the bridge between operating model and financing decision. It converts the net cash
+consumption rate into a countdown clock and sets the trigger date for fundraising. The
+mechanics are simple; the discipline is in running two versions simultaneously --- a growth
+runway that assumes planned new-customer acquisition continues, and a conservative runway that
+assumes zero growth from the current base.
+
+Let $B$ be the current cash balance, $E$ the monthly operating expenditure (gross burn), and
+$R_{\mathrm{m}}$ the monthly cash actually collected from customers (MRR collected, not
+deferred):
+\begin{equation}\label{eq:runway}
+  \text{Runway (months)}
+  \;=\;
+  \frac{B}{\,E - R_{\mathrm{m}}\,}
+  \;=\;
+  \frac{B}{\text{net monthly burn}}.
+\end{equation}
+The denominator is net burn: what the bank account loses each month after accounting for cash
+inflows. The distinction between gross and net burn matters because a fast-growing firm with
+substantial MRR has a very different survival clock than its income statement might suggest.
+Gross burn is the baseline cost floor; net burn is the existential metric.
+\textcite{brealey2020} develop the cash-flow statement mechanics that underpin the relationship
+between net income, non-cash charges, and actual cash movement --- the same mechanics that
+explain why MRR collected can differ from recognised revenue in the month it is booked.
+
+\begin{example}[Runway and fundraising trigger]
+The firm holds \money{2500000} in cash. Monthly operating expenditure (salaries, cloud
+infrastructure, S\&M outflows) is \money{650000}; MRR currently collected is \money{340000},
+consistent with the \money{4000000} ARR base and the fact that annual subscribers pay monthly.
+Applying \cref{eq:runway}:
+\[
+  \text{Net burn}
+  \;=\; \money{650000} - \money{340000}
+  \;=\; \money{310000}\text{ per month},
+\]
+\[
+  \text{Runway}
+  \;=\; \frac{\money{2500000}}{\money{310000}}
+  \;\approx\; \text{8 months}.
+\]
+The \emph{fundraising trigger} is the date that leaves enough runway to close a round. A
+competitive Series A process takes four to six months from first outreach to wire; adding two
+months of buffer sets the trigger at six months of runway remaining. Eight months of runway
+minus six months of required lead time means the firm must begin fundraising \emph{immediately}
+--- not at the six-month mark.
+
+The implication for the operating model: the runway calculation should be re-run monthly
+against actual cash and actual net burn. A burn rate that runs \money{50000} per month above
+plan for three months has consumed a full round of buffer without a line appearing on the
+income statement. The chapter on fundraising and dilution (\cref{ch:fundraising-and-dilution})
+takes this trigger date and works through the valuation mechanics and term-sheet implications
+of raising from this position.
+\end{example}
+
+\begin{admonition}{Warning}
+Always run both the growth and the conservative runway, and use the conservative one to
+set the trigger date. The growth runway is the upside scenario; the conservative runway ---
+which holds MRR flat at today's level and ignores new sales --- is the survival clock. A firm
+that runs its fundraising timing off the growth runway is betting its survival on the plan
+executing exactly as modelled. The fundraising process will not wait for a recovery.
+\end{admonition}
+
+The operating model is now complete as a planning instrument: \cref{eq:cohort-revenue} builds
+the ARR from observable unit-economics inputs; \cref{eq:op-model} converts ARR and cost
+structure into EBITDA; \cref{eq:sensitivity} quantifies the impact of individual driver changes;
+and \cref{eq:runway} converts the resulting cash profile into a survival timeline. The FCF
+output of this chain --- \money{600000} in Year~1, growing at the rates in \cref{eq:op-model}
+--- is the input that the DCF in \cref{eq:dcf} discounts to an enterprise value.
+\textcite{koller2025valuation} close the loop between operating-model outputs and DCF
+enterprise value in the chapters on forecasting and value drivers.

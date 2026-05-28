@@ -1,0 +1,333 @@
+\chapter{Microeconomics for Managers}\label{ch:microeconomics}
+
+% Scope: elasticity, marginal analysis, market structure, and auction theory.
+% Cross-link: elasticity <-> bid-response & MMM saturation (\cref{ch:paid-acquisition-platforms},
+%   \cref{ch:attribution-and-measurement}); auction theory <-> the ad auction (\cref{ch:paid-acquisition-platforms}).
+
+Markets allocate resources through prices; managers move prices without understanding how price
+and quantity interact at the margin. Elasticity quantifies that interaction; market-structure
+analysis locates the firm on the spectrum of competitive pressure; auction theory explains the
+mechanism by which two of the largest media markets in history clear in milliseconds. Together
+they give every pricing, positioning, and acquisition decision a microeconomic backbone.
+
+\section{Price Elasticity and Marginal Analysis}\label{sec:elasticity}
+% complexity: 3
+
+If you raise the price, do you earn more or less total revenue? The answer depends entirely on
+how sensitive demand is to price --- a question elasticity answers before you commit to the change.
+Demand curves slope downward: higher price, fewer units. But the revenue effect of a price change
+depends on which effect dominates --- the price-per-unit increase or the volume loss. A price rise
+earns more total revenue only if customers are relatively insensitive (inelastic demand). In
+elastic markets, the volume loss swamps the margin gain. Marginal analysis sharpens this: the
+profit-maximising rule is to produce until the last unit's marginal revenue equals its marginal
+cost --- any departure from that leaves money on the table.
+
+Price elasticity of demand is the percentage change in quantity demanded per one-percent change in price:
+\begin{equation}\label{eq:elasticity}
+  \varepsilon \;=\; \frac{\partial Q/Q}{\partial P/P}
+              \;=\; \frac{\partial Q}{\partial P}\cdot\frac{P}{Q}.
+\end{equation}
+\(\varepsilon<0\) always (law of demand). The revenue-maximising point is \(\varepsilon=-1\)
+(unit-elastic); below it (inelastic, \(|\varepsilon|<1\)) a price rise raises revenue; above it
+(elastic, \(|\varepsilon|>1\)) a price rise cuts revenue. Marginal revenue is linked to elasticity by:
+\[
+  \mathrm{MR} \;=\; P\!\left(1+\frac{1}{\varepsilon}\right).
+\]
+Setting \(\mathrm{MR}=\mathrm{MC}\) yields the standard profit-maximum. Revenue changes as:
+\[
+  \frac{\Delta R}{\Delta P} \;=\; Q\!\left(1 + \frac{1}{\varepsilon}\right),
+\]
+so raising price in an elastic market (\(|\varepsilon|>1\)) generates a negative revenue change ---
+the volume loss dominates.
+
+\Cref{eq:elasticity} assumes a static demand curve, constant tastes, and no strategic response
+from competitors. Elasticity varies along the demand curve (it is not constant for a linear demand
+function), so a calibration at one price point does not transfer to a very different price.
+Long-run elasticities are generally higher than short-run ones: customers need time to find
+substitutes, change habits, or switch platforms. In digital markets, platform lock-in and
+switching costs can compress the measured elasticity far below the structural long-run value.
+
+\begin{example}
+The running SaaS business prices its base plan at \money{50}/month (\money{600}/year).
+Suppose a demand study estimates \(\varepsilon=-1.5\) at the current price --- moderately elastic.
+A proposed \qty{10}{\percent} price increase to \money{55}/month implies a volume decrease of
+\(1.5\times10\%=\qty{15}{\percent}\):
+\[
+  \Delta R \;\approx\; Q\!\left(1+\frac{1}{-1.5}\right)\times\Delta P
+           = Q\times\frac{1}{3}\times\money{5}.
+\]
+Revenue per existing customer rises by \money{5}, but \qty{15}{\percent} of customers churn ---
+for a customer base of \num{200}, that is \num{30} lost subscriptions at \(\mathrm{LTV}=\money{3150}\)
+each, a foregone value of \money{94500}. The price rise is unlikely to be net-positive unless the
+elasticity estimate is materially wrong or a cohort of customers is genuinely inelastic. Run the
+price experiment on a small segment before rolling out, and measure churn response directly
+rather than relying on the aggregate \(\varepsilon\) estimate.
+\end{example}
+
+\begin{admonition}{Warning}
+Using aggregate elasticity for a segment decision hides dangerous heterogeneity. An overall
+\(\varepsilon=-1.5\) masks a distribution: some customers are nearly inelastic (enterprise, high
+switching cost), others highly elastic (SMB trial users). A blanket price rise extracts from
+neither group optimally. Segment-level pricing --- the subject of \cref{ch:pricing} --- is the
+correct response; elasticity segmentation is its empirical foundation.
+\end{admonition}
+
+In media-mix modelling, the saturation curve --- diminishing returns to additional spend --- is
+precisely a demand-side elasticity: the \emph{response elasticity} of conversions to media
+dollars, measured at the current spend level. As spend increases, the marginal response declines,
+which is why the \(\mathrm{iROAS}\) (\cref{eq:iroas}) estimated by \textcite{hanssens2001marketing}
+and the MMM literature is a local elasticity estimate around the current budget point. The
+adstock-saturation model in \cref{ch:attribution-and-measurement} is the time-distributed version
+of \cref{eq:elasticity}: the same trade-off between spend and diminishing returns, extended over
+multiple periods via the adstock decay (\cref{eq:adstock}).
+
+Elasticity feeds directly into price architecture (\cref{ch:pricing}), campaign budget
+optimisation (\cref{ch:paid-acquisition-platforms}), and the saturation curves of marketing-mix
+modelling (\cref{ch:attribution-and-measurement}). \textcite{pindyck2017} provide the full
+theoretical treatment; \textcite{mankiw2020} the undergraduate-level derivation.
+
+\section{Market Structure and the Lerner Index}\label{sec:lerner}
+% complexity: 3
+
+How much pricing power does the business actually have? Market structure --- the number and
+symmetry of competitors --- determines the upper bound on sustainable margin. The Lerner index
+converts that structural position into a number. Perfect competition forces price to marginal
+cost; pure monopoly allows maximum mark-up. Between those extremes lie oligopoly (few firms,
+strategic interdependence) and monopolistic competition (many firms, differentiated products).
+Most technology and SaaS businesses operate in monopolistic competition: pricing power exists
+but is constrained by the threat of substitution. The Lerner index measures the fraction of
+price that is mark-up, linking directly to elasticity: high pricing power requires inelastic
+demand.
+
+The Lerner index is the price--cost margin expressed as a fraction of price:
+\begin{equation}\label{eq:lerner}
+  L \;=\; \frac{P - \mathrm{MC}}{P} \;=\; -\frac{1}{\varepsilon}.
+\end{equation}
+The second equality follows from setting \(\mathrm{MR}=\mathrm{MC}\) at the profit maximum and
+substituting \(\mathrm{MR}=P(1+1/\varepsilon)\). \(L\in[0,1]\): zero in perfect competition
+(\(P=\mathrm{MC}\)), one in pure monopoly (\(\mathrm{MC}=0\)). The formula encodes the same
+trade-off as \cref{eq:elasticity}: lower elasticity (less price sensitivity) permits a higher
+Lerner index.
+
+Market structure typology:
+\begin{description}
+  \item[Perfect competition] \(P=\mathrm{MC}\), \(L=0\). Many identical firms, zero economic profit in
+    the long run. Commodity agriculture, some spot-market financial instruments.
+  \item[Monopolistic competition] Differentiated products, free entry, \(L>0\) in the short run but
+    eroded by imitation. Most consumer goods, SaaS with many close substitutes.
+  \item[Oligopoly] Few large firms, strategic interdependence (each firm's price affects rivals).
+    Telecoms, cloud infrastructure, search advertising.
+  \item[Monopoly] Single supplier, maximum \(L\), subject to regulatory constraint. Rare and regulated;
+    a strong network effect (\cref{ch:growth}) can approximate it temporarily.
+\end{description}
+
+\Cref{eq:lerner} assumes a static demand curve and no regulatory constraint on pricing. In
+practice, high Lerner indices attract antitrust scrutiny (the standard measure in competition
+economics). The formula also assigns one elasticity to the whole market; a firm with multiple
+segments faces different elasticities --- and thus different optimal prices --- for each.
+Long-run equilibrium in monopolistic competition drives \(L\to 0\) as entrants imitate; the
+time to equilibrium depends on how defensible the differentiation is (the subject of
+\cref{ch:advantage-and-disruption}).
+
+\begin{example}
+The SaaS business faces \(\varepsilon=-1.5\) at the current price. Applying \cref{eq:lerner}:
+\[
+  L = -\frac{1}{-1.5} \approx 0.67.
+\]
+A Lerner index of \num{0.67} means \qty{67}{\percent} of the \money{50} plan price is mark-up over
+marginal cost. Benchmarked against commodity software (near-zero \(L\)) and enterprise software
+(often \(L>0.80\)), this is consistent with monopolistic competition with moderate differentiation.
+The managerial implication: further differentiation --- integrations, network effects, certification
+--- can raise \(|\varepsilon|\) (make demand less elastic) and thus expand the sustainable \(L\)
+without price changes. \textcite{dranove7theconomics} survey the empirical range by industry.
+\end{example}
+
+\begin{admonition}{Warning}
+Confusing the Lerner index with gross margin is a common and consequential error. Gross margin
+is \((P-\mathrm{COGS})/P\); the Lerner index is \((P-\mathrm{MC})/P\), where \(\mathrm{MC}\) is
+the true marginal cost --- the cost of serving one additional customer at the margin --- which in
+SaaS is near zero. A \qty{70}{\percent} gross margin at scale does not imply \(L=0.70\): the two
+converge only when there are no fixed costs and COGS captures all variable costs, neither true
+at the growth stage nor at scale.
+\end{admonition}
+
+In an oligopoly, the Lerner index generalises to the Cournot model: \(L_i = s_i / |\varepsilon|\),
+where \(s_i\) is firm \(i\)'s market share. This implies high-share firms have more pricing power
+even at the same market elasticity. The Herfindahl-Hirschman Index (\cref{eq:hhi}) in
+\cref{ch:competitive-analysis} quantifies concentration; industry-average \(L\) and HHI are
+correlated in most empirical studies.
+
+Lerner-index reasoning is directly applied in value-based pricing (\cref{ch:pricing}) and informs
+acquisition efficiency decisions (\cref{ch:paid-acquisition-platforms}). \textcite{pindyck2017}
+and \textcite{mankiw2020} derive the standard mark-up rules; \textcite{dranove7theconomics}
+develops the oligopoly extensions.
+
+\section{Auction Theory and the Ad Auction}\label{sec:auction-theory}
+% complexity: 4 -> tabular suffices (discrete 2-bidder case illustrates structure without curve)
+
+You are bidding for attention in a real-time auction that runs in milliseconds. Knowing the
+equilibrium bidding strategy --- and why it is optimal to bid your true value --- is the
+difference between efficient spend and systematic overpayment. A first-price auction (pay what
+you bid) incentivises shading your bid below true value to avoid the winner's curse; the optimal
+shade depends on your beliefs about competitors' values. A Vickrey (second-price) auction
+removes that incentive: you pay only the second-highest bid, so bidding your true value is a
+weakly dominant strategy regardless of what others do. Google and Meta run generalised
+second-price (GSP) auctions with a quality weight --- a per-advertiser multiplier that converts
+raw bids into effective bids, altering the clearing price and rank.
+
+In the Vickrey second-price auction with \(n\) bidders, truthful bidding is a dominant strategy:
+if you win (your true value \(v\) exceeds all rivals' values), you pay the highest rival's value
+\(v_{(2)}\) --- less than \(v\), so you earn a positive surplus. If you lose, your bid had no
+impact. No deviation from truthful bidding improves your outcome.
+
+The generalised second-price (GSP) auction with quality weight \(Q_i\) ranks bidders by effective
+bid \(b_i Q_i\) and charges the winner the amount needed to beat the next-ranked advertiser:
+\begin{equation}\label{eq:gsp}
+  \mathrm{CPC}_i \;=\; \frac{b_{i+1}\,Q_{i+1}}{Q_i} + \delta,
+\end{equation}
+where \(b_{i+1}Q_{i+1}\) is the effective AdRank of the bidder ranked just below \(i\) and
+\(\delta\) is a small increment (e.g.\ \$0.01). This structure --- already derived operationally
+in \cref{eq:ecpc} --- has a key implication: improving quality \(Q_i\) reduces cost per click at
+any given rank.
+
+A two-bidder example with values \(v_A=\money{5}\), \(v_B=\money{3}\) and quality scores
+\(Q_A=10\), \(Q_B=8\):
+\begin{center}\small
+\begin{tabular}{lrrrl}
+  \toprule
+  Bidder & True value & Quality score & Effective bid & Outcome \\
+  \midrule
+  A      & \money{5}  & 10            & 50            & Wins; pays \(3\times8/10+0.01=\money{2}.41\) \\
+  B      & \money{3}  & 8             & 24            & Loses \\
+  \bottomrule
+\end{tabular}
+\end{center}
+Bidder A earns surplus \(\money{5}-\money{2}.41=\money{2}.59\) per click. If A reduced quality to
+\(Q_A=6\), effective bid falls to 30; B's effective bid of 24 still loses, but A's CPC rises to
+\(3\times8/6+0.01=\money{4}.01\), slashing surplus to \money{0}.99. Quality improvement is
+unambiguously profitable for the buyer.
+
+\Cref{eq:gsp} assumes the quality score is fixed and known at auction time. In practice both
+Google's Quality Score and Meta's estimated action rate (\cref{eq:metavalue}) are updated
+continuously; a high-quality creative today may be superseded by a freshly-trained model's lower
+prediction tomorrow. GSP is not incentive-compatible in the same clean sense as Vickrey: bidders
+can benefit from bid shading in multi-slot environments \parencite{dranove7theconomics}. The
+mechanism also assumes independent private values; correlated values (common in brand-keyword
+auctions) open space for collusion or tacit coordination.
+
+\begin{example}
+The running SaaS business targets the keyword ``project management software'' on Google.
+A competitor (B) with AdRank~16 occupies position 2. With Quality Score \(Q_A=8\):
+\[
+  \mathrm{CPC} = 16/8 + \$0.01 = \money{2.01}.
+\]
+At \money{120000} monthly budget and CPC of \money{2.01}, the business buys
+\(\num{120000}/2.01\approx\num{59700}\) clicks --- well above the learning-phase minimum.
+If optimising creative and landing page lifts \(Q_A\) to 10:
+\[
+  \mathrm{CPC} = 16/10 + \$0.01 = \money{1.61},\quad
+  \text{clicks} \approx \num{74500}\;\text{(+25\%)}.
+\]
+The same budget buys \qty{25}{\percent} more traffic through quality, not spend. This is the
+operational form of \cref{eq:gsp} and is consistent with the CPC derivation in \cref{eq:ecpc},
+\cref{ch:paid-acquisition-platforms}.
+\end{example}
+
+\begin{admonition}{Warning}
+Bidding above true value to win position~1 in a GSP auction reduces surplus per click and can
+destroy value if the incremental CTR uplift of position~1 over position~2 does not compensate
+for the higher CPC. The decision is a marginal analysis: incremental revenue from higher position
+versus incremental cost --- exactly the \(\mathrm{MR}=\mathrm{MC}\) condition of
+\cref{eq:elasticity}.
+\end{admonition}
+
+The revenue equivalence theorem states that under standard conditions (risk-neutral bidders,
+independent private values, symmetric distributions) all standard auctions --- first-price,
+second-price, English, Dutch --- generate the same expected revenue for the seller. Google and
+Meta's use of quality weights is a departure from this symmetric case: it allows the platform to
+extract more revenue by ranking higher-quality, lower-bidding advertisers who generate more
+user-value (and thus more platform-side surplus) than pure price would imply. The mechanism
+design question --- which auction maximises a weighted sum of advertiser and platform welfare ---
+is active in the literature \parencite{mankiw2020}.
+
+The GSP structure of \cref{eq:gsp} is the theoretical backbone of the platform mechanics in
+\cref{ch:paid-acquisition-platforms}; the quality score is the AdRank component in \cref{eq:adrank}
+and the CPC formula in \cref{eq:ecpc}. \textcite{mankiw2020} and \textcite{dranove7theconomics}
+cover the auction-theory foundations; the platform implementation is in \cref{ch:paid-acquisition-platforms}.
+
+\section{Transaction Costs and Firm Boundaries}\label{sec:transaction-costs}
+% complexity: 3
+
+Should the firm build its own ad-tech stack, manage its own data pipeline, or use the platforms?
+Transaction cost economics gives the make-or-buy decision a rigorous frame: internalise when
+markets are too costly to use; outsource when they are not. Markets are efficient allocation
+mechanisms, but using them is not free. Writing and enforcing contracts, monitoring counterparty
+performance, and switching vendors all consume resources. When those transaction costs exceed the
+costs of managing an activity inside the firm, internalisation is the efficient choice. Coase's
+1937 insight is that firm boundaries are set at the margin where the cost of one more internal
+transaction equals the cost of one more market transaction.
+
+The make-or-buy decision is assessed along four dimensions:
+\begin{description}
+  \item[Asset specificity] How specialised is the asset to this relationship? High specificity
+    (custom integrations, proprietary data) creates hold-up risk in a market relationship ---
+    the counterparty can extract rents at renegotiation. Internalise.
+  \item[Uncertainty] Harder-to-contract environments (rapidly changing tech, unpredictable volumes)
+    raise the cost of market contracts. Internalise or use relational (long-term, trust-based) contracting.
+  \item[Frequency] Frequent, standardised transactions lower the per-unit cost of market contracting
+    relative to the fixed cost of internal governance. Outsource.
+  \item[Measurement difficulty] When output quality is hard to observe and verify, market contracts
+    produce moral hazard (the counterparty shirks because quality is not punished). Internalise
+    or invest in monitoring.
+\end{description}
+\parencite{coase1937nature}.
+
+The framework assumes that internalisation actually solves the governance problem. Large firms face
+internal transaction costs too --- bureaucracy, misaligned incentives, coordination failures ---
+that can exceed market costs at scale. The optimal boundary is thus not ``big firm vs.\ market''
+but a continuous cost-comparison at each margin of organisational scope. Platform ecosystems create
+a third mode: governed markets (App Store, Google Ads API) that combine market pricing with
+platform-enforced standards, partially internalising asset-specificity risk without full vertical
+integration \parencite{dranove7theconomics}.
+
+\begin{example}
+The SaaS business considers whether to build a first-party attribution stack or rely on the
+platforms' native conversion APIs. Applying the framework:
+\begin{itemize}
+  \item \emph{Asset specificity}: first-party conversion data is highly specific (proprietary customer
+    identifiers, server-side events); high hold-up risk if stored exclusively in a third-party tool.
+    Signal: build.
+  \item \emph{Uncertainty}: privacy regulations (cookieless web) are shifting fast; a custom stack
+    requires ongoing engineering investment. Signal: buy or use platform API (lower maintenance).
+  \item \emph{Frequency}: conversion events happen continuously at scale; standardised APIs handle
+    them cheaply. Signal: buy.
+  \item \emph{Measurement difficulty}: platform-reported conversions may overcount due to attribution
+    windows; verification requires an independent measurement layer. Signal: build the verification
+    layer; outsource the delivery.
+\end{itemize}
+Decision: use the platform Conversions API (\cref{ch:attribution-and-measurement}) for delivery,
+build a first-party data layer for verification and modelling. The hybrid minimises both transaction
+costs and hold-up risk.
+\end{example}
+
+\begin{admonition}{Warning}
+Build-vs.-buy decisions made on sunk cost rather than marginal future costs are systematically
+biased. A firm that has already invested in a proprietary stack will underestimate ongoing
+maintenance cost and overestimate switching cost, both of which favour the status quo regardless
+of current economics. Loss aversion (\cref{eq:prospect}) amplifies this: the prospect of
+``losing'' the existing investment is coded as a certain loss, weighted at \(\lambda\approx2.25\).
+\end{admonition}
+
+Vertical integration and platform governance are extensions of the Coasian framework applied to
+digital ecosystems. A platform that owns both the marketplace and a competing product faces the
+same make-or-buy problem as a buyer, but reversed: it internalises when it can earn more from
+self-supply than from the externality it generates by enabling third-party competition. This is
+the economics behind the app-store antitrust disputes: is the platform's vertical integration
+(taking a commission, favouring its own products) a welfare-improving reduction in transaction
+costs or an anticompetitive foreclosure? \textcite{coase1937nature} provides the foundational
+framework; \textcite{dranove7theconomics} apply it to platform markets.
+
+The make-or-buy analysis recurs in operations strategy (\cref{ch:operations}) and in the
+discussion of marketing-technology stack decisions in \cref{ch:attribution-and-measurement}.
+\textcite{coase1937nature} is the foundational text; \textcite{dranove7theconomics} extend it to
+digital markets.

@@ -3,4 +3,253 @@
 % Scope: expected value, Bayes, decision trees, cognitive bias.
 % Cross-link: Bayesian updating is reused by data-driven attribution & MMM (\cref{ch:attribution-and-measurement});
 %   the chain rule of probability underlies the conversion funnel (\cref{ch:digital-funnel-and-crm}).
-% TODO: draft per the per-concept template (decision/intuition/derivation/breaks/worked/trap/deeper).
+
+Every business decision is a bet placed before the outcome is known. The frameworks
+here --- expected value, Bayes, and prospect theory --- do not remove uncertainty; they make the
+structure of the bet explicit so the manager can evaluate it clearly rather than react to it
+emotionally.
+
+\section{Expected Value and Decision Trees}\label{sec:expected-value}
+% complexity: 4 -> figure decision-tree
+
+When two options have different risk profiles, which do you choose? Expected value converts
+probability-weighted outcomes into a single comparable number, but a decision tree forces you
+to make the structure of the uncertainty explicit before you compute. Comparing a safe outcome
+with a risky one by gut feel systematically misleads because humans weight recent, vivid, and
+emotionally salient outcomes too heavily. Expected value is the long-run arithmetic average
+payoff --- the number you would converge to if the decision were made many times under identical
+conditions. For one-off decisions, EV is a disciplined baseline, not a guarantee.
+
+For a discrete set of mutually exclusive outcomes \(x_i\) with probabilities \(p_i\)
+(\(\sum_i p_i = 1\)):
+\begin{equation}\label{eq:ev}
+  \mathbb{E}[X] \;=\; \sum_i p_i\, x_i.
+\end{equation}
+A decision tree maps each choice to a set of probability-weighted branches, with EV computed at
+each terminal node and folded back to the decision node by \cref{eq:ev}. The tree's value is
+that it forces the analyst to enumerate outcomes and assign probabilities rather than reason
+from a single expected scenario.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{decision-tree}
+  \caption{Decision tree for two Target CPA bids. The higher bid (\money{900}) has higher expected
+    value despite a lower success probability, because the downside is smaller relative to the
+    upside. Rolling back the tree to the decision node reveals this only after probabilities are
+    made explicit.}
+  \label{fig:decision-tree}
+\end{figure}
+
+\Cref{eq:ev} assumes outcomes and probabilities are known. In practice, both require estimation
+from data or expert judgment, introducing model risk. EV also ignores the distribution around the
+mean: two options with identical EV can have very different variance, and a firm with constrained
+capital may rationally prefer the lower-variance option even at a lower EV (risk aversion ---
+formalised in \cref{sec:prospect-theory}). Finally, EV from a decision tree collapses to a single
+number and discards the timing of cash flows; embed discounting when comparing multi-period paths.
+
+\begin{example}
+The running SaaS business considers two Target CPA levels for a new campaign. At
+\(\mathrm{CPA}=\money{600}\), the conversion model assigns a \qty{70}{\percent} probability of
+acquiring a customer worth \(\mathrm{LTV}=\money{3150}\) and \qty{30}{\percent} of a
+low-engagement customer worth \money{900} (three months then churned):
+\[
+  \begin{aligned}
+    \mathbb{E}[\text{value} \mid \mathrm{CPA}=\money{600}]
+      &= 0.70\times(\money{3150}-\money{600}) + 0.30\times(\money{900}-\money{600}) \\
+      &= \money{1785} + \money{90} = \money{1875}.
+  \end{aligned}
+\]
+At \(\mathrm{CPA}=\money{900}\), the higher spend attracts a higher-intent segment:
+\qty{85}{\percent} chance of the full LTV customer, \qty{15}{\percent} of the low-engagement one:
+\[
+  \begin{aligned}
+    \mathbb{E}[\text{value} \mid \mathrm{CPA}=\money{900}]
+      &= 0.85\times(\money{3150}-\money{900}) + 0.15\times(\money{900}-\money{900}) \\
+      &= \money{1912.50}.
+  \end{aligned}
+\]
+The \money{900} CPA has higher expected per-customer profit (\money{1912.50} vs.\ \money{1875})
+despite spending \money{300} more per acquisition. The decision: raise the Target CPA. The trap
+is choosing \money{600} because it \emph{feels} more conservative --- \cref{sec:prospect-theory}
+explains why that intuition is systematically wrong.
+\end{example}
+
+\begin{admonition}{Warning}
+Single-scenario planning --- building one set of projections, labelling it ``base case,'' and
+evaluating it as if it were certain --- is a decision tree with one branch, which assigns
+probability~1 to the chosen scenario. Making the branches and their probabilities explicit is not
+additional work; it is the minimum discipline that EV analysis requires \parencite{kahneman2011}.
+\end{admonition}
+
+When decisions are sequential and information arrives between stages, the tree becomes a real
+options problem: the value of being able to wait, expand, or abandon is an option premium on top
+of the static EV. Black-Scholes pricing is the continuous-time limit of a binomial tree. The
+practical implication: staging capital commitments (first a pilot, then rollout) is almost always
+worth more than its cost, because it preserves the option to abandon. Modelling this requires
+option-pricing methods, not plain EV (\cref{ch:valuation}).
+
+Expected value is the language of budgeting and scenario analysis; it feeds directly into the
+DCF framework of \cref{ch:valuation} and the MMM attribution models of
+\cref{ch:attribution-and-measurement}. \textcite{anderson2019statistics} cover the probability
+machinery; \textcite{kahneman2011} document why managers deviate from it.
+
+\section{Bayesian Updating}\label{sec:bayesian-updating}
+% complexity: 3
+
+A new signal has arrived --- a whitepaper download, a pilot result, a churn signal. How much
+should it move your prior belief? Bayes's theorem gives the exact answer; the practical skill is
+choosing what counts as evidence and calibrating its diagnostic power. Frequentist inference asks
+what the probability of this data is given a fixed true parameter; Bayesian inference asks what
+the probability the parameter is true is, given the data just observed. The second question is
+almost always what the manager needs. Bayes says: start with a prior (your initial belief),
+observe evidence, and update proportionally to how much more likely the evidence is under the
+hypothesis than under its alternatives.
+
+Let \(H\) be a hypothesis and \(D\) observed data. The posterior probability of \(H\) given \(D\) is:
+\begin{equation}\label{eq:bayes}
+  P(H \mid D) \;=\; \frac{P(D \mid H)\,P(H)}{P(D)},
+\end{equation}
+where \(P(H)\) is the prior, \(P(D \mid H)\) the likelihood of the data under \(H\), and
+\(P(D)=P(D\mid H)P(H)+P(D\mid \neg H)P(\neg H)\) the normalising constant (marginal likelihood).
+The update is multiplicative in log-odds: \(\log\frac{P(H\mid D)}{P(\neg H\mid D)} =
+\log\frac{P(H)}{P(\neg H)} + \log\frac{P(D\mid H)}{P(D\mid \neg H)}\). Each new observation
+adds its log-likelihood ratio to the running log-odds.
+
+\Cref{eq:bayes} is exact but only as good as its inputs. A miscalibrated prior (e.g.\ a base rate
+ignored in favour of the vivid case) propagates into the posterior. A likelihood built on
+non-representative historical data likewise distorts the update. The formula cannot fix bad inputs;
+it can only make the structure of the reasoning transparent so that the inputs can be challenged.
+
+\begin{example}
+The sales team believes \qty{25}{\percent} of trial users eventually convert to paid --- the prior:
+\(P(\text{paid})\!=\!0.25\). A whitepaper download is observed. Historical data show that
+\qty{60}{\percent} of eventually-paid users downloaded a whitepaper during trial, versus only
+\qty{15}{\percent} of users who churned: \(P(D\mid\text{paid})=0.60\),
+\(P(D\mid\text{not paid})=0.15\). Applying \cref{eq:bayes}:
+\[
+  P(D) = 0.60\times0.25 + 0.15\times0.75 = 0.15 + 0.1125 = 0.2625,
+\]
+\[
+  P(\text{paid}\mid D) = \frac{0.60\times0.25}{0.2625} \approx 0.571.
+\]
+A single whitepaper download more than doubles the estimated conversion probability from \qty{25}{\percent}
+to \qty{57}{\percent}. The CRM implication: route this lead to a higher-touch sales sequence whose
+cost is justified by the revised LTV estimate. Without Bayesian updating, both leads receive
+identical treatment despite very different expected values.
+\end{example}
+
+\begin{admonition}{Warning}
+Base-rate neglect is the most common Bayesian error: updating on the vivid signal while ignoring
+the prior. A startup announces its trial-to-paid rate is \qty{40}{\percent} --- but is that
+conditional on having the same acquisition funnel and product quality as your benchmark? Without
+a calibrated prior and a carefully measured likelihood ratio, the \qty{40}{\percent} benchmark
+contaminates rather than informs the posterior \parencite{kahneman2011}.
+\end{admonition}
+
+Bayesian A/B testing replaces the frequentist null-hypothesis framework with a posterior over the
+conversion-rate difference. This yields a decision-relevant quantity (``what is the probability
+that variant B is better?'') rather than a p-value (``how likely are these data if the null is
+true?''). Multi-armed bandit algorithms extend the framework to continuously reallocate traffic
+toward better-performing variants, making the explore--exploit trade-off explicit. The
+attribution models in \cref{ch:attribution-and-measurement} are Bayesian at their core:
+they update channel-attribution weights as new conversion data arrive.
+
+Bayesian updating is the backbone of probabilistic attribution in \cref{ch:attribution-and-measurement}
+and of the customer-scoring models that feed the funnel in \cref{ch:digital-funnel-and-crm}.
+\textcite{anderson2019statistics} cover the frequentist and Bayesian frameworks in parallel.
+
+\section{Cognitive Bias and Prospect Theory}\label{sec:prospect-theory}
+% complexity: 4 -> figure prospect-value-fn
+
+Your team has two options with identical expected value. They will reliably choose the less risky
+one. Prospect theory explains the specific, predictable ways that human risk perception deviates
+from EV maximisation, so you can correct for it. People evaluate outcomes relative to a reference
+point (usually the status quo), not in absolute terms. Gains feel good but with diminishing
+sensitivity; losses from the same reference point feel roughly twice as bad as equivalent gains
+feel good. The resulting value function is S-shaped: concave in the gain domain (risk-averse),
+steeply convex in the loss domain (risk-seeking to avoid a certain loss). This is why a certain
+\money{600} CAC ``feels safer'' than a \money{900} bid with higher expected profit: the
+\money{300} extra spend is coded as a certain loss, weighted at roughly double its face value.
+
+\textcite{kahneman1979prospect} specify the prospect theory value function as:
+\begin{equation}\label{eq:prospect}
+  v(x) \;=\;
+  \begin{cases}
+    x^{\alpha} & x \ge 0, \\[3pt]
+    -\lambda\,(-x)^{\beta} & x < 0,
+  \end{cases}
+\end{equation}
+where \(x\) is the outcome relative to the reference point, \(\alpha,\beta\in(0,1)\) capture
+diminishing sensitivity in both domains (\(\alpha\approx\beta\approx0.88\) empirically), and
+\(\lambda>1\) is the \emph{loss-aversion coefficient} (\(\lambda\approx2.25\) on average). The
+function is not a utility function over wealth; it is a value function over changes.
+Prospect theory also replaces objective probabilities with decision weights that overweight
+small probabilities and underweight moderate-to-large ones, but the value function drives most
+of the managerially relevant predictions.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{prospect-value-fn}
+  \caption{The prospect theory value function (\cref{eq:prospect}, \(\lambda=2.25\)). Concave in gains
+    (risk-averse); steeply convex in losses (risk-seeking to avoid certain loss). The asymmetry
+    at zero means a loss of any given size looms larger than an equal gain.}
+  \label{fig:prospect-value-fn}
+\end{figure}
+
+\Cref{eq:prospect} is a descriptive model of average human behaviour under laboratory conditions,
+not a normative rule. It does not hold uniformly across cultures, stakes levels, or domains with
+repeated-play experience. The reference point itself shifts: a bonus framed as avoiding a
+penalty produces different choices than the same bonus framed as a gain, even when the objective
+outcome is identical (the \emph{framing effect}). Managers who understand this can design
+compensation structures and experiment reports that reduce bias, but they should not assume
+\(\lambda=2.25\) is a universal constant.
+
+\begin{example}
+Return to the two CPA bids. The \money{600} CPA feels safer because paying \money{900} is coded
+as a \money{300} additional loss relative to the \money{600} reference point. Applying
+\cref{eq:prospect} with \(\lambda=2.25\):
+\[
+  v(-\money{300}) \approx -2.25\times(300)^{0.88} \approx -2.25\times191 \approx -430
+  \quad\text{(loss)}
+\]
+versus the gain from higher expected return:
+\[
+  v(+\money{37.50}) \approx (37.50)^{0.88} \approx 27
+  \quad\text{(gain from EV difference \money{1912.50} vs.\ \money{1875})}.
+\]
+The psychic cost of the larger bid (\(-430\) value units) dwarfs the psychic gain of the higher
+EV (+27 units) --- so the manager rationally feels the \money{600} bid is better, even though
+expected profit is higher at \money{900}. Correct for it by anchoring the decision to EV
+(\cref{eq:ev}), not to the magnitude of the incremental spend.
+\end{example}
+
+\begin{admonition}{Warning}
+The planning fallacy --- underestimating the cost and duration of a project because the reference
+point is the plan, not historical base rates for similar projects --- compounds loss aversion:
+managers are simultaneously overconfident about outcomes and excessively averse to downside
+scenarios they cannot vividly imagine \parencite{tversky1974judgment}. Pre-mortems, in which the
+team imagines the project has already failed and asks why, are the most reliably effective
+debiasing technique.
+\end{admonition}
+
+Prospect theory's normative status is contested. \textcite{kahneman1979prospect} present it as a
+descriptive model; expected utility theorists (\cref{eq:ev}) argue that deviation from EV
+maximisation is simply a decision error that better incentives or education can eliminate.
+Behavioural economists respond that the biases are too stable and too large to be mere noise.
+The practical resolution: use EV as the decision criterion, but design the choice architecture ---
+how options are framed, sequenced, and presented --- to reduce the gap between EV and
+prospect-theory evaluations \parencite{kahneman2011}.
+
+\textcite{thaler1985mental} introduces mental accounting --- the tendency to evaluate outcomes in
+separate psychological accounts rather than as changes in total wealth. A marketing implication:
+bundling a price increase with a visible product improvement moves the net change from the loss
+account to the ``fair exchange'' account, reducing the perceived loss. Framing effects and mental
+accounting are the mechanism behind anchoring (\cref{sec:prospect-theory} worked example) and
+price partitioning strategies explored in \cref{ch:pricing}.
+
+Prospect theory is the foundation for pricing architecture in \cref{ch:pricing} and for
+understanding why customers resist switching even when the alternative has higher expected value.
+The Bayesian and prospect-theoretic frameworks jointly underpin the attribution discussion in
+\cref{ch:attribution-and-measurement}. \textcite{tversky1974judgment} document the heuristics;
+\textcite{kahneman1979prospect} formalise the value function; \textcite{kahneman2011} synthesise
+both into a practitioner framework.

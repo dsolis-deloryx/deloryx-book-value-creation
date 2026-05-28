@@ -1,0 +1,56 @@
+% figures/littles-law.tex
+% Standalone TikZ: queue/pipeline illustration of Little's Law L = lambda * W (ch.17).
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+
+\definecolor{vcblue}{HTML}{1A5276}
+\definecolor{vcteal}{HTML}{0E6655}
+\definecolor{vcgray}{HTML}{555555}
+
+\begin{document}
+\begin{tikzpicture}[
+  node distance=14mm,
+  box/.style={
+    draw=vcblue, line width=0.9pt, rounded corners=3pt,
+    fill=vcblue!8, font=\sffamily\small, text=black!85,
+    align=center, minimum width=36mm, minimum height=18mm
+  },
+  label/.style={font=\sffamily\scriptsize, text=black!60},
+  arrow/.style={-{Stealth[length=4pt]}, vcblue, line width=0.9pt},
+]
+
+  % Arrival stream (left)
+  \node[label] (arrlbl) at (-3.8, 0) {arrivals};
+  \node[label, below=0.5mm of arrlbl] (arreq)  {\(\lambda\) per unit time};
+
+  % Dots representing arrivals
+  \foreach \i in {0,1,2} {
+    \node[circle, fill=vcteal, inner sep=2pt] (dot\i) at (-2.6 + \i*0.45, 0) {};
+  }
+
+  % System box
+  \node[box] (sys) at (0,0) {System\\[2pt]\(\displaystyle L = \lambda W\)};
+
+  % Departure stream (right)
+  \node[label] (deplbl) at (3.8, 0) {departures};
+  \node[label, below=0.5mm of deplbl] (depeq) {rate \(\lambda\) (steady state)};
+
+  % Dots representing departures
+  \foreach \i in {0,1,2} {
+    \node[circle, fill=vcgray!60, inner sep=2pt] (ddot\i) at (2.0 + \i*0.45, 0) {};
+  }
+
+  % Arrows into and out of the box
+  \draw[arrow] (-1.4, 0) -- (sys.west);
+  \draw[arrow] (sys.east) -- (2.0, 0);
+
+  % W annotation below box
+  \node[label, below=6mm of sys] (wlbl)
+    {\(W\) = average time in system \(=\, L / \lambda\)};
+
+  % Brace/annotation above box for L
+  \node[label, above=5mm of sys] {\(L\) = average items in system};
+
+\end{tikzpicture}
+\end{document}

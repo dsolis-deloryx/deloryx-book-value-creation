@@ -1,0 +1,344 @@
+\chapter{Channels, Go-to-Market \& Sales}\label{ch:channels-gtm-and-sales}
+
+% Scope: channel strategy (the 4th P), PLG vs sales-led GTM motion, sales-force sizing &
+%   compensation, B2B selling & pipeline management. NEW chapter (closes the channels + sales/GTM gap).
+% Sits upstream of the digital funnel (\cref{ch:digital-funnel-and-crm}): where you sell
+%   determines what funnel you build.
+% Cross-links: \cref{eq:cac}, \cref{eq:ltv-cac}, \cref{eq:viral-k}, \cref{eq:pipeline-ev},
+%   \cref{eq:littles-law}, \cref{sec:kerr-trap}, \cref{eq:segment-score}.
+
+\section{Channel Strategy \& the 4th P}\label{sec:channel-strategy}
+% complexity: 4
+
+How should a firm make its product physically and commercially available to customers?
+Distribution --- the fourth ``P'' of the marketing mix --- determines who bears the cost of
+reaching the customer, who owns the relationship, and ultimately how much of the unit margin
+the firm retains. The decision is often treated as a logistics question, but it is primarily a
+margin question: every intermediary added to the chain lowers the price the manufacturer
+receives and, in return, offloads a portion of the reach, inventory, and service cost. The
+strategic question is whether the margin given up is less than the fixed cost of reaching
+those customers directly.
+
+Let \(P\) be the end-user price, \(C_{\text{var}}\) the variable cost per unit, \(Q\) the
+volume sold, and \(\Phi_{\text{fixed}}\) the direct-channel fixed overhead (a sales team,
+a support organisation, transaction infrastructure). The contribution from each route is:
+\begin{equation}\label{eq:channel-margin}
+  \Pi_{\text{direct}}   = (P - C_{\text{var}})\,Q, \qquad
+  \Pi_{\text{indirect}} = (P_w - C_{\text{var}})\,Q,
+\end{equation}
+where \(P_w < P\) is the wholesale price paid by the intermediary. After charging for the
+direct fixed overhead, the firm prefers direct distribution when
+\(\Pi_{\text{direct}} - \Phi_{\text{fixed}} > \Pi_{\text{indirect}}\), or equivalently when
+\((P - P_w)\,Q > \Phi_{\text{fixed}}\): the unit-margin premium of going direct, scaled by
+volume, must exceed the fixed cost of running the direct channel. At low volumes the
+intermediary wins; at high volumes the direct route wins. The crossover is the channel
+breakeven volume.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.78\linewidth]{channel-structure}
+  \caption{Three channel structures: direct (manufacturer to customer), one-level (via a
+    single reseller or VAR), and two-level (via a distributor plus reseller). Each
+    intermediary layer captures a margin spread from \cref{eq:channel-margin}, reducing the
+    vendor's net unit revenue. The optimal structure minimises total distribution cost at
+    the required market coverage.}
+  \label{fig:channel-structure}
+\end{figure}
+
+\begin{example}[Direct vs.\ reseller channel decision]
+The running SaaS company charges \money{50}/month (\money{600}/year). Its variable cost is
+\money{29}/month (hosting \money{15} plus support, payment processing, and customer success
+\money{14}), leaving a contribution margin of \money{21}/month on the direct channel.
+
+A regional reseller proposes taking a \qty{30}{\percent} margin share on the end-user price,
+so the vendor receives a wholesale price of \(P_w = \money{50}\times0.70 =
+\money{35}/\)month. The reseller's indirect contribution margin per customer is then
+\(\money{35} - \money{29} = \money{6}/\)month --- one-third of the direct margin. The margin
+sacrifice is \(\money{21} - \money{6} = \money{15}\)/month per customer.
+
+Suppose the firm must spend \money{90000}/month in direct sales and customer-success fixed
+overhead to serve the reseller's territory without the reseller. The breakeven incremental
+customer count at which direct becomes preferable is
+\[
+  Q^* \;=\; \frac{\Phi_{\text{fixed}}}{P - P_w} \;=\; \frac{\money{90000}}{\money{15}}
+       \;=\; \num{6000}\ \text{customers}.
+\]
+The company currently serves roughly \num{6667} paying customers (\money{4000000} ARR
+\(\div\) \money{600}/year). At that scale, the direct channel contributes
+\(\num{6667}\times\money{21} = \money{140000}\)/month after variable costs, versus
+\(\num{6667}\times\money{6} = \money{40000}\)/month indirect; the \money{90000} fixed-cost
+gap is covered. The implication: the reseller arrangement made economic sense when the
+installed base was below \num{6000}, but the firm has now crossed the threshold where
+building a direct channel pays. If the reseller opens a new geography the firm cannot reach
+at comparable cost, the indirect channel still creates value there --- the breakeven
+calculation applies segment by segment, not company-wide.
+\end{example}
+
+\begin{admonition}{Warning}
+Running both a direct sales team and a reseller in the same territory creates
+\textit{dual-distribution channel conflict}: the reseller competes for the same prospect,
+discounts to win, and ultimately trains customers to wait for the lower indirect price. The
+firm then faces a choice between protecting the channel partner relationship and defending
+the direct price. Channel agreements that define territory exclusivity or deal-registration
+rights reduce this risk, but only if they are enforced consistently; inconsistent enforcement
+is worse than no policy at all, because it creates uncertainty for every party.
+\end{admonition}
+
+\cref{eq:channel-margin} applies equally to physical goods and to software, but the
+cost structure differs sharply: a SaaS firm's \(C_{\text{var}}\) is dominated by hosting
+and customer-success labour, not inventory, so the fixed-cost threshold
+\(\Phi_{\text{fixed}}\) --- the cost of a direct sales organisation --- dominates the
+calculation at low volumes. That asymmetry is what makes the product-led motion examined in
+\cref{sec:gtm-motion} so economically powerful: it builds a direct channel with near-zero
+fixed cost per customer acquired. \textcite{coughlan2006marketing} develop the full
+channel-design framework; \textcite{kotler2021} situate it within the integrated marketing mix.
+
+
+\section{PLG vs.\ Sales-Led GTM Motion}\label{sec:gtm-motion}
+% complexity: 4
+
+Once the channel structure is settled, the firm must decide how demand enters the channel:
+does the product sell itself through free trials and self-serve onboarding, or does a sales
+team drive the entire journey from awareness to close? This is the go-to-market motion
+decision, and it is one of the highest-leverage strategic choices an early-stage software
+company makes, because it determines the shape of \cref{eq:cac}, the denominator of
+\cref{eq:ltv-cac}, before the company has spent a dollar on acquisition.
+
+In a \textit{product-led growth} (PLG) motion, the product itself is the primary acquisition
+vehicle: users sign up, experience the core value within a self-serve trial, and convert to
+paid without a human touch. CAC is low because there is no sales compensation embedded in
+the acquisition cost; the viral coefficient (\cref{eq:viral-k}) can compound
+the installed base at near-zero marginal cost when existing users invite colleagues. PLG
+dominates when the product delivers immediate, tangible value to an individual user who can
+make or influence a purchase decision autonomously --- typically SMB buyers with annual
+contract values (ACV) below \money{5000}.
+
+In a \textit{sales-led} motion, the product is gated: a prospect must engage a sales
+representative before accessing a meaningful demonstration. CAC is high because it includes
+base salary, commission, and the overhead of a sales development representative (SDR) who
+qualifies the lead before handing it to an account executive. Sales-led is justified when
+the decision involves multiple stakeholders, a security or legal review, or a procurement
+process that a self-serve checkout cannot navigate --- typically enterprise ACV above
+\money{50000}.
+
+The hybrid motion, \textit{product-led sales} (PLS), layers a sales-assist team atop a
+self-serve funnel. The productivity unlock is the \textit{product qualified lead} (PQL): an
+active user who has crossed a demonstrable engagement threshold becomes the signal that
+triggers SDR outreach. Because the sales rep contacts a user who has already experienced
+value, the trust gap is closed before the first conversation. The segment-targeting logic of
+\cref{eq:segment-score} maps directly onto the motion choice: segments with high LTV
+potential but low self-serve conversion are PLS candidates; segments with high self-serve
+conversion and low LTV are pure PLG.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{plg-vs-slg}
+  \caption{The PLG--SLG spectrum. Moving right, CAC rises, ACV rises, and the sales cycle
+    lengthens. The PQL trigger (dashed line) marks the transition from self-serve to
+    sales-assist; it is typically an in-product engagement milestone, not a marketing
+    qualification score.}
+  \label{fig:plg-vs-slg}
+\end{figure}
+
+\begin{example}[Hybrid PLG + SDR model]
+The company currently acquires \num{200} customers per month through a self-serve funnel at
+\(\text{CAC} = \money{600}\) (from \cref{eq:cac} in \cref{ch:customer-economics}).
+Segmenting the user base reveals two distinct cohorts: SMB accounts that self-serve at
+CAC\,\(\approx\)\,\money{300}, and mid-market accounts that stall before converting. An SDR
+motion targeting mid-market PQLs carries CAC\,\(\approx\)\,\money{800}, but mid-market LTV
+is roughly \(3\times\) that of SMB, so the \cref{eq:ltv-cac} ratio still clears the
+3\(\times\) threshold.
+
+The PQL trigger chosen is \textit{more than five reports generated in the first fourteen
+days of the trial}. Users who hit this threshold convert at \qty{45}{\percent}; the baseline
+conversion rate for all trial users is \qty{25}{\percent}. Routing a triggered user to an
+SDR therefore captures an \qty{80}{\percent} relative lift in conversion probability before
+the first human contact --- the product has already done the selling. The operational
+implication: the product analytics pipeline must surface this signal in the CRM within
+minutes of the threshold being crossed; a 24-hour lag loses roughly half the conversion
+advantage as user attention moves elsewhere.
+\end{example}
+
+\begin{admonition}{Note}
+The PLG versus sales-led decision is not a company-wide binary. Most companies above \money{2000000}
+ARR operate both motions in parallel, segmented by buyer type. Forcing a single motion on
+all segments misallocates resources: applying an SDR to a \money{600}/year SMB deal destroys
+margin; leaving a \money{50000}/year enterprise prospect in a self-serve trial loses the deal to
+a competitor with a human champion inside the account. The right diagnostic is the unit
+economics of each motion by segment, not a philosophical stance on PLG.
+\end{admonition}
+
+The GTM motion feeds directly into the funnel mechanics of \cref{ch:digital-funnel-and-crm}:
+a PLG motion fills the top of the funnel with trial activations measured by \cref{eq:viral-k};
+a sales-led motion fills it with MQL handoffs from marketing; PLS uses both. The pipeline
+valuation in \cref{eq:pipeline-ev} applies downstream regardless of motion, because
+every deal in the CRM carries a face value and a stage probability whether it arrived via
+self-serve or SDR outreach.
+
+
+\section{Sales-Force Management \& Compensation}\label{sec:salesforce-management}
+% complexity: 3
+
+Building a sales team requires two separate models: a \textit{sizing model} that translates
+a revenue target into a headcount requirement, and a \textit{compensation model} that aligns
+the representative's incentives with the firm's value creation goals. Getting either wrong
+is expensive. An undersized team leaves ARR on the table; an oversized team inflates
+sales-and-marketing expense without proportional revenue. A poorly designed commission plan
+rewards the wrong behaviour and, through Kerr's folly (\cref{sec:kerr-trap} in
+\cref{ch:organizational-behavior}), systematically produces outcomes the
+firm did not intend.
+
+The headcount formula flows directly from the ARR target, the quota per account executive,
+and the historical attainment rate:
+\begin{equation}\label{eq:sales-productivity}
+  \text{reps} \;=\;
+    \left\lceil\frac{\text{ARR target}}{\text{quota}\times\text{attainment}}\right\rceil.
+\end{equation}
+The ceiling function ensures the firm fields enough capacity to reach the target even when
+reps fall short of \qty{100}{\percent} attainment. The attainment factor is the critical
+input: a plan built on \qty{100}{\percent} attainment will miss every quarter; the
+historical blended rate, typically \qty{70}{\percent}--\qty{85}{\percent} for a mature SaaS
+team, is the right denominator.
+
+Compensation is structured as an on-target earnings (OTE) split between a fixed base and
+performance-linked variable:
+\begin{equation}\label{eq:ote-structure}
+  \text{OTE} \;=\; \text{base} \;+\; \text{variable}, \qquad
+  \text{variable} \;=\; \text{quota} \times \text{commission rate}.
+\end{equation}
+A \qty{50}{\percent}/\qty{50}{\percent} base-to-variable split is standard for an
+enterprise AE role; inside sales and SDR roles run closer to \qty{70}{\percent}/\qty{30}{\percent}
+because the individual's influence over deal size is smaller. The commission rate in
+\cref{eq:ote-structure} is simply the variable target divided by the quota, and it sets the
+slope of the incentive curve.
+
+\begin{example}[Sizing and costing the sales team for \money{4000000}\,$\to$\,\money{6000000} ARR]
+The firm targets \money{6000000} ARR against a current base of \money{4000000}, requiring
+\money{2000000} in new ARR. Each account executive carries a \money{500000} quota; at the
+historical \qty{80}{\percent} blended attainment rate, \cref{eq:sales-productivity} gives:
+\[
+  \text{reps} \;=\;
+    \left\lceil\frac{\money{2000000}}{\money{500000}\times0.80}\right\rceil
+    \;=\; \lceil 5.00 \rceil \;=\; 5\ \text{AEs}.
+\]
+Each AE has OTE of \money{120000} on a \qty{50}{\percent}/\qty{50}{\percent} split: base
+\money{60000}, variable \money{60000}. From \cref{eq:ote-structure} the commission rate is
+\(\money{60000}/\money{500000} = \qty{12}{\percent}\) of ARR booked. Five AEs cost
+\money{600000} in total compensation --- the incremental sales-and-marketing line for this
+growth tranche.
+
+Does the investment clear the LTV:CAC hurdle? At \qty{80}{\percent} attainment, five AEs
+produce \(5\times\money{500000}\times0.80=\money{2000000}\) in new ARR, or roughly
+\num{3333} new customers at the \money{600}/year ACV from the fact sheet. The blended
+sales-assisted CAC is \(\money{600000}/\num{3333}\approx\money{180}\). Against the CLV of
+\money{3150} from \cref{ch:customer-economics}, the LTV:CAC ratio is
+\(\money{3150}/\money{180}\approx17.5\times\), comfortably above the 3\(\times\) floor of
+\cref{eq:ltv-cac}. The binding constraint is therefore not economics but execution:
+finding five AEs who hit quota.
+\end{example}
+
+\begin{admonition}{Warning}
+Accelerator clauses that multiply commissions above \qty{100}{\percent} quota attainment
+create a rational incentive for representatives to sandbag early in the quarter --- hoarding
+deals until they have enough pipeline to guarantee hitting the accelerator threshold before
+submitting them. The firm sees lumpy, end-of-quarter booking patterns that compress the
+implementation and onboarding queue, inflate churn in the following quarter, and make the
+forecast unreliable. The structural fix is to pay commission on \textit{retained} ARR at the
+end of the first renewal period rather than on booked ARR at signature: a representative
+whose customer churns within twelve months clawbacks a portion of the initial commission.
+This directly addresses the Kerr Trap (\cref{sec:kerr-trap}): paying on booked ARR rewards
+closing, while hoping for renewal retention. \textcite{dixon2011challenger} document
+the full taxonomy of sales-behaviour distortions that emerge from misaligned commission design.
+\end{admonition}
+
+The sales productivity formula and the OTE structure are inputs to the operating model in
+\cref{ch:operating-model}, where they appear as line items in the sales-and-marketing
+expense projection. Connecting compensation design to churn ensures the ARR growth modelled
+in \cref{eq:mrr-growth} is not eroded by sales-induced early churn.
+
+
+\section{B2B Selling \& Pipeline Management}\label{sec:b2b-selling}
+% complexity: 3
+
+A sales team that cannot forecast its own revenue is a liability, not an asset. Raw pipeline
+--- the sum of all open deal face values --- is the canonical vanity metric of enterprise
+sales: it treats a deal in the earliest discovery call as equivalent to a deal in final legal
+review. Weighted pipeline replaces the face value with the expected value of each
+opportunity, where the expectation is conditioned on where the deal sits in the stage
+funnel:
+\begin{equation}\label{eq:pipeline-forecast}
+  \widehat{\text{ARR}} \;=\; \sum_{i=1}^{n} v_i \cdot p_{\,\text{stage}(i)},
+\end{equation}
+where \(v_i\) is the face value of deal \(i\) and \(p_{\,\text{stage}(i)}\) is the
+historical close probability for its current stage. \Cref{eq:pipeline-forecast} is the
+ARR analogue of \cref{eq:pipeline-ev} in \cref{ch:digital-funnel-and-crm}: both apply the
+expected-value operator to a portfolio of probabilistic conversions. The stage probabilities
+must be calibrated to observed win rates at each stage, not assigned by managerial optimism;
+a pipeline model built on inflated stage probabilities fails at the same rate as no model at
+all, with the additional harm of creating false confidence.
+
+Alongside the expected-value snapshot, Little's Law from \cref{eq:littles-law} gives the
+average sales-cycle length from pipeline inventory and throughput:
+\[
+  W \;=\; \frac{L}{\lambda},
+\]
+where \(L\) is the number of open deals, \(\lambda\) is the number of deals closed per
+period, and \(W\) is the average time a deal spends in the pipeline. A rising
+\(W\) is an early-warning signal that deals are stalling, not that pipeline is healthy.
+
+The SPIN questioning sequence (\textcite{rackham1988spin}) and the Challenger methodology
+(\textcite{dixon2011challenger}) operate at the level of the individual sales call but
+produce the stage progression that fills \cref{eq:pipeline-forecast}. SPIN's
+situation--problem--implication--need-payoff arc surfaces the economic pain that justifies
+a purchase decision; the Challenger's teach--tailor--take-control arc reframes the buyer's
+mental model before a competitor can anchor it. Both frameworks exist to move deals
+rightward through the pipeline stages, increasing \(p_{\,\text{stage}(i)}\) for the
+in-flight portfolio.
+
+\begin{example}[Weighted pipeline and Little's Law]
+The sales team carries \num{40} open deals distributed evenly across four pipeline stages:
+\num{10} in Discovery, \num{10} in Demo, \num{10} in Proposal, and \num{10} in Negotiation.
+Each deal has a face value of \money{8250} ARR. Historical stage close-rates are
+\qty{15}{\percent} at Discovery, \qty{35}{\percent} at Demo, \qty{60}{\percent} at Proposal,
+and \qty{85}{\percent} at Negotiation. Applying \cref{eq:pipeline-forecast}:
+\begin{align*}
+  \widehat{\text{ARR}}
+    &= 10\times\money{8250}\times0.15
+    \;+\; 10\times\money{8250}\times0.35 \\
+    &\quad +\; 10\times\money{8250}\times0.60
+    \;+\; 10\times\money{8250}\times0.85 \\
+    &= \money{12375} + \money{28875} + \money{49500} + \money{70125}
+     \;\approx\; \money{161000}.
+\end{align*}
+The raw pipeline face value is \(40\times\money{8250}=\money{330000}\) --- more than double
+the \money{161000} expected ARR. A sales manager reporting the raw number as ``pipeline
+coverage'' would overstate the true forecast by \qty{105}{\percent}.
+
+Applying Little's Law: if the team closes \num{10} deals per month, the average deal spends
+\(W = 40/10 = 4\) months in the pipeline. If the team adds \num{5} SDR-sourced opportunities
+per month but closes at the same \num{10}/month rate, \(L\) grows to \num{60} within four
+months and \(W\) extends to \(60/10 = 6\) months. The pipeline looks healthier (more deals),
+but the expected close date for any given deal has slipped by two months --- a forecast
+problem masquerading as a pipeline success.
+\end{example}
+
+\begin{admonition}{Note}
+Qualification frameworks --- such as MEDDPICC (Metrics, Economic Buyer, Decision Criteria,
+Decision Process, Paper Process, Identify Pain, Champion, Competition) --- serve the same
+function for the pipeline that segment-scoring (\cref{eq:segment-score}) serves for the
+addressable market: they force an explicit, measurable estimate of opportunity quality before
+committing sales capacity. An opportunity that fails the qualification checklist should be
+de-staged or disqualified rather than carried at an optimistic probability; the cost is a
+temporarily smaller pipeline, and the benefit is a \cref{eq:pipeline-forecast} that
+management can actually rely on.
+\end{admonition}
+
+Channel structure, GTM motion, sales-force design, and pipeline management are the four
+decision layers that convert a product and a target segment into predictable revenue.
+Each layer feeds the next: the channel determines the acquisition cost structure
+(\cref{eq:channel-margin}), the motion determines whether that cost is dominated by fixed
+sales overhead or variable product investment, the compensation design determines whether
+the reps' behaviour aligns with LTV maximisation (\cref{eq:ltv-cac}), and the pipeline
+model determines whether the organisation can read its own progress. All four feed the
+digital funnel in \cref{ch:digital-funnel-and-crm} and ultimately the revenue line of the
+operating model in \cref{ch:operating-model}.

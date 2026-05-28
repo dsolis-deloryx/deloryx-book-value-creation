@@ -1,0 +1,317 @@
+\chapter{Experiments \& Statistical Inference}\label{ch:experiments-and-inference}
+
+% Scope: null-hypothesis testing, statistical power & sample size, OLS regression,
+%   A/B-test design for business decisions. NEW chapter (closes the experiment-design gap).
+% The book uses A/B tests and incrementality RCTs (\cref{ch:attribution-and-measurement})
+%   without teaching the machinery; this chapter supplies it, extending \cref{ch:decisions-under-uncertainty}.
+% Draft per house style: flowing prose + example/admonition set-offs; running-SaaS worked examples.
+
+\section{The Null-Hypothesis Framework}\label{sec:null-hypothesis}
+% complexity: 2
+
+Every product decision is a bet. The null-hypothesis framework forces the decision-maker to
+quantify how unlikely the observed data would be if the intervention had \emph{no} effect,
+then decide whether that improbability is low enough to act. The managerial intuition is
+simple: collect evidence, ask how often data this extreme would appear by chance under the
+status quo, and reject the status quo only when that chance falls below a pre-committed
+threshold. The discipline is in the pre-commitment: choosing the threshold before seeing
+results, not after.
+
+Under the null hypothesis \(H_0: \mu_1 = \mu_2\) that two groups have the same mean, the
+test statistic for large samples is a standardised distance between the observed group means,
+scaled by the standard error of their difference:
+\begin{equation}\label{eq:z-test}
+  z \;=\; \frac{\bar{x}_1 - \bar{x}_2}%
+               {\sqrt{\dfrac{\sigma_1^2}{n_1}+\dfrac{\sigma_2^2}{n_2}}}.
+\end{equation}
+Reject \(H_0\) when \(|z| > z_{\alpha/2}\), the critical value for a two-tailed test at
+significance level \(\alpha\). For the conventional \(\alpha=0.05\), \(z_{\alpha/2}=1.96\).
+For proportion outcomes---conversion rates, trial-to-paid rates---\(\sigma_i^2 = p_i(1-p_i)\).
+The formula rests on the Central Limit Theorem, which requires samples large enough for the
+sampling distribution of the mean to be approximately normal; in practice, \(n \geq 30\)
+per group is a common floor, though for small proportions much larger samples are needed
+before the approximation is reliable.
+
+\begin{example}[SaaS onboarding A/B test]
+The product team tests a redesigned onboarding flow. Control: \num{200} trials, \num{50}
+convert to paid (\(\hat{p}_c = \qty{25}{\percent}\)). Treatment: \num{200} trials, \num{62}
+convert (\(\hat{p}_t = \qty{31}{\percent}\)). The decision: is the \qty{6}{\percent} lift
+real or noise?
+
+Set \(\alpha=0.05\), so the critical value is \(z_{0.025}=1.96\). Estimate the pooled
+proportion under \(H_0\) as \(\hat{p} = (50+62)/(200+200) = 0.28\), giving pooled
+\(\hat{\sigma}^2 = 0.28 \times 0.72 = 0.2016\). The standard error is
+\[
+  \mathrm{SE} \;=\; \sqrt{\frac{0.2016}{200}+\frac{0.2016}{200}}
+               \;=\; \sqrt{0.002016}
+               \;\approx\; 0.0449.
+\]
+Applying \cref{eq:z-test},
+\[
+  z \;=\; \frac{0.31 - 0.25}{0.0449} \;\approx\; 1.34.
+\]
+Since \(|z|=1.34 < 1.96\), the result is \emph{not} statistically significant at \(n=200\)
+per arm. The \qty{6}{\percent} lift could easily be chance. The implication is not that the
+treatment fails; it is that the test is too small to distinguish a real effect of this
+magnitude from sampling noise. Collecting more data is the only remedy---how much more is
+the subject of \cref{sec:power-and-sample-size}.
+\end{example}
+
+\begin{admonition}{Warning}
+The p-value is the probability of seeing a test statistic at least this extreme \emph{if the
+null were true}. It is emphatically not the probability that the null is true, nor that the
+alternative is false. A p-value of \num{0.03} does not mean there is a \qty{97}{\percent}
+chance the treatment works; it means the data are moderately incompatible with ``no effect.''
+Equally, statistical significance says nothing about effect size: a trivial \qty{0.1}{\percent}
+lift will reach \(p<0.05\) with a large enough sample. Business decisions require both a
+significant result \emph{and} an effect large enough to matter economically.
+\end{admonition}
+
+The test statistic in \cref{eq:z-test} provides the machinery; \cref{sec:power-and-sample-size}
+establishes how many observations are needed before the machinery is powerful enough to be
+worth running. \textcite{anderson2019statistics} develop the full sampling-distribution
+theory; \textcite{wooldridge2020introductory} extends it to regression settings where
+multiple covariates enter simultaneously.
+
+
+\section{Statistical Power \& Sample Size}\label{sec:power-and-sample-size}
+% complexity: 4
+
+An experiment that cannot detect the effect it was designed to detect is not a neutral
+non-result; it is a waste. Statistical power---the probability of correctly rejecting a false
+null---quantifies the risk of that failure. Low power means the experiment will most often
+return an inconclusive result even when the treatment genuinely works, producing a stream of
+``no significant difference'' findings that are misread as evidence the product is fine. The
+business cost is symmetric: underpowered tests waste time on real improvements and give false
+reassurance when a change is causing harm.
+
+Power depends on three inputs the experimenter controls: the sample size \(n\), the
+significance level \(\alpha\), and the minimum detectable effect \(\delta\). For a two-arm
+test with equal group sizes and common variance \(\sigma^2\), the required sample per arm is:
+\begin{equation}\label{eq:sample-size}
+  n \;=\; \frac{2\,(z_{\alpha/2}+z_{\beta})^{2}\,\sigma^{2}}{\delta^{2}}.
+\end{equation}
+Here \(z_{\beta} = \Phi^{-1}(1-\beta)\) is the critical value for the desired power
+\(1-\beta\); at \qty{80}{\percent} power, \(z_{\beta}=0.84\). The inverse-square relationship
+between \(\delta\) and \(n\) is the central fact of experimental design: halving the effect
+size you care about \emph{quadruples} the required sample size. The intuition is that smaller
+signals are harder to distinguish from noise, so you need more observations to drown out
+that noise. \Cref{fig:power-curve} plots power against effect size for three sample
+sizes, making the trade-off concrete.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{power-curve}
+  \caption{Statistical power versus absolute effect size (conversion-rate lift over a
+    \qty{25}{\percent} baseline) at \(\alpha=0.05\), two-tailed, for \num{100}, \num{200},
+    and \num{550} observations per arm. The dashed line marks the \qty{80}{\percent} power
+    target; the diamond marks the required design point. Detecting the \qty{6}{pp} lift from
+    \cref{sec:null-hypothesis} at \qty{80}{\percent} power requires roughly
+    \num{879} observations per arm.}
+  \label{fig:power-curve}
+\end{figure}
+
+\begin{example}[Sizing the onboarding A/B test]
+How many trials are needed to detect the \qty{25}{\percent} \(\to\) \qty{31}{\percent}
+onboarding lift at \qty{80}{\percent} power, \(\alpha=0.05\)? The minimum detectable effect
+is \(\delta=0.06\). Use the pooled proportion \(\hat{p}=0.28\) to estimate
+\(\sigma^2 = 0.28\times 0.72 = 0.2016\), and plug into \cref{eq:sample-size}:
+\[
+  n \;=\; \frac{2\,(1.96+0.84)^{2}\times 0.2016}{0.06^{2}}
+      \;=\; \frac{2\times 7.84 \times 0.2016}{0.0036}
+      \;\approx\; \num{879} \text{ per arm}.
+\]
+The funnel delivers \num{800} trials per month, so with \num{400} per arm the experiment
+reaches \num{879} after roughly \num{2.2} months---a manageable horizon. Is it worth the
+wait? The value of confirming the lift: \qty{6}{pp} more paid conversions \(\times\) \num{200}
+new customers/month \(\times \money{3150}\) CLV per customer \(= \money{37800}\) of incremental
+monthly contribution---a recurring stream worth \(\money{37800}/0.08 \approx \money{472500}\)
+in perpetuity at the firm's \qty{11}{\percent} WACC less \qty{3}{\percent} growth
+(\cref{eq:gordon}). Against a two-month delay, that ratio overwhelmingly favours running a
+disciplined test over guessing and potentially shipping a change that does nothing or causes
+harm.
+\end{example}
+
+\begin{admonition}{Warning}
+Optional stopping---peeking at results daily and stopping the moment \(p<0.05\)---inflates
+the true Type-I error far above the nominal \qty{5}{\percent}. If you peek ten times during
+a trial, the probability of a spurious significant result can exceed \qty{30}{\percent}. The
+fix is straightforward: pre-register the stopping rule and the required \(n\) before launch,
+and read results exactly once. Platforms that offer ``always-valid'' sequential testing
+(\textcite{johari2022always}) allow continuous monitoring without inflating error, but they
+require a different underlying test statistic (a mixture sequential probability ratio test,
+mSPRT) and typically need larger samples than the fixed-horizon formula above to achieve
+the same power.
+\end{admonition}
+
+The sample-size calculation in \cref{eq:sample-size} is the pre-commitment that makes
+\cref{eq:z-test} honest. Without it, a team can always find significance by running the
+experiment longer---a practice that destroys the statistical validity of everything it
+touches.
+
+
+\section{Regression: Controlling for Covariates}\label{sec:regression}
+% complexity: 3
+
+Randomised experiments settle causation by construction: random assignment balances all
+observed and unobserved confounders between treatment and control, so any difference in
+outcomes must reflect the treatment. But many business questions cannot be randomised:
+churn depends on tenure, product depth, plan tier, and sales channel, and customers were not
+randomly assigned to those states. Ordinary least squares (OLS) regression answers the
+question ``how much does each factor matter, holding all others fixed?'' It is the
+workhorse of observational business analysis precisely because it is the simplest tool for
+holding some things constant while examining others.
+
+The multiple linear regression model posits that the outcome \(y_i\) is a linear function
+of \(k\) explanatory variables plus an error term capturing everything the model omits:
+\begin{equation}\label{eq:ols}
+  y_i \;=\; \beta_0 + \beta_1 x_{1i} + \cdots + \beta_k x_{ki} + \varepsilon_i,
+  \qquad
+  \hat{\boldsymbol{\beta}} \;=\; (\mathbf{X}^{\!\top}\mathbf{X})^{-1}\mathbf{X}^{\!\top}\mathbf{y}.
+\end{equation}
+The matrix solution \(\hat{\boldsymbol{\beta}}\) minimises the sum of squared residuals. By
+the Gauss--Markov theorem, OLS is the Best Linear Unbiased Estimator (BLUE) when the errors
+have zero mean, constant variance (homoskedasticity), and are uncorrelated with the
+regressors. Each coefficient \(\hat{\beta}_j\) measures the marginal change in \(y\) for a
+one-unit change in \(x_j\), \emph{ceteris paribus}. That ``all-else-equal'' qualifier is the
+source of both the method's power and its danger: it holds constant only what is in the
+model, and unobserved confounders absorbed into \(\varepsilon\) will bias the estimates if
+they correlate with the regressors.
+
+\begin{example}[Quantifying the integration switching-cost moat]
+The customer-success team wants to know how much product depth protects against churn. They
+regress monthly churn rate on three customer-level variables: tenure in months, number of
+active integrations, and plan tier (1~=~starter, 2~=~professional, 3~=~enterprise). The
+estimated model on the firm's \num{1200}-customer cohort returns:
+\begin{align*}
+  \widehat{\text{churn}}_i \;=\;{}
+    & 0.032
+      - 0.00012\,\text{tenure}_i
+      - 0.0080\,\text{integrations}_i
+      - 0.0031\,\text{tier}_i.
+\end{align*}
+The coefficient on integrations is \(\hat{\beta}_{\text{int}} = -0.008\): each additional
+active integration reduces monthly churn by \qty{0.8}{pp}, holding tenure and tier fixed.
+At the firm's baseline monthly churn of \qty{0.65}{\percent}, a customer with five
+integrations instead of one has predicted churn of
+\(0.65\% - 4\times0.8\% = 0.65\% - 3.2\% \approx \) effectively zero---a near-perfect
+retention profile. This coefficient quantifies the switching-cost moat described in
+\cref{sec:moat-taxonomy}: every integration the customer builds is a thread binding them
+to the platform. The implication for product investment: a feature that encourages customers
+to add one more integration is worth, in expected annual CLV, the reduction in churn times
+the per-customer CLV of \money{3150}.
+\end{example}
+
+\begin{admonition}{Warning}
+Regression coefficients are correlational, not causal, unless the assignment mechanism is
+randomised or a valid instrument is used. The negative correlation between integrations and
+churn could partly reflect \emph{selection}: customers who build deep integrations may have
+chosen the product because they planned to stay, not merely because integrations raise
+switching costs. The only way to isolate the causal contribution of integrations is a
+randomised experiment---nudging a random subset of users toward additional integrations and
+comparing subsequent churn (\cref{sec:ab-test-design}). Observational regression controls
+for measured confounders; randomisation controls for everything.
+\end{admonition}
+
+\textcite{wooldridge2020introductory} prove the Gauss--Markov result and detail the
+diagnostics needed to assess whether its assumptions hold; \textcite{angrist2009mostly}
+connect OLS to causal inference and explain when instrumental variables or difference-in-
+differences designs are needed instead. The switching-cost coefficient above is one example
+of a broader class of value-creation mechanisms catalogued in \cref{sec:moat-taxonomy};
+the same regression framework applied to geo-level data underlies the incrementality
+measurement in \cref{sec:incrementality}.
+
+
+\section{A/B-Test Design for Business Decisions}\label{sec:ab-test-design}
+% complexity: 3
+
+Knowing the mechanics of \cref{eq:z-test} and \cref{eq:sample-size} is necessary but not
+sufficient. A well-designed test requires four upfront decisions that have nothing to do with
+the formula: what primary metric to optimise, which guardrail metrics must not regress, at
+what level to randomise users, and how long to run. Skipping any of these turns a statistically
+valid calculation into a commercially unreliable experiment. The practitioner's discipline is
+to write down all four before any data are collected.
+
+The \textbf{primary metric} (overall evaluation criterion, OEC) should be the metric most
+directly tethered to long-run value. For a SaaS onboarding test, trial-to-paid conversion
+is the right primary metric: it directly determines the \num{200} new customers per month in
+the fact sheet and, through CLV, the \money{37800}/month lift computed in
+\cref{sec:power-and-sample-size}. Revenue per trial is tempting but too noisy; session-to-trial
+is upstream and may move without downstream benefit. \textbf{Guardrail metrics} protect core
+business health: if the treatment improves trial-to-paid but slows page load by two seconds,
+the short-term gain will be erased by reduced long-run engagement. Pre-specifying guardrails
+prevents the team from launching a treatment that wins on the primary metric while silently
+damaging the funnel.
+
+\textbf{Randomisation unit} determines which guardrail violations are detectable and governs
+whether the Stable Unit Treatment Value Assumption (SUTVA) holds. Randomising at the session
+level is straightforward but can contaminate results if the same user lands in both arms
+across sessions. For an onboarding test, user-level or device-level assignment is the correct
+choice: the treatment is the full onboarding experience, not a single page view, and the
+conversion event occurs across multiple sessions. Session-level randomisation would mix
+control and treatment experiences for the same trial, biasing the observed conversion rate
+in both arms. Where network effects mean that one user's outcome depends on another user's
+treatment status---common in social products and two-sided marketplaces---geo-level
+randomisation (as in the incrementality framework of \cref{sec:incrementality} and the iROAS
+estimator in \cref{eq:iroas}) is the only design that avoids SUTVA violations.
+
+\begin{example}[Designing the pricing-page test]
+The growth team wants to test a pricing-page redesign that makes the professional plan more
+prominent. The decision framework is:
+
+\begin{description}
+  \item[Primary metric] Trial-to-paid conversion rate. Current baseline \qty{25}{\percent};
+    minimum detectable effect \qty{4}{pp} (a lift from \qty{25}{\percent} to \qty{29}{\percent}),
+    anchoring to the expected margin from \num{8} incremental paid conversions per month
+    (\(0.04\times 200\)) times \money{3150} CLV \(= \money{25200}\)/month.
+  \item[Guardrail metrics] (a) Session-to-trial rate: must not fall by more than \qty{2}{pp}
+    (a \qty{10}{\percent} relative drop would eliminate the funnel gain); (b) Support-ticket
+    volume: no more than a \qty{15}{\percent} increase (a heavily interrogated pricing page
+    inflates cost-to-serve).
+  \item[Randomisation unit] User (cookie + login), assigned on first session. A user in the
+    treatment arm sees the redesigned pricing page on every visit; a control user always sees
+    the original.
+  \item[Sample size and duration] Using \cref{eq:sample-size} with \(\delta=0.04\),
+    \(\sigma^2=0.25\times 0.75=0.1875\), \(\alpha=0.05\), \(1-\beta=0.80\):
+    \[
+      n \;=\; \frac{2\,(1.96+0.84)^{2}\times 0.1875}{0.04^{2}} \approx \num{1838}
+        \text{ per arm.}
+    \]
+    At \num{800} trials per month split equally across two arms (from the funnel in the
+    fact sheet), the test requires roughly \num{4.6} months of data---a meaningful wait. The team must either accept a larger MDE
+    (say, \qty{6}{pp} \(\to\) \num{879} per arm \(\approx\) 2.2 months) or invest in reducing
+    conversion variance through CUPED-style pre-experiment covariate adjustment. Pre-specifying
+    the stopping rule to three weeks at \num{879}-per-arm and reading results exactly once
+    eliminates optional-stopping bias.
+\end{description}
+
+The implication: the binding constraint on experimentation velocity is not statistical theory
+but funnel size. A firm that acquires only \num{200} paid customers per month needs months to
+run even modestly powered tests on downstream conversion. Investing in top-of-funnel
+acquisition (\cref{ch:decisions-under-uncertainty}) expands the experimental surface area as
+much as it expands revenue.
+\end{example}
+
+\begin{admonition}{Note}
+Pre-registering the design---primary metric, guardrails, randomisation unit, sample size,
+and stopping rule---before launch is not bureaucratic overhead; it is the mechanism that
+keeps the p-value from the analysis honest. Without pre-registration, a team can always
+find a metric that moved, a time window that shows significance, or a subgroup that
+confirms their prior. \textcite{kohavi2020trustworthy} document the most common failure
+modes of large-scale A/B programmes at Microsoft and elsewhere; \textcite{gordon2019comparison}
+show that observational methods can miss true causal effects by large, inconsistent margins,
+which is precisely why a properly designed test---even a slow one---is worth running when
+the revenue at stake justifies the iROAS calculation in \cref{eq:iroas}.
+\end{admonition}
+
+The test design framework here is the operational complement to the incrementality toolbox
+in \cref{sec:incrementality}: both ask the same causal question---does this intervention
+produce more revenue than the counterfactual?---but at different granularities. Product
+experiments randomise users within a product surface and measure conversion; geo-holdout
+experiments randomise geographic markets and measure the full-funnel iROAS of media spend.
+\textcite{johnson2017ghost} demonstrate the magnitude of advertiser overstatement when
+geo-level randomisation is bypassed in favour of self-reported platform attribution. The
+connecting thread between all three chapters---this chapter, \cref{ch:attribution-and-measurement},
+and \cref{ch:decisions-under-uncertainty}---is the potential outcomes framework: a causal
+effect exists only as a comparison against a counterfactual that was never observed, and the
+only reliable way to construct that counterfactual is randomisation.

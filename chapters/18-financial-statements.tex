@@ -1,0 +1,350 @@
+\chapter{Financial Statements \& Accounting}\label{ch:financial-statements}
+
+% Scope: the three-statement model & linkages, accrual vs cash (deferred revenue),
+%   cost accounting (contribution margin vs gross margin, ABC), the statement-to-ROIC bridge.
+%   NEW chapter (closes the highest-impact gap: ch.19--22 use NOPAT/FCF/EBITDA undefined).
+% Prerequisite for \cref{ch:corporate-finance-core}. PINS the cost structure that yields the
+%   book's 42% contribution margin / $21/mo --- reconcile, do not contradict, prior uses.
+% Draft per house style: flowing prose + example/admonition set-offs; running-SaaS worked examples.
+
+Every valuation number in this book --- the \money{600000} NOPAT, the \money{3000000}
+invested capital, the \qty{20}{\percent} ROIC, the \money{3150} CLV --- is derived from
+financial statements. Operators who cannot trace those numbers back to income statements,
+balance sheets, and cash-flow statements are working from faith, not analysis. This chapter
+builds the accounting substrate that the rest of the book assumes: how the three statements
+link, why accrual and cash diverge, how cost structure determines the contribution margin
+that governs pricing and acquisition economics, and how to convert statutory accounting into
+the NOPAT and free-cash-flow inputs that feed discounted-cash-flow valuation.
+
+\section{The Three-Statement Model}\label{sec:three-statements}
+% complexity: 4
+
+How does a sale today flow through a company's financial position over the next twelve
+months? Most business-school graduates can name the three financial statements; fewer can
+trace a single transaction across all three simultaneously, and fewer still understand why
+that linkage matters for valuation. The income statement records revenues and expenses over
+a period. The balance sheet records what the firm owns and owes at a point in time. The cash
+flow statement reconciles the two by tracking the actual movement of cash. None of the three
+is interpretable in isolation; all three are required for a complete picture.
+
+The architecture of the linkage is precise. Net income --- the bottom line of the income
+statement --- flows directly into retained earnings, the cumulative equity account on the
+balance sheet; every dollar of profit not paid out as a dividend accumulates there. The cash
+flow statement then starts with net income and adjusts it for two systematic distortions:
+non-cash charges (principally depreciation and amortisation, which reduce income but consume
+no cash) and changes in working capital (receivables, payables, and inventory that shift the
+timing of cash relative to revenue recognition). Capital expenditure flows from the investing
+section of the cash flow statement into property, plant, and equipment on the balance sheet,
+increasing the asset base that generates future income. Debt raised or repaid appears in the
+financing section and directly changes the liability side of the balance sheet.
+
+These four linkages define the cash identity across any period:
+\begin{equation}\label{eq:three-statement-link}
+  \text{Cash}_t \;=\; \text{Cash}_{t-1} \;+\; \mathrm{CFO}_t \;+\; \mathrm{CFI}_t \;+\; \mathrm{CFF}_t,
+\end{equation}
+where CFO is cash from operations (net income adjusted for D\&A and working capital changes),
+CFI is cash from investing (primarily capital expenditure, negative when spending), and CFF
+is cash from financing (debt issuance positive, repayment negative). The constraint is
+accounting arithmetic: the three activity categories must sum to the change in cash,
+\(\text{Cash}_t - \text{Cash}_{t-1}\). A company can run negative CFO indefinitely only if
+CFF --- external capital from investors or lenders --- is large enough to compensate. This is
+precisely the growth-phase condition that matters for early-stage SaaS firms.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{three-statement}
+  \caption{The three-statement linkage. Net income flows to retained earnings (equity);
+    D\&A is added back in CFO; CapEx reduces CFI and increases PP\&E (net of depreciation);
+    debt proceeds flow through CFF to the liability side of the balance sheet.
+    \Cref{eq:three-statement-link} captures the resulting cash identity.}
+  \label{fig:three-statement}
+\end{figure}
+
+\begin{example}[Year-1 SaaS: growth-phase cash burn]
+The running firm ends Year~0 with \num{6667} paying customers (ARR \money{4000000} at
+\money{600}/customer/year). In Year~1 it adds \num{2400} new customers (\num{200}/month at
+\money{600} CAC), ending the year at \num{9067} customers and ARR of roughly \money{5440000}.
+Tracing through the three statements:
+
+\medskip
+\textit{Income Statement.} Annual revenue \money{4000000} (Year-1 cohort; new customers
+contribute a partial year). Variable COGS at \qty{30}{\percent} of revenue (\money{15}/month
+per customer) yields gross profit \money{2800000} (\qty{70}{\percent} gross margin). Fixed
+operating costs --- engineering, G\&A, product --- total roughly \money{1940000}. EBIT is
+therefore \money{860000} and, taxed at \qty{30}{\percent}, net income is approximately
+\money{602000}.
+
+\medskip
+\textit{Balance Sheet.} Net income \money{602000} increases retained earnings. The firm
+spends \money{300000} on servers and software infrastructure (CapEx), increasing PP\&E by
+that amount net of \money{60000} depreciation (\money{240000} net addition). It also invests
+\money{1440000} in customer acquisition (\num{2400} customers at \money{600} CAC), funded
+from operating cash.
+
+\medskip
+\textit{Cash-Flow Statement.} CFO begins with net income \money{602000}; add back D\&A
+\money{60000}; subtract the increase in accounts receivable from the growing customer base
+(\money{40000}), yielding CFO of approximately \money{622000}. CFI is \money{-300000}
+(infrastructure CapEx). Customer acquisition spend of \money{1440000} is an operating cash
+outflow that sits within CFO (sales and marketing expense). Applying \cref{eq:three-statement-link},
+the net cash movement is \money{622000} + \money{-300000} = \money{322000} before
+acquisition spend; after the \money{1440000} CAC outflow, the firm is net-cash-negative by
+approximately \money{1118000} on the year.
+
+\medskip
+The key implication: the income statement reports \money{602000} of net income while the
+firm actually consumed over \money{1000000} of cash. The business is accrual-profitable in
+its steady-state NOPAT sense --- \cref{sec:statement-analysis} will derive that
+\money{600000} precisely --- but cash-negative in Year~1 because investment in new customers
+(a cash outflow today) precedes the revenue those customers generate (a cash inflow spread
+across future years). Growth-phase cash burn is not a sign of a broken business; it is the
+arithmetically inevitable consequence of front-loaded acquisition spend. The three-statement
+model makes this visible; P\&L alone obscures it.
+\end{example}
+
+\begin{admonition}{Note}
+The D\&A add-back in CFO is often misread as ``money the company gets back.'' It is not. D\&A
+is a non-cash charge --- the cash went out when the asset was purchased (recorded as CFI at
+that time). The add-back simply reverses an accounting deduction that reduced net income
+without consuming new cash in the period. Confusing the add-back with free cash is one of
+the more common errors in first-pass financial analysis.
+\end{admonition}
+
+The three-statement architecture is the skeleton on which all the chapters that follow are
+built. \textcite{libby2022financial} provide the canonical treatment of transaction analysis
+and the building-block approach that traces individual entries across all three statements.
+\textcite{weygandt2019financial} develop the same framework with detailed attention to the
+indirect method of the cash-flow statement used by most public companies. The investment
+implications of the linkage --- and the derivation of free cash flow from these statements
+--- are developed in \textcite{brealey2020}.
+
+\section{Accrual Accounting vs.\ Cash}\label{sec:accrual}
+% complexity: 3
+
+When does revenue exist? The answer depends entirely on which accounting system you are
+using, and the choice has material consequences for any SaaS company that collects
+subscriptions in advance. Under \emph{cash accounting}, revenue is recognised the moment
+cash is received. Under \emph{accrual accounting} --- the system required by GAAP and IFRS
+for any company of meaningful size --- revenue is recognised when the service obligation is
+fulfilled, regardless of when cash changes hands. The gap between the two shows up on the
+balance sheet as deferred revenue: a liability representing cash received for services not
+yet delivered.
+
+For a subscription business with annual prepayment, the identity at any point in the year is:
+\begin{equation}\label{eq:accrual-revenue}
+  \text{Cash received} \;=\; \text{Revenue recognised} \;+\; \Delta\text{Deferred Revenue},
+\end{equation}
+where \(\Delta\text{Deferred Revenue}\) is the increase in the deferred revenue liability
+over the period. On January~1, annual cash collected equals recognised revenue (zero days
+elapsed) plus the full amount deferred; at December~31 the deferred balance is zero and all
+revenue has been recognised. The equation holds at every moment in between. \Cref{eq:accrual-revenue}
+is an accounting identity, not a model --- it cannot be violated.
+
+\begin{example}[Annual prepayment: cash vs.\ P\&L]
+On 1~January, \num{100} customers each prepay \money{600} for a year of software access.
+Cash received is \money{60000}. Under accrual accounting (\cref{eq:accrual-revenue}),
+January's P\&L may recognise only one month of service delivered:
+\[
+  \text{Revenue recognised in January} \;=\; \frac{\money{60000}}{12} \;=\; \money{5000}.
+\]
+The remaining \money{55000} sits on the balance sheet as deferred revenue --- a liability,
+because the firm still owes eleven months of service. Applying \cref{eq:accrual-revenue}:
+\[
+  \money{60000} \;=\; \money{5000} \;+\; \money{55000}. \checkmark
+\]
+By 31~December, the deferred revenue balance has been drawn to zero and all \money{60000} has
+been recognised as revenue. Cash never changed again; only the accounting classification
+shifted. The annual P\&L and the cash-flow statement agree at year-end, but monthly P\&Ls
+look radically different from monthly cash flows throughout the year --- a distinction that
+matters for covenants, board reporting, and any investor reading a mid-year snapshot.
+
+The mechanics here are the same as those governing MRR and ARR in \cref{sec:saas-mrr}:
+annual prepayment is a form of working-capital financing by customers, and the deferred
+revenue balance is the firm's floating obligation to deliver future service.
+\end{example}
+
+\begin{admonition}{Warning}
+Annual prepay is a source of \emph{favourable} working capital for a SaaS firm: customers
+finance operations in advance. That advantage disappears immediately if the company shifts to
+monthly billing or if churn accelerates before the obligation is fulfilled. Investors reading
+a SaaS balance sheet should treat a large deferred revenue balance as a quality signal only
+when retention is high; a large deferred balance alongside rising churn is a future revenue
+shortfall hiding as a present liability.
+\end{admonition}
+
+The revenue-recognition rules governing subscription businesses were formalised under ASC~606
+(US~GAAP) and IFRS~15 (international), both of which shifted from a rules-based framework to
+a principles-based performance-obligation model. For multi-element SaaS contracts ---
+implementation services bundled with recurring licences --- the allocation of transaction
+price across obligations requires judgment that can materially affect the timing of revenue
+recognition. \textcite{weygandt2019financial} and \textcite{libby2022financial} both cover
+the ASC~606 five-step model; the working-capital implications for subscription operators are
+developed further in the operating model of \cref{ch:operating-model}.
+
+\section{Cost Accounting: Contribution Margin \& Cost Allocation}\label{sec:cost-accounting}
+% complexity: 3
+
+How much does one more customer actually cost, and how much does one more customer actually
+contribute? Gross margin and contribution margin both claim to answer this question, and they
+will give different numbers for the same business. Understanding which number to use --- and
+when --- is one of the most practically important distinctions in managerial accounting.
+
+Gross margin is a statutory, GAAP-regulated metric: revenue minus the cost of goods sold
+(COGS), where COGS includes both variable production costs and any fixed overhead allocated
+to each unit. For a SaaS firm, COGS is primarily hosting, infrastructure, and direct
+technical support costs --- the variable fraction of serving each customer. Contribution
+margin is a non-GAAP managerial metric: revenue minus \emph{all} variable costs, whether
+those costs live in COGS, sales, or operations. The distinction matters because SaaS firms
+carry variable costs outside COGS --- payment processing fees, customer success labour tied
+to customer count, variable support costs --- that are real economic costs of each incremental
+customer but invisible in the gross margin line.
+
+The contribution margin equation is:
+\begin{equation}\label{eq:contribution-margin}
+  \mathrm{CM} \;=\; \text{Revenue} \;-\; \text{Total variable costs},
+  \qquad
+  \mathrm{CM\%} \;=\; \frac{\mathrm{CM}}{\text{Revenue}}.
+\end{equation}
+This is the floor that must be cleared before fixed costs contribute to profit. Every unit
+sold at a price above its variable cost contributes something to covering fixed overhead and
+eventually generating NOPAT; pricing below variable cost destroys value on every unit regardless
+of volume.
+
+For a more precise cost allocation --- particularly when multiple product lines or customer
+segments share infrastructure and support resources --- Activity-Based Costing assigns costs
+to products in proportion to their actual consumption of each overhead activity rather than
+spreading overhead evenly by headcount or revenue. An illustrative ABC unit cost for a given
+customer segment is:
+\begin{equation}\label{eq:abc-cost}
+  \text{Unit cost}_{\text{ABC}} \;=\; \sum_{a} \frac{\text{Cost pool}_a}{\text{Activity volume}_a} \times \text{Activity consumed by unit},
+\end{equation}
+where each cost pool \(a\) represents a distinct overhead activity (server provisioning,
+support ticket resolution, payment processing). ABC prevents high-volume simple products from
+subsidising low-volume complex ones, which conventional gross-margin analysis systematically
+obscures \parencite{datar2025horngrens}.
+
+\begin{example}[Reconciling 70\% gross margin and 42\% contribution margin]
+The firm charges \money{50}/month per customer. Variable COGS --- hosting and infrastructure
+costs that scale directly with customer count --- are \money{15}/month per customer:
+\[
+  \text{Gross margin} \;=\; \frac{\money{50} - \money{15}}{\money{50}} \;=\; \frac{\money{35}}{\money{50}} \;=\; \qty{70}{\percent}.
+\]
+But the firm also carries additional variable costs outside COGS: customer support staff
+(variable with ticket volume, which scales with customers), payment-processing fees (a
+percentage of each transaction), and customer-success coverage (headcount tied to customer
+count). These total approximately \money{14}/month per customer. Total variable cost per
+customer per month is therefore \money{15} + \money{14} = \money{29}. Applying
+\cref{eq:contribution-margin}:
+\[
+  \mathrm{CM} \;=\; \money{50} \;-\; \money{29} \;=\; \money{21}/\text{month},
+  \qquad
+  \mathrm{CM\%} \;=\; \frac{\money{21}}{\money{50}} \;=\; \qty{42}{\percent}.
+\]
+Annually, each customer contributes \money{21} \(\times\) 12 = \money{252}/year to covering
+fixed costs and generating NOPAT.
+
+The implication for pricing: the firm must charge above \money{29}/month on every plan to
+avoid destroying value. The \money{50} price clears that floor by \money{21} --- a real but
+not extravagant margin. A competitor who undercuts to \money{35}/month believing gross margin
+is the binding constraint (\money{35} \(>\) \money{15} COGS, so apparently safe) is actually
+pricing below total variable cost and losing \money{6}/month per customer at scale.
+\end{example}
+
+\begin{admonition}{Warning}
+Contribution margin is not gross margin, and conflating them produces systematically wrong
+pricing and acquisition decisions. Gross margin (\qty{70}{\percent}) counts only variable
+COGS against revenue; contribution margin (\qty{42}{\percent}) counts \emph{all} variable
+costs. The \qty{28}{\percent} gap --- \money{14}/month per customer in this firm --- represents
+real economic costs that the gross margin line simply does not capture. A CAC payback
+calculation run on gross margin overstates the rate at which acquisition cost is recovered;
+the correct payback uses contribution margin. \Cref{eq:cac-payback} in the customer-economics
+chapters implements this correctly.
+\end{admonition}
+
+The ``different costs for different purposes'' principle \parencite{datar2025horngrens}
+applies directly: gross margin is the right metric for statutory reporting and for comparing
+infrastructure efficiency across SaaS peers; contribution margin is the right metric for
+pricing, acquisition decisions, and break-even analysis. \textcite{weygandt2019financial}
+cover the GAAP treatment of COGS; the managerial decision-making applications of contribution
+margin analysis are developed in detail in \textcite{datar2025horngrens}.
+
+\section{Statement Analysis: From Accounting to ROIC}\label{sec:statement-analysis}
+% complexity: 4
+
+Financial statements serve statutory reporting purposes; valuation requires economic measures.
+The transition from one to the other is not cosmetic. GAAP net income is distorted by
+financing choices (interest deductions), tax effects, and non-cash accounting entries.
+Enterprise value rests on the operating cash flows that belong to \emph{all} capital
+providers, independent of how the firm is financed. Converting accounting to economics
+requires two steps: isolating unlevered operating profit (NOPAT) and then adjusting for the
+cash that investing activities consume or release (FCF).
+
+NOPAT strips out the effect of financial leverage to reveal what the business earns on its
+operating assets. FCF then adjusts NOPAT for the non-cash depreciation charge (add back,
+since the cash left when the asset was bought, not when it depreciates) and for the cash
+consumed by new capital investment (CapEx) and changes in working capital (\(\Delta\)WC).
+The bridge is:
+\begin{equation}\label{eq:nopat-bridge}
+  \mathrm{NOPAT} \;=\; \mathrm{EBIT} \times (1 - t),
+  \qquad
+  \mathrm{FCF} \;=\; \mathrm{NOPAT} \;+\; \mathrm{D\&A} \;-\; \Delta\mathrm{WC} \;-\; \mathrm{CapEx},
+\end{equation}
+where \(t\) is the effective tax rate, \(\Delta\mathrm{WC}\) is the increase in net working
+capital (positive when the business is consuming cash to fund growth), and CapEx is gross
+capital expenditure on long-lived assets. ROIC is NOPAT divided by invested capital (IC),
+the total capital --- equity plus interest-bearing debt --- deployed to generate that profit:
+\(\mathrm{ROIC} = \mathrm{NOPAT} / \mathrm{IC}\). When ROIC exceeds the cost of that
+capital (\cref{eq:economic-profit}), the firm creates economic value; when it falls below,
+it destroys it, regardless of what net income reports.
+
+\begin{example}[Deriving NOPAT, FCF, and ROIC from the income statement]
+From the three-statement example above, the firm's income statement shows EBIT of
+\money{860000} at the \num{6667}-customer steady state (ARR \money{4000000}, variable COGS
+\money{1200000} at \qty{30}{\percent} of revenue, additional variable opex \money{1120000},
+fixed opex \money{820000} including \money{60000} D\&A). Applying \cref{eq:nopat-bridge}
+with a \qty{30}{\percent} tax rate:
+\[
+  \mathrm{NOPAT} \;=\; \money{860000} \times (1 - 0.30) \;=\; \money{860000} \times 0.70 \;=\; \money{602000} \;\approx\; \money{600000}.
+\]
+This is the \money{600000} NOPAT referenced throughout the book.
+
+To derive FCF, add back D\&A (\money{60000}) and assume steady-state CapEx of \money{60000}
+(replacement only, so CapEx equals D\&A) and working-capital change \(\Delta\mathrm{WC} = 0\)
+at steady state (new-customer cash is collected monthly, no meaningful receivables build):
+\[
+  \mathrm{FCF} \;=\; \money{600000} \;+\; \money{60000} \;-\; \money{0} \;-\; \money{60000} \;=\; \money{600000}.
+\]
+Invested capital is the equity deployed to fund the business at steady state --- servers,
+software development, and the working capital needed to operate: IC = \money{3000000}.
+\[
+  \mathrm{ROIC} \;=\; \frac{\money{600000}}{\money{3000000}} \;=\; \qty{20}{\percent}.
+\]
+WACC is \qty{11}{\percent} (\cref{eq:wacc}), so the ROIC--WACC spread is \qty{9}{\percent}.
+From \cref{eq:economic-profit}, economic profit is \(\money{3000000} \times 0.09 =
+\money{270000}\)/year --- meaning the business generates \money{270000}/year of value above
+and beyond the return required by its capital providers.
+
+These are the numbers \cref{eq:roic} and \cref{eq:dcf} use throughout. The \money{600000}
+FCF, discounted at WACC with growth \(g = \qty{3}{\percent}\) over five explicit years plus
+a terminal value, yields the enterprise value developed in the DCF chapter (\cref{eq:dcf},
+\cref{eq:npv}). Every link in that chain starts here, in the income statement.
+\end{example}
+
+\begin{admonition}{Warning}
+EBITDA is not free cash flow. EBITDA adds D\&A back to EBIT but makes no deduction for CapEx
+or changes in working capital. A capital-intensive business can report strong EBITDA while
+consuming nearly all of it in maintenance CapEx; its FCF is a fraction of EBITDA. For SaaS
+firms with modest physical CapEx, the difference is smaller but not zero: working capital
+build and intangible development costs can still create a material gap. Lenders and acquirers
+who rely on EBITDA multiples without FCF conversion are systematically overpaying for
+capital-intensive businesses and underpaying for capital-light ones. The correct valuation
+input is always FCF derived from \cref{eq:nopat-bridge}, not EBITDA.
+\end{admonition}
+
+The NOPAT--FCF--ROIC bridge developed here feeds directly into the DCF model of
+\cref{eq:dcf} and the economic-profit test of \cref{eq:economic-profit}. Investors use
+\cref{eq:roic} to assess whether the firm earns its cost of capital; operators use the same
+calculation to evaluate capital-allocation decisions. \textcite{koller2025valuation} provide
+the definitive treatment of this conversion and its applications to enterprise valuation.
+\textcite{brealey2020} connect the accounting bridge to the NPV rule of \cref{eq:npv} and
+the weighted-average cost of capital of \cref{eq:wacc}.

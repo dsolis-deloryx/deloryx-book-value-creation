@@ -1,14 +1,58 @@
-\ProvidesPackage{preamble}[2026/05/25 Value-Creation book preamble]
+\ProvidesPackage{preamble}[2026/05/26 Value-Creation book preamble]
 %% Compile with LuaLaTeX (fontspec + unicode-math). Build via `latexmk`.
+%% Design: KOMA-Script scrbook, professional trade-technical layout.
+%% Concepts are written as flowing prose under headings; only two restrained,
+%% monochrome set-offs are used --- `example` (worked examples) and
+%% `admonition` (Note/Warning/etc.). No coloured concept boxes.
 
-%% ===== Typography & math =====
+%% ===== Typography & math (TeX Gyre: Pagella body, Heros headings) =====
 \usepackage{fontspec}
 \usepackage{microtype}
 \usepackage{amsmath}
 \usepackage{mathtools}
-\usepackage{unicode-math}        % load after amsmath/mathtools; supersedes amssymb
-\setmainfont{Latin Modern Roman}
-\setmathfont{Latin Modern Math}
+\usepackage{amsthm}
+\usepackage{etoolbox}              % \ifblank for optional example captions
+\usepackage{unicode-math}          % load after amsmath/mathtools; supersedes amssymb
+\setmainfont{TeX Gyre Pagella}     % Palatino-class book serif
+\setsansfont{TeX Gyre Heros}[Scale=MatchLowercase]   % Helvetica-class sans for headings
+\setmonofont{Latin Modern Mono}[Scale=MatchLowercase]
+\setmathfont{TeX Gyre Pagella Math}
+\linespread{1.08}                  % a little air
+\emergencystretch=3em              % last-resort glue: kills small prose overfulls
+\hyphenpenalty=50 \tolerance=400   % allow slightly looser lines before overflowing
+\allowdisplaybreaks                % long aligned displays may break across pages
+
+%% ===== Page geometry & heading style (use space; modern look) =====
+\KOMAoptions{DIV=11,BCOR=8mm,parskip=half-,headings=normal,open=any}  % open=any: chapters start on the next page (no blank verso filler pages)
+\setkomafont{disposition}{\normalfont\sffamily\bfseries}  % all headings sans-serif
+\addtokomafont{chapter}{\fontsize{26}{30}\selectfont}
+\setkomafont{chapterprefix}{\normalfont\sffamily\mdseries\large}
+\addtokomafont{section}{\large}
+\setcounter{secnumdepth}{2}         % number chapters/sections/subsections
+\setcounter{tocdepth}{1}            % TOC: chapters + sections
+\recalctypearea
+\makeatletter
+\renewcommand*{\@pnumwidth}{2.1em}  % room for 3-digit page numbers in TOC (kills 0.41pt overfull)
+\makeatother
+%% ----- Vertical rhythm: block paragraphs clearly separated but not airy.
+%% Independent of the box/figure spacing (set on the tcolorboxes + float lengths),
+%% so tightening here does NOT regress the warning-box / figure margins.
+\setlength{\parskip}{5pt plus 1pt minus 1pt}     % was ~7pt (half-); tighter inter-paragraph gap
+\RedeclareSectionCommand[beforeskip=-2.6ex plus -1ex minus -.2ex,
+                         afterskip=1ex plus .2ex minus .2ex]{section}
+\RedeclareSectionCommand[beforeskip=-2.2ex plus -.8ex minus -.2ex,
+                         afterskip=.8ex plus .2ex minus .2ex]{subsection}
+%% Pages fill to the bottom (flushbottom, scrbook default). Breakable set-offs (above) let
+%% content fill cleanly so there is little slack to stretch.
+
+%% ----- running heads -----
+\usepackage[headsepline,automark]{scrlayer-scrpage}
+\pagestyle{scrheadings}
+\clearpairofpagestyles
+\automark[section]{chapter}
+\ihead{}\ohead{\headmark}\cfoot[\pagemark]{\pagemark}
+\setkomafont{pagehead}{\normalfont\sffamily\footnotesize}
+\setkomafont{pagenumber}{\normalfont\sffamily}
 
 %% ===== Numbers =====
 \usepackage{siunitx}
@@ -19,52 +63,68 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{longtable}
-\usepackage{multicol}            % two-up metric-card catalog layout
-\usepackage{enumitem}            % compact lists (scoped inside metric cards, not globally)
+\usepackage{multicol}            % two-up metric-card catalog layout (ch.20)
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt,parsep=0pt,partopsep=0pt}  % parsep=0: stop \parskip inflating list gaps
+\setlist[description]{itemsep=4pt}  % multi-line term entries need a touch more separation (spacing only; label style unchanged)
 
-%% ===== Graphics / diagrams (unification map, S-curves, five forces) =====
+%% ===== Graphics / diagrams =====
 \usepackage{graphicx}
 \graphicspath{{figures/}}        % bare \includegraphics{stem} resolves to figures/stem.pdf
 \usepackage{tikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usetikzlibrary{arrows.meta,positioning,calc}
+%% More breathing room above/below figures, charts and plots (in-text and floated).
+\setlength{\intextsep}{16pt plus 4pt minus 4pt}
+\setlength{\textfloatsep}{18pt plus 4pt minus 4pt}
+\setlength{\floatsep}{16pt plus 4pt minus 4pt}
 
-%% ===== Per-concept template boxes =====
+%% ===== The two restrained set-offs (monochrome; no coloured boxes) =====
 \usepackage[most]{tcolorbox}
+%% Set-offs are breakable so long worked examples split across page breaks and pages fill
+%% cleanly (non-breakable boxes jump wholesale, leaving big bottom gaps). The before/after
+%% skip + top/bottom padding reserve height, which is what prevents the follow-on-text overlap
+%% a breakable frame-hidden tcolorbox could otherwise cause.
 \tcbset{
-  conceptbox/.style={
-    enhanced, breakable, colback=white, boxrule=0.6pt,
-    coltitle=white, fonttitle=\bfseries\sffamily,
-    left=2mm, right=2mm, top=1mm, bottom=1mm,
-  }
+  setoff/.style={
+    enhanced, breakable, colback=white, sharp corners, boxrule=0pt,
+    frame hidden, coltitle=black, fonttitle=\bfseries\sffamily\small,
+    left=0pt, right=0pt, top=5pt, bottom=5pt,
+    before skip=13pt plus 3pt minus 2pt, after skip=13pt plus 3pt minus 2pt,
+  },
 }
-\newtcolorbox{decision}{conceptbox, colframe=blue!55!black,   colbacktitle=blue!55!black,   title=The Decision}
-\newtcolorbox{intuition}{conceptbox, colframe=teal!60!black,   colbacktitle=teal!60!black,   title=Intuition}
-\newtcolorbox{derivation}{conceptbox, colframe=violet!60!black, colbacktitle=violet!60!black, title=Formula \& Derivation}
-\newtcolorbox{breaks}{conceptbox, colframe=red!60!black,    colbacktitle=red!60!black,    title=When It Breaks}
-\newtcolorbox{worked}{conceptbox, colframe=black!70,       colbacktitle=black!70,       title=Worked Example}
-\newtcolorbox{trap}{conceptbox, colframe=orange!75!black, colbacktitle=orange!75!black, title=The Trap}
-\newtcolorbox{deeper}{conceptbox, colframe=gray!55,        colbacktitle=gray!55,        title=Going Deeper}
-\newtcolorbox{contested}{conceptbox, colframe=purple!55!black, colbacktitle=purple!55!black, title=Contested}
+%% Worked examples: numbered per chapter, hairline rules above and below the title.
+\newtcolorbox[auto counter, number within=chapter]{example}[1][]{%
+  setoff,
+  borderline north={0.7pt}{0pt}{black!70},
+  attach title to upper={\par\smallskip},
+  title={Example~\thetcbcounter\ifblank{#1}{}{\ \textmd{\itshape #1}}},
+  before upper={\smallskip}, after upper={\smallskip},
+  borderline south={0.7pt}{0pt}{black!70},
+}
+%% Admonition: a left rule + bold run-in label. Usage: \begin{admonition}{Warning} ... \end{admonition}
+\newtcolorbox{admonition}[1]{%
+  enhanced, breakable, colback=black!3, sharp corners, boxrule=0pt, frame hidden,
+  borderline west={1.3pt}{0pt}{black!60},
+  left=3mm, right=2mm, top=6pt, bottom=6pt,
+  before skip=13pt plus 3pt minus 2pt, after skip=13pt plus 3pt minus 2pt,
+  fonttitle=\bfseries\sffamily\footnotesize, coltitle=black,
+  title={\MakeUppercase{#1}}, attach title to upper={\quad},
+}
 
-%% ----- Platform-mechanics box (how Meta/Google actually work; grounded in official docs) -----
-\newtcolorbox{platform}{conceptbox, colframe=cyan!50!black, colbacktitle=cyan!50!black, title=Platform Mechanics}
-
-%% ----- Metric card: dense KPI reference (name + formula in title; \mcfield rows) -----
+%% ----- Metric card: dense KPI reference for ch.20 (monochrome, hairline) -----
 %% Usage:
 %%   \begin{metriccard}{ROAS}{\text{Revenue}/\text{Ad Spend}}
 %%     \mcfield{Tells you}{Revenue per dollar of media spend}
-%%     \mcfield{Benchmark}{3--8$\times$ e-commerce; 1--2$\times$ brand}
-%%     \mcfield{Trap}{Blended ROAS hides branded-search subsidy}
 %%   \end{metriccard}
 %% Group two-up inside \begin{multicols}{2} ... \end{multicols}.
-%% Optional first arg overrides styling (e.g. red frame for a vanity-metric card):
-%%   \begin{metriccard}[colframe=red!60!black,colbacktitle=red!60!black]{Email open rate}{...}
-\newtcolorbox{metriccard}[3][]{conceptbox, breakable=false,
-  colframe=yellow!35!orange!85!black, colbacktitle=yellow!35!orange!85!black,
+%% Optional first arg overrides styling (e.g. for a vanity-metric card).
+\newtcolorbox{metriccard}[3][]{%
+  enhanced, breakable=false, sharp corners, colback=white,
+  colframe=black!55, boxrule=0.5pt, coltitle=black, colbacktitle=black!8,
   title={\textbf{#2}\quad\normalfont\footnotesize\ensuremath{#3}},
-  fontupper=\small, left=1.5mm, right=1.5mm, top=0.5mm, bottom=0.5mm,
+  fontupper=\small, left=1.5mm, right=1.5mm, top=1mm, bottom=1mm,
   before upper={\setlist{nosep,leftmargin=*,itemsep=0pt,topsep=0pt}},
   #1}
 \newcommand{\mcfield}[2]{\noindent{\bfseries\sffamily\footnotesize #1:\enspace}\ignorespaces#2\par\smallskip}
@@ -74,7 +134,9 @@
 \usepackage[backend=biber,style=authoryear,sorting=nyt,maxcitenames=2]{biblatex}
 \addbibresource{references.bib}
 
-%% ===== Cross-references (the unification-map wires) — load last =====
+%% ===== Cross-references (load last) =====
+\usepackage{xurl}                  % break long URLs anywhere (bibliography @online entries)
 \usepackage{hyperref}
-\hypersetup{colorlinks=true, linkcolor=blue!55!black, citecolor=teal!50!black, urlcolor=blue!55!black}
+\hypersetup{colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black,
+            linktoc=all, hidelinks=false}
 \usepackage{cleveref}

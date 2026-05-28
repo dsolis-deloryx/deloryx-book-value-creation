@@ -1,0 +1,160 @@
+\chapter{Pricing \& Revenue}\label{ch:pricing}
+
+% Scope: willingness to pay, price discrimination, the Lerner index, psychological pricing.
+
+Price is the only revenue lever that does not require spending money. It is also the lever most firms set by convention (cost-plus) rather than analysis (value-based). The gap between the two is uncaptured value --- money customers would have paid that the firm left on the table.
+
+\section{Willingness to Pay and Economic Value to Customer}\label{sec:evc}
+% complexity: 3
+
+At what price does the firm capture a fair share of the value it creates for the customer --- and how much uncaptured value is it leaving for competitors to exploit? A customer will pay up to the point where the product is no longer worth buying --- their willingness to pay (WTP). WTP is not the same as the price charged; the gap is consumer surplus. The firm's job is to price close enough to WTP that it captures most of the value it creates, while staying low enough that the customer still buys.
+
+Economic Value to Customer (EVC) decomposes WTP into a reference price plus the net value of differentiation:
+\begin{equation}\label{eq:evc}
+  \mathrm{EVC} \;=\; P_{\text{ref}} + \sum_k \Delta v_k ,
+\end{equation}
+where \(P_{\text{ref}}\) is the price of the next-best alternative and \(\Delta v_k\) is the monetised value (positive or negative) of each differentiation element \(k\) relative to that alternative. Setting price equal to EVC extracts all buyer surplus; value-based pricing targets a sharing of the EVC between buyer and seller.
+
+EVC requires that customers can quantify their alternatives and the value of differentiation --- reasonable in B2B but fragile in consumer markets where decisions are emotional or habitual. \cref{eq:evc} also assumes a single reference competitor; when buyers have diverse next-best alternatives, a segment-specific EVC for each must be computed. The differentiation values \(\Delta v_k\) must be positive-sum: if the product is genuinely inferior on some attributes, those enter as negatives and reduce EVC below \(P_{\text{ref}}\).
+
+\begin{example}[Building the EVC table for a mid-market CRM]
+The running SaaS competes primarily against Salesforce Sales Cloud at \money{150}/seat/month. Differentiation values relative to Salesforce:
+
+\medskip
+\begin{tabular}{lr}
+  \toprule
+  Differentiation element & \(\Delta v\) (per seat/month) \\
+  \midrule
+  Faster implementation (saves 3 months of consultant fees) & $+\money{30}$ \\
+  Lower admin overhead (0.5 FTE saved)                     & $+\money{20}$ \\
+  Weaker reporting \& analytics (inferior)                  & $-\money{20}$ \\
+  \midrule
+  Total \(\sum_k \Delta v_k\)                               & $+\money{30}$ \\
+  \bottomrule
+\end{tabular}
+
+\medskip
+\[
+  \mathrm{EVC} \;=\; \money{150} + \money{30} \;=\; \money{180}/\text{seat/month}.
+\]
+
+Current price: \money{50}/seat/month. The gap between EVC (\money{180}) and current price (\money{50}) is \money{130} of uncaptured value per seat per month. Even a modest price increase to \money{80} --- capturing \money{30} of the \money{130} gap --- represents a \qty{60}{\percent} revenue lift at no incremental cost. The implication: the pricing question is not whether to raise prices, but by how much the firm can raise them before buyers defect to the reference competitor. That threshold is set by the Lerner index (\cref{sec:optimal-markup}).
+\end{example}
+
+\begin{admonition}{Warning}
+Anchoring EVC to cost instead of to the customer's alternative. If the reference point is the firm's own marginal cost rather than the next-best alternative, the analysis degenerates into cost-plus --- which ignores all the value created. The only relevant benchmark is what the customer would do next if this product did not exist.
+\end{admonition}
+
+Conjoint analysis is the quantitative method for estimating \(\Delta v_k\) from preference data rather than inference: buyers rate product profiles, and regression recovers attribute-level part-worths that sum to WTP. For B2B products, economic-value interviews (structured discussions about the buyer's cost stack) are more tractable than survey conjoint and produce EVC directly. EVC establishes the ceiling. The optimal price below that ceiling is determined by demand elasticity --- the topic of \cref{sec:optimal-markup}. \textcite{nagle2023strategy} is the standard pricing textbook; the EVC framework originates there. \textcite{kotler2021} situates it in the broader marketing mix.
+
+\section{The Lerner Index and Optimal Markup}\label{sec:optimal-markup}
+% complexity: 3
+
+Given the firm's cost structure and the price-sensitivity of its target segment, what markup over marginal cost maximises profit --- and how far is the current price from that optimum? Monopoly power is the ability to price above marginal cost. The Lerner index measures how much of that power the firm is currently using. At the profit-maximising price, the markup is exactly equal to the inverse of the absolute price elasticity of demand. Pricing below the optimum leaves margin on the table; pricing above it destroys volume faster than it builds margin.
+
+From the first-order condition of profit maximisation (set marginal revenue equal to marginal cost), the Lerner index at the optimum is (\cref{eq:lerner}; owned by \cref{ch:microeconomics}):
+\begin{equation*}
+  L^* \;=\; \frac{P^* - MC}{P^*} \;=\; \frac{1}{|\varepsilon|} ,
+\end{equation*}
+where \(\varepsilon\) is the price elasticity of demand (\cref{eq:elasticity}; owned by \cref{ch:microeconomics}) and \(P^*\) is the profit-maximising price. Rearranging to solve for \(P^*\) from a known \(MC\):
+\begin{equation}\label{eq:optimal-markup}
+  P^* \;=\; \frac{MC}{1 - 1/|\varepsilon|} .
+\end{equation}
+\cref{eq:optimal-markup} is the pricing manager's operational form: given a marginal cost and an estimated elasticity, it returns the profit-maximising price directly.
+
+\cref{eq:optimal-markup} requires \(|\varepsilon| > 1\) (elastic demand); at \(|\varepsilon| \le 1\) the formula implies infinite price, which is physically impossible --- the constraint is that demand hits zero first. It also requires that \(MC\) is constant (or that the formula is evaluated at the relevant output level). Finally, elasticity varies by price point: the \(\varepsilon\) estimated at \money{50} may differ substantially at \money{87}, making \cref{eq:optimal-markup} an approximation requiring iterative validation.
+
+\begin{example}[Calculating the Lerner-optimal price]
+Estimated price elasticity for the mid-market segment: \(\varepsilon = -1.5\) (a \qty{10}{\percent} price increase reduces demand by \qty{15}{\percent}). Marginal cost (hosting + variable support) per seat/month: \(MC = \money{29}\). From \cref{eq:optimal-markup}:
+\[
+  P^* \;=\; \frac{\money{29}}{1 - 1/1.5} \;=\; \frac{\money{29}}{1 - 0.667} \;=\; \frac{\money{29}}{0.333} \;\approx\; \money{87}.
+\]
+The optimal Lerner index: \(L^* = 1/1.5 = 0.67\), implying a \qty{67}{\percent} gross margin at \(P^*\). Current price \money{50} implies a Lerner index of \((50-29)/50 = 0.42\) --- the SaaS is operating at \qty{42}{\percent} of its profit-maximising power, well below the EVC ceiling of \money{180} (\cref{sec:evc}) and below the Lerner optimum of \money{87}. The implication: raising price to \money{87} is warranted on both the demand-elasticity and the value-based criteria. An intermediate move to \money{69}--\money{79} would capture most of the Lerner gain with lower competitive risk.
+\end{example}
+
+\begin{admonition}{Warning}
+Using category-average elasticity instead of segment-specific elasticity. Price elasticity is a property of a segment, not a market. SMB buyers are typically more elastic than mid-market; enterprise buyers less so. Applying a blended elasticity to a targeted segment misprices for that segment and misfires on both sides --- too high for SMB, too low for enterprise.
+\end{admonition}
+
+In markets with network effects or strong complementarity (e.g.\ platform products), optimal pricing deviates from \cref{eq:optimal-markup} because subsidising one side of the market grows the network and raises WTP on the other side. The generalised first-order condition then includes the cross-side elasticity term. This is the pricing analogue of the Metcalfe growth mechanism in \cref{ch:growth}. The Lerner analysis gives the per-segment optimal price given a single tier. Real markets allow extracting more surplus through price discrimination, covered next. \textcite{nagle2023strategy} and \textcite{pindyck2017} both derive \cref{eq:optimal-markup}; the elasticity and Lerner concepts that \cref{eq:lerner,eq:elasticity} formalise are in \cref{ch:microeconomics}.
+
+\section{Price Discrimination and Good-Better-Best}\label{sec:price-discrimination}
+% complexity: 3
+
+If customers have heterogeneous willingness to pay, how does the firm capture surplus from each segment without losing any segment entirely --- and which discrimination mechanism is feasible? A single price must leave money on the table: it is either too high for price-sensitive segments (lost volume) or too low for price-insensitive ones (lost margin). Price discrimination is the mechanism that charges closer to each segment's WTP, capturing more total surplus without the binary trade-off.
+
+Three degrees of discrimination define the design space:
+
+\begin{description}
+  \item[First-degree (perfect)] Each unit sold at buyer's exact WTP. Extracts all consumer surplus. Requires knowing individual WTPs --- infeasible at scale. Approximated in B2B negotiated contracts.
+  \item[Second-degree (versioning/self-selection)] Different price-quantity or price-quality bundles; buyers self-select. Good-Better-Best (GBB) tiers are the canonical form. Feasible without knowing individual WTPs.
+  \item[Third-degree (segment pricing)] Different prices for observable groups (student discounts, non-profit rates, geographic pricing). Legal where groups can be identified but arbitrage can be prevented.
+\end{description}
+
+Versioning (second-degree) is the most scalable digital mechanism. It works when: (a) the high-WTP segment values additional features enough to pay a premium, and (b) the low-WTP tier is not so attractive that high-WTP buyers downgrade. GBB breaks down when the tiers are not credibly differentiated: if the mid tier is \emph{almost} as good as the top tier at half the price, high-WTP buyers defect downward. Feature restriction (not feature addition) is the usual mechanism for creating Good-tier limitations that make the Better and Best tiers attractive without degrading value for the Good buyer.
+
+\begin{example}[Designing a Good-Better-Best tier structure]
+Current SaaS tiers:
+
+\medskip
+\begin{tabular}{llr}
+  \toprule
+  Tier & Primary differentiators & Price/mo \\
+  \midrule
+  Good  & Core CRM, up to 5 users, standard reports & \money{29} \\
+  Better & Unlimited users, advanced analytics, API access & \money{50} \\
+  Best  & SSO, audit logs, dedicated CSM, SLA & \money{99} \\
+  \bottomrule
+\end{tabular}
+
+\medskip
+The Good tier targets price-sensitive SMBs (capturing buyers who would not pay \money{50}) without cannibalising Better: the 5-user cap creates a natural upgrade trigger as teams grow. The Best tier targets enterprise-minded mid-market buyers: SSO and audit logs are IT-procurement requirements, not features --- they create mandatory rather than discretionary demand. From the EVC analysis (\cref{sec:evc}), \money{99} is still well below the EVC ceiling of \money{180}, so there is room for a fourth ``Enterprise'' tier once the brand can support it.
+\end{example}
+
+\begin{admonition}{Warning}
+Pricing by cost instead of by WTP difference across tiers. Features that are cheap to deliver (an extra API endpoint) may have very high value for a specific segment (developers). The cost of delivering the feature is irrelevant to the tier price; only the WTP differential matters.
+\end{admonition}
+
+Bundling is a related discrimination mechanism: combining products with negatively correlated demands (different segments value the components differently) captures more surplus than selling each product separately. Pure bundling vs.\ mixed bundling trade-offs are analysed in the industrial-organisation literature (\textcite{pindyck2017}). For software, the bundle is often the platform itself --- the components have zero marginal cost and high WTP variance, making bundling almost uniformly superior to \`a la carte pricing.
+
+Cost-plus proponents argue that value-based pricing is circular (you need to know value to set value-based prices) and exploitative (it extracts surplus customers ``deserve'' to keep). Value-based pricing advocates respond: cost-plus systematically underprices high-differentiation products and overprices low-differentiation ones, destroying both margin and market share. The evidence supports the value-based side in differentiated markets; cost-plus dominates where products are commodities and the competitive constraint binds. The SaaS is not a commodity (\cref{eq:evc} shows a \money{130} value gap over cost-plus), so cost-plus is the wrong anchor.
+
+Price discrimination converts the single optimal price of \cref{eq:optimal-markup} into a schedule. The tiers set here feed directly into the ARR distribution across customer segments and the average ARPU that enters every CLV calculation in \cref{ch:customer-economics}. \textcite{nagle2023strategy} and \textcite{pindyck2017} develop the theory; market structure constraints on price discrimination are in \cref{ch:competitive-analysis}.
+
+\section{Psychological Pricing and Mental Accounting}\label{sec:psych-pricing}
+% complexity: 2
+
+For a given economic price, which framing and payment structure maximises perceived value and reduces churn --- independent of the number charged? Thaler's mental accounting (\textcite{thaler1985mental}) shows that people do not evaluate payments as fungible cash flows; they segregate them into accounts and apply different rules to each. A \money{480} annual payment and twelve \money{40} payments are economically equivalent but psychologically distinct --- and the annual payment, despite being larger, often feels smaller because it enters a different mental account.
+
+From prospect theory (\cref{eq:prospect}; owned by \cref{ch:decisions-under-uncertainty}), losses loom larger than equivalent gains. Thaler's application to pricing yields four rules:
+
+\begin{description}
+  \item[Segregate gains] Show gains separately (two features at \money{10} each feels better than one bundle at \money{20}).
+  \item[Integrate losses] Combine payments into one total (one annual fee feels less painful than 12 monthly reminders of spending).
+  \item[Cancel small losses against large gains] Surcharge framing: ``\money{5} extra'' feels less salient next to a \money{500} order than a \money{5} order.
+  \item[Segregate small gains from large losses] ``Free shipping'' on a \money{100} order feels better than a \money{90} order; the gain is segregated.
+\end{description}
+
+Mental accounting effects are strongest when buyers have \emph{low numeracy or high time pressure}. Sophisticated B2B procurement teams with explicit TCO models are less susceptible. The annual-vs-monthly framing effect is real but diminishes in enterprise deals where finance explicitly NPV-adjusts the payment schedule.
+
+\begin{example}[Annual vs monthly billing and the retention gap]
+The SaaS offers \money{50}/month or \money{480}/year (\money{40}/month equivalent --- a \qty{20}{\percent} discount). The economic price of the annual plan is lower, but the psychological treatment is different:
+
+\begin{itemize}
+  \item The \money{480} annual payment exits the customer's monthly operational budget account and enters a capital/software-license account --- a different mental bucket that is reviewed annually, not monthly.
+  \item Monthly plans trigger a recurring ``is this worth it?'' re-evaluation twelve times per year. Annual plans suppress that question for 11 of 12 months.
+  \item Empirically: the SaaS measures 12-month retention of \qty{94}{\percent} for annual payers vs \qty{78}{\percent} for monthly payers --- a \qty{16}{\percent} gap driven partly by self-selection (annual buyers are more committed) and partly by the suppressed re-evaluation.
+\end{itemize}
+
+Annual plan contribution (using monthly churn model of \cref{eq:clv}): \(m = \money{480} \times 0.42 = \money{201.6}/\text{yr}\) at \qty{94}{\percent} annual retention (\(c \approx \qty{0.5}{\percent}/\text{month}\)):
+\[
+  \mathrm{CLV}_{\text{annual}} \;=\; \frac{\money{201.6}}{0.11 - 0.03} \;=\; \money{2520}.
+\]
+Lower revenue per year (\money{480} vs \money{600}), but the retention improvement and mental-account effect compound over the customer lifetime. The implication: default new customers to annual billing with a clear ``equivalent monthly'' price display --- the \money{40}/month anchor makes the \money{480} feel like a saving.
+\end{example}
+
+\begin{admonition}{Warning}
+Assuming the annual discount must compensate for the full cost of early payment. The discount is not a financial IRR calculation --- it is a mental-account unlocking mechanism. Customers who switch to annual do not demand a risk-free-rate return; they accept \qty{20}{\percent} for the psychological simplicity. Do not over-discount.
+\end{admonition}
+
+Price framing interacts with the reference price in \cref{eq:evc}: a price displayed next to a higher anchor (Salesforce \money{150}) is evaluated as a gain, not a cost. The salesperson's first move in any demo is to establish the reference competitor's cost --- this sets the anchor against which the SaaS price is evaluated as dramatically cheaper, regardless of the absolute number. Psychological pricing does not change the economic price; it changes the perceived price. When framing is consistent with the product's positioning (\cref{ch:segmentation-targeting-positioning}) --- mid-market buyers value simplicity and predictability --- the psychological effects reinforce the value proposition rather than contradicting it. \textcite{thaler1985mental} is the primary source; the prospect-theory foundations are in \cref{eq:prospect} (\cref{ch:decisions-under-uncertainty}).

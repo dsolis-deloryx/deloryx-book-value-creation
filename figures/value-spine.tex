@@ -1,0 +1,61 @@
+% figures/value-spine.tex
+% Standalone TikZ: value-creation spine — nine stages of the book as a left-to-right chain (ch.32).
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+
+\definecolor{vcblue}{HTML}{1A5276}
+\definecolor{vcteal}{HTML}{0E6655}
+\definecolor{vcgrey}{HTML}{5D6D7E}
+
+\begin{document}
+\begin{tikzpicture}[
+  node distance=7mm,
+  stage/.style={draw=vcblue, line width=0.9pt, rounded corners=2pt, fill=vcblue!7,
+                font=\sffamily\small, align=center,
+                minimum width=22mm, minimum height=14mm, text=black!85},
+  arrow/.style={-{Stealth[length=4pt]}, vcblue, line width=0.9pt},
+  ann/.style={font=\sffamily\scriptsize, text=vcgrey, align=center},
+]
+
+  %% Nodes left-to-right
+  \node[stage] (found) {Foundations\\{\scriptsize\sffamily\textit{Chs.\ 1--4}}};
+  \node[stage, right=7mm of found] (cust) {Customer\\{\scriptsize\sffamily\textit{Chs.\ 5--9}}};
+  \node[stage, right=7mm of cust] (acq)  {Acquisition\\{\scriptsize\sffamily\textit{Chs.\ 10--13}}};
+  \node[stage, right=7mm of acq]  (strat){Strategy\\{\scriptsize\sffamily\textit{Chs.\ 14--17}}};
+  \node[stage, right=7mm of strat](fin)  {Finance\\{\scriptsize\sffamily\textit{Chs.\ 18--23}}};
+  \node[stage, right=7mm of fin]  (exec) {Execution\\{\scriptsize\sffamily\textit{Chs.\ 24--26}}};
+  \node[stage, right=7mm of exec] (fdr)  {Founder\\{\scriptsize\sffamily\textit{Chs.\ 27--30}}};
+  \node[stage, right=7mm of fdr]  (ref)  {Reference\\{\scriptsize\sffamily\textit{Ch.\ 31}}};
+  \node[stage, right=7mm of ref]  (cap)  {Capstone\\{\scriptsize\sffamily\textit{Ch.\ 32}}};
+
+  %% Main chain arrows
+  \draw[arrow] (found.east) -- (cust.west);
+  \draw[arrow] (cust.east)  -- (acq.west);
+  \draw[arrow] (acq.east)   -- (strat.west);
+  \draw[arrow] (strat.east) -- (fin.west);
+  \draw[arrow] (fin.east)   -- (exec.west);
+  \draw[arrow] (exec.east)  -- (fdr.west);
+  \draw[arrow] (fdr.east)   -- (ref.west);
+  \draw[arrow] (ref.east)   -- (cap.west);
+
+  %% Annotations below each arrow (what each stage feeds forward)
+  \node[ann, below=5mm of $(found.south east)!0.5!(cust.south west)$]
+    {sets\\ROIC\,>\,WACC};
+  \node[ann, below=5mm of $(cust.south east)!0.5!(acq.south west)$]
+    {CLV sets\\CAC ceiling};
+  \node[ann, below=5mm of $(acq.south east)!0.5!(strat.south west)$]
+    {ROAS\,/\,iROAS\\validate spend};
+  \node[ann, below=5mm of $(strat.south east)!0.5!(fin.south west)$]
+    {moat sets $g$\\in DCF};
+  \node[ann, below=5mm of $(fin.south east)!0.5!(exec.south west)$]
+    {EV discounts\\at WACC};
+  \node[ann, below=5mm of $(exec.south east)!0.5!(fdr.south west)$]
+    {R40\,/\,QR\\track health};
+  \node[ann, below=5mm of $(fdr.south east)!0.5!(ref.south west)$]
+    {trust \& team\\drive ROIC};
+  \node[ann, below=5mm of $(ref.south east)!0.5!(cap.south west)$]
+    {metrics\\close loop};
+
+\end{tikzpicture}
+\end{document}

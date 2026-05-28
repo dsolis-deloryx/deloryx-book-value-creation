@@ -4,3 +4,4 @@ google-genai>=2.6.0       # Deep Research via Interactions API (tools/research/d
 matplotlib>=3.9.0         # data-plot figures (figures/src/*.py)
 numpy>=2.0.0
 pandas>=2.2.0
+scipy>=1.11  # power-curve figure (ch.03)

@@ -1,0 +1,299 @@
+\chapter{Valuation}\label{ch:valuation}
+
+% Scope: DCF, multiples (EV/EBITDA, P/E, EV/Revenue), terminal value, scenario weighting.
+% Cross-link: the terminal-value formula is an application of the growing perpetuity --
+%   \cref{eq:gordon} in \cref{ch:corporate-finance-core}.
+
+\section{Discounted Cash Flow}\label{sec:dcf}
+% complexity: 5 -> figure dcf-bridge
+
+What is the entire firm worth today? DCF answers by converting every future free cash flow
+--- across an explicit forecast horizon and a terminal value beyond it --- into a single
+present value at the cost of capital. The answer determines whether to invest, acquire, or
+sell. A firm is a bundle of future claims on cash: each year's free cash flow is discounted
+individually, exactly as in \cref{eq:pv}; the terminal value captures all the cash flows
+beyond the forecast horizon as a single lump. In practice, the terminal value almost always
+dominates, which is why the growth assumptions embedded in it deserve more scrutiny than the
+explicit-year forecasts.
+
+Free cash flow is cash generated after taxes (levied on EBIT, which preserves the depreciation shield) and reinvestment needs are met:
+\[
+  \mathrm{FCF}_t \;=\; \mathrm{EBITDA}_t \;-\; \text{taxes}_t
+                       \;-\; \Delta\mathrm{WC}_t \;-\; \mathrm{CapEx}_t.
+\]
+Discount each year's FCF at the WACC (\cref{eq:wacc}) and add the present value of the
+terminal value \(\mathrm{TV}\) at the horizon year \(n\):
+\begin{equation}\label{eq:dcf}
+  EV \;=\; \sum_{t=1}^{n}\frac{\mathrm{FCF}_t}{(1+\mathrm{WACC})^{t}}
+           \;+\; \frac{\mathrm{TV}}{(1+\mathrm{WACC})^{n}}.
+\end{equation}
+The WACC (\cref{eq:wacc}) is derived in \cref{ch:risk-and-capital-structure}; its equity
+component is the CAPM cost of equity (\cref{eq:capm}). The terminal value formula is
+developed in \cref{sec:terminal-value}. Note that \cref{eq:dcf} is the multi-period
+extension of \cref{eq:npv} in \cref{ch:corporate-finance-core}: the initial outlay \(I_0\)
+is the acquisition price, and enterprise value is the sum that makes \(\mathrm{NPV}=0\).
+
+DCF is only as good as its inputs. WACC is estimated, not observed; FCF forecasts are
+narratives dressed as numbers; and the terminal value --- typically
+\qty{60}{\percent}--\qty{80}{\percent} of EV --- inherits every assumption in the explicit
+period and then extrapolates them forever. Sensitivity to WACC is non-linear: a
+one-percentage-point rise in the discount rate can cut enterprise value by
+\qty{20}{\percent}--\qty{30}{\percent} in high-growth firms where most value lies in the
+terminal period.
+
+\begin{example}[Five-year DCF for the running B2B SaaS]
+Five explicit forecast years for the running B2B SaaS. Year-1 FCF is \money{600000},
+growing at \qty{30}{\percent} in years 1--3 (product-market-fit phase) then decelerating
+to \qty{10}{\percent} in years 4--5. WACC is \qty{11}{\percent} (\cref{eq:wacc}
+in \cref{ch:risk-and-capital-structure}; it equals the cost of equity here because
+the business is equity-financed).
+
+\[
+\begin{array}{lrrrrrr}
+  & \mathrm{Y1} & \mathrm{Y2} & \mathrm{Y3} & \mathrm{Y4} & \mathrm{Y5} \\[2pt]
+  \mathrm{FCF} & \num{600000} & \num{780000} & \num{1014000} & \num{1115400} & \num{1226940} \\
+  \text{Discount factor} & 0.901 & 0.812 & 0.731 & 0.659 & 0.593 \\
+  \mathrm{PV} & \num{540541} & \num{633246} & \num{741379} & \num{735047} & \num{727612} \\
+\end{array}
+\]
+
+Sum of explicit-period PVs: \(\approx\money{3377825}\).
+Terminal value (year-5 FCF normalised at \qty{3}{\percent} steady-state growth;
+computed fully in \cref{sec:terminal-value}): \(\approx\money{9400000}\) PV.
+Enterprise value: \(\money{3377825}+\money{9400000}\approx\money{12800000}\).
+
+Managerial implication: the explicit years contribute only \qty{26}{\percent} of
+total EV. Raising the terminal growth assumption from \qty{3}{\percent} to
+\qty{4}{\percent} adds over \money{1000000}; shaving WACC one point adds more.
+Investors who fixate on near-term revenue miss where the value actually lives.
+\end{example}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{dcf-bridge}
+  \caption{DCF waterfall: PV of each explicit-year FCF stacked against PV of terminal
+  value. Terminal value dominates (\(\approx\)\qty{74}{\percent} of enterprise value),
+  illustrating why growth-rate and discount-rate assumptions in the terminal period
+  outweigh near-term forecast accuracy.}
+  \label{fig:dcf-bridge}
+\end{figure}
+
+\begin{admonition}{Warning}
+Treating the DCF output as \emph{the} value rather than one scenario. The model
+answers ``what is value \emph{given these assumptions}?'' --- not ``what will a
+buyer pay?'' A precise DCF built on optimistic growth and a low WACC is a
+sophisticated way to confirm a prior. The discipline is running the model with
+assumptions you would defend in a credit committee, not assumptions you need to
+make the deal work.
+\end{admonition}
+
+Levered DCF discounts equity free cash flows at the cost of equity directly; unlevered DCF
+discounts firm FCFs at the unlevered cost and then deducts debt. Adjusted present value
+(APV) separates the unlevered firm value from the PV of the tax shield, useful when
+leverage changes materially over the forecast horizon --- an LBO or a staged infrastructure
+build, for instance.
+
+DCF formalises the same logic as the NPV rule in \cref{ch:corporate-finance-core}
+(\cref{eq:npv}) and the CLV formula in \cref{ch:customer-economics} (\cref{eq:clv}):
+all are present values of future cash streams, discounted at the appropriate cost
+of capital. \textcite{brealey2020}, \textcite{damodaran2012}, and
+\textcite{berk6thcorporate} each develop the DCF framework; \textcite{damodaran2012}
+is the most rigorous treatment of terminal-value mechanics.
+
+\section{Terminal Value}\label{sec:terminal-value}
+% complexity: 4
+
+Beyond the explicit forecast horizon, the firm does not cease to exist. Terminal value
+converts post-horizon cash flows into a single number anchored at year \(n\), without
+extending a twenty-year spreadsheet. At the horizon the firm is assumed to reach a
+steady state: growth stabilises at a long-run rate \(g\), margins stop expanding. The
+growing-perpetuity formula (\cref{eq:gordon}) prices that steady state; discounting it
+back to today gives the terminal value's present contribution to enterprise value.
+
+Let \(\mathrm{FCF}_{n+1}\) be the first post-horizon cash flow (year \(n\) FCF grown by
+one period) and \(g\) the perpetuity growth rate. The terminal value at year \(n\) is a
+direct application of \cref{eq:gordon}:
+\begin{equation}\label{eq:terminal-value}
+  \mathrm{TV} \;=\; \frac{\mathrm{FCF}_{n+1}}{\mathrm{WACC}-g}.
+\end{equation}
+This is why \cref{eq:terminal-value} is already implicit in every DCF: plug
+\(\mathrm{TV}/(1+\mathrm{WACC})^n\) into \cref{eq:dcf} and the full formula collapses to
+a two-stage growing perpetuity. Brand strength raises \(g\) at the horizon
+(\cref{ch:brand-growth}), compounding through \cref{eq:terminal-value} into enterprise
+value.
+
+Terminal value is mechanically correct but economically fragile. \(g\) must be below WACC
+(the convergence condition of \cref{eq:gordon}); it must also be below long-run nominal
+GDP growth, since no firm can outgrow the whole economy forever. Pinning
+\(g=\qty{5}{\percent}\) when WACC is \qty{11}{\percent} is defensible; pinning
+\(g=\qty{9}{\percent}\) makes the denominator near-zero and TV blows up.
+
+\begin{example}[Terminal value for the running SaaS]
+Year-5 normalised FCF for the SaaS is \money{1226940}; applying one period of
+steady-state growth (\qty{3}{\percent}) gives \(\mathrm{FCF}_{6}=\money{1263748}\).
+With WACC at \qty{11}{\percent}:
+\[
+  \mathrm{TV} \;=\; \frac{\money{1263748}}{0.11-0.03} \;=\; \money{15796850}.
+\]
+Discounting that year-5 terminal value back five years at \qty{11}{\percent} gives its
+present contribution: \(\mathrm{PV}(\mathrm{TV})=\money{15796850}/1.11^5\approx\money{9400000}\).
+Added to the \money{3377825} of explicit-period PVs, enterprise value is
+\(\approx\money{12800000}\); the terminal value is \qty{74}{\percent} of it ---
+confirming that the valuation is largely a bet on the steady state, not the next five
+years.
+\end{example}
+
+\begin{admonition}{Warning}
+\emph{Double-counting growth} is the canonical error: building high growth into
+the explicit period \emph{and} the terminal perpetuity. The terminal \(g\) must
+reflect only the period \emph{after} the explicit years, once competitive
+dynamics have compressed margins toward the industry steady state. Reusing the
+same \qty{30}{\percent} growth rate from year 1 in the terminal value produces an
+absurdity. The same trap is flagged for \cref{eq:gordon} itself in
+\cref{sec:growing-perpetuity}.
+\end{admonition}
+
+An alternative terminal value methodology is the exit-multiple approach: estimate the
+EBITDA multiple a buyer would pay at the horizon and multiply by year-\(n\) EBITDA.
+Importantly, this is not independent of DCF --- a multiple is itself a compressed
+growing-perpetuity (\cref{sec:multiples}), so the two methods converge when their embedded
+growth and discount assumptions are consistent. Using both as a cross-check, not as
+independent valuations, is best practice.
+
+Terminal value is the dominant component of enterprise value for any firm whose principal
+value lies beyond the explicit forecast horizon --- that is, most growth-stage companies.
+\textcite{damodaran2012} provides the most systematic treatment; \textcite{brealey2020}
+covers the consistency conditions between the exit-multiple and perpetuity approaches.
+
+\section{Multiples}\label{sec:multiples}
+% complexity: 3
+
+You want a quick market-anchored value without a full DCF build. Multiples offer a shortcut
+--- but only if you understand what growth and return assumptions they are compressing.
+Misread the compression and you pay the wrong price. An EV/Revenue multiple looks like a
+market opinion, but it is a DCF in disguise: the multiple embeds assumptions about margins,
+growth, and discount rates. Understanding the algebra lets you audit whether a traded
+multiple is cheap or expensive relative to fundamentals, and why multiples collapsed from
+2021 to 2023.
+
+Start from \cref{eq:gordon}: \(EV = \mathrm{FCF}/(r-g)\). Express FCF as a margin on
+revenue \(R\): \(\mathrm{FCF}=m\cdot R\). Divide both sides by \(R\) and allow one period
+of growth so \(\mathrm{FCF}_1 = m\cdot R\cdot(1+g)\):
+\begin{equation}\label{eq:ev-revenue}
+  \frac{EV}{R} \;=\; \frac{m\,(1+g)}{\mathrm{WACC}-g}.
+\end{equation}
+This is the DCF-consistent revenue multiple. It rises with margin \(m\), rises with growth
+\(g\), and \emph{falls with WACC} --- which is why rising interest rates compress multiples
+mechanically, independent of any change in the underlying business. \cref{eq:ev-revenue}
+assumes steady-state margins and growth; traded multiples also embed sentiment, liquidity
+premia, and peer-group herding. A multiple without a view on \(m\), \(g\), and WACC is not
+a valuation --- it is a price, which may or may not reflect value.
+
+\begin{example}[Revenue multiple versus DCF for the running SaaS]
+The SaaS has \qty{20}{\percent} FCF margin, \(g=\qty{3}{\percent}\), WACC \qty{11}{\percent}.
+From \cref{eq:ev-revenue}:
+\[
+  \frac{EV}{R} \;=\; \frac{0.20\times1.03}{0.11-0.03} \;=\; \frac{0.206}{0.08} \;=\; 2.6\times.
+\]
+With ARR of \money{4000000}:
+\[
+  EV \;=\; 2.6\times\money{4000000} \;=\; \money{10400000}.
+\]
+The DCF in \cref{sec:dcf} yields \(\approx\money{12800000}\) --- the
+\money{2400000} gap is the \emph{growth premium} that steady-state multiples miss:
+the model uses only \(g=\qty{3}{\percent}\) (long-run), but the firm is currently
+growing at \qty{30}{\percent}. A multiple calibrated to peers growing at
+\qty{30}{\percent} would clear far higher. The discipline is understanding which
+growth rate is embedded before citing a multiple as evidence of value.
+\end{example}
+
+In 2021, public SaaS traded at 20--30$\times$ revenue; by late 2023 multiples had
+compressed to 5--8$\times$. The dominant driver was not deteriorating unit economics but a
+mechanical re-pricing: the risk-free rate rose from \qty{0}{\percent} to \qty{5}{\percent},
+lifting WACC and collapsing the denominator in \cref{eq:ev-revenue}. Whether 2021 multiples
+reflected irrational exuberance or 2023 multiples over-corrected is contested; what is not
+contested is that \cref{eq:ev-revenue} tracks the direction and approximate magnitude of the
+compression (\cref{ch:risk-and-capital-structure}).
+
+The EV/EBITDA multiple strips out capital structure and depreciation policy, making
+cross-company comparison cleaner than P/E. Its DCF analogue replaces \(m\cdot R\) with
+EBITDA\(\times(1-t)\times(1-\mathrm{reinvestment\,rate})\) --- economically identical once
+tax and reinvestment are consistent. The practical advantage of multiples is speed and
+market-anchoring; the risk is confusing a market price with a model of intrinsic value.
+
+Multiples are best treated as a sanity-check on a DCF, not a replacement for one.
+\textcite{damodaran2012} systematically decompose the algebra behind every common
+multiple; the parallel with the Gordon model (\cref{eq:gordon}) is made explicit
+in his discussion of the PEG ratio and the dividend-yield inversion.
+
+\section{Scenario Analysis}\label{sec:scenario-analysis}
+% complexity: 3
+
+A point-estimate DCF or multiple implies certainty about an uncertain future. Scenario
+analysis replaces that illusion with a probability-weighted distribution of enterprise
+values, making the risk explicit and the decision defensible. Rather than asking ``what is
+the value?'' scenario analysis asks ``what is the value \emph{conditional on each plausible
+future}?'' Weight the outcomes by their probabilities and the expected value captures both
+the upside and the downside in a single actionable number.
+
+Let \(p_i\) be the probability of scenario \(i\) and \(EV_i\) the enterprise value under
+that scenario (computed via \cref{eq:dcf} or a multiple from \cref{eq:ev-revenue}). The
+probability-weighted enterprise value is:
+\begin{equation}\label{eq:scenario-ev}
+  EV^* \;=\; \sum_{i} p_i \cdot EV_i.
+\end{equation}
+\cref{eq:scenario-ev} reuses the expected-value machinery of \cref{eq:ev} in
+\cref{ch:decisions-under-uncertainty}: it is the same probability-weighting applied to
+valuations rather than payoffs. Under that chapter's framework, a risk-averse
+decision-maker would further adjust downward for variance; here the adjustment is embedded
+in the discount rate rather than the probabilities. The output depends entirely on the
+quality of the \(p_i\) and \(EV_i\) estimates. Scenario probabilities are rarely objective
+--- they reflect the analyst's priors. The formula disciplines the \emph{structure} of
+thinking (three futures, assign weights, compute) but cannot substitute for sound judgement
+about which futures are plausible.
+
+\begin{example}[Scenario-weighted acquisition decision]
+Three scenarios for the SaaS at a prospective acquisition decision:
+
+\begin{description}
+  \item[Bear (\(p=0.25\))] Competition intensifies; growth stalls; EV \money{8000000}.
+  \item[Base (\(p=0.50\))] Current trajectory holds; EV \money{15000000}.
+  \item[Bull (\(p=0.25\))] Platform network effects kick in; EV \money{28000000}.
+\end{description}
+
+Applying \cref{eq:scenario-ev}:
+\[
+  \begin{aligned}
+    EV^* &= 0.25\times\money{8000000}
+          + 0.50\times\money{15000000}
+          + 0.25\times\money{28000000} \\
+         &= \money{2000000}+\money{7500000}+\money{7000000}
+          = \money{16500000}.
+  \end{aligned}
+\]
+The expected EV is \money{16500000} --- above the single-point DCF of
+\money{12800000} because the bull scenario is weighted equally with the bear yet sits
+farther from the base.
+The asymmetry between scenarios drives the result; sensitivity to the \(p_i\)
+assignments matters more than the model precision within each scenario.
+\end{example}
+
+\begin{admonition}{Warning}
+Collapsing three scenarios into a single ``base case'' to avoid the discomfort of
+the downside. \emph{Probability weighting is not pessimism} --- it is accounting
+for the full range of outcomes. A bear scenario with \(p=0.25\) is not a worst
+case to be dismissed; it is a claim that one in four similar decisions ends there.
+\end{admonition}
+
+Monte Carlo simulation extends scenario analysis by drawing from continuous probability
+distributions over each input (WACC, \(g\), year-1 FCF) and computing the full EV
+distribution. The output is a histogram of enterprise values rather than three point
+estimates, revealing fat tails that scenario weights can obscure. The structural question
+--- which inputs drive variance --- is best answered by a Sobol sensitivity analysis, which
+partitions total EV variance to each input.
+
+Scenario analysis links back to the decision framework in \cref{ch:decisions-under-uncertainty}
+and forward to the capital-structure choice in \cref{ch:risk-and-capital-structure}:
+higher EV variance argues for lower leverage, since distress costs are more likely.
+\textcite{damodaran2012} develops the simulation extension; \textcite{brealey2020}
+covers the scenario-break-even approach as a complement.

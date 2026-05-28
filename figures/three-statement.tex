@@ -1,0 +1,80 @@
+% figures/three-statement.tex
+% Standalone TikZ: three-statement model linkages — Income Statement, Balance Sheet, Cash-Flow Statement.
+% Arrows show: NI→Retained Earnings; D&A→CFO; CapEx→PP&E; Debt proceeds→CFF.
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+
+\definecolor{vcblue}{HTML}{1A5276}
+\definecolor{vcteal}{HTML}{0E6655}
+\definecolor{vcgrey}{HTML}{5D6D7E}
+
+\begin{document}
+\begin{tikzpicture}[
+  node distance=16mm,
+  stmt/.style={draw=vcblue, line width=0.9pt, rounded corners=2pt, fill=vcblue!7,
+               font=\sffamily\small, align=left,
+               minimum width=46mm, minimum height=32mm, text=black!85,
+               inner sep=5pt},
+  hdr/.style={font=\sffamily\bfseries\small, text=vcblue},
+  fld/.style={font=\sffamily\footnotesize, text=black!80},
+  arrow/.style={-{Stealth[length=5pt,width=4pt]}, vcblue, line width=0.9pt},
+  lbl/.style={font=\sffamily\scriptsize, text=vcgrey, align=center},
+]
+
+  %% ── Income Statement ──
+  \node[stmt] (is) {%
+    \begin{tabular}{@{}l@{}}
+      \textbf{\textsf{Income Statement}}\\[3pt]
+      Revenue\\
+      \textit{− COGS}\\
+      \textit{− OpEx (incl.\ D\&A)}\\[2pt]
+      \textbf{= EBIT}\\
+      \textit{− Interest / Tax}\\[2pt]
+      \textbf{= Net Income}
+    \end{tabular}};
+
+  %% ── Balance Sheet ──
+  \node[stmt, right=20mm of is] (bs) {%
+    \begin{tabular}{@{}l@{}}
+      \textbf{\textsf{Balance Sheet}}\\[3pt]
+      \textit{Assets}\\
+      \quad Cash \& equivalents\\
+      \quad PP\&E (net)\\[2pt]
+      \textit{Liabilities}\\
+      \quad Debt\\[2pt]
+      \textit{Equity}\\
+      \quad Retained Earnings
+    \end{tabular}};
+
+  %% ── Cash-Flow Statement ──
+  \node[stmt, below=18mm of $(is.south east)!0.5!(bs.south west)$] (cf) {%
+    \begin{tabular}{@{}l@{}}
+      \textbf{\textsf{Cash-Flow Statement}}\\[3pt]
+      \textit{CFO:} Net Income\\
+      \quad \textit{+ D\&A (non-cash add-back)}\\
+      \quad \textit{± ΔWorking Capital}\\[2pt]
+      \textit{CFI:} Capital Expenditures\\[2pt]
+      \textit{CFF:} Debt / equity raised
+    \end{tabular}};
+
+  %% ── Arrows with labels ──
+
+  %% NI → Retained Earnings
+  \draw[arrow] (is.east) -- node[above, lbl, pos=0.5] {Net Income\\→ Retained Earnings} (bs.west);
+
+  %% D&A → CFO (IS bottom-left to CF top-left)
+  \draw[arrow] (is.south) -- ++(0,-6mm)
+    node[lbl, below right, yshift=1mm, xshift=-3mm] {D\&A\\add-back → CFO}
+    -- (cf.north -| is.south);
+
+  %% CapEx → PP&E (CF top-right to BS bottom-right)
+  \draw[arrow] (cf.north -| bs.south) -- (bs.south)
+    node[lbl, right, pos=0.4, xshift=2mm] {CapEx\\→ PP\&E};
+
+  %% Debt proceeds → CFF annotation (within CF box, self-referential note)
+  \draw[arrow, vcgrey] (bs.south) ++(0,-2mm) -- ++(0,-4mm)
+    node[lbl, below, vcgrey] {Debt\\→ CFF};
+
+\end{tikzpicture}
+\end{document}

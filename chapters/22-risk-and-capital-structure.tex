@@ -1,0 +1,310 @@
+\chapter{Risk \& Capital Structure}\label{ch:risk-and-capital-structure}
+
+% Scope: CAPM, beta, systematic vs idiosyncratic risk, Modigliani--Miller, WACC.
+% Cross-link: WACC is the discount rate r in DCF (\cref{ch:valuation}) and in the CLV formula
+%   (\cref{ch:customer-economics}).
+
+\section{Systematic Risk \& CAPM}\label{sec:capm}
+% complexity: 4 -> figure capm-sml
+
+What return must a business earn to justify the risk its investors bear? CAPM answers by
+decomposing risk into the part the market prices and the part it ignores, then deriving the
+minimum required return accordingly. Investors can eliminate idiosyncratic (firm-specific)
+risk for free via diversification. They cannot eliminate systematic risk --- the co-movement
+with the broad market. Because only systematic risk survives in a diversified portfolio,
+only systematic risk commands a return premium. Beta measures that co-movement; the security
+market line prices it.
+
+Let \(R_f\) be the risk-free rate, \(E(R_m)\) the expected market return, and \(\beta\)
+the asset's systematic risk --- the slope of the regression of its excess returns on market
+excess returns. The capital asset pricing model gives the required return:
+\begin{equation}\label{eq:capm}
+  E(R_i) \;=\; R_f \;+\; \beta\,\bigl[E(R_m)-R_f\bigr].
+\end{equation}
+The term \([E(R_m)-R_f]\) is the equity risk premium (ERP). For the US market over long
+horizons the ERP is approximately \qty{5}{\percent} (geometric mean). Every asset with
+\(\beta>1\) amplifies market moves; \(\beta<1\) dampens them.
+
+CAPM rests on mean-variance preferences and normal return distributions. Empirical returns
+are fat-tailed; Fama--French document that size and book-to-market explain return variation
+that \(\beta\) misses. High-growth SaaS firms frequently have negative accounting earnings,
+making historical beta estimates noisy (negative earnings produce unreliable return series).
+Practitioners often use \emph{industry} beta --- unlever peers' betas, then re-lever at the
+target capital structure --- to sidestep firm-specific noise.
+
+\begin{example}[Deriving the cost of equity for the running SaaS]
+The running B2B SaaS has estimated \(\beta=1.4\) (higher than the market, consistent with
+the growth-stage volatility of software firms). The current risk-free rate (10-year
+Treasury) is \qty{4}{\percent}; the ERP is \qty{5}{\percent}. Applying \cref{eq:capm}:
+\[
+  E(R_i) \;=\; \qty{4}{\percent} \;+\; 1.4\times\qty{5}{\percent}
+          \;=\; \qty{4}{\percent} + \qty{7}{\percent}
+          \;=\; \qty{11}{\percent}.
+\]
+This \qty{11}{\percent} is the cost of equity that feeds into WACC (\cref{eq:wacc})
+and closes the book's discount-rate loop: it is the \(r\) in \cref{eq:gordon},
+\cref{eq:pv}, \cref{eq:npv}, and \cref{eq:dcf} throughout the running example.
+Managerial implication: raising growth guidance in a way that increases perceived
+volatility --- lifting \(\beta\) from 1.4 to 1.7 --- adds \qty{1.5}{\percent} to
+the required return, widening the denominator \((\mathrm{WACC}-g)\) from 0.08 to 0.095
+and compressing the EV/Revenue multiple from roughly \(2.6\times\) to \(2.2\times\)
+(\cref{eq:ev-revenue}).
+\end{example}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{capm-sml}
+  \caption{The Security Market Line. Expected return rises linearly with \(\beta\);
+  assets above the line are underpriced (positive alpha), assets below are overpriced.
+  The running SaaS (\(\beta=1.4\)) plots at the \qty{11}{\percent} required return
+  that anchors all DCF work in this book.}
+  \label{fig:capm-sml}
+\end{figure}
+
+\begin{admonition}{Warning}
+Treating \(\beta\) as a stable, intrinsic property. \emph{Beta is estimated from
+historical co-movement}, which shifts with business model, leverage, and market
+regime. A SaaS firm that was defensive in 2019 (\(\beta=0.8\)) may re-price to
+\(\beta=1.6\) once interest rates rise and its growth premium becomes the
+dominant risk factor. Refreshing beta at each capital-allocation cycle --- not
+anchoring to a stale historical estimate --- is the discipline that keeps the
+hurdle rate honest.
+\end{admonition}
+
+Multi-factor models (Fama--French three-factor, Carhart four-factor, AQR quality factor)
+add size, value, and momentum loadings to CAPM's single \(\beta\). For private companies
+without traded returns, analysts use a synthetic beta built from operating leverage (ratio
+of fixed to total costs) and financial leverage --- both of which directly multiply the
+systematic component of earnings volatility.
+
+CAPM provides the equity-cost input that WACC needs; the two are inseparable.
+\textcite{brealey2020} derive CAPM from mean-variance portfolio theory;
+\textcite{ross2022} cover the empirical literature and factor alternatives;
+\textcite{berk6thcorporate} is the standard reference for the industry-beta
+methodology used in practice.
+
+\section{The Weighted Average Cost of Capital}\label{sec:wacc}
+% complexity: 3
+
+The firm is funded by both equity and debt. Each has a different cost and tax treatment.
+WACC is the single discount rate that correctly weights them for use in a DCF, an NPV
+rule, or a CLV model. Equity holders bear residual risk and demand a return accordingly;
+debt holders have a prior claim and accept a lower return, further subsidised by the tax
+deductibility of interest. WACC blends these costs weighted by their share of total capital,
+producing the true all-in cost of funding the firm's assets.
+
+Let \(E\) and \(D\) be the market values of equity and debt, \(V=E+D\), \(r_e\) the cost
+of equity from \cref{eq:capm}, \(r_d\) the pre-tax cost of debt, and \(T_c\) the corporate
+tax rate. The tax shield on interest payments reduces the effective cost of debt from
+\(r_d\) to \(r_d(1-T_c)\):
+\begin{equation}\label{eq:wacc}
+  \mathrm{WACC} \;=\; \frac{E}{V}\,r_e \;+\; \frac{D}{V}\,r_d\,(1-T_c).
+\end{equation}
+With \(r_e\) from \cref{eq:capm}, WACC becomes the unified discount rate that flows into
+\cref{eq:dcf}, \cref{eq:terminal-value}, and \cref{eq:ev-revenue} in \cref{ch:valuation}.
+It also equals \(r\) in the CLV formula \cref{eq:clv} in \cref{ch:customer-economics} and
+in the growing perpetuity \cref{eq:gordon}: every present-value calculation in this book
+uses the same underlying number.
+
+WACC is stable only if the capital structure is stable. A firm executing a leveraged
+recapitalisation, an LBO, or a staged debt paydown has a time-varying WACC; the adjusted
+present value (APV) method --- which separately discounts the unlevered FCF and the PV of
+the tax shield --- handles this more cleanly. Additionally, WACC treats the tax shield as
+certain, which requires the firm to be profitable enough to use it. A growth-stage SaaS
+with EBITDA near zero receives little tax-shield benefit, so the first equity-financed years
+carry the full cost of equity.
+
+\begin{example}[WACC with and without debt]
+The equity-financed SaaS (\(D=0\)):
+\[
+  \mathrm{WACC} \;=\; \frac{E}{V}\times\qty{11}{\percent} \;+\; 0
+               \;=\; \qty{11}{\percent}.
+\]
+Now suppose the founders consider raising \money{1000000} of debt at \qty{7}{\percent}
+with a \qty{25}{\percent} tax rate while the firm is valued at \money{18000000}.
+The new capital structure: \(E=\money{17000000}\), \(D=\money{1000000}\),
+\(V=\money{18000000}\):
+\[
+  \mathrm{WACC} \;=\; \frac{17}{18}\times\qty{11}{\percent}
+               \;+\; \frac{1}{18}\times\qty{7}{\percent}\times(1-0.25)
+               \;\approx\; \qty{10.68}{\percent}.
+\]
+The reduction is real but small --- \qty{32}{\percent} of a percentage point ---
+because the debt is modest relative to equity value. Modigliani--Miller
+(\cref{sec:mm}) formalises why this near-irrelevance holds in its purest form,
+and what breaks it in practice.
+\end{example}
+
+\begin{admonition}{Warning}
+Using a \emph{book-value} capital structure instead of a market-value one in
+\cref{eq:wacc}. Book values reflect historical accounting, not the opportunity
+cost of today's capital. A firm with \money{5000000} of equity on the books but
+a \money{50000000} market cap is predominantly equity-financed at market weights;
+applying book weights dramatically overstates the equity fraction and overstates
+WACC, causing the firm to reject positive-NPV projects.
+\end{admonition}
+
+For firms with complex capital structures (multiple tranches of debt, preferred equity,
+warrants), each instrument enters \cref{eq:wacc} at its own cost and market weight.
+Convertible notes require a split between debt and equity components (Black--Scholes value
+of the embedded call) before weighting. Private-company WACC estimation adds another layer:
+since neither equity nor debt is traded, both the cost of equity (using the industry-beta
+method) and the cost of debt (using a synthetic rating from interest-coverage ratios) must
+be estimated rather than observed.
+
+WACC is the spine of the book's discount-rate architecture: its equity component comes from
+\cref{eq:capm}; it feeds \cref{eq:dcf} and \cref{eq:terminal-value} in \cref{ch:valuation};
+and it equals \(r\) in the customer-economics model (\cref{eq:clv}, \cref{eq:gordon}).
+\textcite{brealey2020} derive the tax-shield adjustment; \textcite{modigliani1958capital}
+is the original proposition.
+
+\section{Modigliani--Miller}\label{sec:mm}
+% complexity: 4
+
+Does it matter how the firm is financed --- equity versus debt? M\&M provides the
+conditions under which it does not, and equally, the imperfections that make capital
+structure real. Understanding the theorem is a prerequisite for knowing when to ignore it.
+In a world with no taxes, no bankruptcy costs, perfect information, and no agency frictions,
+the total value of the firm is determined solely by its real assets --- not by how it slices
+the claims on those assets into debt and equity. Financing is then a zero-sum
+redistribution, not a value-creation act.
+
+\textbf{Proposition I (no taxes):} \(V_L = V_U\) --- the value of a levered firm equals
+the value of an identical unlevered firm. \textbf{Proposition II (no taxes):} as leverage
+rises, equity holders demand a higher return to compensate for the increased risk borne:
+\[
+  r_e \;=\; r_A \;+\; \frac{D}{E}(r_A - r_d),
+\]
+where \(r_A\) is the unlevered (asset) cost of capital. With corporate taxes, the interest
+tax shield has present value \(T_c\cdot D\), raising firm value:
+\begin{equation}\label{eq:mm-wacc}
+  V_L \;=\; V_U \;+\; T_c\,D,
+  \qquad
+  \mathrm{WACC} \;=\; r_A\,\bigl(1 - T_c\,D/V\bigr).
+\end{equation}
+\cref{eq:mm-wacc} shows WACC declining monotonically with leverage when taxes alone are
+considered --- implying maximum value at \qty{100}{\percent} debt, which is evidently
+wrong. The missing pieces are the subject of \cref{sec:optimal-capital-structure}.
+
+M\&M's frictionless world omits three forces that dominate at moderate-to-high leverage:
+(1) \emph{distress costs} --- legal, operational, and reputational costs triggered when
+debt becomes hard to service; (2) \emph{agency costs} --- as debt rises, equity holders
+gain an option-like incentive to take excessive risk (\textcite{jensen1976agency} formalise
+this as the asset-substitution problem); (3) \emph{asymmetric information} --- the
+pecking-order theory (\textcite{brealey2020}) predicts firms prefer retained earnings, then
+debt, then equity, because issuing equity signals management believes the stock is
+overvalued. Each friction drives a wedge between M\&M's irrelevance and observed financing
+behaviour.
+
+\begin{example}[M\&M tax shield for the SaaS]
+At the SaaS's observed capital structure (\(D=0\), \(V=\money{18000000}\)) and
+\qty{25}{\percent} tax rate, \cref{eq:mm-wacc} gives:
+\[
+  \mathrm{WACC} \;=\; \qty{11}{\percent}\times(1-0.25\times0) \;=\; \qty{11}{\percent}.
+\]
+The tax shield is zero because there is no debt. If the firm were to add
+\money{5000000} of permanent debt:
+\[
+  \mathrm{WACC} \;\approx\; \qty{11}{\percent}\times\!\left(1-0.25\times\tfrac{5}{18}\right)
+               \;\approx\; \qty{10.24}{\percent}.
+\]
+The lower WACC increases enterprise value mechanically, but only up to the point
+where distress costs begin to offset the tax shield --- the trade-off that
+\cref{sec:optimal-capital-structure} maps out.
+\end{example}
+
+\begin{admonition}{Warning}
+Concluding from M\&M that capital structure \emph{never} matters. The theorem's
+value is not its conclusion in the frictionless world but its enumeration of the
+frictions that make capital structure consequential in the real world: taxes,
+distress costs, agency costs, and asymmetric information. \emph{Every real-world
+capital-structure decision is a bet on which friction dominates.}
+\end{admonition}
+
+The Jensen--Meckling agency-cost framework adds two further distortions beyond
+\textcite{modigliani1958capital}: underinvestment (debt overhang reduces the equity
+holder's incentive to fund positive-NPV projects because gains accrue to bondholders) and
+overinvestment/risk-shifting (equity holders prefer risky projects because their position
+resembles a call option with limited downside). These effects create an \emph{optimal} debt
+level even absent taxes: the one that minimises total agency costs.
+
+M\&M remains the foundation of capital-structure theory precisely because it forces clarity
+about \emph{which} frictions matter in any given situation. \textcite{modigliani1958capital}
+is the original; \textcite{jensen1976agency} extends to agency costs; \textcite{brealey2020}
+provides the unified treatment for practitioners.
+
+\section{Optimal Capital Structure}\label{sec:optimal-capital-structure}
+% complexity: 5 -> figure capital-structure
+
+How much debt should the firm carry? The trade-off theory says the answer is where the
+marginal benefit of the tax shield equals the marginal cost of financial distress. The
+pecking-order theory says the question is almost beside the point: firms finance
+sequentially from internal cash first. Adding debt creates two opposing forces: the tax
+shield raises firm value; distress costs lower it. The value-maximising leverage ratio sits
+at the peak of the net benefit curve --- where the next dollar of debt adds more distress
+cost than it saves in tax. For a profitable, stable firm this peak may sit at substantial
+leverage; for a loss-making growth firm it sits near zero.
+
+The trade-off theory defines optimal capital structure as:
+\[
+  V^* \;=\; V_U \;+\; PV(\text{tax shield}) \;-\; PV(\text{distress costs}).
+\]
+This is a qualitative framework: neither the distress-cost function nor the agency-cost
+function has a closed-form solution, so the ``derivation'' is conceptual. \cref{eq:mm-wacc}
+shows the tax shield rising monotonically with \(D/V\); distress costs are convex in
+leverage (small at low debt, rising steeply once coverage ratios deteriorate). The optimum
+is a level of \(D/V\) that cannot be improved by a marginal debt-for-equity swap.
+
+Trade-off theory assumes the firm can predict its distress-cost function, which depends on
+asset tangibility (hard assets are easier to liquidate, so costs are lower), earnings
+stability, and the cost of renegotiation. High-growth intangible businesses (SaaS, biotech)
+have high distress costs because their assets (customer relationships, IP, key personnel)
+evaporate in distress --- pushing the optimal \(D/V\) close to zero. The pecking-order
+theory offers an alternative explanation: firms do not optimise \(D/V\); they simply use
+the cheapest available financing, which for profitable firms means internal cash first.
+
+\begin{example}[Optimal structure for the growth-stage SaaS]
+The growth-stage SaaS has negative EBITDA in years 1--2, no taxable income to shield, and
+customer-relationship assets that would lose value rapidly in financial distress (churn
+accelerates; talent departs). Trade-off theory therefore predicts an optimal
+\(D/E\approx0\), which is precisely the observed financing: equity-financed via venture
+capital, no debt. The \qty{11}{\percent} WACC is the pure cost of equity (\cref{eq:capm}).
+Debt becomes relevant only once the firm reaches stable profitability and earns a tax shield
+worth protecting. Managerial implication: the decision to remain unlevered is not timidity
+--- it is the correct reading of the trade-off for a business whose value is concentrated
+in intangibles and growth options.
+\end{example}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{capital-structure}
+  \caption{Firm value versus leverage under the trade-off theory.
+  The tax shield raises value above the unlevered baseline;
+  distress costs (convex in leverage) erode it at high \(D/V\).
+  The peak is the optimal capital structure. A growth-stage SaaS
+  with intangible assets and volatile earnings sits near \(D/V=0\).}
+  \label{fig:capital-structure}
+\end{figure}
+
+\begin{admonition}{Warning}
+Benchmarking capital structure against industry averages without adjusting for
+the firm's own stage and asset mix. A mature software firm with \qty{60}{\percent}
+gross margins and stable free cash flow can support meaningful leverage;
+a pre-profit SaaS cannot, even if it operates in the same industry. \emph{Industry
+leverage ratios are a description, not a prescription.}
+\end{admonition}
+
+Market-timing theory (\textcite{brealey2020}) proposes that managers issue equity when
+valuations are high and repurchase when they are low --- with no attention to an optimal
+target ratio. The empirical evidence that leverage mean-reverts slowly (rather than quickly
+toward a target) is consistent with both market-timing and adjustment costs. Dynamic
+trade-off models allow the target \(D/V\) to shift as the firm moves from growth stage to
+maturity, capturing the life-cycle pattern: VC equity → profitable debt capacity →
+leveraged recapitalisation → buyback.
+
+Capital structure is the bridge from the cost-of-capital framework developed in
+\cref{sec:capm,sec:wacc} to the valuation mechanics of \cref{ch:valuation}: the right
+capital structure minimises WACC and maximises firm value, which is what the DCF in
+\cref{eq:dcf} and the multiples in \cref{eq:ev-revenue} are measuring.
+\textcite{brealey2020} survey the empirical literature on capital-structure choice;
+\textcite{jensen1976agency} develops the agency-cost rationale for an interior optimum.

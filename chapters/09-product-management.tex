@@ -1,0 +1,292 @@
+\chapter{Product Management \& New-Product Development}\label{ch:product-management}
+
+% Scope: product-market fit, discovery & prioritisation (RICE/Stage-Gate), roadmap and
+%   build-vs-buy-vs-partner, new-product launch & adoption (Bass). NEW chapter (closes the PM/NPD gap).
+% The running company IS a product; "what to build" is upstream of "what to charge" (\cref{ch:pricing}).
+% Draft per house style: flowing prose + example/admonition set-offs; running-SaaS worked examples.
+
+\section{Product-Market Fit}\label{sec:product-market-fit}
+% complexity: 2
+
+What does it mean for a product to fit its market? The question precedes every growth
+conversation in this book. A company that scales acquisition before it has genuine
+product-market fit is burning capital to fill a leaky bucket: customers arrive, they
+do not stay, and the retention curve (\cref{eq:retention}) slopes sharply downward from
+the first cohort. Product-market fit is the condition in which a product satisfies a
+real, recurring need so completely that customers would be genuinely distressed to
+lose access to it. Before that condition holds, increasing marketing spend accelerates
+failure; after it holds, organic word-of-mouth starts contributing to growth, and the
+economics of paid acquisition improve dramatically.
+
+The canonical diagnostic was articulated by Sean Ellis after benchmarking nearly a
+hundred early-stage technology companies. He asked a single, negatively framed survey
+question: ``How would you feel if you could no longer use this product?'' The negative
+framing strips away the politeness bias embedded in satisfaction scores. The threshold
+is straightforward: if fewer than \qty{40}{\percent} of recently active users answer
+``very disappointed,'' the product has not yet achieved fit with any segment it can
+define. At \qty{40}{\percent} or above, empirical observation supports scaling.
+\textcite{ellis2017hacking} documents the benchmarking work behind this threshold;
+\textcite{cagan2018inspired} embeds it in a broader product-discovery framework.
+
+The survey score is a leading indicator, not a definition. The true empirical proxy
+for product-market fit is the shape of the cohort retention curve from \cref{eq:retention}.
+A product with genuine fit displays an asymptotic survival curve: the curve flattens
+toward a stable non-zero fraction rather than continuing to decline toward zero.
+A curve that never flattens --- regardless of how many users report being very
+disappointed --- means the product has a core-value problem that no amount of
+growth investment will solve. The two diagnostics are complementary: the survey
+catches problems early, while the retention curve confirms or refutes them with
+behavioral evidence over time. \textcite{ries2011} articulates the build-measure-learn
+logic that governs how quickly a team can iterate toward fit.
+
+\begin{example}[PMF diagnostic for the running SaaS]
+The running company's \qty{12}{\text{-month}} retention of \qty{92.5}{\percent} (\(c =
+\qty{0.65}{\percent}/\text{mo}\)) is well above the empirical PMF bar: a \qty{92.5}{\percent}
+annual survival rate produces an asymptotic curve, confirming that the product has genuine
+fit with its current customer base. The concern is upstream: the trial-to-paid conversion
+rate is only \qty{31}{\percent} (800 trials, 200 paid, per the funnel). This gap is not a
+PMF failure --- activated, paying customers stay --- but an \emph{onboarding} failure.
+Value is not surfacing fast enough during the trial. The diagnostic implication: instrument
+the ``aha moment'' (in this product, running a first report), measure the time-to-first-report
+for trial users, and test interventions that reduce it. High retention among paid users
+confirms fit is real; low trial conversion confirms the path to fit is obscured.
+\end{example}
+
+\begin{admonition}{Warning}
+Product-market fit is segment-specific, not product-wide. A \qty{40}{\percent} score
+averaged across your entire user base can mask a \qty{65}{\percent} score for one segment
+and a \qty{15}{\percent} score for another. Scaling into the wrong segment because the
+blended score looked acceptable is how companies build large, high-churn customer bases
+that look healthy until the first renewal cycle. Segment the survey by acquisition channel,
+company size, and use-case before drawing conclusions. \textcite{torres2021continuous}
+treats segment-specific discovery as the foundation of the continuous-discovery practice.
+\end{admonition}
+
+\section{Discovery \& Prioritisation}\label{sec:product-discovery}
+% complexity: 4
+
+Once a product has demonstrated fit with a defined segment, the question shifts from
+\emph{does this product create value?} to \emph{which improvements create the most value,
+fastest?} This is the prioritisation problem, and it is persistently distorted by
+cognitive bias: loudest customer voice over median user need, engineer enthusiasm over
+market impact, complexity of implementation over simplicity of benefit. The first
+discipline of product management is replacing intuition about importance with a
+structured estimate of expected value per unit of effort.
+
+The RICE framework operationalises that estimate. Every proposed initiative is scored
+on four dimensions, combined into a single comparable number:
+
+\begin{equation}\label{eq:rice}
+  \mathrm{RICE} \;=\; \frac{R \;\times\; I \;\times\; C}{E},
+\end{equation}
+where \(R\) is \emph{Reach} (the number of users or transactions affected per period),
+\(I\) is \emph{Impact} (a tiered multiplier: 3 for massive, 2 for high, 1 for medium,
+0.5 for low, 0.25 for minimal), \(C\) is \emph{Confidence} (probability-like certainty
+in the Reach and Impact estimates: 1.0, 0.8, or 0.5), and \(E\) is \emph{Effort} in
+person-months. The numerator rewards initiatives that reach many users with high
+confidence of material impact; the denominator penalises large engineering commitments.
+The formula's strength is forcing explicit estimates of all four factors, surfacing the
+assumptions behind any gut-feel ranking.
+
+The broader governance structure for more complex or hardware-intensive new-product
+development is the Stage-Gate process (\cref{fig:stage-gate}). The framework segments
+the development journey into discrete phases (Discovery, Scoping, Business Case,
+Development, Testing, Launch), separated by decision gates where cross-functional
+leadership makes an explicit Go, Kill, Hold, or Recycle call. Each gate prevents
+investment from compounding on an initiative that has failed a necessary condition ---
+market attractiveness at Gate 2, financial viability at Gate 3, technical feasibility
+at Gate 4. \textcite{cooper2017winning} documents the empirical research behind the
+process and its adaptations for software organisations; \textcite{cagan2018inspired}
+describes how discovery and delivery teams run in parallel lanes rather than strict
+sequence.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.82\linewidth]{stage-gate}
+  \caption{Stage-Gate process: five stages separated by Go/Kill/Hold decision gates.
+    Diamonds represent gatekeeping decisions; rectangles represent stages of parallel
+    cross-functional work. A ``Kill'' or ``Hold'' decision at any gate prevents further
+    resource commitment until the blocking condition is resolved.}
+  \label{fig:stage-gate}
+\end{figure}
+
+\begin{example}[RICE prioritisation: SSO vs.\ CSV export]
+The product backlog contains two features. Feature A is single sign-on (SSO) integration,
+primarily requested by enterprise prospects; Feature B is CSV data export, requested by
+the operational users inside every existing account. Applying \cref{eq:rice} with
+per-quarter estimates:
+
+\medskip
+\noindent Feature A (SSO): \(R = 200\) prospects, \(I = 3\) (high --- removes a procurement
+blocker), \(C = 0.8\), \(E = 4\) person-months:
+\[
+  \mathrm{RICE}_A \;=\; \frac{200 \times 3 \times 0.8}{4} \;=\; 120.
+\]
+Feature B (CSV export): \(R = 500\) active users, \(I = 1\) (medium --- convenience
+improvement), \(C = 0.9\), \(E = 1\) person-month:
+\[
+  \mathrm{RICE}_B \;=\; \frac{500 \times 1 \times 0.9}{1} \;=\; 450.
+\]
+B scores \num{3.75}\(\times\) higher. The implication: the bottleneck in the running
+company's funnel is the \qty{31}{\percent} trial-to-paid conversion, not the enterprise
+sales cycle (see \cref{sec:toc} for the constraint logic). Feature A would add friction-free
+enterprise procurement --- valuable eventually --- but it does not address the constraint.
+Feature B gives every current and prospective paid user a tangible workflow benefit, reaching
+\num{500} users for a single person-month. Until the trial-to-paid rate is fixed, building
+enterprise features is premature optimisation.
+\end{example}
+
+\begin{admonition}{Note}
+RICE scores are not comparable across qualitatively different effort profiles.
+A five-person-month architectural refactor and a one-person-month UI change sit in the
+same denominator but carry incomparable risk, reversibility, and technical debt
+implications. Use RICE to rank features within a roughly similar effort band; apply
+Stage-Gate governance to initiatives large enough to require a formal business-case
+gate. The framework suppresses bias; it does not replace judgment about what a
+business needs. \textcite{torres2021continuous} cautions that frameworks applied
+mechanically can themselves become a proxy for the thinking they were meant to enable.
+\end{admonition}
+
+\section{Roadmap \& Build-vs-Buy-vs-Partner}\label{sec:roadmap}
+% complexity: 2
+
+Even after RICE has ranked the backlog, a higher-order question arises for each major
+initiative: should the capability be built in-house, bought (via licensing or acquisition),
+or delivered through a partnership? This build-vs-buy-vs-partner decision shapes the
+product roadmap more durably than any single feature choice, because it determines
+whether the firm accumulates proprietary intellectual property or buys time at the cost
+of strategic control. The financial criterion is \cref{eq:npv}: the option with the
+higher net present value of expected margin contribution, properly charged for integration
+and ongoing cost, is preferred. The strategic criterion is the VRIN test from
+\cref{sec:rbv-vrin}: build only when the resulting capability is Valuable, Rare, Inimitable,
+and Non-substitutable, because only then does the investment generate a durable moat.
+Commodity functionality built in-house is opportunity-cost destruction.
+
+The practical framework maps three routes against four dimensions: strategic control,
+total cost of ownership, time to market, and vendor dependency. Building in-house
+maximises control and IP ownership but carries the slowest delivery and highest execution
+risk. Buying or licensing delivers the fastest time to market at the cost of vendor lock-in
+and roadmap dependency. Partnering balances speed and capability with shared governance
+and negotiated IP rights. The right choice is contingent on the capability's position in
+the VRIN taxonomy, not on engineering preference.
+
+\begin{example}[Integration marketplace: build vs.\ partner with Zapier]
+The running company is considering how to serve the \qty{35}{\percent} of prospects who
+ask for integrations with third-party tools (HR systems, CRMs, project trackers). Two
+options: build a native integration marketplace (engineering cost \money{80000} upfront,
+two engineers for four months, plus ongoing maintenance); or partner with an established
+workflow automation platform at zero upfront cost in exchange for a \qty{30}{\percent}
+revenue share on any plan upgrade attributed to integrations.
+
+Applying \cref{eq:npv}: the native build requires \(I_0 = \money{80000}\) today. If
+integrations reduce annual churn by \qty{1}{\percent} on the \money{4000000} ARR base,
+the annual retention benefit is \money{40000}. Capitalised as a growing perpetuity at the
+firm's \qty{11}{\percent} discount rate: \(\money{40000}/(0.11 - 0.03) = \money{500000}\).
+NPV of building \(\approx \money{500000} - \money{80000} = \money{420000}\): clearly positive.
+
+The partnership route saves \money{80000} upfront but pays a \qty{30}{\percent} rev-share
+on attributed upgrades in perpetuity. More critically: the integration surface is what
+locks customers into the product's data model and workflow. That is the definition of a
+switching-cost moat (see \cref{sec:network-effects}). Outsourcing the integrations to a
+third party means the stickiness accrues to the partner's platform, not the firm's.
+VRIN logic confirms: a proprietary integration layer is Valuable (reduces churn),
+Rare (few mid-market SaaS products build deeply), Inimitable (workflow knowledge is
+embedded over time), and Non-substitutable. The build option wins --- not merely on NPV
+but on strategic grounds.
+\end{example}
+
+\begin{admonition}{Warning}
+Building commodity functionality --- features that any engineering team could replicate
+in a weekend, that require no proprietary data, and that carry no network effect --- is
+opportunity-cost destruction. Every person-month spent replicating what can be licensed
+cheaply is a person-month not spent on the capability that constitutes the firm's
+actual differentiation. The test is always VRIN, applied before the sprint plan is
+written.
+\end{admonition}
+
+\section{New-Product Launch \& Adoption}\label{sec:adoption-curves}
+% complexity: 4
+
+Building the right product and pricing it correctly does not guarantee adoption. The
+rate at which a market absorbs a new product is governed by social dynamics that
+individual product decisions can influence but not override. The Bass Diffusion Model
+is the foundational mathematical description of how those dynamics unfold. It
+decomposes adoption into two behavioural forces: \emph{innovation} --- individuals
+who adopt spontaneously, driven by external media and intrinsic affinity for new
+technology --- and \emph{imitation} --- individuals who adopt because they observe
+peers who already have. The ratio of these two forces determines not only the eventual
+adoption level but the timing and height of the peak.
+
+In the discrete-time form used for practical forecasting, new adopters at period \(t\)
+are:
+\begin{equation}\label{eq:bass}
+  N(t) \;=\; \bigl[p + q\,\tfrac{N(t-1)}{M}\bigr]\,\bigl[M - N(t-1)\bigr],
+\end{equation}
+where \(M\) is the total addressable market (ultimate adopter ceiling), \(p\) is the
+coefficient of innovation, \(q\) is the coefficient of imitation, and \(N(t-1)\) is
+the cumulative installed base at the start of period \(t\). The first bracketed term
+is the instantaneous adoption hazard: the probability that a non-adopter converts,
+combining a base rate (\(p\)) with a social-pressure term that rises as the installed
+base grows (\(q \cdot N(t-1)/M\)). The second bracketed term is the pool of remaining
+non-adopters. When the installed base is small, the social term is negligible and
+growth is slow; as the base builds, the social term accelerates adoption until market
+saturation compresses the remaining pool and growth decelerates. The result is the
+characteristic S-shaped cumulative adoption curve and bell-shaped new-adopter curve
+shown in \cref{fig:bass-diffusion}. Meta-analytic estimates across diverse product
+categories set \(\bar{p} \approx 0.03\) and \(\bar{q} \approx 0.38\)
+\parencite{bass1969newproduct}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{bass-diffusion}
+  \caption{Bass diffusion model: cumulative adoption S-curves for the enterprise-tier
+    launch (\(M = 500\), \(p = 0.02\), \(q = 0.3\)). The \emph{innovator-only} curve
+    (coefficient \(p\) acting alone, no imitation) tracks purely linear diffusion; the
+    full Bass curve bends into a sigmoid once the installed base is large enough for
+    word-of-mouth to dominate. The dashed vertical line marks the new-adopter peak
+    (month 10, \(\approx\num{43}\) new accounts).}
+  \label{fig:bass-diffusion}
+\end{figure}
+
+\begin{example}[Enterprise-tier launch: Bass calibration]
+The running company launches an enterprise pricing tier targeting \(M = 500\) mid-market
+accounts in its addressable segment. Historical outbound prospecting suggests a base
+conversion rate of \(p = 0.02\) (innovators --- accounts that evaluate and buy
+independently). Customer success interviews suggest word-of-mouth referrals within
+industry peer networks are active, estimated at \(q = 0.3\).
+
+Applying \cref{eq:bass} iteratively:
+
+\medskip
+\textbf{Month 1.}\ No installed base yet. New adopters \(= (0.02 + 0.3 \times 0/500)
+\times (500 - 0) = 0.02 \times 500 = 10\). Cumulative: \num{10}.
+
+\textbf{Month 2.}\ Social term now contributes. New adopters \(\approx (0.02 + 0.3
+\times 10/500) \times 490 = 0.026 \times 490 \approx 13\). Cumulative: \num{23}.
+
+The acceleration continues through month 10, where the new-adopter count peaks at
+approximately \num{43} per month (cumulative \(\approx\num{268}\) of \num{500}).
+After the peak the remaining addressable pool shrinks faster than the social term
+grows, and new-adopter counts decline back toward the innovator-only floor.
+
+The managerial implication: the launch plan should front-load outreach in months 1--3,
+securing the early innovators whose presence seeds the social term. Each early customer
+reference --- case study, peer referral, industry conference testimony --- raises the
+effective \(q\) and advances the peak. This is precisely the role of the minimum
+viable product in the lean-startup cycle (\cref{sec:lean-startup}): an MVP placed
+with five to ten early adopters calibrates both \(p\) and \(q\) empirically before
+full investment in the launch funnel.
+\end{example}
+
+\begin{admonition}{Warning}
+The Bass model describes macro-level diffusion across a population of independent
+potential adopters --- it is not a cohort CLV model. \Cref{eq:bass} says nothing about
+what each individual account is worth after adoption, or about the \emph{retention}
+dynamics within the installed base once acquired. The two models are complementary:
+Bass forecasts the supply of new accounts over time; \cref{eq:retention} and \cref{eq:clv}
+in \cref{ch:customer-economics} determine the value extracted from each account after
+it joins. Confusing the two --- using Bass adoption curves to project revenue without
+a separate cohort-retention analysis --- is the most common modelling error in
+launch-stage financial planning. \textcite{bass1969newproduct} is explicit on scope:
+the model governs first-purchase diffusion, not repeat purchase or retention.
+\end{admonition}

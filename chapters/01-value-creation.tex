@@ -2,4 +2,270 @@
 
 % Scope: value, economic profit as a signal, ROIC vs WACC as the master test.
 % Cross-link: LTV:CAC is the per-customer expression of ROIC > WACC (\cref{ch:customer-economics}).
-% TODO: draft per the per-concept template (decision/intuition/derivation/breaks/worked/trap/deeper).
+
+Every financial metric in the book --- LTV:CAC, ROAS, NOPAT, terminal value --- is a
+proxy for one underlying question: does this activity generate returns above the cost of the
+capital it consumes? Economic profit answers that question directly; the rest of the book
+traces how it surfaces in each functional domain.
+
+\section{Economic Profit}\label{sec:economic-profit}
+% complexity: 3
+
+Did we earn more than a fair return on the capital we deployed? Accounting profit ignores the
+equity charge; economic profit does not. This gap is where most businesses quietly destroy value.
+Lenders charge interest, and that charge appears in the income statement. Equity holders also
+have an opportunity cost --- they could invest in the market instead. Accounting profit omits
+that charge. Economic profit subtracts it: a positive number means the business earned above its
+all-in cost of capital; a negative number means it would have been better to return the money to
+investors, even if accounting profit was positive.
+
+Let \(\mathrm{NOPAT}\) be net operating profit after tax (operating income minus the tax shield on
+operations, before financing), \(\mathrm{WACC}\) the weighted-average cost of capital, and
+\(\mathrm{IC}\) the invested capital (equity plus net debt deployed in the business). Then:
+\begin{equation}\label{eq:economic-profit}
+  \mathrm{EP}
+    \;=\; \mathrm{NOPAT} - \mathrm{WACC}\times\mathrm{IC}
+    \;=\; (\mathrm{ROIC}-\mathrm{WACC})\times\mathrm{IC}.
+\end{equation}
+The right-hand form separates \emph{spread} (ROIC minus WACC) from \emph{scale} (IC): a high
+spread on a small capital base earns less EP than a moderate spread on a large one. Both levers matter.
+
+The formula holds only when NOPAT is clean: operating items only, after-tax, stripped of
+one-time charges. WACC must match the riskiness of the cash flows being evaluated --- using a
+corporate WACC for a speculative new division understates the hurdle. Invested capital must
+capture all capital consumed, including operating leases and capitalised R\&D where material.
+Goodwill from acquisitions is especially dangerous: including it inflates IC and depresses ROIC
+post-deal, making an accretive deal look value-destroying.
+
+\begin{example}
+The running SaaS business earns \(\mathrm{NOPAT}\approx\money{600000}\) on invested capital
+of \(\money{3000000}\), giving \(\mathrm{ROIC}=20\%\). With \(\mathrm{WACC}=11\%\):
+\[
+  \mathrm{EP}
+    = (\underbrace{0.20}_{\text{return earned}} - \underbrace{0.11}_{\text{return required}})
+      \times \money{3000000}
+    = \money{270000}.
+\]
+The business is creating \money{270000} of value per year --- the spread of \qty{9}{\percent}
+on the capital base. Doubling IC while holding ROIC constant doubles EP; maintaining ROIC while
+WACC rises (e.g.\ because beta increases) erodes it without any operational change.
+\end{example}
+
+\begin{admonition}{Warning}
+Free cash flow and economic profit are not the same thing. FCF can be positive while EP is
+negative: a mature business harvesting a declining franchise generates cash but may earn below its
+cost of capital. Conversely, a high-growth company with strongly negative FCF may have strongly
+positive EP if it is deploying capital at returns well above WACC. The two metrics answer
+different questions; neither substitutes for the other.
+\end{admonition}
+
+Stern Stewart's EVA (Economic Value Added) is a branded implementation of \cref{eq:economic-profit}
+with adjustments to reported accounting figures (capitalising R\&D, reversing LIFO reserves, etc.)
+to produce an economic capital number. MVA (Market Value Added) cumulates the present value of
+expected future EP --- it is equivalent to the premium of market capitalisation over invested
+capital. The DCF--EP equivalence is exact: the NPV of all future EPs, discounted at WACC, equals
+the NPV of all future free cash flows \parencite{brealey2020}. Use whichever is easier to
+estimate; they agree when inputs are consistent.
+
+The ROIC--WACC spread of \cref{eq:economic-profit} recurs throughout the book: at the customer level
+as LTV:CAC (\cref{ch:customer-economics}), at the firm level as the advantage spread
+(\cref{ch:advantage-and-disruption}), and at the portfolio level in scenario-weighted DCF
+(\cref{ch:valuation}). \textcite{ross2022} and \textcite{brealey2020} develop the corporate-finance
+foundations; \textcite{berk6thcorporate} bridges to market-based valuation.
+
+\section{ROIC vs.\ WACC --- the Master Test}\label{sec:roic-wacc}
+% complexity: 3
+
+Is the business compounding value or consuming it? One ratio --- ROIC relative to WACC ---
+answers that question for the whole enterprise and for any proposed investment within it.
+Capital is not free. When a business earns more on each dollar deployed than investors require to
+supply that dollar, it compounds wealth. When it earns less, it destroys wealth even if it is
+profitable in the accounting sense. The distance between ROIC and WACC, multiplied by the capital
+base, is economic profit (\cref{eq:economic-profit}).
+
+Return on invested capital is simply the ratio of operating return to capital deployed:
+\begin{equation}\label{eq:roic}
+  \mathrm{ROIC} \;=\; \frac{\mathrm{NOPAT}}{\mathrm{IC}}.
+\end{equation}
+Value is created when \(\mathrm{ROIC}>\mathrm{WACC}\), destroyed when \(\mathrm{ROIC}<\mathrm{WACC}\),
+and neutral when equal. Growth amplifies whichever condition holds: investing more capital at
+\(\mathrm{ROIC}>\mathrm{WACC}\) creates proportionally more EP; investing at
+\(\mathrm{ROIC}<\mathrm{WACC}\) destroys it faster.
+
+ROIC is sensitive to the denominator. A capital-light business (high asset turnover) can show
+high ROIC with modest margins; a capital-heavy one must earn thick margins just to clear WACC.
+Both readings are legitimate --- what matters is the spread, not the absolute level of either
+metric. ROIC also fluctuates with the business cycle; a single year's figure can mislead; use
+a normalised or through-cycle average.
+
+\begin{example}
+Continuing the running example: \(\mathrm{ROIC}=\money{600000}/\money{3000000}=20\%\) against
+\(\mathrm{WACC}=11\%\). The spread is \qty{9}{\percent} --- strongly value-creating.
+
+At the customer level, \(\mathrm{LTV}:\mathrm{CAC}=\money{3150}/\money{600}=5.25\times\)
+is the per-customer form of the same test: lifetime return on customer-acquisition capital,
+compared implicitly against the hurdle \(\mathrm{LTV}:\mathrm{CAC}=1\). The mechanics of that
+calculation are in \cref{ch:customer-economics}; the equivalence is that both measure ROIC on a
+defined capital deployment over its full life.
+\end{example}
+
+\begin{admonition}{Warning}
+Optimising ROIC by shrinking the denominator is a reliable path to destroying the business.
+Cutting invested capital --- postponing maintenance, starving marketing, running down working
+capital --- raises measured ROIC in the short run while depleting the productive base that
+generates future NOPAT. The metric then looks better precisely as the business deteriorates.
+A rising ROIC with flat or falling NOPAT is a warning sign, not a success.
+\end{admonition}
+
+EVA and MVA (introduced in \cref{sec:economic-profit}) quantify the cumulated effect of
+sustained ROIC--WACC spreads. In a DCF framework, a company that sustains \(\mathrm{ROIC}>\mathrm{WACC}\)
+indefinitely has a terminal value above book value; one that earns exactly WACC has a terminal
+value equal to book. The McKinsey valuation framework makes this the central organising
+principle \parencite{damodaran2012}. At the acquisition level, a deal creates value only if the
+post-deal ROIC on total invested capital (including the premium paid) exceeds WACC --- the
+rationale for rigorous integration synergy modelling before signing.
+
+ROIC anchors the corporate-finance treatment in \cref{ch:corporate-finance-core} and the full DCF
+build in \cref{ch:valuation}. The cost of capital WACC is derived from first principles in
+\cref{ch:risk-and-capital-structure}. \textcite{damodaran2012} provides the standard treatment of
+ROIC-based value drivers.
+
+\section{Stakeholder vs.\ Shareholder Value}\label{sec:stakeholder-value}
+% complexity: 3
+
+Whose interests should the business optimise for? The answer shapes capital allocation, executive
+incentives, and strategy --- and it is genuinely contested. The shareholder-primacy view holds
+that management's fiduciary duty runs to equity owners; any stakeholder benefit is legitimate
+only insofar as it serves shareholder returns. The stakeholder view holds that customers,
+employees, suppliers, and communities are co-creators of value whose interests constrain and
+ultimately enable those returns. The two positions agree on more than the debate suggests ---
+sustainable shareholder value requires satisfied customers and motivated employees --- but they
+diverge sharply on governance, pay structures, and acceptable trade-offs.
+
+The shareholder-primacy position is stated precisely in \textcite{ross2022}: maximise the present
+value of future free cash flows distributable to equity. The stakeholder rebuttal --- Freeman's
+strategic management framework --- holds that stakeholder relationships are themselves
+value-generating assets; ignoring them understates the long-run cash flows:
+\begin{description}
+  \item[Shareholder primacy] Equity holders are residual claimants; maximising their wealth is
+    the unambiguous objective. All other stakeholder relationships are inputs, priced by market
+    competition. \parencite{brealey2020}
+  \item[Stakeholder theory] Strategy must account for the claims of customers, employees,
+    suppliers, communities, and regulators. Ignoring these relationships generates hidden
+    liabilities that materialise as regulatory risk, talent attrition, and customer defection.
+  \item[Service-dominant logic] \textcite{vargo2004service} reframe value as co-created between
+    the firm and its customers in the act of service: the product is an operant resource, not a
+    finished good. Under this view, economic profit accrues from relationships, not transactions.
+\end{description}
+
+Shareholder primacy breaks down empirically when externalities are large (e.g.\ pollution), when
+relationships are the primary asset (professional services, platforms), or when short-term
+earnings pressure destroys the long-term investment capacity that equity value depends on. The
+stakeholder model breaks down when the constituency list is so broad that management has no
+clear optimisation target and can rationalise any decision as serving someone.
+
+\begin{example}
+Applied to the running SaaS business: shareholder-primacy reasoning supports accepting every
+customer-acquisition dollar whose expected LTV:CAC clears the WACC hurdle (\cref{eq:roic}).
+Stakeholder reasoning adds: does the product actually improve the customer's outcome, and is
+the contribution-margin structure fair to the employees who deliver it? In practice, the SaaS
+model aligns both: subscription renewal is voluntary, so sustained LTV requires genuine value
+delivery. Misalignment typically appears in enterprise lock-in contracts or opaque pricing ---
+not in transparent usage-based SaaS.
+\end{example}
+
+\begin{admonition}{Warning}
+Treating ESG reporting as a substitute for economic-profit analysis conflates two distinct
+questions. A high ESG score does not imply \(\mathrm{ROIC}>\mathrm{WACC}\); a low one does not
+imply the opposite. Each deserves its own rigorous metric: economic profit for capital
+productivity, explicit social-impact measurement for externalities.
+\end{admonition}
+
+The Friedman doctrine --- ``the social responsibility of business is to increase its profits''
+(\emph{New York Times}, 1970) --- remains the strict shareholder-primacy anchor. The 2019
+Business Roundtable statement, signed by 181 CEOs, explicitly rejected shareholder primacy in
+favour of stakeholder commitments. Whether this represents a genuine shift in governance or
+reputational signalling is actively debated; the empirical literature finds mixed evidence on
+whether stakeholder commitments improve or impair shareholder returns over long horizons
+\parencite{kotler2021}.
+
+Service-dominant logic (\cref{sec:stakeholder-value}) and the jobs-to-be-done framework
+(\cref{ch:segmentation-targeting-positioning}) converge on a common implication: the unit of
+value is not the product but the outcome the customer achieves. Firms that design around outcomes
+rather than features tend to earn higher retention and lower CAC --- which shows up as higher
+LTV:CAC, which is economic profit at the customer level. The frameworks are complementary, not
+competing, when the time horizon is long enough.
+
+The tension between shareholder and stakeholder value recurs in governance (\cref{ch:organizational-behavior})
+and in the pricing ethics discussion of \cref{ch:pricing}. \textcite{vargo2004service} provide the
+service-dominant logic foundation; \textcite{kotler2021} survey the marketing-strategy implications.
+
+\section{ESG as a Capital-Allocation Discipline}\label{sec:esg-capital}
+% complexity: 3
+
+When does an environmental, social, or governance factor belong inside a capital-allocation
+decision rather than a separate sustainability report? The discipline is rigorous: an ESG factor
+earns a place in the capital-allocation calculus only if it measurably affects NOPAT, WACC, or
+invested capital --- the three levers of \cref{eq:roic} and \cref{eq:economic-profit}. Factors
+that do not meet that test may be worth disclosing, but they belong to a different analysis.
+The ISSB's IFRS S1 and S2 standards formalise this financial-materiality lens at the reporting
+level: S1 requires disclosure of sustainability risks that affect enterprise value; S2 extends
+that specifically to climate. The European double-materiality standard (ESRS under the CSRD)
+goes further, requiring disclosure when the impact on society is material \emph{even if} no
+financial effect is yet detectable. For capital-allocation purposes, the financially material
+subset is the operative one.
+
+In practice, ESG factors enter the capital model through three channels. First, a risk reprices
+the cost of capital: a company with material transition risk (regulatory carbon costs) or
+physical climate exposure will find lenders and equity investors demanding a higher risk premium,
+raising WACC directly. Second, an operational inefficiency or liability suppresses NOPAT: health
+and safety failures, supply-chain disruption from climate events, and discrimination suits all
+reduce after-tax operating profit. Third, a factor inflates invested capital without a
+proportional return: stranded assets, environmental remediation obligations, and deferred
+infrastructure spending all appear in IC once accounting is cleaned up. When any of these
+channels is non-trivial, the ESG analysis is inseparable from the economic-profit analysis.
+
+\begin{example}
+The running SaaS business faces one ESG factor that clearly meets the financial-materiality
+threshold: a gender pay gap concentrated in the engineering team. The mechanism is via NOPAT ---
+underpaid engineers leave, triggering replacement searches. Each mid-level engineering
+departure costs an estimated \money{80000} in recruiting, onboarding, and productivity loss.
+A pay-equity audit and remediation programme costs \money{20000} and prevents one departure per
+year.
+
+The decision is a standard NPV application (\cref{eq:npv}). The annual benefit is the avoided
+replacement cost of \money{80000}; the annual additional cost is the audit of \money{20000}; the
+net annual cash inflow is \money{60000}. Treating this as a perpetuity at the firm's \qty{11}{\percent}
+WACC,
+\[
+  \mathrm{NPV} \;=\; \frac{\money{80000} - \money{20000}}{0.11} \;\approx\; \money{545000}.
+\]
+The investment is strongly NPV-positive --- not because of ESG optics, but because the
+financial-materiality test is satisfied. Conversely, a carbon-offset programme that costs
+\money{30000} per year and has no measurable effect on NOPAT, WACC, or IC fails the test and
+belongs in the CSR budget, not the capital plan.
+\end{example}
+
+\begin{admonition}{Note}
+The Warning in this chapter that a high ESG score does not imply \(\mathrm{ROIC}>\mathrm{WACC}\)
+--- and vice versa --- applies here directly. The pay-equity example above passes the financial-
+materiality test; most reported ESG scores are aggregates of factors, many of which do not.
+The discipline is to disaggregate: score each ESG factor against the three capital-model channels
+(NOPAT, WACC, IC) before including it in any projection.
+\end{admonition}
+
+The stakeholder relationships that \textcite{freeman2010strategic} identifies as strategic assets
+are precisely the ones that pass the financial-materiality test: employees whose engagement
+sustains NOPAT, customers whose trust sustains retention and limits CAC, and regulators whose
+goodwill avoids licence risk that would inflate WACC. \textcite{vargo2004service}'s co-creation
+lens adds that the employee relationship is an operant resource --- it cannot be replaced by a
+transaction; its deterioration reduces the productive capacity that NOPAT measures. Both
+frameworks, read through the capital-allocation lens, arrive at the same conclusion: ESG is not
+a parallel reporting exercise but an upstream input to the economic-profit calculation when
+materiality is satisfied.
+
+The ESG data infrastructure required to run this analysis at scale is a chapter-17 problem
+(\cref{ch:data-and-ai-strategy}): which sustainability metrics are decision-grade, how they are
+collected, and how double-materiality assessments are operationalised as a data workflow. Board
+oversight of what gets disclosed and what enters the capital plan is addressed in
+\cref{ch:organizational-behavior}.
