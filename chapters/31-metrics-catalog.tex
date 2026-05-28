@@ -1,217 +1,1664 @@
 \chapter{Business Metrics Reference}\label{ch:metrics-catalog}
 
-% Scope: dense metric-card catalog (formula + what-it-tells-you + benchmark + trap),
-%   grouped by domain, with a flagged vanity-metrics section. Reference, not narrative.
+% Scope: structured pedagogical reference --- formula, term breakdown, what-it-tracks,
+%   why-it-matters, benchmark, trap, and worked example for all 30 metrics.
+%   Six sections: Unit Economics, SaaS & Recurring Revenue, Funnel & Marketing,
+%   Ad-Platform, Product & Engagement, Vanity Metrics.
+%   House style: flowing prose under headings; example and admonition set-offs.
+%   No metriccard/mcfield/multicols in this file.
 
-This chapter is a lookup catalog, not an argument. Each card gives the formula, what the number actually tells you, a defensible benchmark where one exists, and the trap that makes the metric lie. Definitions follow \textcite{bendle2020marketing}; the derivations live in the home chapters --- CAC and LTV in \cref{ch:customer-economics}, ROAS/CPA mechanics in \cref{ch:paid-acquisition-platforms}, recurring-revenue metrics in \cref{ch:business-models}. A benchmark is an order-of-magnitude anchor, never a target in itself.
+This chapter is a structured reference, not an argument. Each metric gets a definition, a
+formula with every term explained, a plain-English statement of what the number actually
+tracks, the downstream decision it informs, a defensible benchmark where one exists, and the
+trap that makes the metric lie. Definitions follow \textcite{bendle2020marketing}; the
+derivations live in the home chapters --- CAC and LTV in \cref{ch:customer-economics},
+ROAS/CPA mechanics in \cref{ch:paid-acquisition-platforms}, recurring-revenue metrics in
+\cref{ch:business-models}. A benchmark is an order-of-magnitude anchor, never a target in
+itself.
 
+
+%% ============================================================
 \section{Unit Economics}
 
-\begin{multicols}{2}
-\begin{metriccard}{CAC}{\dfrac{\text{Sales \& marketing spend}}{\text{New customers}}}
-  \mcfield{Tells you}{Fully loaded cost to win one customer}
-  \mcfield{Benchmark}{Judge only against LTV (target LTV:CAC $\ge 3$)}
-  \mcfield{Trap}{Excluding salaries/tooling understates it badly}
-\end{metriccard}
+Unit economics answers one question before anything else: does a single transaction --- one
+customer, one order, one contract --- make money, and by how much? Get the unit right and
+scale is a lever; get it wrong and scale is an accelerant for losses.
 
-\begin{metriccard}{LTV}{\dfrac{m}{r-g}}
-  \mcfield{Tells you}{Discounted lifetime contribution of a customer ($m$ = margin)}
-  \mcfield{Benchmark}{$\ge 3\times$ CAC}
-  \mcfield{Trap}{Using revenue not margin; same algebra as \cref{eq:gordon}}
-\end{metriccard}
+\subsection{CAC --- Customer Acquisition Cost}
 
-\begin{metriccard}{LTV:CAC}{\dfrac{\text{LTV}}{\text{CAC}}}
-  \mcfield{Tells you}{Capital efficiency of acquisition}
-  \mcfield{Benchmark}{3--5 healthy; $<1$ unprofitable}
-  \mcfield{Trap}{$>5$ usually means under-investing in growth}
-\end{metriccard}
+\textbf{Formula.}
+\[
+  \mathrm{CAC} = \frac{\text{Sales \& marketing spend}}{\text{New customers acquired}}
+\]
 
-\begin{metriccard}{CAC Payback}{\dfrac{\text{CAC}}{\text{monthly margin/customer}}}
-  \mcfield{Tells you}{Months to recoup acquisition cost}
-  \mcfield{Benchmark}{$<12$ mo (SMB); $<24$ mo (enterprise)}
-  \mcfield{Trap}{Ignores customers who churn before payback}
-\end{metriccard}
+\textbf{What each term means.}
+\begin{description}
+  \item[Sales \& marketing spend] All costs in a period that the business incurs to win new
+    customers --- paid media, sales-team salaries (including benefits and on-costs),
+    tooling subscriptions, content production, agencies, and attributable overhead. Fully
+    loaded; \emph{not} only ad spend.
+  \item[New customers acquired] Paying customers (not leads, trials, or signups) won in the
+    same period used for the spend figure.
+\end{description}
 
-\begin{metriccard}{Contribution Margin}{\text{Price}-\text{variable cost}}
-  \mcfield{Tells you}{Cash each unit throws off after variable cost}
-  \mcfield{Benchmark}{Positive and rising with scale}
-  \mcfield{Trap}{Confusing it with gross margin}
-\end{metriccard}
+\textbf{What it tracks.} The fully loaded price the business pays to convert one prospect
+into a paying customer.
 
-\begin{metriccard}{Gross Margin}{\dfrac{\text{Revenue}-\text{COGS}}{\text{Revenue}}}
-  \mcfield{Tells you}{Structural profitability of the offering}
-  \mcfield{Benchmark}{\qty{70}{\percent}+ software; lower for physical}
-  \mcfield{Trap}{Burying hosting/support in opex to flatter it}
-\end{metriccard}
-\end{multicols}
+\textbf{Why it matters.} CAC is one half of the acquisition-viability test. Compared against
+LTV (\cref{eq:ltv-cac}), it caps how aggressively the firm can spend before unit economics
+turn negative. A business that does not know its fully loaded CAC cannot know whether it is
+creating or destroying value with every sale. The full derivation appears in
+\cref{ch:customer-economics}.
 
+\textbf{Benchmark.} Judge only against LTV (target LTV:CAC $\ge 3$). A standalone ``good
+CAC'' does not exist --- the same \money{600} is excellent for an enterprise deal and ruinous
+for a \money{10}/month consumer subscription.
+
+\textbf{Trap.} Excluding sales and marketing salaries, tooling, and agency fees
+understates CAC and silently inflates the LTV:CAC ratio --- the most common unit-economics
+flattering trick in early-stage decks.
+
+\begin{example}[CAC for the running SaaS]
+Monthly spend in the running B2B SaaS: paid media \money{90000} + AE/SDR fully loaded
+salaries \money{25000} + tooling \money{5000} = \money{120000}. New paying customers won in
+the month: 200.
+\[
+  \mathrm{CAC} = \frac{\money{120000}}{200} = \money{600}.
+\]
+Strip out salaries and tooling and the reported figure falls to \money{450} --- a
+\qty{25}{\percent} understatement that would flatter the 5.25$\times$ LTV:CAC ratio to
+7$\times$, possibly triggering an acquisition-budget increase that destroys value at the true
+unit economics.
+\end{example}
+
+
+\subsection{LTV --- Customer Lifetime Value}
+
+\textbf{Formula.}
+\[
+  \mathrm{LTV} = \frac{m}{r - g}
+\]
+where this is the growing-perpetuity form (\cref{eq:gordon}) evaluated at the customer level.
+
+\textbf{What each term means.}
+\begin{description}
+  \item[$m$] Annual contribution margin per customer --- revenue minus variable costs directly
+    attributable to serving that customer. Use margin, not revenue; the formula measures
+    economic value accruing to the firm, not topline.
+  \item[$r$] The firm's discount rate (WACC or cost of equity) --- the opportunity cost of
+    the capital tied up in serving customers. For the running SaaS, $r = \qty{11}{\percent}$.
+  \item[$g$] The expected annual growth rate of that margin, capturing both price and volume
+    expansion within the account. Must be strictly less than $r$ or the formula returns
+    nonsense.
+\end{description}
+
+\textbf{What it tracks.} The present value of all future contribution margin a single
+customer is expected to generate, discounted at the firm's cost of capital.
+
+\textbf{Why it matters.} LTV sets the \emph{ceiling} on how much the firm should be willing
+to pay to acquire a customer. It is mathematically identical to a discounted-cash-flow
+terminal value (\cref{eq:gordon}) with the customer replacing the firm; the full derivation
+is in \cref{ch:customer-economics}.
+
+\textbf{Benchmark.} $\mathrm{LTV} \ge 3 \times \mathrm{CAC}$. This is not arbitrary: a 3$\times$
+ratio leaves room for the cost of serving customers through their life (support, retention
+spend, account management) without eroding the acquisition economics.
+
+\textbf{Trap.} Plugging revenue rather than margin into $m$ overstates LTV dramatically ---
+a \qty{42}{\percent} contribution-margin business that makes this error inflates LTV by
+\qty{138}{\percent}. Equally, using a high growth rate $g$ that approaches $r$ can make LTV
+arbitrarily large and render the metric useless for budgeting.
+
+\begin{example}[LTV for the running SaaS]
+ARPU is \money{600}/year; contribution margin is \qty{42}{\percent}, so $m =
+\money{252}$/customer/year. Discount rate $r = \qty{11}{\percent}$; long-run margin growth
+$g = \qty{3}{\percent}$.
+\[
+  \mathrm{LTV} = \frac{\money{252}}{0.11 - 0.03} = \frac{\money{252}}{0.08} = \money{3150}.
+\]
+If revenue had been plugged in instead of margin: $\money{600}/0.08 = \money{7500}$ --- a
+\qty{138}{\percent} overstatement that would mislead the acquisition budget by the same
+factor.
+\end{example}
+
+
+\subsection{LTV:CAC --- Lifetime Value to Acquisition Cost Ratio}
+
+\textbf{Formula.}
+\[
+  \mathrm{LTV:CAC} = \frac{\mathrm{LTV}}{\mathrm{CAC}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[LTV] Customer lifetime value as defined above --- present value of future margin,
+    not revenue.
+  \item[CAC] Fully loaded customer acquisition cost as defined above.
+\end{description}
+
+\textbf{What it tracks.} Capital efficiency of acquisition: how many dollars of customer
+value does the firm create for every dollar spent winning that customer?
+
+\textbf{Why it matters.} LTV:CAC is the single most-cited unit-economics test in venture
+and growth-equity underwriting. A ratio below 1 means the business loses money on every
+customer before even counting fixed costs. The formula is fully derived as \cref{eq:ltv-cac}
+in \cref{ch:customer-economics}.
+
+\textbf{Benchmark.}
+\begin{itemize}
+  \item $\ge 3$: healthy; the standard institutional benchmark.
+  \item 3--5: normal range for well-run SaaS.
+  \item $> 5$: often signals under-investment in growth --- the firm is leaving value on
+    the table by not acquiring customers it could profitably serve.
+  \item $< 1$: each new customer destroys value; fix unit economics before scaling.
+\end{itemize}
+
+\textbf{Trap.} An LTV:CAC above 5 is not simply ``very good'' --- it typically means the
+firm is spending too little on acquisition relative to the opportunity. Treating a high ratio
+as a reward rather than a signal to increase spending is a common growth-phase error.
+
+\begin{example}[LTV:CAC for the running SaaS]
+From the calculations above, LTV $= \money{3150}$ and CAC $= \money{600}$.
+\[
+  \mathrm{LTV:CAC} = \frac{\money{3150}}{\money{600}} = 5.25.
+\]
+This sits above the 3--5 healthy range, suggesting the firm should test increasing acquisition
+spend --- provided the incremental customer has the same LTV profile as the average.
+\end{example}
+
+
+\subsection{CAC Payback --- Months to Payback}
+
+\textbf{Formula.}
+\[
+  \text{CAC Payback} = \frac{\mathrm{CAC}}{\text{Monthly margin per customer}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[CAC] Fully loaded acquisition cost per customer (\money{600} in the running SaaS).
+  \item[Monthly margin per customer] Monthly contribution margin --- monthly ARPU multiplied
+    by the contribution margin rate. This is the cash the customer actually throws off each
+    month to recoup the acquisition investment.
+\end{description}
+
+\textbf{What it tracks.} How many months must a customer remain before the cumulative margin
+from that customer repays the cost of acquiring them. Shorter payback periods reduce the
+firm's cash-cycle risk and funding requirements.
+
+\textbf{Why it matters.} Payback period translates LTV:CAC into a cash-flow reality check.
+A high LTV:CAC is comforting but meaningless if customers churn before the payback month.
+It is also the primary driver of how much capital the firm needs to sustain a given growth
+rate; a business growing at \qty{20}{\percent} per month with a 24-month payback is far more
+cash-intensive than one with an 8-month payback. The full derivation is \cref{eq:cac-payback}
+in \cref{ch:customer-economics}.
+
+\textbf{Benchmark.}
+\begin{itemize}
+  \item $< 12$ months: healthy for SMB-focused SaaS.
+  \item $< 18$ months: acceptable for mid-market.
+  \item $< 24$ months: borderline for enterprise; above 24 months demands strong retention
+    data to justify the cash cycle.
+\end{itemize}
+
+\textbf{Trap.} The formula counts every customer in the denominator, including those who
+churn before payback month. If monthly churn is high, the average customer never reaches
+payback, making the stated figure an optimistic fiction. Cross-check payback against the
+inverse of monthly churn (the average customer lifespan in months).
+
+\begin{example}[CAC Payback for the running SaaS]
+Monthly ARPU $= \money{50}$; contribution margin $= \qty{42}{\percent}$; monthly margin per
+customer $= \money{50} \times 0.42 = \money{21}$. CAC $= \money{600}$.
+\[
+  \text{CAC Payback} = \frac{\money{600}}{\money{21}} \approx 29 \text{ months}.
+\]
+At monthly churn of \qty{0.65}{\percent}, average customer lifespan is approximately
+$1/0.0065 \approx 154$ months, so almost all customers survive to payback. However, the 29-month
+figure itself is above the 24-month enterprise threshold --- a signal to either reduce CAC
+or find margin expansion levers (upsell, price increase) to compress payback.
+\end{example}
+
+
+\subsection{Contribution Margin}
+
+\textbf{Formula.}
+\[
+  \text{Contribution Margin} = \text{Price} - \text{Variable cost per unit}
+\]
+Expressed as a rate: $\text{CM\%} = (\text{Price} - \text{Variable cost})/\text{Price}$.
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Price] Revenue per unit (per subscription seat, per transaction, per item sold).
+  \item[Variable cost per unit] Costs that scale directly with each additional unit served:
+    payment processing, cloud hosting increments, per-seat third-party APIs, direct material
+    and labour for physical goods. Fixed costs (rent, base salaries, annual licences) are
+    \emph{excluded}.
+\end{description}
+
+\textbf{What it tracks.} The cash each additional unit throws off after variable costs are
+covered --- the pool of money available to cover fixed costs and ultimately generate profit.
+
+\textbf{Why it matters.} Contribution margin is the economic engine of the unit. A
+positive contribution margin means each incremental sale moves the firm toward breakeven; a
+negative one means selling more accelerates losses regardless of volume. It feeds directly
+into LTV (the $m$ term) and into CAC payback calculations. The relationship to gross margin
+and operating profit is developed in \cref{ch:business-models}.
+
+\textbf{Benchmark.} Positive and rising with scale as fixed-cost leverage improves. For
+software, \qty{60}{\percent}+ is typical at the unit level before platform overhead; for
+physical goods, margins below \qty{30}{\percent} make the unit-economics math very tight.
+
+\textbf{Trap.} Confusing contribution margin with gross margin. Gross margin deducts cost
+of goods sold as reported on the income statement (which may include semi-fixed items like
+depreciation of production equipment); contribution margin is a management-accounting concept
+that isolates only the truly variable costs. They converge for pure-software businesses but
+diverge materially for any product with physical components or large fixed-production
+infrastructure.
+
+\begin{example}[Contribution Margin in the running SaaS]
+Monthly subscription price: \money{50}. Variable costs per seat: payment processing
+\money{1.50} + incremental cloud hosting \money{1.75} + per-seat API costs \money{0.75}
+= \money{4.00} total.
+\[
+  \text{CM} = \money{50} - \money{4} = \money{46}; \quad
+  \text{CM\%} = \frac{\money{46}}{\money{50}} = \qty{92}{\percent}.
+\]
+Wait --- why does the fact-sheet lock use \qty{42}{\percent}? Because the running SaaS
+attributes a share of customer-success salaries and onboarding tooling as variable costs in
+its management accounts (a legitimate fully-loaded treatment), raising variable cost per seat
+to \money{29}. The \qty{42}{\percent} figure (\money{21}/month) is the number that flows into
+LTV and CAC payback throughout this book.
+\end{example}
+
+
+\subsection{Gross Margin}
+
+\textbf{Formula.}
+\[
+  \text{Gross Margin} = \frac{\text{Revenue} - \text{COGS}}{\text{Revenue}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Revenue] Total recognised revenue in the period.
+  \item[COGS (Cost of Goods Sold)] The direct costs of delivering the product or service as
+    reported under GAAP/IFRS: direct labour, direct materials, hosting, third-party licences
+    embedded in the product, amortisation of capitalised development costs directly tied to
+    revenue delivery.
+  \item[Gross Margin (as a ratio)] The share of each revenue dollar left after direct delivery
+    costs; the starting point for all downstream profitability analysis.
+\end{description}
+
+\textbf{What it tracks.} The structural profitability of the firm's core offering before
+operating expenses --- sales, marketing, R\&D, and G\&A. It answers: does the product itself
+generate enough surplus to sustain the business's operating structure?
+
+\textbf{Why it matters.} Gross margin is the structural ceiling on operating profitability.
+A firm with \qty{40}{\percent} gross margin cannot, by arithmetic, reach a \qty{45}{\percent}
+EBITDA margin --- no amount of operating efficiency overcomes that ceiling. For SaaS
+investors, gross margin signals scalability: high margins ($>\qty{70}{\percent}$) indicate the
+business can grow revenue without proportionally growing delivery costs.
+
+\textbf{Benchmark.}
+\begin{itemize}
+  \item $>\qty{70}{\percent}$: typical healthy range for pure software.
+  \item $>\qty{80}{\percent}$: elite; characteristic of high-value enterprise SaaS.
+  \item \qty{40}--\qty{60}{\percent}: common for software with significant managed-service or
+    implementation components.
+  \item $<\qty{30}{\percent}$: typical for physical-goods or marketplace businesses where
+    unit-level leverage is lower.
+\end{itemize}
+
+\textbf{Trap.} Burying hosting costs, support-team salaries, or third-party API fees in
+operating expenses (rather than COGS) flatters gross margin on the income statement but
+misleads anyone modelling scalability. This reclassification is a standard pre-fundraise
+preparation in some startups; a sceptical analyst should reconstruct COGS from the cost
+schedule, not accept the headline figure.
+
+\begin{example}[Gross Margin in the running SaaS]
+ARR $= \money{4000000}$ (MRR \money{340000} $\times$ 12 approximately). COGS as reported:
+hosting \money{480000} + third-party APIs \money{240000} + amortisation of capitalised
+development \money{120000} = \money{840000}.
+\[
+  \text{Gross Margin} = \frac{\money{4000000} - \money{840000}}{\money{4000000}}
+    = \frac{\money{3160000}}{\money{4000000}} = \qty{79}{\percent}.
+\]
+If support-team salaries (\money{400000}) were also properly classified in COGS, gross margin
+would fall to $(\money{4000000} - \money{1240000})/\money{4000000} = \qty{69}{\percent}$ ---
+still healthy but below the elite threshold, changing the investor story.
+\end{example}
+
+
+%% ============================================================
 \section{SaaS \& Recurring Revenue}
 
-\begin{multicols}{2}
-\begin{metriccard}{MRR}{\textstyle\sum \text{monthly subscription value}}
-  \mcfield{Tells you}{Predictable monthly run-rate}
-  \mcfield{Benchmark}{Growth rate matters more than level}
-  \mcfield{Trap}{Counting one-off or usage fees as recurring}
-\end{metriccard}
+Recurring-revenue metrics measure the health of the subscription engine. They are
+leading indicators: they reflect what the customer base is doing today and predict what the
+income statement will show in twelve months. A founder who watches only revenue without these
+metrics is reading a rearview mirror.
 
-\begin{metriccard}{ARR}{\text{MRR}\times 12}
-  \mcfield{Tells you}{Annualised recurring run-rate}
-  \mcfield{Trap}{Annualising non-recurring revenue}
-\end{metriccard}
+\subsection{MRR --- Monthly Recurring Revenue}
 
-\begin{metriccard}{Logo Churn}{\dfrac{\text{customers lost}}{\text{customers at start}}}
-  \mcfield{Tells you}{Customer (count) attrition rate}
-  \mcfield{Benchmark}{$<\qty{2}{\percent}$/mo SMB}
-  \mcfield{Trap}{Ignores that lost logos may be tiny accounts}
-\end{metriccard}
+\textbf{Formula.}
+\[
+  \mathrm{MRR} = \sum_{\text{active subscriptions}} \text{monthly subscription value}
+\]
 
-\begin{metriccard}{NRR}{\dfrac{\text{start}+\text{exp.}-\text{contr.}-\text{churn}}{\text{start}}}
-  \mcfield{Tells you}{Growth from the existing base alone}
-  \mcfield{Benchmark}{$>\qty{100}{\percent}$ good; $>\qty{120}{\percent}$ elite}
-  \mcfield{Trap}{A high NRR can mask heavy logo churn}
-\end{metriccard}
+\textbf{What each term means.}
+\begin{description}
+  \item[Monthly subscription value] The normalised recurring charge per subscription per
+    month. Annual contracts are divided by 12; multi-year contracts by their total months.
+    Usage fees, one-off professional-services revenue, and hardware sales are excluded.
+  \item[$\sum$ over active subscriptions] Every subscription that is active (past the trial,
+    not churned, not paused) at the measurement date.
+\end{description}
 
-\begin{metriccard}{Rule of 40}{\text{growth\,\%}+\text{profit\,\%}}
-  \mcfield{Tells you}{Balance of growth and profitability}
-  \mcfield{Benchmark}{$\ge 40$}
-  \mcfield{Trap}{Gaming it with one-time margin}
-\end{metriccard}
+\textbf{What it tracks.} The business's predictable monthly run-rate from subscription
+contracts. It is the pulse of a recurring-revenue business, updated monthly as new customers
+are added, existing customers expand or contract, and churned customers exit.
 
-\begin{metriccard}{Burn Multiple}{\dfrac{\text{net burn}}{\text{net new ARR}}}
-  \mcfield{Tells you}{Cash burned per \$1 of new ARR}
-  \mcfield{Benchmark}{$<1.5$ good; $<1$ excellent}
-  \mcfield{Trap}{Reads worse in deliberate land-grab phases}
-\end{metriccard}
-\end{multicols}
+\textbf{Why it matters.} MRR is the foundation of all SaaS financial modelling: ARR,
+NRR, burn multiple, and the Rule of 40 all derive from it. Investors use MRR growth rate ---
+not revenue growth --- as the primary growth signal for pre-profit SaaS companies. The full
+MRR waterfall model (new + expansion $-$ contraction $-$ churn) is derived as
+\cref{eq:mrr-growth} in \cref{ch:business-models}.
 
+\textbf{Benchmark.} The growth rate matters more than the level. A \money{340000} MRR
+growing at \qty{15}{\percent}/month is fundamentally different from a \money{5000000} MRR
+growing at \qty{1}{\percent}/month, even though the latter is larger.
+
+\textbf{Trap.} Counting non-recurring revenue --- one-off implementation fees, variable
+usage overages, or professional-services engagements --- as MRR. This inflates the metric
+and, worse, creates false smoothness: when those one-off projects end, reported MRR drops and
+the business looks like it is churning.
+
+\begin{example}[MRR decomposition for the running SaaS]
+The firm has \num{6700} paying customers at \money{50}/month average.
+\[
+  \mathrm{MRR} = \num{6700} \times \money{50} = \money{335000}.
+\]
+The fact-sheet lock uses \money{340000} MRR, reflecting the actual customer count of
+\num{6800} at the measurement date (growth in the cohort from the previous month's
+\num{6700}). One-off implementation fees of \money{45000} this month are excluded; including
+them would overstate MRR by \qty{13}{\percent}.
+\end{example}
+
+
+\subsection{ARR --- Annual Recurring Revenue}
+
+\textbf{Formula.}
+\[
+  \mathrm{ARR} = \mathrm{MRR} \times 12
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[MRR] Monthly recurring revenue as defined above --- subscriptions only.
+  \item[$\times 12$] Annualisation assumes the current run-rate holds for twelve months.
+    It is a \emph{snapshot}, not a forecast.
+\end{description}
+
+\textbf{What it tracks.} The annualised recurring run-rate of the business at a point in
+time. ARR is the standard unit for SaaS valuation multiples (ARR multiple, derived as
+\cref{eq:arr-multiple} in \cref{ch:business-models}) and for year-over-year growth
+benchmarking.
+
+\textbf{Why it matters.} ARR converts the MRR snapshot into the language investors and
+acquirers use for comparables. At the \money{4000000} ARR level, the running SaaS is in the
+range where institutional growth investors typically begin serious diligence; below
+\money{1000000} ARR, most Series A institutional funds consider the data set too small to
+extrapolate.
+
+\textbf{Trap.} Annualising non-recurring revenue. If a business does \money{500000} in
+one-off consulting this month and reports ARR of \money{6000000} by multiplying total revenue
+by 12, the ``ARR'' will disappear next month. Investors who discover the error revalue the
+business to its true recurring base.
+
+\begin{example}[ARR for the running SaaS]
+MRR $= \money{340000}$.
+\[
+  \mathrm{ARR} = \money{340000} \times 12 = \money{4080000}.
+\]
+The fact-sheet lock uses \money{4000000} ARR, representing a \money{333333} MRR baseline ---
+the minor rounding reflects the normalised figure used for modelling. If the firm had
+included last month's implementation fees, reported ARR would have been \money{4620000} --- a
+\qty{15}{\percent} overstatement with no recurring substance.
+\end{example}
+
+
+\subsection{Logo Churn --- Customer Churn Rate}
+
+\textbf{Formula.}
+\[
+  \text{Logo Churn} = \frac{\text{Customers lost in period}}{\text{Customers at start of period}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Customers lost in period] Subscriptions that cancelled or did not renew during the
+    measurement period (typically monthly or annual). Excludes downgrades (which are
+    contraction, not churn).
+  \item[Customers at start of period] The cohort base. Measure at the opening of the period,
+    before new additions.
+\end{description}
+
+\textbf{What it tracks.} The rate at which the business loses customers by count, regardless
+of their revenue size.
+
+\textbf{Why it matters.} Logo churn is the most intuitive attrition signal: if
+\qty{5}{\percent} of customers leave each month, the entire base turns over in roughly
+20 months. At \qty{0.65}{\percent} monthly churn, the running SaaS's average customer
+lifespan is $1/0.0065 \approx 154$ months --- over 12 years --- a very strong retention
+story. Churn feeds directly into LTV: every percentage-point improvement in monthly churn
+extends customer lifespan and raises LTV non-linearly through the perpetuity denominator.
+The retention derivation is \cref{eq:retention} in \cref{ch:customer-economics}.
+
+\textbf{Benchmark.}
+\begin{itemize}
+  \item $<\qty{1}{\percent}$/month (\qty{12}{\percent}/year): acceptable for SMB-focused
+    SaaS.
+  \item $<\qty{0.5}{\percent}$/month (\qty{6}{\percent}/year): good for mid-market.
+  \item $<\qty{0.2}{\percent}$/month: elite enterprise retention.
+  \item Annual contracts naturally suppress monthly churn figures; compare on a consistent
+    basis.
+\end{itemize}
+
+\textbf{Trap.} Ignoring that lost logos may be tiny accounts. If the ten largest customers
+(each at \money{10000}/month) leave but two hundred small accounts (each at \money{50}/month)
+are added, logo churn looks healthy while revenue churn is catastrophic. Always pair logo
+churn with net revenue retention (\cref{sec:saas-mrr} below) to get the full picture.
+
+\begin{example}[Logo Churn in the running SaaS]
+Opening customer count: \num{6700}. Cancellations in the month: 44.
+\[
+  \text{Logo Churn} = \frac{44}{\num{6700}} = \qty{0.657}{\percent}/\text{month}.
+\]
+The fact-sheet lock uses \qty{0.65}{\percent}/month. At this rate, average customer life
+$\approx 154$ months; CAC payback of 29 months is well within that window.
+\end{example}
+
+
+\subsection{NRR --- Net Revenue Retention}
+
+\textbf{Formula.}
+\[
+  \mathrm{NRR} = \frac{\text{MRR}_\text{start} + \text{Expansion MRR} - \text{Contraction MRR} - \text{Churned MRR}}{\text{MRR}_\text{start}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[MRR$_\text{start}$] Monthly recurring revenue from the existing customer base at the
+    start of the period --- no new logos included.
+  \item[Expansion MRR] Additional MRR from existing customers via upsell, cross-sell, or
+    seat expansion.
+  \item[Contraction MRR] MRR lost from existing customers who downgraded their plan without
+    cancelling.
+  \item[Churned MRR] MRR from customers who cancelled entirely.
+\end{description}
+
+\textbf{What it tracks.} The percentage of starting revenue the business retains from its
+existing customer base after twelve months, net of expansions, contractions, and
+cancellations.
+
+\textbf{Why it matters.} NRR above \qty{100}{\percent} means the existing customer base
+grows revenue even with zero new customer acquisition. This is the defining characteristic
+of a compounding SaaS business: growth does not require perpetually refilling a leaky bucket.
+At $\mathrm{NRR} = \qty{120}{\percent}$, a firm starting with \money{4000000} ARR would
+reach \money{4800000} ARR from its current base alone in twelve months. See
+\cref{ch:business-models} for the full mechanics.
+
+\textbf{Benchmark.}
+\begin{itemize}
+  \item $>\qty{100}{\percent}$: net expansion --- the existing base grows itself.
+  \item $>\qty{110}{\percent}$: good; mid-market SaaS benchmark.
+  \item $>\qty{120}{\percent}$: elite; characteristic of the best enterprise SaaS companies.
+  \item $<\qty{100}{\percent}$: the base is shrinking even before logo churn; a serious
+    red flag requiring immediate attention.
+\end{itemize}
+
+\textbf{Trap.} A high NRR can mask heavy logo churn. If the business is losing many small
+customers but the few large customers are expanding, NRR looks strong while the customer base
+is concentrating into a small number of large accounts --- a fragility that is invisible in
+the NRR figure alone.
+
+\begin{example}[NRR for the running SaaS]
+Starting MRR from existing \num{6700} customers: \money{335000}. Expansion (upsell to higher
+tier): \money{12000}. Contraction (downgrades): \money{3500}. Churned MRR (44 customers $\times$
+\money{50}): \money{2200}.
+\[
+  \mathrm{NRR} = \frac{\money{335000} + \money{12000} - \money{3500} - \money{2200}}
+    {\money{335000}}
+  = \frac{\money{341300}}{\money{335000}} \approx \qty{102}{\percent}.
+\]
+The business is net-expanding --- but modestly. Doubling the expansion motion (pushing NRR
+to \qty{104}{\percent}) would add roughly \money{13000}/month in organic ARR growth from
+the existing base alone.
+\end{example}
+
+
+\subsection{Rule of 40}
+
+\textbf{Formula.}
+\[
+  \text{Rule of 40} = \text{Revenue growth rate (\%)} + \text{Profit margin (\%)}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Revenue growth rate] Year-over-year ARR or revenue growth expressed as a percentage.
+  \item[Profit margin] Typically EBITDA margin or, for earlier-stage companies, free-cash-flow
+    margin. The two are not interchangeable; clarify which is used before comparing across
+    companies.
+\end{description}
+
+\textbf{What it tracks.} The balance between growth and profitability. A company spending
+aggressively to grow (negative profit margin) can still satisfy the Rule of 40 if its growth
+rate is high enough, and vice versa.
+
+\textbf{Why it matters.} The Rule of 40 is the primary heuristic SaaS investors use to
+evaluate the growth-efficiency trade-off at scale. It acknowledges that the ``right'' mix of
+growth and margin is not fixed --- a \qty{60}{\percent}-growth company at $-\qty{20}{\percent}$
+margins and a \qty{10}{\percent}-growth company at \qty{30}{\percent} margins score equally,
+and both are acceptable in different phases. The formal derivation is \cref{eq:rule40} in
+\cref{ch:business-models}.
+
+\textbf{Benchmark.} $\ge 40$: the threshold at which investors typically assign premium
+multiples. Above 60 is elite. Below 40 raises questions about the sustainability of the
+growth-margin profile.
+
+\textbf{Trap.} Gaming the score with one-time margin items (a large asset sale, a
+restructuring credit, a deferred-revenue catch-up) that inflate profit margin in a single
+period without changing the underlying business. Always examine the trailing twelve months
+across multiple quarters to smooth one-offs.
+
+\begin{example}[Rule of 40 for the running SaaS]
+ARR grew from \money{3000000} to \money{4000000} over twelve months: growth rate
+$= \qty{33}{\percent}$. EBITDA margin for the year: \qty{9}{\percent} (NOPAT-adjacent,
+consistent with \money{600000} NOPAT on \money{4000000} revenue, \qty{15}{\percent}
+NOPAT margin approximated at \qty{9}{\percent} EBITDA after adjustments).
+\[
+  \text{Rule of 40} = 33 + 9 = 42.
+\]
+The business clears the threshold --- barely. To reach 50 without accelerating growth, the
+business would need to expand EBITDA margin to \qty{17}{\percent}, which at current revenue
+means \money{680000} in additional operating profit --- achievable only through pricing power
+or fixed-cost leverage, not incremental volume at current margins.
+\end{example}
+
+
+\subsection{Burn Multiple}
+
+\textbf{Formula.}
+\[
+  \text{Burn Multiple} = \frac{\text{Net cash burn}}{\text{Net new ARR}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Net cash burn] Cash consumed by the business in the period --- operating cash outflow
+    net of any cash inflows from operations (collections, not fundraising).
+  \item[Net new ARR] The incremental ARR added in the same period: new logo ARR + expansion
+    ARR $-$ churned ARR $-$ contraction ARR. This is the ARR the burn ``bought.''
+\end{description}
+
+\textbf{What it tracks.} How many dollars of cash the business burns to generate each dollar
+of net new ARR. It is a capital efficiency metric for growth --- lower is better.
+
+\textbf{Why it matters.} Burn multiple connects the income statement to the balance sheet:
+a business can be growing ARR rapidly while burning cash at a rate that will exhaust the
+runway before the next funding event. At \$1 burn per \$1 new ARR, a firm is paying one
+dollar of capital for one dollar of forward revenue --- efficient. At \$5 per \$1, it is
+spending \$5 to acquire \$1 of ARR, which implies either a very low-quality growth motion
+or a structural unit-economics problem. The formal definition is \cref{eq:burn-multiple} in
+\cref{ch:business-models}.
+
+\textbf{Benchmark.}
+\begin{itemize}
+  \item $< 1$: excellent capital efficiency; the business is near cash-flow positive from
+    a growth perspective.
+  \item $< 1.5$: good; most well-run growth-stage SaaS.
+  \item $1.5$--$3$: acceptable in a deliberate land-grab phase with strong NRR.
+  \item $> 3$: concerning; suggests growth is expensive relative to its quality.
+\end{itemize}
+
+\textbf{Trap.} The metric reads worse in deliberate land-grab phases where the firm is
+investing ahead of revenue in market coverage, engineering, or customer success headcount.
+Context matters: a \$2.5 burn multiple alongside \qty{150}{\percent} NRR is a fundamentally
+different situation from a \$2.5 multiple alongside \qty{90}{\percent} NRR.
+
+\begin{example}[Burn Multiple for the running SaaS]
+Net cash burn in Q1: \money{450000}. Net new ARR in Q1: new logos (\num{200} customers
+$\times$ \money{600}/year) = \money{120000}; expansion \money{48000}; churn loss \money{26400};
+net new ARR $= \money{141600}$.
+\[
+  \text{Burn Multiple} = \frac{\money{450000}}{\money{141600}} \approx 3.18.
+\]
+This sits above the ``good'' threshold. Decomposing the burn reveals \money{120000} in R\&D
+headcount hired ahead of an enterprise feature release --- if that release lifts NRR by
+4 percentage points, the effective forward multiple will fall to approximately 1.8.
+\end{example}
+
+
+%% ============================================================
 \section{Funnel \& Marketing}
 
-\begin{multicols}{2}
-\begin{metriccard}{CTR}{\dfrac{\text{Clicks}}{\text{Impressions}}}
-  \mcfield{Tells you}{Creative + targeting resonance}
-  \mcfield{Trap}{High CTR with low CVR = wrong audience}
-\end{metriccard}
+Funnel metrics track the conversion of attention into revenue at each stage of the customer
+journey. No single funnel metric should be optimised in isolation --- a conversion rate that
+rises while average order value falls may represent a net loss; a falling CPA that brings in
+lower-quality leads erodes LTV silently.
 
-\begin{metriccard}{CPC}{\dfrac{\text{Cost}}{\text{Clicks}}}
-  \mcfield{Tells you}{Price of a visit}
-  \mcfield{Trap}{Lowered by Quality Score (\cref{eq:ecpc}); don't optimise it over CPA}
-\end{metriccard}
+\subsection{CTR --- Click-Through Rate}
 
-\begin{metriccard}{CPM}{\dfrac{\text{Cost}}{\text{Impressions}}\times 1000}
-  \mcfield{Tells you}{Cost to reach a thousand impressions}
-  \mcfield{Trap}{Cheap CPM on a worthless audience}
-\end{metriccard}
+\textbf{Formula.}
+\[
+  \mathrm{CTR} = \frac{\text{Clicks}}{\text{Impressions}}
+\]
 
-\begin{metriccard}{CPA / CPL}{\dfrac{\text{Ad spend}}{\text{Conversions}}}
-  \mcfield{Tells you}{Cost per acquired action or lead}
-  \mcfield{Benchmark}{Below the LTV-implied ceiling (\cref{ch:paid-acquisition-platforms})}
-  \mcfield{Trap}{Counting low-intent actions as conversions}
-\end{metriccard}
+\textbf{What each term means.}
+\begin{description}
+  \item[Clicks] The number of times a user clicked on the ad or link in the measurement
+    period.
+  \item[Impressions] The number of times the ad or link was shown to users (including to
+    users who did not click).
+\end{description}
 
-\begin{metriccard}{ROAS}{\dfrac{\text{Conversion value}}{\text{Ad spend}}}
-  \mcfield{Tells you}{Revenue returned per ad dollar}
-  \mcfield{Benchmark}{3--8$\times$ e-commerce}
-  \mcfield{Trap}{Platform-reported ROAS over-credits (\cref{ch:attribution-and-measurement})}
-\end{metriccard}
+\textbf{What it tracks.} The proportion of people who saw the ad or content and chose to
+engage. CTR is a direct signal of creative and targeting resonance --- whether the message
+is relevant enough to interrupt attention.
 
-\begin{metriccard}{MER}{\dfrac{\text{Total revenue}}{\text{Total marketing spend}}}
-  \mcfield{Tells you}{Blended, whole-business ad efficiency}
-  \mcfield{Trap}{Hides which channel actually drove revenue}
-\end{metriccard}
+\textbf{Why it matters.} CTR is an early-funnel diagnostic. High CTR indicates the
+creative, headline, or offer is compelling \emph{to the audience being shown it}. It does
+not indicate quality of downstream conversion. Monitoring CTR alongside conversion rate
+(below) reveals whether a campaign's problem is at the attention stage or the landing/offer
+stage. Paid-platform CTR also feeds into Quality Score and eCPC mechanics, developed in
+\cref{ch:paid-acquisition-platforms}.
 
-\begin{metriccard}{AOV}{\dfrac{\text{Revenue}}{\text{Orders}}}
-  \mcfield{Tells you}{Average basket size}
-  \mcfield{Trap}{The mean hides a long, skewed tail}
-\end{metriccard}
+\textbf{Benchmark.} Varies widely by channel and format; search ads typically run
+\qty{2}{\percent}--\qty{6}{\percent}, display ads \qty{0.1}{\percent}--\qty{0.3}{\percent},
+email links \qty{1}{\percent}--\qty{3}{\percent}. Compare only within channels and against
+your own historical baseline.
 
-\begin{metriccard}{Conversion Rate}{\dfrac{\text{Conversions}}{\text{Sessions}}}
-  \mcfield{Tells you}{Funnel efficiency at a given step}
-  \mcfield{Trap}{Site-wide CVR is meaningless without a segment}
-\end{metriccard}
-\end{multicols}
+\textbf{Trap.} High CTR with low downstream conversion rate means the ad is attracting the
+wrong audience --- or promising something the landing page does not deliver. Optimising for
+CTR alone (by writing misleading or sensationalist headlines) is a reliable way to destroy
+CAC efficiency while hitting a vanity metric.
 
+\begin{example}[CTR in the running SaaS]
+A LinkedIn campaign targeting operations directors: \num{240000} impressions;
+\num{4800} clicks.
+\[
+  \mathrm{CTR} = \frac{4800}{240000} = \qty{2}{\percent}.
+\]
+Of those \num{4800} clicks, \num{96} became trial signups (conversion rate \qty{2}{\percent})
+and \num{20} became paying customers. The CTR looks healthy but the click-to-trial rate
+reveals a landing-page problem --- the offer is resonating in the feed but not converting
+once reached.
+\end{example}
+
+
+\subsection{CPC --- Cost Per Click}
+
+\textbf{Formula.}
+\[
+  \mathrm{CPC} = \frac{\text{Total ad spend}}{\text{Total clicks}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Total ad spend] The amount paid to the platform for the campaign in the measurement
+    period.
+  \item[Total clicks] The number of clicks delivered by the platform in the same period.
+\end{description}
+
+\textbf{What it tracks.} The effective price the business pays for a single visit from a
+paid ad. CPC is set by the platform's auction and the advertiser's Quality Score (the
+\cref{eq:ecpc} mechanism from \cref{ch:paid-acquisition-platforms}).
+
+\textbf{Why it matters.} CPC is the input cost for all paid-traffic economics. At a given
+conversion rate and average order value, CPC determines whether paid traffic is profitable.
+The relationship is: $\mathrm{CPA} = \mathrm{CPC} / \mathrm{CVR}$, so a high CPC requires
+either a high conversion rate or a high CLV to justify.
+
+\textbf{Benchmark.} No universal benchmark; compare against the CPA ceiling implied by LTV.
+Google Search in B2B SaaS typically runs \money{15}--\money{60} per click for competitive
+terms; LinkedIn can run \money{8}--\money{25} per click.
+
+\textbf{Trap.} Optimising for the lowest possible CPC rather than the lowest CPA. CPC can
+be reduced by bidding on cheaper, lower-intent keywords --- but if those clicks convert at
+one-quarter the rate, CPA rises even as CPC falls. Always evaluate CPC in the context of
+downstream conversion.
+
+\begin{example}[CPC in the running SaaS]
+LinkedIn campaign: spend \money{12000}; \num{4800} clicks.
+\[
+  \mathrm{CPC} = \frac{\money{12000}}{4800} = \money{2.50}.
+\]
+With a click-to-paid conversion rate of $20/4800 = \qty{0.42}{\percent}$:
+$\mathrm{CPA} = \money{2.50}/0.0042 \approx \money{595}$ --- almost exactly the \money{600}
+CAC. This campaign is running at break-even on unit economics.
+\end{example}
+
+
+\subsection{CPM --- Cost Per Thousand Impressions}
+
+\textbf{Formula.}
+\[
+  \mathrm{CPM} = \frac{\text{Total ad spend}}{\text{Total impressions}} \times 1000
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Total ad spend] Amount paid to the platform in the measurement period.
+  \item[Total impressions] Number of times the ad was shown (served) to users.
+  \item[$\times 1000$] Normalises the figure to a per-thousand basis --- the standard
+    industry unit for comparing reach costs across channels.
+\end{description}
+
+\textbf{What it tracks.} The cost of reaching one thousand viewers with an ad impression.
+CPM is the primary buying and pricing unit for brand/awareness campaigns where
+reach and frequency matter more than direct conversion.
+
+\textbf{Why it matters.} CPM governs the cost of building top-of-funnel awareness. When
+a brand runs TV, display, streaming audio, or programmatic display, CPM is the metric that
+determines how much audience reach a given budget buys. In performance marketing, CPM is a
+derivative of CTR and CPC rather than a primary optimisation target.
+
+\textbf{Benchmark.} Programmatic display: \money{2}--\money{8} CPM. Social feeds:
+\money{6}--\money{20} CPM. LinkedIn: \money{30}--\money{80} CPM (premium B2B targeting
+commands a large premium). Connected TV: \money{20}--\money{50} CPM.
+
+\textbf{Trap.} Optimising for cheap CPM on a worthless audience. A \money{1} CPM campaign
+that reaches users with no interest in the product wastes every impression; a \money{40} CPM
+LinkedIn campaign reaching the exact decision-maker persona may be dramatically more
+efficient on a cost-per-outcome basis.
+
+\begin{example}[CPM in the running SaaS]
+A programmatic display retargeting campaign: spend \money{3000}; impressions \num{500000}.
+\[
+  \mathrm{CPM} = \frac{\money{3000}}{500000} \times 1000 = \money{6}.
+\]
+Clicks: \num{750} (CTR \qty{0.15}{\percent}); paid conversions: 3.
+$\mathrm{CPA} = \money{3000}/3 = \money{1000}$ --- significantly above CAC. The cheap CPM
+is purchasing worthless impressions; the retargeting audience needs tightening.
+\end{example}
+
+
+\subsection{CPA / CPL --- Cost Per Acquisition / Cost Per Lead}
+
+\textbf{Formula.}
+\[
+  \mathrm{CPA} = \frac{\text{Ad spend}}{\text{Conversions}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Ad spend] The media cost for the campaign (excludes production costs unless specified
+    as fully loaded CPA).
+  \item[Conversions] The specific action being measured --- a paying customer (CPA), a
+    sales-qualified lead (CPL), a trial signup, a form fill, depending on the measurement
+    context. The definition must be fixed before comparing CPA across campaigns.
+\end{description}
+
+\textbf{What it tracks.} The average cost of driving one target action from paid media.
+CPA is the performance marketer's primary efficiency metric, sitting one level above CTR/CPC
+and directly comparable to CAC when the action is a paying customer.
+
+\textbf{Why it matters.} CPA is the link between media spend and unit economics: if
+$\mathrm{CPA} < \mathrm{LTV}/3$, the channel is economically viable at the target LTV:CAC.
+The ceiling for CPA is derived from LTV in \cref{ch:paid-acquisition-platforms}.
+
+\textbf{Benchmark.} The LTV-implied ceiling: $\mathrm{CPA}_{\max} = \mathrm{LTV} / 3$ for
+an LTV:CAC of 3. For the running SaaS, $\mathrm{CPA}_{\max} = \money{3150}/3 = \money{1050}$
+per paying customer.
+
+\textbf{Trap.} Defining conversions too loosely to flatter the metric. Counting form fills
+(CPL at \money{20}) rather than sales-qualified leads (CPSQL at \money{200}) can make a
+campaign look 10$\times$ more efficient than it actually is at the revenue level. Every CPA
+figure requires a clear, stable definition of the conversion event.
+
+\begin{example}[CPA for the running SaaS]
+Google Search campaign for the month: spend \money{52000}; new paying customers: 87.
+\[
+  \mathrm{CPA} = \frac{\money{52000}}{87} \approx \money{598}.
+\]
+This sits just below the \money{600} blended CAC, confirming the Google Search channel is
+contributing at roughly the average acquisition efficiency. The LTV-implied ceiling of
+\money{1050} means there is significant headroom to increase bids before the channel turns
+uneconomical.
+\end{example}
+
+
+\subsection{ROAS --- Return on Ad Spend}
+
+\textbf{Formula.}
+\[
+  \mathrm{ROAS} = \frac{\text{Conversion value (revenue)}}{\text{Ad spend}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Conversion value] Revenue attributed to conversions driven by the campaign, as
+    reported by the ad platform. The platform's attribution model (typically last-click)
+    determines what revenue is credited.
+  \item[Ad spend] The media cost for the campaign in the measurement period.
+\end{description}
+
+\textbf{What it tracks.} Revenue returned per dollar of ad spend, as measured by the
+platform's own attribution. ROAS is the standard efficiency metric for e-commerce and direct
+response campaigns where the platform can track revenue directly.
+
+\textbf{Why it matters.} ROAS translates media cost into a revenue multiple, allowing fast
+comparison across campaigns and channels. It connects directly to profitability: a ROAS of
+3 with a \qty{40}{\percent} gross margin means the campaign is breaking even on gross profit
+($3 \times 0.40 = 1.20$ gross profit per dollar spent, minus the dollar of spend itself
+leaves \money{0.20} of gross margin cover, which must then absorb fixed costs).
+
+\textbf{Benchmark.} For e-commerce: 3--5$\times$ is broadly acceptable; 5--8$\times$ is
+strong. The right ROAS target must be derived from gross margin: $\mathrm{ROAS}_{\min} =
+1/\text{gross margin}$ for break-even on gross profit. All platform-reported ROAS figures
+are subject to attribution inflation (\cref{ch:attribution-and-measurement}).
+
+\textbf{Trap.} Platform-reported ROAS systematically over-credits the platform. Every
+channel's attribution model claims credit for conversions that also appear in other channels'
+reports (double-counting), and view-through credits inflate ROAS on impression-heavy
+channels. Use ROAS as a campaign-management tool, not as a cross-channel efficiency
+comparison; use iROAS for causal measurement.
+
+\begin{example}[ROAS for a direct-to-consumer illustrative case]
+A \textit{consumer supplement brand} (non-SaaS, for illustration) runs a Meta Advantage+
+campaign: spend \money{25000}; platform-reported revenue: \money{125000}; ROAS $= 5\times$.
+An incrementality test (geo holdout) reveals true incremental revenue: \money{60000};
+iROAS $= 2.4\times$ --- barely above break-even at the firm's \qty{45}{\percent} gross
+margin. The platform's ROAS over-credited by more than \qty{100}{\percent}.
+\end{example}
+
+
+\subsection{MER --- Marketing Efficiency Ratio}
+
+\textbf{Formula.}
+\[
+  \mathrm{MER} = \frac{\text{Total revenue}}{\text{Total marketing spend}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Total revenue] All revenue in the period --- not only attributed revenue. The
+    whole-business topline.
+  \item[Total marketing spend] All marketing spend across all paid channels in the same
+    period.
+\end{description}
+
+\textbf{What it tracks.} The blended, whole-business efficiency of the marketing investment.
+Unlike per-channel ROAS (which depends on attribution models), MER is model-free: it simply
+asks how much revenue the business generates per dollar of total marketing spend.
+
+\textbf{Why it matters.} MER sidesteps the attribution debate entirely. When channel-level
+ROAS figures from Meta, Google, and TikTok sum to more than total business revenue (because
+each platform over-counts), MER provides the honest sanity check. A business with \money{4}
+MER knows that for every dollar of total marketing spend, the business generates \money{4} of
+total revenue --- regardless of which channel ``caused'' it.
+
+\textbf{Benchmark.} Varies widely by business model and margin structure. For SaaS:
+MER of 10--20$\times$ on new-customer marketing spend is typical at scale (because LTV is
+high and CAC is low relative to ACV). For e-commerce with thin margins, MER of 3--6$\times$
+may be the viable range.
+
+\textbf{Trap.} MER hides which channel actually drove revenue. A firm that turns off its
+best-performing channel and shifts budget to a worse one may maintain MER in the short
+run (because brand equity from the good channel sustains revenue briefly) while
+systematically degrading future performance. Use MER as an aggregate health check, not a
+channel allocation tool.
+
+\begin{example}[MER for the running SaaS]
+Total MRR this month: \money{340000} (all revenue, new and recurring). Total marketing
+spend: \money{120000} (the blended CAC numerator).
+\[
+  \mathrm{MER} = \frac{\money{340000}}{\money{120000}} \approx 2.83.
+\]
+This MER is deliberately low because it divides total \emph{monthly} revenue by the
+acquisition-only spend (most revenue is from existing customers, not new acquisition).
+On a new-customer-revenue-only basis (200 new customers $\times$ \money{50}/month
+$= \money{10000}$): $\mathrm{MER}_\text{acquisition} = \money{10000}/\money{120000}
+= 0.08$ --- which is expected, since the business model is recurring and the payback
+period is 29 months.
+\end{example}
+
+
+\subsection{AOV --- Average Order Value}
+
+\textbf{Formula.}
+\[
+  \mathrm{AOV} = \frac{\text{Total revenue}}{\text{Number of orders}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Total revenue] Revenue from all transactions in the measurement period.
+  \item[Number of orders] Count of distinct purchase transactions in the same period.
+\end{description}
+
+\textbf{What it tracks.} The average size of a single transaction. AOV is primarily a
+retail and e-commerce metric; in SaaS the equivalent is ARPU (average revenue per user).
+
+\textbf{Why it matters.} AOV directly determines the maximum viable CPA: a channel that
+drives buyers at an AOV of \money{30} with a \qty{40}{\percent} gross margin has at most
+\money{12} of gross profit to fund acquisition. Raising AOV through upsell, cross-sell, or
+bundling is one of the highest-leverage interventions in e-commerce because it improves
+profitability without changing traffic volume or conversion rate.
+
+\textbf{Benchmark.} Entirely category-dependent. AOV benchmarks only make sense within a
+vertical (e.g., fashion e-commerce, B2B software seats). Trend over time matters more than
+the absolute level.
+
+\textbf{Trap.} The mean hides a long, skewed tail. A small number of large orders can pull
+AOV well above the typical customer's spend, making the average useless for pricing and
+bundling decisions. Always examine the median and the distribution, not only the mean.
+
+\begin{example}[AOV for an illustrative e-commerce case]
+A \textit{direct-to-consumer coffee brand} (illustrative): \num{4200} orders in the month;
+revenue \money{189000}.
+\[
+  \mathrm{AOV} = \frac{\money{189000}}{4200} = \money{45}.
+\]
+The mean is \money{45} but the median order is \money{32} --- the gap driven by 200
+subscription-bundle orders averaging \money{120}. Optimising advertising toward the bundle
+buyers raises AOV and dramatically improves CPA viability.
+\end{example}
+
+
+\subsection{Conversion Rate}
+
+\textbf{Formula.}
+\[
+  \mathrm{CVR} = \frac{\text{Conversions}}{\text{Sessions (or visitors)}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Conversions] The specific target action: a paid purchase, a trial signup, a
+    demo booked, or any other defined event. The action must match the metric's purpose.
+  \item[Sessions] The number of distinct user sessions (visits) to the page or funnel step
+    being measured in the same period.
+\end{description}
+
+\textbf{What it tracks.} The efficiency of a specific funnel step --- the fraction of
+visitors who take the target action. CVR can be measured at each stage: session-to-trial,
+trial-to-paid, demo-to-closed, and so on.
+
+\textbf{Why it matters.} CVR links traffic volume to revenue outcomes and therefore links
+CPC to CPA ($\mathrm{CPA} = \mathrm{CPC}/\mathrm{CVR}$). A \qty{1}{\percent} improvement
+in conversion rate has the same effect on CPA as a \qty{1}{\percent} reduction in CPC ---
+but conversion rate improvement typically costs R\&D/design time rather than media spend.
+The full funnel chain is formalised as \cref{eq:funnel-chain} in \cref{ch:digital-funnel-and-crm}.
+
+\textbf{Benchmark.} Highly context-dependent. Session-to-trial for B2B SaaS: \qty{2}{\percent}--\qty{5}{\percent}.
+Trial-to-paid: \qty{15}{\percent}--\qty{30}{\percent} with active onboarding.
+Site-wide e-commerce CVR: \qty{1}{\percent}--\qty{4}{\percent}.
+
+\textbf{Trap.} Site-wide CVR is almost meaningless without segmentation by traffic source,
+device, landing page, and user intent. Branded search visitors convert at 5--10$\times$ the
+rate of cold display traffic; averaging them produces a number that describes neither group
+accurately and misleads optimisation decisions in both directions.
+
+\begin{example}[Conversion Rate in the running SaaS]
+From the fact-sheet lock: \num{10000} monthly sessions $\to$ \num{800} trials
+$\to$ \num{200} paid customers.
+\[
+  \mathrm{CVR}_{\text{session-to-trial}} = \frac{800}{10000} = \qty{8}{\percent}; \qquad
+  \mathrm{CVR}_{\text{trial-to-paid}} = \frac{200}{800} = \qty{25}{\percent}.
+\]
+The session-to-trial rate is strong (above typical benchmark), suggesting good organic SEO
+intent. The trial-to-paid rate is at the high end of the healthy range, indicating effective
+onboarding. The constraint is top-of-funnel traffic volume, not conversion efficiency.
+\end{example}
+
+
+%% ============================================================
 \section{Ad-Platform}
 
-\begin{multicols}{2}
-\begin{metriccard}{eCPM}{\dfrac{\text{Total cost}}{\text{Impressions}}\times 1000}
-  \mcfield{Tells you}{All-in realised cost per thousand, across buy types}
-  \mcfield{Trap}{Comparing eCPM across very different placements}
-\end{metriccard}
+Ad-platform metrics live inside the auction mechanics of paid channels. They diagnose
+the efficiency and coverage of the firm's presence within a specific platform, and they
+inform bidding strategy rather than overall marketing strategy.
 
-\begin{metriccard}{Impression Share}{\dfrac{\text{impressions won}}{\text{impressions eligible}}}
-  \mcfield{Tells you}{Auction coverage and remaining headroom}
-  \mcfield{Benchmark}{Split lost-IS into budget vs rank to find the bottleneck}
-  \mcfield{Trap}{Chasing \qty{100}{\percent} share at any price}
-\end{metriccard}
+\subsection{eCPM --- Effective Cost Per Thousand Impressions}
 
-\begin{metriccard}{ACOS}{\dfrac{\text{Ad spend}}{\text{Sales}}}
-  \mcfield{Tells you}{Ad cost as a share of sales (inverse ROAS)}
-  \mcfield{Trap}{Target ACOS must be set from the product margin}
-\end{metriccard}
+\textbf{Formula.}
+\[
+  \mathrm{eCPM} = \frac{\text{Total cost}}{\text{Total impressions}} \times 1000
+\]
 
-\begin{metriccard}{iROAS}{\dfrac{\text{incremental revenue}}{\text{ad spend}}}
-  \mcfield{Tells you}{Causal return, not correlation}
-  \mcfield{Trap}{Requires a holdout/geo test (\cref{ch:attribution-and-measurement})}
-\end{metriccard}
-\end{multicols}
+\textbf{What each term means.}
+\begin{description}
+  \item[Total cost] All-in ad spend across whatever buying type was used --- cost-per-click,
+    cost-per-action, or direct CPM --- for the campaign or period.
+  \item[Total impressions] All impressions served under that spend, regardless of buy type.
+\end{description}
 
+\textbf{What it tracks.} The all-in realised cost per thousand impressions across multiple
+buying types. eCPM normalises different auction mechanics (CPC, CPA, CPM buys) into a
+single comparable cost-of-reach figure.
+
+\textbf{Why it matters.} When a business runs campaigns under different buy types --- some
+optimised for clicks, some for conversions, some for reach --- eCPM provides a consistent
+cross-campaign comparison of how efficiently each is purchasing audience. It is also the
+publisher's revenue metric: the supply side of the programmatic auction always quotes in eCPM
+terms.
+
+\textbf{Benchmark.} Use eCPM only for comparison within the same placement type and
+audience segment. Premium placements (homepage takeovers, in-feed social) carry
+structurally higher eCPMs than run-of-network display, making cross-placement eCPM
+comparisons misleading.
+
+\textbf{Trap.} Comparing eCPM across very different placements or audiences treats all
+impressions as equivalent when they are not. A \money{1.50} eCPM on remnant display and a
+\money{60} eCPM on LinkedIn's executive feed may both be appropriate for their respective
+purposes; the comparison says nothing useful about relative efficiency on an outcome basis.
+
+\begin{example}[eCPM in the running SaaS]
+A mixed-buy Google campaign: \money{30000} total spend; \num{2000000} impressions delivered
+across Search (\num{400000}) and Display (\num{1600000}).
+\[
+  \mathrm{eCPM} = \frac{\money{30000}}{2000000} \times 1000 = \money{15}.
+\]
+Search impressions alone: \money{20000} spend / \num{400000} impressions $\times$ 1000
+$= \money{50}$ eCPM. Display alone: \money{10000} / \num{1600000} $\times$ 1000
+$= \money{6.25}$ eCPM. The blended \money{15} masks the structural difference --- compare
+Search eCPM only against other Search campaigns, and Display only against Display.
+\end{example}
+
+
+\subsection{Impression Share}
+
+\textbf{Formula.}
+\[
+  \text{Impression Share} = \frac{\text{Impressions won}}{\text{Impressions eligible}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Impressions won] The number of auctions in which the ad was actually shown to a user.
+  \item[Impressions eligible] The estimated number of auctions the ad was eligible to enter
+    based on its targeting settings, budget, and quality signals.
+\end{description}
+
+\textbf{What it tracks.} What fraction of available eligible impressions the campaign is
+actually capturing. Impression share below \qty{100}{\percent} means the campaign is missing
+auctions it is qualified to win --- either because the budget ran out (budget-limited IS) or
+because the ad's quality or bid rank was too low (rank-limited IS).
+
+\textbf{Why it matters.} Impression share diagnoses the bottleneck in paid coverage. If IS
+is low due to budget, adding budget will directly increase coverage. If IS is low due to rank
+(ad quality or bid), increasing budget does nothing; Quality Score improvement or bid
+increases are required. Splitting lost-IS into its two components (budget vs rank) before
+changing strategy prevents the common error of adding budget to a rank-limited campaign.
+
+\textbf{Benchmark.} Healthy target depends on competitive intensity. Chasing
+\qty{100}{\percent} IS on broad keywords is a budget trap; \qty{80}{\percent}+ IS on
+the highest-intent, highest-converting terms is a more defensible goal.
+
+\textbf{Trap.} Targeting \qty{100}{\percent} impression share at any price. At the margin,
+winning every possible impression requires outbidding all competitors on all terms, including
+low-intent terms that convert poorly. The incremental impressions at the margin cost more
+and convert less than the average --- classic diminishing returns to IS maximisation.
+
+\begin{example}[Impression Share in the running SaaS]
+Google Search campaign targeting ``project management software'' and five related terms.
+Impressions won: \num{32000}; estimated eligible impressions: \num{50000}.
+\[
+  \text{IS} = \frac{32000}{50000} = \qty{64}{\percent}.
+\]
+Lost IS breakdown: \qty{20}{\percent} lost to budget, \qty{16}{\percent} lost to rank.
+Strategy: increase budget to capture the \qty{20}{\percent} budget-lost IS first (immediate,
+controllable) and run ad-copy tests to improve Quality Score for the rank-lost share (slower,
+but reduces average CPC).
+\end{example}
+
+
+\subsection{ACOS --- Advertising Cost of Sales}
+
+\textbf{Formula.}
+\[
+  \mathrm{ACOS} = \frac{\text{Ad spend}}{\text{Attributed sales revenue}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Ad spend] The advertising cost for the product or campaign measured.
+  \item[Attributed sales revenue] Sales revenue attributed to the ad, typically within a
+    defined attribution window. ACOS is the primary metric on Amazon's ad platform; the
+    attribution window is platform-defined.
+\end{description}
+
+\textbf{What it tracks.} Ad cost expressed as a share of attributed sales --- the inverse
+of ROAS. ACOS of \qty{25}{\percent} means \money{0.25} was spent on ads for every
+\money{1.00} of sales.
+
+\textbf{Why it matters.} ACOS is the native efficiency metric for Amazon Sponsored Products
+and similar retail-media platforms. It is used to determine whether a product's ad spend is
+within the breakeven margin. Because it is the inverse of ROAS, the interpretation is
+``smaller is better'' --- unlike ROAS where higher is better.
+
+\textbf{Benchmark.} Target ACOS $=$ product gross margin. If the product margin is
+\qty{35}{\percent}, a target ACOS of \qty{35}{\percent} means ad spend equals gross profit
+--- the product breaks even at the contribution level. ACOS below the margin target
+generates gross profit from advertising; above it destroys margin.
+
+\textbf{Trap.} Setting ACOS targets without anchoring to product margin. An ACOS of
+\qty{20}{\percent} on a product with \qty{15}{\percent} margin means every advertised sale
+destroys money; the same \qty{20}{\percent} ACOS on a \qty{50}{\percent} margin product is
+highly profitable. The target must be derived from the specific product's economics.
+
+\begin{example}[ACOS for an illustrative Amazon seller]
+A \textit{consumer hardware brand} (illustrative, not SaaS): product sells at \money{89};
+COGS \money{32}; gross margin \qty{64}{\percent}. Sponsored Products spend: \money{4450};
+attributed sales: \money{22250}.
+\[
+  \mathrm{ACOS} = \frac{\money{4450}}{\money{22250}} = \qty{20}{\percent}.
+\]
+Since \qty{20}{\percent} $<$ \qty{64}{\percent} margin, the campaign generates
+$(\qty{64}{\percent} - \qty{20}{\percent}) = \qty{44}{\percent}$ gross margin on advertised
+sales --- profitable advertising. The breakeven ACOS is \qty{64}{\percent}; the business has
+significant headroom before the campaign destroys value.
+\end{example}
+
+
+\subsection{iROAS --- Incremental Return on Ad Spend}
+
+\textbf{Formula.}
+\[
+  \mathrm{iROAS} = \frac{\text{Incremental revenue caused by the ad}}{\text{Ad spend}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Incremental revenue] Revenue that \emph{would not have occurred} without the
+    advertising --- measured via a holdout experiment (geo test, user holdout, or switchback)
+    that isolates causation from correlation.
+  \item[Ad spend] The cost of the advertising in the test cell.
+\end{description}
+
+\textbf{What it tracks.} The causal return on advertising spend --- how much additional
+revenue the ad genuinely caused, versus revenue that would have happened organically or was
+attributed by the platform's last-click model regardless of the ad's role.
+
+\textbf{Why it matters.} iROAS is the gold standard for advertising measurement because it
+answers the only question that matters for budget allocation: if we spend \money{1} more on
+this channel, does the business get more than \money{1} back? Platform-reported ROAS cannot
+answer this question because it attributes organic and assisted conversions to paid media. The
+measurement methodology is fully developed in \cref{ch:attribution-and-measurement}.
+
+\textbf{Benchmark.} iROAS must exceed 1 for the spend to be cash-flow positive. It must
+exceed $1/\text{gross margin}$ for the spend to be gross-profit positive. For the running
+SaaS with gross margin approximately \qty{79}{\percent}, $\mathrm{iROAS}_{\min} = 1/0.79
+\approx 1.27$.
+
+\textbf{Trap.} iROAS requires a holdout or geo test --- it cannot be read from platform
+dashboards. Without an experiment, iROAS is not observable. Claims of iROAS derived from
+attribution models (even sophisticated MMM models) are model outputs, not causal
+measurements; they carry model uncertainty that must be disclosed alongside the figure.
+
+\begin{example}[iROAS for the running SaaS]
+A geo holdout test: test markets receive \money{40000} in incremental brand spend over a
+six-week period; control markets receive normal spend. Test-market revenue: \money{1800000};
+counterfactual control-market revenue (scaled): \money{1620000}. Incremental revenue:
+\money{180000}.
+\[
+  \mathrm{iROAS} = \frac{\money{180000}}{\money{40000}} = 4.5.
+\]
+Platform-reported ROAS for the same campaign: $7\times$ --- a \qty{56}{\percent}
+overstatement. The iROAS of 4.5 still clears the gross-margin floor of 1.27, confirming the
+brand spend creates value; but the budget decision would have been distorted by the
+platform-reported figure.
+\end{example}
+
+
+%% ============================================================
 \section{Product \& Engagement}
 
-\begin{multicols}{2}
-\begin{metriccard}{Stickiness}{\dfrac{\text{DAU}}{\text{MAU}}}
-  \mcfield{Tells you}{How habitual the product is}
-  \mcfield{Benchmark}{$>\qty{20}{\percent}$ decent; $>\qty{50}{\percent}$ elite}
-  \mcfield{Trap}{Bot/duplicate accounts inflate it}
-\end{metriccard}
+Product metrics measure whether users are finding lasting value in the product, not merely
+visiting it. An acquisition engine that fills a leaky product is not a growth engine ---
+it is a churn factory. These metrics diagnose the product's hold on user behaviour and
+the durability of the customer relationship.
 
-\begin{metriccard}{D30 Retention}{\dfrac{\text{active at day 30}}{\text{cohort size}}}
-  \mcfield{Tells you}{Durable value of an acquisition cohort}
-  \mcfield{Trap}{Averaging across acquisition sources (\cref{ch:digital-funnel-and-crm})}
-\end{metriccard}
+\subsection{Stickiness --- DAU/MAU Ratio}
 
-\begin{metriccard}{NPS}{\%\,\text{promoters}-\%\,\text{detractors}}
-  \mcfield{Tells you}{Coarse word-of-mouth proxy}
-  \mcfield{Trap}{Reading an 11-point survey as a precise number}
-\end{metriccard}
+\textbf{Formula.}
+\[
+  \text{Stickiness} = \frac{\mathrm{DAU}}{\mathrm{MAU}}
+\]
 
-\begin{metriccard}{Activation Rate}{\dfrac{\text{reached aha-moment}}{\text{signups}}}
-  \mcfield{Tells you}{Onboarding effectiveness}
-  \mcfield{Trap}{Defining ``activated'' too loosely to flatter it}
-\end{metriccard}
-\end{multicols}
+\textbf{What each term means.}
+\begin{description}
+  \item[DAU] Daily Active Users: the count of unique users who performed at least one
+    meaningful action in the product on a given day. ``Meaningful'' must be defined (a
+    login is often too weak a signal; a core-feature interaction is more defensible).
+  \item[MAU] Monthly Active Users: the count of unique users who performed at least one
+    meaningful action in the product at any point in the calendar month.
+\end{description}
 
+\textbf{What it tracks.} The fraction of monthly active users who return on a daily basis
+--- a direct proxy for how habitual and embedded the product has become in users' daily
+workflows.
+
+\textbf{Why it matters.} Stickiness predicts retention. A product with \qty{50}{\percent}
+stickiness is genuinely woven into daily routine; at \qty{10}{\percent}, users visit
+occasionally and are one bad experience from churning. For B2B SaaS, stickiness also drives
+expansion revenue: teams that use a product daily are far more likely to add seats and
+upgrade than occasional users.
+
+\textbf{Benchmark.}
+\begin{itemize}
+  \item $>\qty{50}{\percent}$: elite; characteristic of daily-utility products (Slack,
+    Gmail, Notion).
+  \item $>\qty{20}{\percent}$: decent for B2B tools not designed for daily use (quarterly
+    planning, annual reporting tools naturally sit lower).
+  \item $<\qty{10}{\percent}$: low engagement; typically predicts high churn and low
+    expansion.
+\end{itemize}
+
+\textbf{Trap.} Bot accounts and duplicate user accounts inflate DAU and MAU independently,
+but the ratio can still look healthy even as real user engagement falls. Always validate
+active-user counts against login and action deduplication before reporting stickiness.
+
+\begin{example}[Stickiness in the running SaaS]
+In the measurement month: MAU $=$ \num{5500} (out of \num{6700} paying customers, some
+teams share logins or use the product infrequently). Average daily active users across
+the month: \num{1650}.
+\[
+  \text{Stickiness} = \frac{1650}{5500} = \qty{30}{\percent}.
+\]
+This is above the B2B decent threshold. The \num{1200} paying customers not in MAU are
+flagged for a proactive customer-success outreach --- low-usage accounts are the leading
+indicator of churn, not trailing.
+\end{example}
+
+
+\subsection{D30 Retention --- Day-30 Retention Rate}
+
+\textbf{Formula.}
+\[
+  \text{D30 Retention} = \frac{\text{Users active at day 30}}{\text{Cohort size at day 0}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Users active at day 30] Users from the acquisition cohort who performed at least one
+    meaningful action in the product on day 30 (or within a defined window around day 30,
+    e.g., days 27--33).
+  \item[Cohort size at day 0] The number of users who joined (or activated) in the cohort.
+    A ``cohort'' is a group defined by a shared starting event --- typically the signup week
+    or the first-login week.
+\end{description}
+
+\textbf{What it tracks.} The fraction of a new-user cohort that is still engaging with the
+product 30 days after joining. D30 retention is the first durable signal of whether the
+product has created lasting value for new users --- early-day retention (D1, D7) is often
+inflated by novelty.
+
+\textbf{Why it matters.} D30 retention is the strongest early predictor of long-run customer
+LTV. A cohort that retains at \qty{40}{\percent} on day 30 will have a very different
+long-run retention curve than one that retains at \qty{15}{\percent}. It also diagnoses
+the onboarding funnel: a D30 drop-off concentrated in the first two weeks points to an
+onboarding problem; a drop-off in weeks three and four points to a value-realisation problem
+(users got on the product but did not find its core value). Full retention curve analysis
+is in \cref{ch:digital-funnel-and-crm}.
+
+\textbf{Benchmark.} Highly product-category-dependent. Consumer mobile: \qty{20}{\percent}
+D30 retention is a reasonable floor. B2B SaaS with active onboarding: \qty{60}{\percent}+
+D30 retention is achievable and important for the unit economics to work.
+
+\textbf{Trap.} Averaging D30 retention across acquisition sources masks the quality
+difference between channels. Organic SEO cohorts may retain at \qty{70}{\percent} while
+paid social cohorts from a broad-audience campaign retain at \qty{25}{\percent}; the blended
+figure of \qty{45}{\percent} describes neither cohort and sends the acquisition team a
+misleading signal about paid channel quality.
+
+\begin{example}[D30 Retention in the running SaaS]
+A February signup cohort of \num{800} trial users (from \num{10000} sessions $\to$
+\num{800} trials). Active on day 30: \num{520}.
+\[
+  \text{D30 Retention} = \frac{520}{800} = \qty{65}{\percent}.
+\]
+Within this cohort, Google-organic signups (600): day-30 retention \qty{74}{\percent}.
+Paid-LinkedIn signups (200): day-30 retention \qty{41}{\percent}. The blended figure of
+\qty{65}{\percent} conceals a meaningful quality difference that should inform how the
+\money{120000} monthly acquisition budget is allocated.
+\end{example}
+
+
+\subsection{NPS --- Net Promoter Score}
+
+\textbf{Formula.}
+\[
+  \mathrm{NPS} = \%\,\text{Promoters} - \%\,\text{Detractors}
+\]
+where Promoters are respondents who score 9--10 on the ``recommend'' question, and Detractors
+score 0--6.
+
+\textbf{What each term means.}
+\begin{description}
+  \item[\% Promoters] Share of survey respondents giving a score of 9 or 10 out of 10 on
+    the question: ``How likely are you to recommend [product] to a colleague?''
+  \item[\% Detractors] Share of respondents giving a score of 0--6 (inclusive). Scores of
+    7--8 are ``Passives'' and are excluded from the calculation.
+\end{description}
+
+\textbf{What it tracks.} A coarse, compressed proxy for customer satisfaction and word-of-mouth
+propensity. NPS ranges from $-100$ (all Detractors) to $+100$ (all Promoters).
+
+\textbf{Why it matters.} NPS is widely used as a top-line customer sentiment indicator and
+for benchmarking against industry peers. It is predictive of churn at the cohort level ---
+Detractor cohorts churn at materially higher rates than Promoter cohorts --- and it
+captures the word-of-mouth component of the growth model.
+
+\textbf{Benchmark.} Industry-dependent. SaaS: above 30 is positive, above 50 is strong.
+Below 0 is a warning sign requiring immediate qualitative investigation.
+
+\textbf{Trap.} Reading an 11-point survey as a precise number. A shift in NPS from 42 to 47
+in a sample of 300 respondents is statistically indistinguishable from noise --- the
+confidence interval typically spans 10--15 points. Trend direction over quarters matters
+more than point-in-time precision. Also: survey response bias systematically over-represents
+highly satisfied and highly dissatisfied customers, missing the ambivalent middle.
+
+\begin{example}[NPS in the running SaaS]
+Quarterly NPS survey sent to \num{6700} customers; \num{1340} responses (\qty{20}{\percent}
+response rate). Promoters (9--10): 670 (\qty{50}{\percent}). Passives (7--8): 469
+(\qty{35}{\percent}). Detractors (0--6): 201 (\qty{15}{\percent}).
+\[
+  \mathrm{NPS} = 50 - 15 = 35.
+\]
+The 201 Detractor accounts are cross-referenced against usage data: \qty{78}{\percent} of
+them have stickiness below \qty{10}{\percent}, confirming low engagement as the primary
+dissatisfaction driver and prioritising the customer-success intervention.
+\end{example}
+
+
+\subsection{Activation Rate}
+
+\textbf{Formula.}
+\[
+  \text{Activation Rate} = \frac{\text{Users who reach the ``aha moment''}}{\text{Total signups}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[``Aha moment''] The specific in-product action or milestone that correlates most
+    strongly with long-run retention. For a project-management SaaS, this might be
+    ``created first project with 3+ collaborators.'' For CRM: ``logged first deal and set
+    a follow-up.'' The aha moment is defined empirically from cohort retention analysis, not
+    assumed.
+  \item[Total signups] All users who registered during the measurement period, including
+    trials and free accounts.
+\end{description}
+
+\textbf{What it tracks.} The fraction of new users who successfully reach the product's core
+value moment during onboarding. Activation rate is the hinge between acquisition and
+retention: users who activate retain at 3--5$\times$ the rate of those who do not.
+
+\textbf{Why it matters.} Improving activation rate multiplies the value of every acquisition
+dollar: if 30 of every 100 trial signups activate, doubling activation to 60 effectively
+doubles the yield of acquisition without spending an extra dollar on media. It is the
+highest-leverage onboarding intervention available. The activation funnel connects directly
+to \cref{ch:digital-funnel-and-crm}.
+
+\textbf{Benchmark.} Strong activation rates vary by product complexity. Simple consumer
+tools: \qty{60}{\percent}+ is achievable. Complex B2B platforms: \qty{30}{\percent}--\qty{50}{\percent}
+is healthy; below \qty{20}{\percent} typically signals an onboarding problem severe enough
+to override acquisition investment.
+
+\textbf{Trap.} Defining ``activated'' too loosely inflates the metric without predicting
+retention. If activation is defined as ``logged in at least once,'' nearly all signups
+``activate'' but the metric predicts nothing. The correct definition is the event that
+maximally differentiates the long-run retention curves of activated vs non-activated users.
+
+\begin{example}[Activation Rate in the running SaaS]
+The product team defines activation as: ``created a workspace, added at least two
+integrations, and invited one collaborator within the first 7 days.'' Of \num{800} trial
+signups this month, \num{296} reached this milestone.
+\[
+  \text{Activation Rate} = \frac{296}{800} = \qty{37}{\percent}.
+\]
+Retention analysis shows activated users retain at \qty{82}{\percent} on day 30; non-activated
+users at \qty{19}{\percent}. The 37\% activation rate means 504 trial users are on the
+low-retention path. A targeted onboarding email sequence with a \qty{30}{\percent} lift in
+activation would add approximately 151 activated users per month, raising expected paid
+conversions from 200 to 238 at no additional acquisition spend --- equivalent to a
+\qty{19}{\percent} increase in effective marketing ROI.
+\end{example}
+
+
+%% ============================================================
 \section{Vanity Metrics --- What They Hide}
 
-These move with effort, not outcomes. Each is flagged because it actively misleads, not merely imprecise; pair it with the outcome metric noted.
+Vanity metrics move with effort, not with outcomes. Each one in this section actively
+misleads decision-making rather than merely being imprecise: it can increase while the
+business deteriorates, and optimising for it accelerates the deterioration. Each metric
+below carries an \textbf{admonition} in place of a worked example, plus a pointer to the
+outcome metric that should replace it.
 
-\begin{multicols}{2}
-\begin{metriccard}[colframe=red!65!black, colbacktitle=red!65!black]{Raw Impressions}{\text{total ad views}}
-  \mcfield{Tells you}{Almost nothing on its own}
-  \mcfield{Vanity}{Scales with spend; pair with reach \& frequency}
-\end{metriccard}
+\subsection{Raw Impressions}
 
-\begin{metriccard}[colframe=red!65!black, colbacktitle=red!65!black]{Email Open Rate}{\dfrac{\text{opens}}{\text{delivered}}}
-  \mcfield{Tells you}{Little since Apple MPP}
-  \mcfield{Vanity}{Privacy proxies pre-fetch the pixel; track clicks/replies}
-\end{metriccard}
+\textbf{Formula.}
+\[
+  \text{Raw Impressions} = \text{total ad views (served impressions)}
+\]
 
-\begin{metriccard}[colframe=red!65!black, colbacktitle=red!65!black]{Last-Click ROAS}{\dfrac{\text{last-click rev.}}{\text{spend}}}
-  \mcfield{Tells you}{Who closed, not who caused}
-  \mcfield{Vanity}{Ignores assist + view-through; use iROAS (\cref{ch:attribution-and-measurement})}
-\end{metriccard}
+\textbf{What each term means.}
+\begin{description}
+  \item[Served impressions] The number of times an ad was technically delivered to a device.
+    This includes impressions never actually seen by a human (below-the-fold, auto-play
+    with no viewability verification, invalid traffic).
+\end{description}
 
-\begin{metriccard}[colframe=red!65!black, colbacktitle=red!65!black]{Unqualified Leads}{\text{form fills}}
-  \mcfield{Tells you}{Interest, not demand}
-  \mcfield{Vanity}{A lead is not a customer; feed \emph{qualified} value back (\cref{ch:paid-acquisition-platforms})}
-\end{metriccard}
+\textbf{What it tracks.} Spend, not reach. Raw impression volume scales mechanically with
+budget; it does not indicate that a real human saw the ad, that the ad was relevant, or that
+it produced any effect.
 
-\begin{metriccard}[colframe=red!65!black, colbacktitle=red!65!black]{Follower Count}{\text{social followers}}
-  \mcfield{Tells you}{Audience size, not value}
-  \mcfield{Vanity}{No revenue link; track the engaged, converting cohort}
-\end{metriccard}
+\textbf{Why it misleads.} A campaign can multiply impression count by increasing budget,
+loosening targeting, or buying cheap remnant inventory --- none of which improves business
+outcomes. Use \emph{unique reach with viewability} (the number of distinct humans who saw a
+verified-viewable impression) and \emph{frequency} (impressions per unique user) instead.
 
-\begin{metriccard}[colframe=red!65!black, colbacktitle=red!65!black]{App Downloads}{\text{installs}}
-  \mcfield{Tells you}{Trial, not adoption}
-  \mcfield{Vanity}{Meaningless without activation + retention}
-\end{metriccard}
-\end{multicols}
+\begin{admonition}{Warning}
+Raw impressions can increase by \qty{300}{\percent} while effective reach remains flat ---
+simply by purchasing the same audience three times rather than reaching three times as many
+people. A campaign reporting ``500 million impressions'' could represent 50 million people
+each seeing the ad 10 times (excessive frequency, likely with diminishing returns by
+impression 4) or 500 million different people each seeing it once (broad, light-touch
+reach). The impression count is identical; the business implication is opposite.
+Use reach and frequency as the paired reporting unit, never impressions alone.
+\end{admonition}
+
+
+\subsection{Email Open Rate}
+
+\textbf{Formula.}
+\[
+  \text{Open Rate} = \frac{\text{Opens}}{\text{Emails delivered}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Opens] Traditionally tracked by a 1-pixel tracking image loaded when the email is
+    displayed. Since Apple's Mail Privacy Protection (MPP) launched in September 2021,
+    Apple Mail pre-fetches this pixel on behalf of the user whether or not they opened the
+    email.
+  \item[Emails delivered] Sent minus hard bounces.
+\end{description}
+
+\textbf{What it tracks.} Almost nothing since Apple MPP. For lists with significant Apple
+Mail usage (\qty{50}{\percent}+), reported open rates are largely a function of how many
+subscribers use Apple Mail, not of whether they actually read the email.
+
+\textbf{Why it misleads.} Open rates reported in most ESPs have been systematically inflated
+since September 2021 by Apple's privacy proxies. A list that shows \qty{48}{\percent} open
+rate may have a true human-open rate of \qty{20}{\percent}. Optimising subject lines for
+open rate using this data optimises for what the Apple proxy fetches, not for human
+behaviour. Use \emph{click rate} (clicks per delivered email) and \emph{reply rate} as the
+primary engagement metrics; for direct-response emails, use \emph{revenue per email sent}.
+
+\begin{admonition}{Warning}
+A B2B SaaS measured email performance by open rate and celebrated a rise from \qty{32}{\percent}
+to \qty{47}{\percent} after a subject-line test. Click rates were flat. Revenue per email
+sent was flat. The open-rate lift was entirely attributable to a shift in list composition
+toward Apple Mail users --- the proxy inflated the denominator at a different rate. Decisions
+made on this data reallocated budget toward email and away from channels with measurable
+click-and-conversion data, harming overall marketing ROI. Report open rates only as a
+historical artefact; never make resource-allocation decisions from them.
+\end{admonition}
+
+
+\subsection{Last-Click ROAS}
+
+\textbf{Formula.}
+\[
+  \text{Last-Click ROAS} = \frac{\text{Revenue attributed to last click}}{\text{Ad spend}}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Revenue attributed to last click] Revenue from conversions where the reported
+    channel received the final click before purchase. All upstream channels (awareness,
+    consideration, retargeting assists) receive zero credit.
+  \item[Ad spend] The cost of the campaign being measured.
+\end{description}
+
+\textbf{What it tracks.} Who closed the sale, not who caused the sale. Last-click ROAS
+identifies the channel that happened to be in contact at the moment of conversion, which in
+a multi-touch journey is typically a branded-search or retargeting campaign that intercepted
+demand generated by an earlier touchpoint.
+
+\textbf{Why it misleads.} Last-click attribution systematically over-credits the final
+touchpoint (branded search, direct, retargeting) and under-credits the channels that created
+initial awareness and intent (social prospecting, content, PR). Budget optimised on
+last-click ROAS shifts spend toward demand-\emph{capturing} channels and defunds
+demand-\emph{creating} channels, eventually starving the top of the funnel and causing
+last-click ROAS itself to decay as the underlying awareness base erodes. Use
+\emph{iROAS from incrementality experiments} as the causal alternative
+(\cref{ch:attribution-and-measurement}).
+
+\begin{admonition}{Warning}
+A well-known e-commerce brand optimised exclusively on last-click ROAS for 18 months.
+Branded-search ROAS rose from $6\times$ to $11\times$ (it was capturing demand created by
+a brand equity built over years). Simultaneously, top-of-funnel spend was cut from
+\qty{35}{\percent} to \qty{12}{\percent} of budget. New-customer acquisition volume fell
+\qty{40}{\percent} over the period; the existing customer base aged out and revenue declined
+two years later. The last-click ROAS number was the highest it had ever been on the day the
+brand's organic search traffic began its structural decline. iROAS tests, run too late,
+showed the top-of-funnel channels had an iROAS of 3.8 --- highly profitable and starved to
+zero.
+\end{admonition}
+
+
+\subsection{Unqualified Leads}
+
+\textbf{Formula.}
+\[
+  \text{Unqualified Leads} = \text{form fills or contact requests}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Form fills] Any submission of a web form, gated-content download, demo-request
+    click, or contact request, regardless of buyer intent, company fit, or purchase
+    authority.
+\end{description}
+
+\textbf{What it tracks.} Interest, not demand. An unqualified lead has expressed some form
+of interest but has not been evaluated against the criteria that make a prospect a viable
+buyer (company size, budget, authority, need, timing --- BANT or equivalent framework).
+
+\textbf{Why it misleads.} Unqualified lead volume scales with top-of-funnel spend and
+gated-content volume, both of which can be increased mechanically with no improvement in
+pipeline quality. A content team that publishes a viral ``Free ROI Calculator'' download
+may generate 5,000 form fills in a month with zero intent to buy. Reporting lead volume to
+leadership creates pressure to generate more leads, not better ones, resulting in sales teams
+buried in low-quality outreach. Feed \emph{qualified pipeline value} (sales-qualified
+opportunities with attached revenue) back to the marketing team instead, and attribute
+revenue against spend rather than leads against spend. See
+\cref{ch:paid-acquisition-platforms} for the full CPL-to-CPA conversion mechanics.
+
+\begin{admonition}{Warning}
+A B2B SaaS marketing team was measured on monthly lead volume. To hit 2,000 leads per month,
+the team purchased a third-party email list and promoted a generic whitepaper. Leads hit
+2,500 --- a record. Sales accepted leads (SALs): 48. Closed won: 3. Cost per closed customer
+from this campaign: over \money{15000}, versus the blended CAC of \money{600}. The lead
+number rose; the business was harmed. Measure \emph{qualified pipeline generated} and
+\emph{revenue influenced} instead --- metrics the sales and marketing teams must agree on
+before the campaign launches.
+\end{admonition}
+
+
+\subsection{Follower Count}
+
+\textbf{Formula.}
+\[
+  \text{Follower Count} = \text{total followers on a social platform}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Followers] User accounts that have clicked ``Follow'' on the brand's social profile.
+    On most platforms, the majority of followers see less than \qty{5}{\percent} of organic
+    posts due to algorithmic distribution limits.
+\end{description}
+
+\textbf{What it tracks.} Audience size on a platform, not audience value. Follower count
+measures a historical accumulation of ``Follow'' clicks --- it does not measure engagement,
+reach of current content, or any revenue linkage.
+
+\textbf{Why it misleads.} Follower count can be grown through follow/unfollow tactics,
+paid follower acquisition, viral off-topic content, and giveaway campaigns --- all of which
+add followers with no commercial relationship to the brand. A brand with one million
+followers reaching \qty{0.5}{\percent} organically (5,000 people) may be less effective than
+a competitor with 50,000 highly engaged followers reaching \qty{20}{\percent} (10,000
+people). Track \emph{engaged reach per post}, \emph{conversion rate from social traffic},
+and \emph{revenue attributable to social content} instead.
+
+\begin{admonition}{Warning}
+A B2B software company grew its LinkedIn follower count from 8,000 to 42,000 over six months
+through a viral ``industry meme'' content series. Website traffic from LinkedIn: flat.
+Demo requests from LinkedIn: unchanged. The followers acquired were largely individual
+contributors in adjacent industries who would never purchase the product. Content strategy
+was subsequently restructured around thought-leadership posts targeting the actual buyer
+persona (VP Operations, Chief of Staff), reducing follower growth rate but increasing
+demo-request attribution from LinkedIn by \qty{220}{\percent}.
+\end{admonition}
+
+
+\subsection{App Downloads}
+
+\textbf{Formula.}
+\[
+  \text{App Downloads} = \text{total installs from app store}
+\]
+
+\textbf{What each term means.}
+\begin{description}
+  \item[Downloads / Installs] The count of times the application was installed on a device.
+    This includes installs that are immediately abandoned, installs on devices that are never
+    opened, and re-installs by the same user after deleting the app.
+\end{description}
+
+\textbf{What it tracks.} Trial, not adoption. A download is the beginning of the customer
+journey, not a point on the retention curve.
+
+\textbf{Why it misleads.} App store download counts can be inflated by store-optimisation
+tricks, broad-audience install campaigns, and incentivised installs (``download for a
+prize''). A consumer app with 10 million downloads and \qty{5}{\percent} day-30 retention
+has 500,000 users; the same app with 1 million downloads and \qty{40}{\percent} day-30
+retention has 400,000 users. The first looks 10$\times$ larger; the businesses are
+comparable in active users. Report \emph{activation rate}, \emph{day-30 retention}, and
+\emph{monthly active users} alongside download counts; never use downloads as a success
+metric in isolation.
+
+\begin{admonition}{Warning}
+A mobile gaming startup celebrated 5 million downloads in its first three months, attracting
+a seed extension at a \money{15000000} valuation anchored to download velocity. Day-30
+retention was \qty{3}{\percent}; MAU at month four: \num{48000}. By month eight, DAU had
+fallen below \num{10000} and new-install velocity had stalled as the broad-audience install
+campaign exhausted the addressable market. The vanity metric drove a funding decision on
+false premises; the outcome metric (D30 retention $\times$ cohort size) was available from
+day one and predicted the trajectory accurately.
+\end{admonition}
