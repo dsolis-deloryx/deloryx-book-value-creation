@@ -215,6 +215,36 @@ and a time-to-payback figure that a finance approver can verify.
 \end{example}
 
 
+\section{Risk Reversal \& Guarantees}\label{sec:risk-reversal}
+% complexity: 2
+
+Every purchase is a coin-flip the buyer evaluates: a certain outlay now against an uncertain outcome later. Prospect theory \parencite{tversky1992cumulative} puts a hard number on the asymmetry --- the loss-aversion coefficient $\lambda \approx 2.25$ means an uncertain loss weighs roughly $2.25 \times$ more in the buyer's mind than an equally-sized certain gain. A guarantee shifts that loss into the seller's column: the buyer's expected disutility from ``the product doesn't work'' drops from $\lambda \cdot \text{loss}$ toward zero, and the seller absorbs the residual risk in exchange for a higher conversion rate.
+
+The first-order condition is straightforward. Let $p$ be the fraction by which the guarantee lifts the conversion rate from its un-guaranteed baseline, and $\theta$ the post-purchase refund rate. The guarantee is net-positive whenever $(1+p)(1-\theta) > 1$, which solves to:
+
+\begin{equation}\label{eq:guarantee-breakeven}
+  \theta^{*} \;=\; \frac{p}{1+p}.
+\end{equation}
+
+A guarantee that lifts conversion by \qty{28}{\percent} ($p = 0.28$) supports refund rates up to $\theta^{*} = 0.28/1.28 \approx \qty{22}{\percent}$ before the math turns net-negative --- meaningful slack to absorb the honesty tax.
+
+\begin{example}[Money-back guarantee on the enterprise tier]
+The running B2B SaaS sells the enterprise tier at \money{299}/mo, with CLV \money{3150} (\cref{eq:clv}). Trial-to-paid converts at \qty{25}{\percent} without a guarantee; adding a \num{90}-day money-back guarantee with no contractual lock-in raises it to \qty{32}{\percent} ($p = \qty{28}{\percent}$ conversion lift, in line with the $\lambda \approx 2.25$ multiplier on perceived sacrifice). Of those who buy, \qty{8}{\percent} take the refund. Per 800-trial cohort:
+
+\begin{itemize}
+  \item Without guarantee: $800 \times 0.25 = 200$ paid customers; PV-CLV $= 200 \times \money{3150} = \money{630000}$.
+  \item With guarantee: $800 \times 0.32 = 256$ paid; \num{20} take the refund; net retained \num{236}; PV-CLV $= 236 \times \money{3150} = \money{743400}$.
+\end{itemize}
+
+The guarantee adds \money{113400} of PV per 800-trial cohort despite paying out an \qty{8}{\percent} refund rate --- well below the \qty{22}{\percent} break-even of \cref{eq:guarantee-breakeven}. The loss-aversion arithmetic runs in the seller's favour.
+\end{example}
+
+\begin{admonition}{Warning}
+A guarantee invites adverse selection: buyers who suspect the product is not for them are more likely to take the refund, raising $\theta$ above the natural rate. Two designs reduce this: (i) require a measurable usage milestone before the refund window opens (forces self-qualification), and (ii) scope the refund to the unused portion (limits abuse without removing the loss-reversal effect). The empty guarantee --- ``you'll love it'' --- adds neither conversion nor reduced friction; the binding guarantee, with a clear mechanism, does.
+\end{admonition}
+
+The same logic generalises. Free trials, paid pilots, land-and-expand pricing, and risk-shared SLAs all move uncertainty from the buyer's books to the seller's. Each is a candidate whenever the conversion lift it buys exceeds the residual loss it absorbs --- the comparison \cref{eq:guarantee-breakeven} formalises.
+
 \section{Negotiation: BATNA, Reservation Value \& ZOPA}\label{sec:negotiation}
 % complexity: 4
 

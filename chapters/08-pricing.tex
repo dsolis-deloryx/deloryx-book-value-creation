@@ -158,3 +158,43 @@ Assuming the annual discount must compensate for the full cost of early payment.
 \end{admonition}
 
 Price framing interacts with the reference price in \cref{eq:evc}: a price displayed next to a higher anchor (Salesforce \money{150}) is evaluated as a gain, not a cost. The salesperson's first move in any demo is to establish the reference competitor's cost --- this sets the anchor against which the SaaS price is evaluated as dramatically cheaper, regardless of the absolute number. Psychological pricing does not change the economic price; it changes the perceived price. When framing is consistent with the product's positioning (\cref{ch:segmentation-targeting-positioning}) --- mid-market buyers value simplicity and predictability --- the psychological effects reinforce the value proposition rather than contradicting it. \textcite{thaler1985mental} is the primary source; the prospect-theory foundations are in \cref{eq:prospect} (\cref{ch:decisions-under-uncertainty}).
+
+\section{Constructing the Offer}\label{sec:offer-construction}
+% complexity: 3
+
+Price is one number; the offer is the full bundle the buyer evaluates against it. The pricing chapter so far has set the ceiling (\cref{eq:evc}) and the markup (\cref{eq:optimal-markup}); converting that latent willingness-to-pay into an actual transaction requires composing four levers the buyer weighs in parallel. \textcite{hormozi2021offers}, the best-known practitioner synthesis, operationalises them as a simple ratio:
+
+\begin{equation}\label{eq:value-equation}
+  \mathrm{PerceivedValue}
+  \;=\;
+  \frac{\mathrm{DreamOutcome}\;\times\;\mathrm{PerceivedLikelihood}}
+       {\mathrm{TimeDelay}\;\times\;\mathrm{Effort \& Sacrifice}}.
+\end{equation}
+
+The equation is a heuristic, not a regression coefficient --- but each variable maps onto evidence the rest of the book establishes independently.
+
+\begin{description}
+  \item[Dream Outcome] The buyer's economic value to customer (\cref{eq:evc}): revenue lifted, cost avoided, risk hedged. Raising the perceived size of this gain raises the numerator. Mental availability of the brand (\cref{ch:brand-growth}) and a sharp value proposition (\cref{ch:segmentation-targeting-positioning}) decide whether the buyer even sees the gain.
+  \item[Perceived Likelihood of Achievement] The buyer's belief that the promised outcome will arrive. This is the trust component (\cref{eq:trust}): meta-analytically validated trustworthiness \parencite{colquitt2007meta} and social-proof field experiments \parencite{goldstein2008field} shift this probability assessment without changing the product.
+  \item[Time Delay] How long until the buyer sees the result. Activation in onboarding (\cref{ch:product-management}) determines time-to-value; every week of delay compresses the perceived numerator via temporal discounting.
+  \item[Effort \& Sacrifice] What the buyer must do, give up, or risk to obtain the outcome --- migration effort, contractual lock-in, monetary outlay. Each is encoded by the buyer as a loss, and prospect theory \parencite{tversky1992cumulative} puts the loss-aversion coefficient at $\lambda \approx 2.25$: any sacrifice on the right-hand side of the ratio is weighted more than twice as heavily as an equal-sized gain on the left.
+\end{description}
+
+The strategic implication is asymmetric. Doubling the Dream Outcome and halving Effort \& Sacrifice are mathematically equivalent for the ratio --- but operationally, the second is usually cheaper. Removing friction (one-click migration, money-back guarantee, free pilot, white-glove onboarding) compounds with the $\lambda \approx 2.25$ multiplier on the buyer's loss-weighted sacrifice. Risk reversal is treated formally in \cref{sec:risk-reversal}.
+
+\begin{example}[Offer redesign on the running SaaS]
+The running B2B SaaS sells the enterprise tier at \money{299}/mo against an EVC of roughly \money{400}/mo of avoided manual reconciliation. The base offer asks the buyer to commit annually, migrate 40 ERPs manually, and wait six weeks for value. Trial-to-paid converts at \qty{25}{\percent} (\cref{eq:funnel-chain}). Four levers move the buyer's perceived value without changing the price:
+
+\begin{itemize}
+  \item \emph{Dream Outcome:} quantify the avoided loss explicitly --- ``save \money{4800}/yr of CFO time'' --- rather than list features.
+  \item \emph{Perceived Likelihood:} two named-customer case studies \parencite{goldstein2008field} plus a SOC~2 / SLA badge raise trustworthiness on the Mayer ability/benevolence/integrity dimensions \parencite{mayer1995model}.
+  \item \emph{Time Delay:} bundle migration as a 14-day implementation sprint with a dedicated engineer; ``value in two weeks, not six.''
+  \item \emph{Effort \& Sacrifice:} replace the annual lock-in with a \num{90}-day money-back guarantee; the buyer's perceived loss collapses by the $\lambda \approx 2.25$ multiplier.
+\end{itemize}
+
+Suppose this lifts trial-to-paid from \qty{25}{\percent} to \qty{30}{\percent} at constant traffic. The 800-trial cohort yields $800 \times 0.30 = 240$ paid customers, an additional \num{40} above the baseline of \num{200}. At CLV \money{3150} (\cref{eq:clv}), that is \money{126000} of present-value customer equity per cohort, gained at zero incremental CAC. The price did not change; the offer did.
+\end{example}
+
+\begin{admonition}{Note}
+\Cref{eq:value-equation} is not a regression. It is an ordering heuristic for which lever to pull first when conversion is the bottleneck. The empirical backbone --- EVC (\cref{eq:evc}), prospect theory \parencite{tversky1992cumulative}, trust \parencite{mayer1995model,colquitt2007meta}, and field-experiment compliance lifts \parencite{goldstein2008field} --- lives in the chapters cited above; the equation collects the levers in one place.
+\end{admonition}
