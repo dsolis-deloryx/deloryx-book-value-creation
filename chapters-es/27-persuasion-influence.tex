@@ -1,0 +1,506 @@
+\chapter{Persuasión, Influencia y Negociación}\label{ch:persuasion-influence}
+
+% Alcance: influencia basada en evidencia --- principios validados por experimentos de campo,
+%   encuadre de procesamiento dual, negociación basada en principios (BATNA/valor de reserva/ZOPA),
+%   poder organizacional, la ecuación de confianza. NUEVO (Parte VII).
+% Gancho de valor: la influencia convierte una propuesta de valor genuina en clientes cerrados
+%   (CAC menor), rondas financiadas, contrataciones y excedente capturado (margen mayor) ---
+%   todo orientado hacia ROIC > WACC. La manipulación lo invierte (ganancia a corto plazo,
+%   colapso de confianza/LTV). Cierra la brecha de negociación.
+% Borrador conforme al estilo editorial: prosa continua + example/admonition; ejemplos trabajados
+%   con la SaaS de referencia.
+
+Un producto que genera valor genuino aún puede fracasar en capturarlo sin la capacidad de
+persuadir. La columna vertebral de creación de valor en este libro va desde la comprensión
+económica hasta la ejecución operativa, pero cada nodo de esa columna --- cerrar un cliente,
+financiar una ronda, contratar a un ingeniero, fijar el precio con un proveedor --- requiere
+que una persona decida moverse en la dirección correcta. La influencia es el mecanismo que
+convierte una propuesta de valor genuina en una venta cerrada (reduciendo el CAC, como en
+\cref{eq:cac}), una hoja de términos firmada y excedente capturado (ampliando el margen y
+empujando el ROIC por encima del WACC, según \cref{eq:roic}). Cuando las técnicas de
+influencia se usan en cambio para fabricar una venta que el producto subyacente no puede
+sostener, la conversión a corto plazo se revierte en el mediano plazo a través del \emph{churn}
+que colapsa el valor de vida del cliente (véase \cref{eq:clv}). Este capítulo construye el
+instrumental basado en evidencia que separa la persuasión legítima de la manipulación, y la
+negociación basada en principios del regateo posicional de suma cero.
+
+
+\section{La arquitectura de la influencia}\label{sec:influence-principles}
+% complejidad: 3
+
+¿Por qué algunos mensajes mueven a las personas mientras otros se disuelven en el ruido? La
+pregunta tiene una respuesta estructural fundamentada en experimentos de campo, no en
+anécdotas. El tratamiento popular de este dominio, \textcite{cialdini2021influence}, cataloga
+siete principios de cumplimiento; el fundamento científico detrás de esos principios es un
+conjunto de experimentos de campo aleatorizados que miden el comportamiento de cumplimiento
+real en entornos reales, con condiciones de control preasignadas y tamaños del efecto
+cuantificados.
+
+La evidencia experimental más directa concierne a las normas descriptivas --- la señal de
+«las personas como tú, en tu situación, se comportan de esta manera». \textcite{goldstein2008field}
+llevaron a cabo un experimento de campo dentro de un hotel, aleatorizando los mensajes de
+reutilización de toallas entre habitaciones ocupadas sin que los huéspedes lo supieran. El
+mensaje ambiental estándar («Ayude a salvar el medio ambiente») produjo una tasa de
+reutilización de \qty{35.1}{\percent}. Una norma descriptiva general («La mayoría de los
+huéspedes reutilizan sus toallas») elevó el cumplimiento hasta \qty{44.1}{\percent} --- un
+incremento absoluto de \qty{9}{\percent} puntos, que representa un aumento relativo de
+aproximadamente \qty{25.6}{\percent} sobre el control.
+% goldstein2008field: aumento por norma descriptiva vs. control, experimento de campo con toallas de hotel
+Una segunda condición ajustó la norma al contexto inmediato del individuo: «El \qty{75}{\percent}
+de los huéspedes que se alojaron en esta habitación reutilizaron sus toallas.» Esta norma
+provincial elevó el cumplimiento hasta \qty{49.3}{\percent}.
+% goldstein2008field: tasa de norma provincial, segundo experimento
+El mecanismo es el mismo que rige la optimización de la tasa de conversión: las personas usan
+el comportamiento observado de un grupo de referencia para resolver la incertidumbre sobre la
+acción correcta, y cuanto más de cerca ese grupo de referencia refleja su propia situación,
+mayor es la atracción.
+
+La reciprocidad ha sido medida con igual rigor en el campo. \textcite{strohmetz2002field}
+aleatorizaron la manera en que los meseros de un restaurante entregaban la cuenta final,
+introduciendo pequeños obsequios inesperados para medir el incremento en propinas. Un solo
+caramelo elevó las propinas un \qty{3.3}{\percent} con respecto al control sin obsequio; dos
+caramelos las elevaron un \qty{14.1}{\percent}.
+% strohmetz2002field: aumento con un solo caramelo 3.3%, con dos caramelos 14.1%, experimento de campo en propinas
+El efecto más pronunciado --- un aumento relativo de aproximadamente \qty{23}{\percent} ---
+ocurrió cuando el mesero entregó un caramelo, se alejó y luego regresó para ofrecer un segundo
+como excepción personalizada.
+% strohmetz2002field: secuencia personalizada, pico ~23% de aumento relativo
+Dos características de este resultado importan para los profesionales. Primera, la magnitud:
+el obsequio era trivial en términos monetarios; el incremento en el cumplimiento no lo era.
+Segunda, la personalización: la percepción de que la concesión estaba dirigida específicamente
+a esa contraparte amplificó el efecto de manera sustancial. Para un movimiento de ventas SaaS,
+una extensión de prueba de funcionalidades enmarcada como una excepción exclusiva e inesperada
+para el contexto de evaluación específico de ese prospecto activa ambas propiedades de manera
+simultánea.
+
+Estos indicadores heurísticos se sitúan en la ruta periférica del Modelo de Probabilidad de
+Elaboración (ELM), desarrollado completamente por \textcite{petty1986elaboration}. El ELM
+postula que la persuasión recorre una de dos rutas: cuando un comprador tiene alta motivación
+y capacidad para pensar con cuidado, sigue la \emph{ruta central} --- sopesando la calidad de
+los argumentos, escrutando la evidencia, actualizando las creencias de manera racional. Cuando
+la motivación o la capacidad es baja --- distraído, con poco tiempo, poco familiarizado con el
+dominio --- sigue la \emph{ruta periférica}, apoyándose en indicadores heurísticos como normas
+descriptivas, señales de autoridad o la afinidad que siente por el emisor. El cambio de actitud
+por la ruta central es duradero y resistente a la contraargumentación; el cambio de actitud por
+la ruta periférica se desvanece cuando el indicador desaparece. \textcite{carpenter2015meta}
+sintetizaron 134 estimaciones de tamaño del efecto de la literatura del ELM y confirmaron esta
+asimetría de manera cuantitativa: la calidad de los argumentos produce un efecto de persuasión
+sustancialmente mayor cuando la elaboración es alta (procesamiento central) que cuando es baja
+(procesamiento periférico).
+% carpenter2015meta: 134 efectos, efecto de calidad de argumentos en ruta central >> ruta periférica
+
+La implicación práctica de diseño para un \emph{pitch} B2B es la satisfacción simultánea de
+ambas rutas: evidencia económica rigurosa para el comprador que profundiza en los indicadores
+unitarios, y señales creíbles de prueba social para los primeros treinta segundos antes de que
+decida profundizar. Los casos genéricos («miles de equipos nos usan») explotan deficientemente
+la prueba social porque la norma está demasiado distante de la situación del prospecto. El
+hallazgo de \textcite{goldstein2008field} apunta a una prescripción concreta: segmentar la
+prueba social para que coincida con el contexto exacto del prospecto --- industria, etapa de
+la empresa, entorno regulatorio --- y el incremento en el cumplimiento se deriva del mecanismo
+de norma provincial más que de un halo de autoridad más amplio pero más débil.
+
+Vinculando la influencia con el \emph{funnel} de adquisición (\cref{eq:funnel-chain}): cada
+etapa de la cadena --- sesión a prueba, prueba a pago --- es una decisión de cumplimiento.
+La prueba social y la reciprocidad son multiplicadores de la tasa de conversión que operan
+sobre el denominador del CAC. Una tasa de conversión de prueba a pago del \qty{25}{\percent}
+implica que tres de cada cuatro pruebas se pierden sin acción adicional; añadir una señal de
+prueba social contextualizada al momento del final de la prueba y un indicador de reciprocidad
+genuina puede desplazar esa tasa de manera significativa. Los mismos mecanismos se aplican a
+cada puerta del \emph{funnel}.
+
+\begin{example}[Prueba social contextualizada en la puerta de conversión de prueba a pago]
+El \emph{funnel} SaaS convierte \num{10000} sesiones en \num{800} pruebas y \num{200} cuentas
+de pago por mes, con una tasa de conversión de prueba a pago del \qty{25}{\percent}. El CAC
+se sitúa en \money{600} frente a un objetivo de LTV:CAC de \num{5.25}\texttimes{}
+(\cref{eq:ltv-cac}).
+
+El equipo añade dos mensajes en el punto de contacto del día 7 de la prueba: (1)~una norma
+provincial de un cliente en el segmento exacto del prospecto («El \qty{73}{\percent} de los
+equipos SaaS fintech en Series~B de su región convirtieron a pago este trimestre»), activando
+el mecanismo de norma provincial de \textcite{goldstein2008field}; (2)~un indicador de
+reciprocidad personalizado de un ejecutivo de cuenta con nombre que ofrece una sesión de
+\emph{onboarding} extendida, enmarcada como excepción específica para la complejidad de
+integración de este prospecto, activando el mecanismo de concesión personalizada de
+\textcite{strohmetz2002field}. Suponga una mejora conservadora de \qty{4}{\percent} puntos en
+la conversión de prueba a pago, del \qty{25}{\percent} al \qty{29}{\percent}, sustancialmente
+por debajo de los topes del experimento de campo. Eso convierte \num{800} pruebas en \num{232}
+cuentas de pago --- \num{32} clientes adicionales --- sin cambiar sesiones, pruebas ni el gasto
+de adquisición de \money{120000}. El CAC efectivo cae de \money{600} a aproximadamente
+\money{517}. Con un CLV de \money{3150} (\cref{eq:clv}), esos \num{32} clientes adicionales
+representan \money{100800} en valor presente de capital de cliente creado sin desembolso
+marginal alguno. La palanca es el encuadre en una puerta de cuello de botella, no gasto
+adicional en medios.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Los mismos mecanismos que permiten la persuasión ética pueden ser utilizados como armas. La
+escasez falsa («solo quedan 3» cuando el estante está lleno), la prueba social fabricada
+(reseñas compradas, conteos de usuarios inflados) o la urgencia manufacturada son patrones
+oscuros: elevan la métrica de conversión inmediata y colapsan las dos cosas que la sostienen.
+La confianza se evapora ante la primera contradicción, generando \emph{churn} que destruye
+el CLV (\cref{eq:clv}) que la conversión debía crear. El género de literatura de negocios que
+trata la manipulación como estrategia --- \textcite{greene1998laws} siendo un ejemplo
+prominente --- confunde la victoria táctica a corto plazo con la ventaja competitiva duradera.
+La evidencia a largo plazo, analizada en \cref{sec:power-trust}, apunta en la dirección
+opuesta: la confianza se acumula en LTV; la manipulación se acumula en \emph{churn} y daño
+reputacional.
+\end{admonition}
+
+
+\section{La psicología del pitch}\label{sec:pitch-psychology}
+% complejidad: 3
+
+Todo \emph{pitch} es un ejercicio de encuadre: los mismos hechos, presentados de manera
+diferente, producen decisiones diferentes. Esto no es un truco retórico --- es la estructura
+documentada de la percepción humana del valor. El mecanismo estructural más profundo es la
+función de valor asimétrica formalizada en la \emph{teoría prospectiva acumulativa} por
+\textcite{tversky1992cumulative}. El tratamiento popular de esta comprensión aparece en
+\textcite{kahneman2011}; la evidencia cuantitativa primaria es el artículo de 1992, que deriva
+el coeficiente de aversión a la pérdida a partir de elecciones experimentales sobre resultados
+monetarios reales.
+
+Las personas no evalúan los resultados en magnitudes absolutas; los evalúan como ganancias o
+pérdidas relativas a un punto de referencia, y las pérdidas pesan aproximadamente \num{2.25}
+veces más que las ganancias equivalentes ($\lambda \approx 2.25$, \cref{eq:prospect}).
+% tversky1992cumulative: coeficiente de aversión a la pérdida lambda ~= 2.25, teoría prospectiva acumulativa
+Los efectos de contabilidad mental formalizados por \textcite{thaler1985mental} --- y analizados
+en el capítulo de precios en el tratamiento del encuadre psicológico en \cref{sec:psych-pricing}
+--- son la aplicación directa a las decisiones de compra y pago: la misma cantidad en dólares
+que evoca una pérdida se siente peor que la misma cantidad que evoca una ganancia, por lo que
+posicionar una oferta como una pérdida evitada en lugar de una ganancia capturada incrementa
+la urgencia percibida de actuar. Con $\lambda \approx 2.25$, un \emph{pitch} que enmarca un
+beneficio como «está perdiendo actualmente \money{400}/mes» ejerce más del doble de la gravedad
+psicológica que un \emph{pitch} que enmarca el beneficio idéntico como «podría ganar
+\money{400}/mes».
+% tversky1992cumulative: lambda ~= 2.25 implica que el encuadre de pérdida ejerce ~2x la gravedad persuasiva del encuadre de ganancia
+
+La heurística de anclaje, identificada por \textcite{tversky1974judgment}, es el mecanismo
+complementario: el primer número en una conversación ejerce una atracción gravitacional sobre
+todas las estimaciones posteriores. \textcite{galinsky2001anchoring} demostraron en experimentos
+controlados que la primera oferta en una negociación correlaciona con el precio de acuerdo final
+en $r = .93$ en condiciones sin defensa, explicando más de la mitad --- y en algunas
+especificaciones hasta el \qty{80}{\percent} --- de la varianza en el precio final.
+% galinsky2001anchoring: primera oferta / acuerdo final r = .93, hasta 80% de varianza explicada
+\textcite{northcraft1987anchoring} extendieron el resultado a expertos del dominio: los agentes
+inmobiliarios profesionales a quienes se les dieron diferentes anclas de precio de lista
+produjeron tasaciones de propiedades que seguían el ancla, incluso cuando creían que sus
+valoraciones se basaban en análisis de mercado objetivo.
+% northcraft1987anchoring: anclaje de expertos, profesionales inmobiliarios susceptibles al ancla de precio de lista
+En un contexto de \emph{pitch}, el anclaje funciona antes de que comience cualquier negociación:
+nombrar el costo de la inacción, o el valor total del resultado, antes de nombrar el precio
+establece la referencia contra la cual se juzgará el precio. En un contexto de negociación, la
+misma lógica se aplica dentro del ZOPA, tratado en detalle en \cref{sec:negotiation}.
+
+La teoría del procesamiento dual distingue el Sistema~1 (rápido, automático, orientado por
+patrones, con peso emocional) del Sistema~2 (lento, deliberado, laborioso, lógico). El
+Sistema~1 se activa primero y da forma al marco dentro del cual el Sistema~2 opera
+posteriormente. Una presentación de diapositivas que abre con el dolor visceral de un cliente
+activa la empatía del Sistema~1 del inversor antes de que su Sistema~2 comience a evaluar los
+indicadores unitarios. Invertir el orden --- comenzar con la hoja de cálculo --- obliga al
+Sistema~2 a asumir una postura de crítica antes de que exista algún punto de apoyo emocional.
+La prescripción práctica es secuenciar: enganchar al Sistema~1 con un problema vívido, luego
+satisfacer al Sistema~2 con evidencia rigurosa. El ELM (\cref{sec:influence-principles})
+explica por qué ambas rutas deben satisfacerse para que el cambio de actitud persista.
+
+Para un \emph{pitch}, la aversión a la pérdida se traduce en un reencuadre disciplinado de la
+propuesta de valor. La pregunta no es «¿qué ganará?» sino «¿qué está perdiendo actualmente,
+y por cuánto tiempo?» El punto de referencia es el statu quo, y el statu quo debe costarle
+algo visible a la contraparte.
+
+\begin{example}[Encuadrar el nivel empresarial como una pérdida evitada]
+La SaaS ofrece un nivel empresarial a \money{299}/mes (frente al nivel estándar a \money{50}/mes).
+Bajo un encuadre de ganancia, el \emph{pitch} dice: «Actualice para obtener analítica avanzada,
+soporte prioritario y SSO --- un valor de aproximadamente \money{200}/mes para equipos de su
+tamaño.» Bajo un encuadre de pérdida anclado al costo del statu quo: «Los equipos de su escala
+sin una capa de analítica unificada suelen perder el \qty{15}{\percent} de su eficiencia de
+implementación por la conciliación manual --- con su número de empleados, eso equivale a
+aproximadamente \money{400} de trabajo improductivo por mes. El nivel empresarial cierra esa
+brecha por \money{299}.»
+
+La sustancia es idéntica; el punto de referencia ha cambiado de cero-ganancia a una pérdida
+continua. Con $\lambda \approx 2.25$ \parencite{tversky1992cumulative}, la teoría prospectiva
+(\cref{eq:prospect}) predice que un comprador en el dominio de pérdidas se vuelve propenso al
+riesgo --- más dispuesto a pagar por la certeza de evitar la pérdida que en el dominio de
+ganancias por un beneficio equivalente. El nivel de \money{299} ahora tiene un precio inferior
+al dolor mensual de \money{400}, enmarcándolo no como un costo sino como una recuperación de
+\money{101} por mes. El Sistema~1 cierra el argumento antes de que el Sistema~2 lo vuelva a
+abrir. Para respaldar ese cierre del Sistema~2, la ruta central (\cref{sec:influence-principles})
+exige evidencia rigurosa de retorno sobre la inversión: un testimonio de un cliente con nombre
+con resultados de eficiencia atribuidos y una cifra de tiempo de recuperación que un aprobador
+financiero pueda verificar.
+\end{example}
+
+
+\section{Reversión de riesgo y garantías}\label{sec:risk-reversal}
+% complejidad: 2
+
+Toda compra es un lanzamiento de moneda que el comprador evalúa: un desembolso cierto ahora
+frente a un resultado incierto después. La teoría prospectiva \parencite{tversky1992cumulative}
+pone un número concreto en la asimetría --- el coeficiente de aversión a la pérdida
+$\lambda \approx 2.25$ significa que una pérdida incierta pesa aproximadamente $2.25 \times$
+más en la mente del comprador que una ganancia cierta de igual tamaño. Una garantía traslada
+esa pérdida a la columna del vendedor: la desutilidad esperada del comprador por «el producto
+no funciona» cae de $\lambda \cdot \text{loss}$ hacia cero, y el vendedor absorbe el riesgo
+residual a cambio de una tasa de conversión más alta.
+
+La condición de primer orden es directa. Sea $p$ la fracción en la que la garantía eleva la
+tasa de conversión desde su línea base sin garantía, y $\theta$ la tasa de reembolso
+postcompra. La garantía es neta positiva siempre que $(1+p)(1-\theta) > 1$, lo que se resuelve
+como:
+
+\begin{equation}\label{eq:guarantee-breakeven}
+  \theta^{*} \;=\; \frac{p}{1+p}.
+\end{equation}
+
+Una garantía que eleva la conversión en \qty{28}{\percent} ($p = 0.28$) soporta tasas de
+reembolso de hasta $\theta^{*} = 0.28/1.28 \approx \qty{22}{\percent}$ antes de que la
+matemática se vuelva neta negativa --- un margen significativo para absorber el impuesto
+de la honestidad.
+
+\begin{example}[Garantía de devolución de dinero en el nivel empresarial]
+La SaaS B2B de referencia vende el nivel empresarial a \money{299}/mes, con CLV \money{3150}
+(\cref{eq:clv}). La conversión de prueba a pago se sitúa en \qty{25}{\percent} sin garantía;
+añadir una garantía de devolución de dinero de \num{90} días sin bloqueo contractual la eleva
+al \qty{32}{\percent} ($p = \qty{28}{\percent}$ de aumento en la conversión, en línea con el
+multiplicador $\lambda \approx 2.25$ sobre el sacrificio percibido). De los que compran, el
+\qty{8}{\percent} solicita el reembolso. Por cada cohorte de 800 pruebas:
+
+\begin{itemize}
+  \item Sin garantía: $800 \times 0.25 = 200$ clientes de pago; CLV-VP $= 200 \times \money{3150} = \money{630000}$.
+  \item Con garantía: $800 \times 0.32 = 256$ de pago; \num{20} solicitan el reembolso; neto retenido \num{236}; CLV-VP $= 236 \times \money{3150} = \money{743400}$.
+\end{itemize}
+
+La garantía añade \money{113400} de VP por cohorte de 800 pruebas a pesar de pagar una tasa
+de reembolso del \qty{8}{\percent} --- muy por debajo del umbral de rentabilidad del
+\qty{22}{\percent} de \cref{eq:guarantee-breakeven}. La aritmética de la aversión a la pérdida
+favorece al vendedor.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Una garantía invita a la selección adversa: los compradores que sospechan que el producto no
+es para ellos son más propensos a solicitar el reembolso, elevando $\theta$ por encima de la
+tasa natural. Dos diseños reducen esto: (i)~exigir un hito de uso medible antes de que se
+abra el periodo de reembolso (fuerza la autocalificación), y (ii)~acotar el reembolso a la
+porción no utilizada (limita el abuso sin eliminar el efecto de reversión de pérdida). La
+garantía vacía --- «le encantará» --- no añade ni conversión ni reducción de fricción; la
+garantía vinculante, con un mecanismo claro, sí lo hace.
+\end{admonition}
+
+La misma lógica se generaliza. Las pruebas gratuitas, los pilotos de pago, los precios de
+expansión progresiva y los SLA de riesgo compartido trasladan la incertidumbre de los libros
+del comprador a los del vendedor. Cada uno es un candidato cuando el incremento de conversión
+que genera supera la pérdida residual que absorbe --- la comparación que formaliza
+\cref{eq:guarantee-breakeven}.
+
+\section{Negociación: BATNA, valor de reserva y ZOPA}\label{sec:negotiation}
+% complejidad: 4
+
+La persuasión cambia creencias; la negociación asigna el excedente que le sigue. El marco de
+negociación basada en principios desarrollado en el Proyecto de Negociación de Harvard ---
+cuyo tratamiento popular es \textcite{fisher2011getting} --- descansa en un andamiaje
+cuantitativo cuya derivación formal se debe a \textcite{raiffa1982art}. Sus prescripciones
+estructurales --- separar a las personas del problema, centrarse en los intereses y no en las
+posiciones, inventar opciones para la ganancia mutua, insistir en criterios objetivos ---
+son mecanismos para llegar a acuerdos que sean eficientes (sin valor dejado sobre la mesa) y
+duraderos (ambas partes perciben el proceso como justo, sosteniendo la relación a través de
+transacciones futuras).
+
+Antes de entrar en cualquier negociación, una parte debe responder tres preguntas en privado.
+¿Cuál es mi BATNA --- la Mejor Alternativa a un Acuerdo Negociado, el resultado que puedo
+obtener sin este acuerdo? ¿Qué implica mi BATNA en términos monetarios como precio de salida?
+¿Y dónde se sitúa el límite equivalente de la contraparte? \textcite{kim2005power} establecen
+desde la literatura de comportamiento organizacional que el poder estructural en una negociación
+se deriva de la fortaleza del BATNA: una parte que puede retirarse de manera creíble mantiene
+su posición sin farolear, porque la amenaza es real.
+% kim2005power: fortaleza del BATNA como fuente de poder de negociación, explicación estructural
+La expresión monetaria del BATNA es el \emph{valor de reserva} --- el punto en o más allá del
+cual el acuerdo es peor que ningún acuerdo.
+
+\begin{equation}\label{eq:reservation}
+  RV \;=\; U(\mathrm{BATNA}),
+\end{equation}
+donde \(U(\mathrm{BATNA})\) es la utilidad monetaria de la mejor alternativa externa, completamente
+costeada (incluidos los costos de transición, el tiempo y la opcionalidad sacrificada). El valor
+de reserva no es una posición de negociación; es un cálculo privado, fijado antes de que comience
+la conversación. Revelarlo es casi siempre un error.
+
+La \emph{zona de posible acuerdo} (ZOPA) es el intervalo entre los valores de reserva de
+ambas partes en el que ambas prefieren un acuerdo a su opción externa:
+\begin{equation}\label{eq:zopa}
+  \mathrm{ZOPA} \;=\; [\,RV_{\text{seller}},\; RV_{\text{buyer}}\,],
+\end{equation}
+con amplitud \(\Delta = RV_{\text{buyer}} - RV_{\text{seller}}\). Si \(\Delta > 0\) un acuerdo
+es racionalmente posible y la negociación trata sobre cómo dividir el excedente \(\Delta\). Si
+\(\Delta \leq 0\) no existe ningún acuerdo de un solo tema al valor nominal, y las partes deben
+introducir nuevas variables (plazos de pago, compromisos de volumen, condiciones de servicio)
+para desplazar uno o ambos valores de reserva, o retirarse. Cada táctica --- anclaje, ritmo de
+concesiones, empaquetamiento --- es en última instancia un mecanismo para mover el punto de
+acuerdo eventual dentro del ZOPA hacia el valor de reserva del que aplica la táctica.
+
+Los resultados de anclaje de \textcite{galinsky2001anchoring} inciden directamente en la
+pregunta de quién hace la primera oferta dentro del ZOPA. La alta correlación $r = .93$ entre
+la primera oferta y el acuerdo final en condiciones sin defensa significa que la parte que
+ancla primero --- con un valor ambicioso pero que respeta el ZOPA --- se ventaja
+estructuralmente.
+% galinsky2001anchoring: ventaja del ancla de la primera oferta, se aplica dentro del ZOPA
+\textcite{northcraft1987anchoring} confirman que incluso los negociadores expertos absorben el
+ancla y ajustan de manera insuficiente; la defensa, también identificada por
+\textcite{galinsky2001anchoring}, es centrarse exclusivamente en el propio precio objetivo y
+el BATNA de la contraparte, en lugar de comprometerse con el ancla como punto de referencia.
+% galinsky2001anchoring: enfocarse en el propio objetivo / BATNA de la contraparte anula el efecto del ancla
+
+\begin{example}[Contrato empresarial y una hoja de términos de Series~A]
+\textbf{Contrato empresarial.} La SaaS está negociando un contrato empresarial. El BATNA del
+vendedor es cerrar tres cuentas adicionales de mercado medio a \money{18000} cada una (total
+\money{54000} anuales), con menor sobrecarga de soporte; \(RV_{\text{seller}} = \money{60000}\)
+tras neto de costos de transición. El BATNA del comprador empresarial es una construcción
+interna personalizada estimada en \money{110000} en ingeniería y mantenimiento;
+\(RV_{\text{buyer}} = \money{100000}\) tras un recorte de riesgo del \qty{10}{\percent} por
+incertidumbre en la construcción. El ZOPA es \([\money{60000}, \money{100000}]\), con amplitud
+\(\Delta = \money{40000}\). El vendedor abre en \money{95000} --- un ancla cercana al techo del
+comprador, fundamentada en el valor declarado de la plataforma e implementaciones comparables
+nombradas --- y la negociación se cierra en \money{82000}: dentro del ZOPA, por encima de ambos
+valores de reserva, y sostenible para ambas partes. El excedente de \money{22000} por encima del
+valor de reserva del vendedor y el excedente de \money{18000} por debajo del valor de reserva del
+comprador reflejan la ventaja de anclaje del primer movimiento y la disciplina de concesión de
+ambas partes.
+
+\textbf{Hoja de términos de Series~A.} La misma lógica se aplica al financiamiento de capital
+(\cref{ch:fundraising-and-dilution}). Suponga que el BATNA del fundador es una hoja de términos
+competidora con una valoración premoney de \money{12000000}.
+\(RV_{\text{founder}}\) es la dilución implícita por esa valoración más el costo de la demora.
+El BATNA del inversor líder es desplegar capital en una empresa comparable a una valoración
+premoney de \money{15000000}; su \(RV_{\text{investor}}\) es la valoración premoney máxima a la
+cual el acuerdo aún cumple su umbral de rendimiento. El ZOPA es la banda de valoración entre
+esos dos umbrales. El fundador que ancla primero con una cifra premoney específica respaldada en
+un comparable nombrado --- con criterios objetivos, según \textcite{raiffa1982art} --- jala el
+acuerdo hacia su valor de reserva. El inversor que retrasa revelar su tasa de umbral de toda la
+cartera protege el suyo. Ambos operan dentro del marco de negociación basada en principios.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Dos modos de falla son comunes. Primero, anclar más allá del valor de reserva de la contraparte
+--- abriendo de manera tan agresiva que la otra parte se retira en lugar de contraofertar ---
+colapsa el ZOPA al señalar mala fe. El ancla debe ser ambiciosa pero plausible, fundamentada en
+criterios objetivos. Segundo, la maldición del ganador: en las subastas competitivas, el ganador
+es sistemáticamente la parte que más sobrestimó el valor del activo
+\parencite{thaler1988winnerscurse}. Un fundador que «gana» una contratación al licitar muy por
+encima del valor de reserva del candidato ha pagado de más en relación con el mercado; una firma
+de capital de riesgo que gana un acuerdo al licitar muy por encima de su umbral de rendimiento
+ha destruido el rendimiento esperado.
+% thaler1988winnerscurse: maldición del ganador --- el postor ganador sobrestima el valor del activo
+Ambos errores se remedian anclando el valor de reserva a la utilidad monetaria del BATNA, no
+al deseo.
+\end{admonition}
+
+
+\section{Poder e influencia sostenible}\label{sec:power-trust}
+% complejidad: 3
+
+Los marcos de negociación de \cref{sec:negotiation} suponen que las partes se reúnen en la
+mesa. Antes de la mesa, el poder determina si la reunión ocurre, qué agenda se establece y
+cuyo encuadre da forma al ancla de apertura. \textcite{pfeffer2010power} proporciona el análisis
+organizacional basado en evidencia: el poder se acumula en quienes controlan las dependencias
+de recursos críticos, construyen coaliciones amplias y demuestran competencia de manera visible.
+El contraste con la mitología popular del género vale la pena nombrarlo brevemente.
+\textcite{greene1998laws} construye una taxonomía de tácticas maquiavélicas a partir de anécdotas
+históricas; no se deriva de evidencia sistemática. Las estrategias que endosa --- ocultamiento,
+creación estratégica de dependencia --- son precisamente aquellas que destruyen la confianza
+necesaria para retener empleados, socios y clientes a lo largo del tiempo. El análisis
+estructural de Pfeffer describe dinámicas que se acumulan; las tácticas de manipulación
+anecdóticas se erosionan.
+
+El fundamento duradero de la influencia sostenible es la confianza. \textcite{maister2000trusted}
+descomponen la confianza en sus componentes estructurales como heurística para profesionales:
+\begin{equation}\label{eq:trust}
+  T \;=\; \frac{C + R + I}{S},
+\end{equation}
+donde \(C\) es la credibilidad (la calidad de lo que se dice), \(R\) es la fiabilidad (la
+consistencia entre lo que se dice y lo que se hace), \(I\) es la intimidad (el grado en que la
+contraparte cree que se manejará la información sensible con discreción) y \(S\) es la
+orientación al yo (el grado en que la contraparte percibe el interés propio como centrado en
+uno mismo en lugar de en ellos). La estructura de la ecuación es el hallazgo operativo:
+\(S\) está en el denominador, lo que significa que incluso una alta credibilidad y fiabilidad
+colapsan si la contraparte lee al asesor como interesado en sí mismo.
+
+La heurística para profesionales de \cref{eq:trust} está fundamentada en el modelo organizacional
+integrativo de \textcite{mayer1995model}, quienes formalizan la confiabilidad como una estructura
+aditiva de tres dimensiones observables de manera independiente: capacidad (competencia específica
+del dominio), benevolencia (la percepción de que el fideicomisario desea el éxito del fideicomitente,
+no solo el propio) e integridad (consistencia entre palabras y acciones y adhesión percibida a
+principios aceptables). \textcite{colquitt2007meta} proporcionan la validación metaanalítica en
+132 muestras independientes: la correlación corregida entre cada dimensión y el nivel de
+confianza resultante es \(r_c = .67\) para la capacidad, \(r_c = .63\) para la benevolencia y
+\(r_c = .62\) para la integridad.
+% colquitt2007meta: capacidad r_c=.67, benevolencia r_c=.63, integridad r_c=.62, N~6800–7300 por dimensión
+Los tres componentes contribuyen con peso casi igual --- ninguna dimensión domina --- lo que
+coincide con la estructura del numerador equilibrado de \cref{eq:trust}. De manera crítica, la
+confianza se traduce directamente en el comportamiento de toma de riesgos que hace que un
+responsable de adquisiciones firme un contrato plurianual: la correlación corregida entre
+confianza y toma de riesgos es \(r_c = .42\) (\(N = 1{,}384\))
+\parencite{colquitt2007meta}.
+% colquitt2007meta: confianza -> toma de riesgos r_c=.42, N=1384
+
+Reducir la orientación al yo --- hacer preguntas en lugar de presentar argumentos, divulgar los
+conflictos de manera proactiva, ocasionalmente dirigir a un cliente a un competidor que sea una
+mejor opción --- multiplica el numerador de confianza sin añadirle nada. Esto no es mera
+altruismo: un cliente que entra a un contrato con alta confianza (\(T\)) exhibe menor
+\emph{churn} (la tasa mensual de \emph{churn} del \qty{0.65}{\percent} asumida en el modelo
+de referencia se predica en que los clientes permanezcan convencidos de la benevolencia del
+proveedor a través de cada ciclo de renovación), mayor disposición a expandir (moviéndose del
+nivel estándar de \money{50}/mes hacia el nivel empresarial) y menor CAC a través de referencias
+que se originan dentro de la red de confianza en lugar de la adquisición pagada (\cref{eq:cac}).
+La implicación para el ROIC (\cref{eq:roic}) se deriva directamente: la confianza reduce el
+numerador del CAC, reduce la attrición impulsada por \emph{churn} en el denominador del CLV y
+amplía el margen --- cada uno de los cuales eleva el retorno sobre el capital invertido.
+
+\begin{admonition}{Controvertido}
+\Cref{eq:trust} es una heurística para profesionales, no una ecuación de regresión estimada.
+\textcite{maister2000trusted} la derivan de la práctica consultora, no de un estudio empírico
+controlado. Su virtud es estructural --- identifica correctamente a \(S\) como el divisor
+multiplicativo --- pero la razón precisa no está calibrada empíricamente. La ciencia subyacente
+es \textcite{mayer1995model} y \textcite{colquitt2007meta}; la ecuación es el mnemónico que
+hace operativa la ciencia. Utilice las correlaciones de componentes de \textcite{colquitt2007meta}
+para priorizar dónde invertir: como la capacidad, la benevolencia y la integridad contribuyen
+casi por igual, un déficit en cualquier dimensión individual no se compensa con un excedente en
+las demás.
+\end{admonition}
+
+\begin{example}[La confianza del fundador como activo que se acumula]
+Considere a un fundador de SaaS que construye relaciones con inversores y talento durante dos
+años antes de una ronda de Series~A (\cref{ch:fundraising-and-dilution}). El fundador da cuatro
+pasos visibles, cada uno correspondiendo a un componente de \cref{eq:trust}:
+
+\begin{itemize}
+  \item \textbf{Credibilidad (\(C\)):} publica actualizaciones mensuales de métricas a una
+    pequeña lista de inversores ángel y operadores, incluyendo los meses en que el crecimiento
+    estuvo por debajo del objetivo, con atribución honesta de la causa raíz. Esto construye la
+    señal de \emph{capacidad} de \textcite{mayer1995model} a través de la competencia demostrada
+    en el dominio y la señal de integridad a través de la consistencia entre palabras y acciones.
+  \item \textbf{Fiabilidad (\(R\)):} cumple cada compromiso adquirido con los inversores iniciales
+    --- fechas de hoja de ruta del producto, hitos de contratación, plazos de respuesta ---
+    sin excepción durante ocho trimestres. El canal de integridad $r_c = .62$
+    \parencite{colquitt2007meta} se acumula con cada promesa cumplida.
+    % colquitt2007meta: integridad r_c=.62, antecedente de confianza
+  \item \textbf{Intimidad (\(I\)):} aconseja en confidencialidad a dos candidatos potenciales que
+    no se unan a la empresa todavía porque el rol no está bien definido; ambos se unen un año
+    después cuando el rol es real. Esto demuestra benevolencia (el canal $r_c = .63$) a un costo
+    visible para la velocidad de contratación a corto plazo.
+    % colquitt2007meta: benevolencia r_c=.63, antecedente de confianza
+  \item \textbf{Orientación al yo (\(S\)):} en las reuniones con inversores, abre con preguntas
+    sobre las preocupaciones actuales de la cartera de la firma antes de describir las necesidades
+    de la empresa.
+\end{itemize}
+
+Las consecuencias medibles aparecen en la ronda. Las referencias provenientes de la red de
+confianza cuestan cero en CAC pagado (\cref{eq:cac}). Dos de los tres inversores de Series~A
+que el fundador más deseaba toman reuniones sin una presentación cálida, porque el historial de
+credibilidad ya es legible. El líder cierra con una valoración premoney en la mitad superior del
+rango modelado, en parte porque los inversores con puntuaciones altas de \(T\) exigen un menor
+descuento por incertidumbre. Tres de las seis contrataciones clave de ingeniería llegan a través
+de referencias de talento del candidato al que el fundador aconsejó anteriormente que se fuera
+--- la confianza convirtiéndose en eliminación del CAC de reclutamiento. El mecanismo de
+acumulación es el mismo que en \cref{eq:clv}: cada período de comportamiento que refuerza la
+confianza eleva el valor presente neto de la relación al reducir la tasa de descuento implícita
+que la contraparte aplica a las interacciones futuras.
+\end{example}

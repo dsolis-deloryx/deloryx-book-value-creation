@@ -1,0 +1,390 @@
+\chapter{Narrativa y comunicación}\label{ch:storytelling-communication}
+
+% Alcance: la ciencia de la narrativa y la comunicación para fundadores — transporte narrativo,
+%   qué hace que las ideas sean adherentes (maldición del conocimiento + componentes independientes),
+%   retórica (ethos/pathos/logos), el arco del pitch/presentación, claridad en la escritura,
+%   presencia ejecutiva entrenable. NUEVO (Parte VII).
+% Gancho de valor: la persuasión narrativa aumenta la conversión del pitch (captación de fondos,
+%   ventas → CAC) y la transmisión de marca; la claridad en la comunicación reduce el costo
+%   de coordinación.
+% Columna empírica principal: braddock2016narrative (r's metaanalíticos para todo el embudo
+%   de persuasión), vanlaer2014extended (mecanismo de transporte narrativo), camerer1989curse
+%   (maldición del conocimiento), lacerenza2017training (entrenabilidad). green2000narrative
+%   (experimento original de transporte narrativo, reutilizado). Libros de divulgación
+%   heath2007madetostick / duarte2010resonate / pinker2014senseofstyle / hewlett2014executive
+%   relegados a señalizadores de una cláusula. Los porcentajes 67/28/5 de Hewlett y los pasajes
+%   de oxitocina de Zak ELIMINADOS por completo (ninguno es revisado por pares
+%   ni admitido en la biblioteca de fuentes).
+
+\section{Por qué la historia supera al dato}\label{sec:narrative-transportation}
+% complexity: 3
+
+¿Por qué la anécdota de un fundador mueve más a los inversores que una diapositiva con curvas
+de retención? La pregunta gerencial es empírica, no retórica: audiencias que reciben información
+idéntica la recuerdan y actúan sobre ella de manera diferente según llegue como dato o como
+narrativa. El mecanismo es el \emph{transporte narrativo} — la absorción cognitiva y emocional
+en una historia que monopoliza la memoria de trabajo y, al hacerlo, desactiva la capacidad del
+oyente para contra-argumentar críticamente.
+
+\textcite{green2000narrative} demostró el efecto de forma experimental en muestras de entre
+\num{69} y \num{274} participantes. Los lectores con alto transporte narrativo mostraron cambios
+de creencias acordes a la historia significativamente mayores y detectaron mucho menos
+inconsistencias lógicas en el texto que sus contrapartes con bajo transporte (\(d = 0.31\); %
+fuente: green2000narrative — la etiqueta hecho-frente-a-ficción no tuvo efecto significativo
+sobre el nivel de transporte, \(F(1,94) < 1\), \(p > .80\), lo que confirma que es la calidad
+estructural de la historia, no el estatus factual, lo que impulsa la absorción). El mecanismo
+es directo: una mente completamente ocupada construyendo imágenes mentales vívidas y rastreando
+la motivación de los personajes no tiene capacidad libre para interrogar las premisas. La
+consecuencia práctica para el comunicador empresarial es considerable — una narrativa bien
+elaborada puede cambiar creencias de maneras que una hoja de hechos lógicamente equivalente
+no puede, precisamente porque la hoja de hechos deja a la audiencia libre para contra-argumentar
+cada premisa.
+
+El alcance persuasivo de la narrativa se extiende a través de todo el embudo de decisión.
+\textcite{braddock2016narrative} realizó un metaanálisis de \(k = 74\) estudios independientes
+(\(N\) de hasta \num{7376} por resultado) y encontró correlaciones positivas y estadísticamente
+significativas entre la exposición a la narrativa y los resultados acordes a la historia en
+cada etapa: % fuente: braddock2016narrative — valores de r para creencias, actitudes, intenciones, conductas
+creencias \(r = .17\) (\(k = 37\)), actitudes \(r = .19\) (\(k = 40\)), intenciones
+\(r = .17\) (\(k = 28\)) y — de forma crítica — \emph{conductas} observadas \(r = .23\)
+(\(k = 5\)). El medio de entrega (audio, texto, visual) no influyó de forma notable en la
+magnitud de la relación, lo que significa que el efecto no es un artefacto de ningún canal en
+particular. Un \(r = .23\) sobre conducta es un efecto moderado pero consecuente; traducido
+a una diferencia de medias estandarizada corresponde a aproximadamente \(d \approx 0.47\) —
+comparable en magnitud práctica a muchas intervenciones clínicas.
+
+El mecanismo detrás de estos resultados fue sistematizado por \textcite{vanlaer2014extended}
+en un metaanálisis de \(k = 132\) tamaños del efecto procedentes de 76 estudios. El transporte
+narrativo impulsa la persuasión modelando las respuestas afectivas, las creencias cognitivas
+y las actitudes subsiguientes. De manera decisiva, el análisis de van Laer et al.\ vincula el
+transporte de forma fiable con las \emph{intenciones conductuales} — la intención de actuar —
+pero el vínculo empírico directo con el comportamiento de referencia o de boca a boca medido
+en campo no está establecido en la literatura metaanalítica canónica. % fuente: vanlaer2014extended — el vínculo con boca a boca es hacia intenciones, no hacia conducta de campo
+La cadena práctica es, por tanto: una historia de marca bien contada eleva el transporte narrativo,
+que a su vez eleva la \emph{intención} de compra y de referencia (\cref{eq:viral-k} describe
+el mecanismo del coeficiente viral); que la intención se convierta en una referencia real
+depende de la fricción del producto, no solo de la calidad de la historia. La transmisión de
+marca y la adquisición pagada son sustitutos en el margen — más intención orgánica impulsada
+por la narrativa significa menos presupuesto necesario por cliente adquirido, lo que mejora
+\(\mathrm{LTV:CAC}\) (\cref{eq:ltv-cac}) — pero la afirmación debe enunciarse como una cadena
+con la brecha intención-conducta reconocida, no elidida.
+
+\begin{example}[Lista de funcionalidades frente a historia de cliente]
+Un fundador de SaaS que presenta software de gestión de compras empresariales tiene dos
+opciones de apertura. Opción~A: «Nuestra plataforma se integra con 40 ERPs, procesa
+\num{10000} solicitudes por segundo y reduce la latencia de aprobación en un \qty{38}{\percent}.»
+Opción~B: «María, la directora financiera de un fabricante con \num{500} empleados, descubrió
+en marzo que una orden de compra no autorizada había pasado desapercibida durante seis semanas.
+Con nuestra plataforma, esa orden aparece en su panel en catorce minutos.»
+
+La opción~A reporta capacidades; la opción~B transporta al oyente a la situación de María. El
+gerente de compras en la audiencia comienza a simular su propia versión del problema de María
+— está siendo transportado. Los contra-argumentos («¿se integra realmente con \emph{nuestro}
+ERP?») son suprimidos por el acto de simulación. Traducido al embudo de la empresa de referencia
+(10,000 sesiones → 800 pruebas → 200 pagos; una tasa de conversión de prueba a pago del
+\qty{25}{\percent}): si el material basado en narrativa eleva el paso de prueba a pago en la
+magnitud de cambio conductual \(r = .23\) documentada por \textcite{braddock2016narrative},
+el conteo esperado de pagos sube de 200 a aproximadamente 246 por mes con el mismo gasto —
+una mejora del \qty{23}{\percent} en el rendimiento de nuevos clientes que, a \money{600}~CAC,
+equivale a recuperar \money{27600} en presupuesto de adquisición mensual. La opción~A debería
+estar en el apéndice; la opción~B pertenece a los primeros treinta segundos.
+\end{example}
+
+\begin{admonition}{Nota}
+La teoría del transporte narrativo no implica que los datos deban estar ausentes.
+\textcite{green2000narrative} encontró que las audiencias transportadas buscaban después
+evidencia confirmatoria, no menos evidencia. El patrón eficaz es: historia para transportar,
+luego datos para cerrar — no datos en lugar de historia.
+\end{admonition}
+
+La narrativa no es un adorno estilístico superpuesto sobre el contenido; es el mecanismo de
+entrega que determina si el contenido llega en absoluto. \textcite{heath2007madetostick}
+popularizó estas ideas para los profesionales. Cómo diseñar el contenido adecuado — ideas que
+permanezcan con adherencia mucho después de que termine la conversación — es el tema de la
+siguiente sección.
+
+\section{Cómo lograr que las ideas sean adherentes}\label{sec:made-to-stick}
+% complexity: 2
+
+Incluso una audiencia transportada olvidará un mensaje pobremente construido. La pregunta
+se desplaza de «¿cómo capto la atención?» a «¿cómo hago que la idea sea memorable?». El
+principal obstáculo es un sesgo cognitivo activo y medible que afecta a los comunicadores
+expertos.
+
+\textcite{camerer1989curse} cuantificó la \emph{maldición del conocimiento} rigurosamente
+en una serie de experimentos de laboratorio y de mercado (publicados en el \emph{Journal of
+Political Economy}). % fuente: camerer1989curse — cuantificación de la maldición del conocimiento
+A los agentes mejor informados se les proporcionaba información privada y se les pedía que
+predijeran los juicios de agentes menos informados. El hallazgo fue contundente: los agentes
+informados eran sistemáticamente incapaces de ignorar su información privada, incluso cuando
+hacerlo era económicamente ventajoso. De forma decisiva, Camerer, Loewenstein y Weber
+comprobaron si las fuerzas del mercado — incentivos financieros y retroalimentación iterativa
+— podían eliminar el sesgo. Descubrieron que los mercados reducían la magnitud de la maldición
+aproximadamente en un \qty{50}{\percent}, pero no lograban eliminarla. % fuente: camerer1989curse — 50% de mitigación por mercados
+Para un fundador, esto significa que incluso después de meses de llamadas de ventas y pruebas
+A/B, persiste un \qty{50}{\percent} de la maldición; la ingeniería estructural de la
+comunicación no es opcional, es la única forma de cerrar la brecha restante.
+
+La maldición opera de manera predecible: un ingeniero convertido en CEO no puede fácilmente
+«des-saber» la arquitectura de su producto, por lo que sus pitches, textos de marketing y
+materiales de onboarding caen por defecto en un nivel de abstracción que enajena al comprador.
+La solución no es simplificar; es traducir a través de componentes de comunicación que han
+acumulado apoyo empírico independiente. Varios convergen sobre el mismo objetivo.
+
+\begin{description}
+  \item[Concreción.] El lenguaje concreto y sensorial suprime la maldición porque tiende un
+    puente entre el modelo mental del experto y el del novato. «Reducir la latencia de
+    aprobación» es abstracto; «catorce minutos en lugar de seis semanas» es concreto. La
+    diferencia reside en la memorabilidad, no en la precisión — la primera formulación no es
+    menos exacta — pero las imágenes concretas dan a la idea ganchos sensoriales con los que
+    aferrarse a la memoria del oyente.
+
+  \item[Inesperabilidad.] Violar las expectativas existentes de la audiencia capta la atención
+    y abre una brecha de curiosidad. Un pitch que comienza con el modo de fallo inesperado
+    del statu quo crea esta brecha al instante, y la brecha motiva a la audiencia a cerrarla
+    escuchando. Este es el mecanismo detrás del poder «ruptor de maldición» de un buen gancho
+    de apertura.
+
+  \item[Simplicidad.] Reducir la idea a su único elemento más importante. Una estrategia
+    entera puede expresarse como un núcleo que cada empleado puede recitar y contra el que
+    cada decisión puede verificarse. La simplicidad no es brevedad; es encontrar el núcleo
+    irreducible y liderarlo — el antídoto directo a la abstracción que produce la maldición.
+
+  \item[Credibilidad mediante específicos.] Los números precisos (\num{14}~minutos, no
+    «dramáticamente más rápido») tienen mayor credibilidad interna que un testimonio solo,
+    porque la especificidad señala medición en lugar de estimación.
+
+  \item[Resonancia emocional.] «Diez mil clientes están en riesgo» moviliza menos que «el
+    cierre de mes de María está en riesgo.» La identificación emocional con un individuo es
+    un amplificador bien documentado de la intención persuasiva — coherente con el cambio de
+    actitud \(r = .19\) en \textcite{braddock2016narrative} y con el hallazgo de
+    identificabilidad del personaje en \textcite{vanlaer2014extended}. % fuente: braddock2016narrative r=.19 para actitudes; vanlaer2014extended identificabilidad del personaje
+\end{description}
+
+\begin{admonition}{Advertencia}
+Estos componentes han acumulado apoyo empírico independiente, pero la lista de seis rasgos
+«SUCCESs» como paquete integrado no ha sido testada como conjunto en experimentos controlados. %
+deliberado: sin sobreinterpretar heath2007madetostick
+\textcite{heath2007madetostick} sintetiza y populariza estas ideas de forma convincente.
+El enfoque práctico consiste en tratar cada componente como una palanca verificada y aplicarlos
+en conjunto, no en asumir que la lista de verificación con marca registrada conlleva un único
+tamaño del efecto validado. La maldición del conocimiento se oculta a sí misma: los expertos
+no pueden sentir la asimetría porque no pueden des-saber lo que saben. El antídoto es una
+prueba de lectura en voz alta con un no-experto que parafrasee el mensaje tras una sola
+escucha. Si la paráfrasis omite el núcleo, el original violó al menos los principios de
+concreción y simplicidad.
+\end{admonition}
+
+\begin{example}[Reescribir una propuesta de valor]
+Original (borrador con maldición del conocimiento): «Nuestra capa de orquestación de compras
+nativa de IA ofrece automatización de flujos de trabajo configurables con integración
+ERP-agnóstica y analítica de gasto en tiempo real.»
+
+Revisado: «Detenga el gasto no autorizado antes de que llegue al mayor general. María en
+TechForm detectó una orden no autorizada de \money{47000} en catorce minutos — no en seis
+semanas.»
+
+La revisión aplica los componentes verificados en secuencia: concreto (\money{47000}, catorce
+minutos, seis semanas), inesperado (la violación del encuadre esperado de «mejora dramática»),
+simple (un problema — el gasto no autorizado) y creíble (las cifras precisas señalan medición).
+El original contiene más información por cualquier medida objetiva; la revisión contiene más
+persuasión porque elimina la carga de procesamiento que la maldición había impuesto.
+\end{example}
+
+Los componentes anteriores operan sobre oraciones y mensajes individuales. Su aplicación más
+exigente es un pitch en vivo, donde todos deben operar simultáneamente en un formato con tiempo
+limitado y alto riesgo, y donde el arco de toda la presentación debe llevar a la audiencia desde
+donde está hasta donde el orador necesita que esté.
+
+\section{El arco del \emph{pitch} y la presentación}\label{sec:pitch-arc}
+% complexity: 3
+
+Un \emph{pitch} no es un informe entregado oralmente. Es un recorrido estructurado diseñado
+para llevar a una audiencia desde una creencia existente cómoda hasta una nueva creencia
+incómoda pero deseable. Los tres modos aristotélicos de prueba retórica siguen siendo el marco
+estructural: \emph{ethos} (el carácter percibido y la credibilidad del orador), \emph{pathos}
+(la resonancia emocional con la audiencia) y \emph{logos} (la estructura lógica del argumento).
+Los tres deben estar presentes. Un pitch cargado de logos pero escaso en ethos se derrumba en
+el momento en que la audiencia decide que no confía en el orador. Un pitch cargado de pathos
+sin logos es inspirador pero poco convincente para el inversor orientado a la diligencia.
+
+La evidencia metaanalítica fundamenta las apuestas estructurales. \textcite{braddock2016narrative}
+encontró que el encuadre narrativo desplaza los resultados \emph{conductuales} a \(r = .23\)
+en \(k = 5\) estudios — la correlación más alta en el embudo — lo que sugiere que el arco
+completo de un pitch estructurado como narrativa, no solo la historia de apertura, es lo que
+impulsa la acción posterior. % fuente: braddock2016narrative r=.23 para resultados conductuales es la columna empírica aquí
+La implicación práctica: estructurar el pitch como un arco narrativo no es una preferencia
+estilística; es el mecanismo por el que el efecto persuasivo se propaga desde el cambio de
+actitud hasta la decisión de inversión o la firma.
+
+Para un pitch de inversión de Serie~A, un arco narrativo de cinco tiempos se mapea sobre la
+estructura persuasiva que respalda la evidencia. \emph{Establecer el mundo tal como es}: el
+inversor debe creer que el fundador comprende la disfunción actual del mercado tan bien como
+cualquier operador interno — esto ancla el ethos. \emph{Introducir lo que podría ser}: una
+visión concreta, no una aspiración vaga — la audiencia debe \emph{ver} el estado futuro, no
+meramente escucharlo descrito — esto abre el pathos. \emph{Oscilar a lo largo del cuerpo del
+deck}: cada sección presenta un desafío (estado actual) y su resolución (estado futuro),
+construyendo convicción acumulativa a través del logos. \emph{Sintetizar}: la sección final
+hace que la decisión de inversión parezca una conclusión natural en lugar de un salto.
+\emph{Diseñar un momento memorable}: un único dato, demostración o testimonio de cliente que
+la audiencia lleva consigo al salir, porque el beneficio posterior del transporte narrativo
+depende de que la narrativa sea recostable.
+
+\textcite{duarte2010resonate} estructura una oscilación similar bajo la etiqueta «sparkline»
+y desarrolla el kit de herramientas de presentación visual. El encuadre clásico y el arco
+oscilante son consistentes; lo que agrega la evidencia es que el arco funciona precisamente
+porque mantiene el transporte narrativo a lo largo de toda la presentación, no solo en la
+apertura.
+
+El arco se conecta directamente con los mecanismos de captación de fondos. Un fundador que
+lo domina recauda a una valoración pre-money más alta (\cref{ch:fundraising-and-dilution})
+porque la convicción — no solo el mérito — impulsa la valoración. El mismo arco aplica a las
+ventas empresariales: un acuerdo que abre con el dolor actual del cliente y cierra con un
+estado futuro creíble convierte más rápido y a mayor valor de contrato, comprimiendo el tiempo
+de cierre que infla \cref{eq:cac}. Las palancas de persuasión que apoyan este proceso a nivel
+de psicología de influencia se examinan en \cref{ch:persuasion-influence}.
+
+\begin{example}[Arco del pitch de Serie~A]
+Una fundadora de SaaS de gestión de compras tiene \money{4000000} en ARR, un \qty{92.5}{\percent}
+de retención bruta de ingresos y una base de aproximadamente \num{6700} clientes. Estructura
+su pitch de inversión de la siguiente manera, con cada tiempo mapeado a su función retórica.
+
+\emph{Lo que es} (diapositivas 1–3): Las compras corporativas son un mercado de
+\money{120000000000} donde el \qty{34}{\percent} del gasto empresarial va sin gestionar —
+compras no autorizadas, descuentos perdidos, proveedores duplicados. Los sistemas vigentes
+fueron diseñados para el cumplimiento, no para la velocidad. La historia de María abre aquí.
+Este tiempo establece empatía y ethos de forma simultánea: señala que la fundadora conoce el
+mercado desde adentro.
+
+\emph{Lo que podría ser} (diapositivas 4–5): Un mundo donde cada dólar de gasto es visible
+en tiempo real y cada aprobación lleva catorce minutos. Muestra una demostración en vivo del
+producto. Este tiempo pasa al pathos y abre la brecha que el arco cerrará.
+
+\emph{Prueba oscilante} (diapositivas 6–11): Economía unitaria (logos): \money{600}~CAC,
+\money{3150}~CLV (\cref{eq:clv}), \qty{92.5}{\percent} de retención. Prueba de clientes
+(pathos): tres historias al estilo de María de cuentas de referencia. Dimensionamiento del
+mercado (logos): un TAM de abajo hacia arriba construido a partir del número de equipos
+financieros del mercado medio. Equipo (ethos): su cofundador dirigió operaciones de compras
+en una empresa de Fortune~500; ella no tiene brechas de credibilidad en el problema.
+
+\emph{Resolución} (diapositiva 12): La captación de \money{8000000} financia dieciocho meses
+de \emph{runway} para duplicar el ARR de \money{4000000} a \money{8000000} — el umbral donde
+un Serie~B a un múltiplo de ingresos (\cref{eq:ev-revenue}) se vuelve ejecutable.
+
+\emph{Momento S.T.A.R.}: repite el clip de detección en catorce minutos de María, luego
+muestra la orden de compra real en pantalla. La sala queda en silencio. El ancla que se llevan
+no es una métrica — es el rostro de María. Este momento es la unidad transportable y recostable
+que sostiene el boca a boca sobre el pitch mucho después de que la reunión haya concluido.
+\end{example}
+
+\begin{admonition}{Nota}
+El ethos se establece antes de que comience el pitch. Los inversores hacen reconocimiento de
+patrones sobre credenciales, presentaciones por referidos y señales previas de ejecución. Un
+fundador que entra a la sala con ethos débil — sin presentación por referido, sin historial,
+sin cliente de referencia — enfrenta una tarea de pathos y logos más ardua. Construir el ethos
+es, por lo tanto, una actividad de pre-venta: la incorporación de asesores al consejo, el
+cultivo de clientes de referencia y la visibilidad en conferencias contribuyen todos al acervo
+de credibilidad del que el pitch dispondrá.
+\end{admonition}
+
+Estructurar bien el argumento es necesario pero no suficiente para la persuasión. El último
+tramo es la entrega — si la presencia, el lenguaje y la conducta del comunicador señalan que
+merece la autoridad que está reclamando.
+
+\section{Claridad y presencia ejecutiva}\label{sec:clarity-presence}
+% complexity: 2
+
+Un pitch con un arco perfecto entregado por un fundador que matiza cada afirmación, lee las
+diapositivas y abre con tres minutos de historia de la empresa seguirá fracasando. La calidad
+de la comunicación no es separable del contenido de la comunicación. Dos dimensiones gobiernan
+esto: la claridad escrita — la capacidad de producir prosa que un lector pueda interpretar en
+la primera lectura sin ambigüedad ni jerga — y la \emph{presencia ejecutiva} — el conjunto
+de comportamientos que señalan credibilidad antes de que se pronuncie una palabra.
+
+Ambas dimensiones remiten a la misma causa raíz. \textcite{camerer1989curse} demostró que la
+maldición del conocimiento no es solo un sesgo puntual; los mercados solo la reducen a la
+mitad, dejando una brecha persistente entre lo que un comunicador experto pretende y lo que
+una audiencia novata recibe. % fuente: camerer1989curse — causa raíz tanto de la opacidad escrita como de los fallos de presencia
+Para un fundador, la claridad escrita y la presencia verbal no son refinamientos estilísticos
+— son la respuesta de ingeniería a una asimetría cognitiva medida y persistente. El primer
+borrador de cualquier comunicación de un fundador está casi siempre bajo la maldición: demasiado
+abstracto, demasiado cargado de jerga, demasiado incrustado en el propio contexto del escritor
+para viajar limpiamente hacia la pizarra en blanco del lector.
+
+La solución estructural para la opacidad escrita es lo que \textcite{pinker2014senseofstyle}
+llama el \emph{estilo clásico}: escribir como si se le mostrara algo verdadero e interesante
+a un lector curioso, no como si se protegiera uno legalmente o señalara experiencia ante los
+pares. El estilo clásico es transitivo — la prosa apunta hacia afuera al mundo, no hacia
+adentro a las calificaciones del escritor. Usa sustantivos concretos, verbos activos y oraciones
+que se mantienen bajo control porque el escritor ha identificado la única cosa que cada oración
+debe decir antes de escribirla. La conexión con la maldición del conocimiento en la prosa es
+directa: el estilo clásico es precisamente la disciplina de eliminar los supuestos que el
+escritor no puede sentir que está haciendo.
+
+Para un fundador, la claridad escrita no es una habilidad blanda — es una tecnología de
+coordinación. Un comunicado de empresa que veinte ingenieros entienden en la primera lectura
+elimina dos rondas de preguntas de seguimiento. Un documento de requisitos de producto escrito
+en lenguaje concreto y activo comprime la brecha entre la intención y la construcción. El
+costo de la ambigüedad se acumula: un requisito poco claro descubierto en la planificación del
+sprint es barato de corregir; la misma ambigüedad descubierta después de que una funcionalidad
+se lanza es costosa.
+
+Una objeción natural es que la presencia ejecutiva es innata: algunos fundadores simplemente
+dominan una sala y otros no. La evidencia metaanalítica refuta esto directamente.
+\textcite{lacerenza2017training} evaluó 335 muestras independientes de entrenamiento en
+liderazgo y comunicación y encontró que las intervenciones estructuradas son altamente eficaces
+en los cuatro niveles del modelo de evaluación de Kirkpatrick: reacciones (\(d = .63\)),
+aprendizaje (\(d = .73\)), transferencia conductual al trabajo (\(d = .82\)) y resultados
+organizacionales (\(d = .72\)). % fuente: lacerenza2017training — valores de d para los cuatro niveles de Kirkpatrick
+Un tamaño del efecto de \(d = .82\) para la transferencia conductual significa que un
+comunicador promedio en el percentil 50 de habilidad que se somete a una práctica estructurada
+con retroalimentación puede ser elevado aproximadamente al percentil 79 de efectividad. El
+análisis de moderadores mostró que los programas más eficaces combinaban información,
+demostración y práctica de roles en vivo — no lectura pasiva — y usaban entrenamiento
+espaciado con retroalimentación formal. La implicación es precisa: un fundador que dedica
+tiempo de preparación a ensayos con entrenador y práctica de roles grabada obtiene un retorno
+grande y medible; uno que lee un libro adicional de divulgación no lo obtiene.
+
+\begin{example}[Ajustar un mensaje de empresa para toda la organización]
+Borrador (con maldición del conocimiento): «A medida que avanzamos hacia la siguiente fase
+de nuestra trayectoria de crecimiento, es importante que continuemos aprovechando nuestras
+sinergias interfuncionales para impulsar la alineación en torno a nuestros compromisos de
+OKR del T3 y asegurarnos de que todas las partes interesadas estén orientadas hacia nuestras
+métricas estrella del norte.»
+
+Revisado (estilo clásico, maldición eliminada): «En el T3 necesitamos cerrar veinte cuentas
+empresariales. Cada equipo es propietario de una parte de ese número. Aquí está qué parte
+corresponde a quién.»
+
+La versión revisada es más corta a la mitad. Abre con la decisión, no con el contexto. Cada
+sustantivo es concreto (T3, veinte cuentas, un equipo, un número). El sujeto de cada oración
+actúa; nada es «aprovechado» u «orientado». Un lector que hojea la primera oración de la
+revisión conoce el mensaje; un lector que hojea la primera oración del borrador solo sabe
+que la empresa está creciendo. Esta es la maldición del conocimiento hecha visible: el escritor
+original sabía qué significaba «alineación en torno a los compromisos de OKR»; nadie más lo
+sabía.
+\end{example}
+
+\begin{admonition}{Advertencia}
+La jerga y las coberturas erosionan el ethos de forma sistemática. Un inversor o cliente que
+encuentra «sinergias», «cambios de paradigma» o «líder de su clase» en la comunicación de un
+fundador degrada su evaluación del dominio del fundador sobre el área — el efecto contrario
+al deseado. Las coberturas («en cierta medida», «en muchos casos», «podría decirse») señalan
+incertidumbre sobre afirmaciones que se supone que el orador debe respaldar. Ambos patrones
+son invisibles para el escritor y audibles para todo lector experimentado.
+\textcite{pinker2014senseofstyle} identifica la cobertura como un síntoma de la maldición del
+conocimiento: el escritor intuye que el lector podría rebatir, así que se retira
+preventivamente en lugar de enunciar la afirmación con limpieza y defenderla. El correctivo
+no es la confianza — es la claridad: una afirmación específica y defendible enunciada con
+limpieza no necesita cobertura.
+\end{admonition}
+
+La claridad a nivel de oración y la presencia en la sala se componen en una única señal: esta
+persona ha pensado rigurosamente sobre su problema, puede describirlo a cualquiera y no cederá
+bajo presión. Esa señal compuesta es lo que cierra una ronda de captación de fondos, gana un
+acuerdo empresarial y retiene la confianza del equipo a lo largo de un trimestre difícil.
+También es lo que determina si la historia de su marca se vuelve a contar — si el mecanismo
+del coeficiente viral (\cref{eq:viral-k}) recibe su materia prima o no. La restricción
+principal no es el talento sino el entrenamiento: \textcite{lacerenza2017training} prueba que
+la habilidad es adquirible; \textcite{camerer1989curse} prueba que la necesidad es persistente;
+\textcite{braddock2016narrative} prueba que el rendimiento, en términos conductuales, es real.

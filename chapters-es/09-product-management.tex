@@ -1,0 +1,322 @@
+\chapter{Gestión de producto y desarrollo de nuevos productos}\label{ch:product-management}
+
+% Alcance: ajuste producto-mercado, descubrimiento y priorización (RICE/stage-gate), hoja de ruta y
+%   construir-comprar-asociar, lanzamiento y adopción de nuevos productos (Bass). Capítulo nuevo
+%   (cierra la brecha PM/NPD). La empresa de referencia ES un producto; «qué construir» es anterior
+%   a «qué cobrar» (\cref{ch:pricing}).
+% Borrador según estilo editorial: prosa fluida + recuadros de ejemplo/admonición; ejemplos
+%   trabajados con la SaaS de referencia.
+
+\section{Ajuste producto-mercado}\label{sec:product-market-fit}
+% complexity: 2
+
+¿Qué significa que un producto encaje con su mercado? La pregunta precede a toda
+conversación sobre crecimiento en este libro. Una empresa que escala la adquisición
+antes de tener un genuino ajuste producto-mercado (\emph{PMF}) está quemando capital
+para llenar un cubo con fugas: los clientes llegan, no se quedan, y la curva de
+\emph{retention} (\cref{eq:retention}) cae abruptamente desde la primera cohorte.
+El ajuste producto-mercado es la condición en la que un producto satisface una necesidad
+real y recurrente de manera tan completa que los clientes se sentirían genuinamente
+afectados si perdieran el acceso a él. Antes de que esa condición se cumpla, incrementar
+el gasto en \emph{marketing} acelera el fracaso; una vez que se cumple, el boca a boca
+orgánico comienza a contribuir al crecimiento y la economía de la adquisición pagada
+mejora de forma sustancial.
+
+El diagnóstico canónico fue articulado por Sean Ellis tras estudiar casi un centenar de
+empresas tecnológicas en etapa temprana. Propuso una sola pregunta de encuesta con
+formulación negativa: «¿Cómo se sentiría si ya no pudiera usar este producto?» La
+formulación negativa elimina el sesgo de cortesía incrustado en los puntajes de
+satisfacción. El umbral es directo: si menos del \qty{40}{\percent} de los usuarios
+activos recientes responden «muy decepcionado», el producto aún no ha logrado el ajuste
+con ningún segmento que pueda definir. Con \qty{40}{\percent} o más, la observación
+empírica respalda el escalamiento.
+\textcite{ellis2017hacking} documenta el trabajo de estudio comparativo detrás de este
+umbral; \textcite{cagan2018inspired} lo integra en un \emph{framework} más amplio de
+descubrimiento de producto.
+
+El puntaje de la encuesta es un indicador adelantado, no una definición. El verdadero
+indicador empírico del ajuste producto-mercado es la forma de la curva de retención de
+cohortes de \cref{eq:retention}. Un producto con ajuste genuino muestra una curva de
+supervivencia asintótica: la curva se aplana hacia una fracción estable y distinta de
+cero en lugar de continuar declinando hacia cero. Una curva que nunca se aplana ---sin
+importar cuántos usuarios reporten sentirse muy decepcionados--- significa que el producto
+tiene un problema de valor central que ninguna inversión en crecimiento resolverá. Los
+dos diagnósticos son complementarios: la encuesta detecta problemas con anticipación,
+mientras que la curva de retención los confirma o refuta con evidencia conductual a lo
+largo del tiempo. \textcite{ries2011} articula la lógica de construir-medir-aprender que
+rige la velocidad con que un equipo puede iterar hacia el ajuste.
+
+\begin{example}[Diagnóstico de PMF para la SaaS de referencia]
+La retención a \qty{12}{\text{-month}} de la empresa de referencia, de \qty{92.5}{\percent}
+(\(c = \qty{0.65}{\percent}/\text{mo}\)), está muy por encima del umbral empírico de PMF:
+una tasa de supervivencia anual de \qty{92.5}{\percent} produce una curva asintótica, lo
+que confirma que el producto tiene un ajuste genuino con su base de clientes actual. La
+preocupación está aguas arriba: la tasa de conversión de prueba a pago es solo del
+\qty{31}{\percent} (800 pruebas, 200 de pago, según el \emph{funnel}). Esta brecha no es
+un fallo de PMF ---los clientes activados y de pago se quedan--- sino un fallo de
+\emph{onboarding}. El valor no emerge con suficiente rapidez durante la prueba. La
+implicación diagnóstica: instrumentar el «momento ajá» (en este producto, ejecutar un
+primer informe), medir el tiempo hasta el primer informe para los usuarios en prueba, y
+probar intervenciones que lo reduzcan. La alta retención entre los usuarios de pago
+confirma que el ajuste es real; la baja conversión de prueba confirma que el camino
+hacia ese ajuste está oculto.
+\end{example}
+
+\begin{admonition}{Advertencia}
+El ajuste producto-mercado es específico del segmento, no del producto en su totalidad.
+Un puntaje del \qty{40}{\percent} promediado en toda la base de usuarios puede enmascarar
+un \qty{65}{\percent} para un segmento y un \qty{15}{\percent} para otro. Escalar hacia
+el segmento equivocado porque el puntaje combinado parecía aceptable es la manera en que
+las empresas construyen bases de clientes grandes y con alto \emph{churn} que parecen
+sanas hasta el primer ciclo de renovación. Segmente la encuesta por canal de adquisición,
+tamaño de empresa y caso de uso antes de extraer conclusiones.
+\textcite{torres2021continuous} trata el descubrimiento específico por segmento como la
+base de la práctica de descubrimiento continuo.
+\end{admonition}
+
+\section{Descubrimiento y priorización}\label{sec:product-discovery}
+% complexity: 4
+
+Una vez que un producto ha demostrado ajuste con un segmento definido, la pregunta pasa
+de \emph{¿este producto crea valor?} a \emph{¿qué mejoras crean más valor, más
+rápidamente?} Este es el problema de priorización, y está persistentemente distorsionado
+por sesgos cognitivos: la voz más alta del cliente frente a la necesidad del usuario
+mediano, el entusiasmo del ingeniero frente al impacto de mercado, la complejidad de
+implementación frente a la simplicidad del beneficio. La primera disciplina de la gestión
+de producto consiste en reemplazar la intuición sobre la importancia con una estimación
+estructurada del valor esperado por unidad de esfuerzo.
+
+El \emph{framework} RICE operacionaliza esa estimación. Cada iniciativa propuesta se
+evalúa en cuatro dimensiones, combinadas en un único número comparable:
+
+\begin{equation}\label{eq:rice}
+  \mathrm{RICE} \;=\; \frac{R \;\times\; I \;\times\; C}{E},
+\end{equation}
+donde \(R\) es \emph{Reach} (el número de usuarios o transacciones afectados por
+periodo), \(I\) es \emph{Impact} (un multiplicador escalonado: 3 para masivo, 2 para
+alto, 1 para medio, 0.5 para bajo, 0.25 para mínimo), \(C\) es \emph{Confidence}
+(certeza análoga a una probabilidad sobre las estimaciones de Reach e Impact: 1.0, 0.8
+o 0.5), y \(E\) es \emph{Effort} en personas-mes. El numerador premia las iniciativas
+que alcanzan a muchos usuarios con alta confianza de impacto material; el denominador
+penaliza los compromisos de ingeniería de gran envergadura. La fortaleza de la fórmula
+radica en obligar a estimaciones explícitas de los cuatro factores, lo que hace visibles
+los supuestos detrás de cualquier clasificación basada en intuición.
+
+La estructura de gobernanza más amplia para el desarrollo de nuevos productos de mayor
+complejidad o intensivos en hardware es el proceso \emph{stage-gate} (\cref{fig:stage-gate}).
+El \emph{framework} segmenta el recorrido de desarrollo en fases discretas (Descubrimiento,
+Definición del alcance, Caso de negocio, Desarrollo, Pruebas, Lanzamiento), separadas por
+puertas de decisión donde el liderazgo interfuncional emite una instrucción explícita de
+Avanzar, Cancelar, Pausar o Reciclar. Cada puerta impide que la inversión se acumule en
+una iniciativa que ha fallado una condición necesaria ---atractivo de mercado en la
+puerta 2, viabilidad financiera en la puerta 3, factibilidad técnica en la puerta 4.
+\textcite{cooper2017winning} documenta la investigación empírica detrás del proceso y sus
+adaptaciones para organizaciones de software; \textcite{cagan2018inspired} describe cómo
+los equipos de descubrimiento y entrega operan en carriles paralelos en lugar de una
+secuencia estricta.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.82\linewidth]{stage-gate}
+  \caption{Proceso \emph{stage-gate}: cinco etapas separadas por puertas de decisión
+    Avanzar/Cancelar/Pausar. Los rombos representan decisiones de control; los rectángulos
+    representan etapas de trabajo interfuncional paralelo. Una decisión de «Cancelar» o
+    «Pausar» en cualquier puerta impide compromisos adicionales de recursos hasta que se
+    resuelva la condición bloqueante.}
+  \label{fig:stage-gate}
+\end{figure}
+
+\begin{example}[Priorización RICE: SSO vs.\ exportación CSV]
+La cartera de desarrollo contiene dos funcionalidades. La funcionalidad A es la integración
+de inicio de sesión único (SSO), solicitada principalmente por prospectos empresariales;
+la funcionalidad B es la exportación de datos en CSV, solicitada por los usuarios operativos
+dentro de cada cuenta existente. Aplicando \cref{eq:rice} con estimaciones por trimestre:
+
+\medskip
+\noindent Funcionalidad A (SSO): \(R = 200\) prospectos, \(I = 3\) (alto ---elimina un
+obstáculo de compras), \(C = 0.8\), \(E = 4\) personas-mes:
+\[
+  \mathrm{RICE}_A \;=\; \frac{200 \times 3 \times 0.8}{4} \;=\; 120.
+\]
+Funcionalidad B (exportación CSV): \(R = 500\) usuarios activos, \(I = 1\) (medio ---mejora
+de conveniencia), \(C = 0.9\), \(E = 1\) persona-mes:
+\[
+  \mathrm{RICE}_B \;=\; \frac{500 \times 1 \times 0.9}{1} \;=\; 450.
+\]
+B puntúa \num{3.75}\(\times\) más alto. La implicación: el cuello de botella en el
+\emph{funnel} de la empresa de referencia es la tasa de conversión de prueba a pago del
+\qty{31}{\percent}, no el ciclo de ventas empresarial (véase \cref{sec:toc} para la
+lógica de restricciones). La funcionalidad A añadiría compras empresariales sin fricción
+---valioso a largo plazo--- pero no ataca la restricción. La funcionalidad B ofrece un
+beneficio tangible de flujo de trabajo a cada usuario de pago actual y potencial,
+alcanzando a \num{500} usuarios por una sola persona-mes. Hasta que no se corrija la
+tasa de conversión de prueba a pago, construir funcionalidades empresariales es una
+optimización prematura.
+\end{example}
+
+\begin{admonition}{Nota}
+Los puntajes RICE no son comparables entre perfiles de esfuerzo cualitativamente distintos.
+Una refactorización arquitectónica de cinco personas-mes y un cambio de interfaz de una
+persona-mes comparten el mismo denominador, pero implican riesgos, reversibilidad y deuda
+técnica incomparables. Use RICE para clasificar funcionalidades dentro de una banda de
+esfuerzo aproximadamente similar; aplique la gobernanza del \emph{stage-gate} a las
+iniciativas lo suficientemente grandes como para requerir una puerta formal de caso de
+negocio. El \emph{framework} suprime sesgos; no reemplaza el criterio sobre lo que el
+negocio necesita. \textcite{torres2021continuous} advierte que los \emph{frameworks}
+aplicados mecánicamente pueden convertirse en un sustituto del pensamiento que
+pretendían habilitar.
+\end{admonition}
+
+\section{Hoja de ruta y construir-comprar-asociar}\label{sec:roadmap}
+% complexity: 2
+
+Incluso después de que RICE ha clasificado la cartera, surge una pregunta de orden superior
+para cada iniciativa importante: ¿debería la capacidad construirse internamente, comprarse
+(mediante licencia o adquisición) o entregarse a través de una asociación? Esta decisión
+de construir-comprar-asociar moldea la hoja de ruta del producto de manera más duradera
+que cualquier elección individual de funcionalidad, porque determina si la empresa acumula
+propiedad intelectual propia o compra tiempo al costo del control estratégico. El criterio
+financiero es \cref{eq:npv}: la opción con el mayor valor presente neto de la contribución
+de margen esperada, correctamente cargada por integración y costo continuo, es la preferida.
+El criterio estratégico es la prueba VRIN de \cref{sec:rbv-vrin}: construir solo cuando la
+capacidad resultante sea Valiosa, Rara, Inimitable y No sustituible, porque solo entonces
+la inversión genera una ventaja competitiva duradera. Construir funcionalidad de uso común
+internamente es destrucción de costos de oportunidad.
+
+El \emph{framework} práctico mapea tres rutas contra cuatro dimensiones: control estratégico,
+costo total de propiedad, tiempo de comercialización y dependencia del proveedor. Construir
+internamente maximiza el control y la propiedad de la propiedad intelectual, pero implica
+la entrega más lenta y el mayor riesgo de ejecución. Comprar o licenciar ofrece el tiempo
+de comercialización más rápido al costo de quedar atado al proveedor y a la dependencia de
+su hoja de ruta. Asociarse equilibra velocidad y capacidad con gobernanza compartida y
+derechos de propiedad intelectual negociados. La elección correcta depende de la posición
+de la capacidad en la taxonomía VRIN, no de la preferencia de ingeniería.
+
+\begin{example}[Mercado de integraciones: construir vs.\ asociarse con Zapier]
+La empresa de referencia evalúa cómo atender al \qty{35}{\percent} de prospectos que solicitan
+integraciones con herramientas de terceros (sistemas de RR.HH., CRMs, gestores de proyectos).
+Dos opciones: construir un mercado de integraciones nativo (costo de ingeniería \money{80000}
+inicial, dos ingenieros durante cuatro meses, más mantenimiento continuo); o asociarse con
+una plataforma de automatización de flujos de trabajo consolidada a costo inicial cero a
+cambio de un reparto del \qty{30}{\percent} de los ingresos en cualquier actualización de
+plan atribuida a las integraciones.
+
+Aplicando \cref{eq:npv}: la construcción nativa requiere \(I_0 = \money{80000}\) hoy. Si las
+integraciones reducen el \emph{churn} anual en \qty{1}{\percent} sobre la base ARR de
+\money{4000000}, el beneficio anual de retención es \money{40000}. Capitalizado como una
+perpetuidad creciente a la tasa de descuento del \qty{11}{\percent} de la empresa:
+\(\money{40000}/(0.11 - 0.03) = \money{500000}\).
+NPV de construir \(\approx \money{500000} - \money{80000} = \money{420000}\): claramente
+positivo.
+
+La ruta de asociación ahorra \money{80000} iniciales pero paga un reparto del \qty{30}{\percent}
+de ingresos por actualizaciones atribuidas a perpetuidad. Más críticamente: la capa de
+integración es lo que ancla a los clientes al modelo de datos y flujo de trabajo del
+producto. Esa es precisamente la definición de un \emph{moat} por costo de cambio (véase
+\cref{sec:network-effects}). Externalizar las integraciones a un tercero significa que la
+fidelización se acumula en la plataforma del socio, no en la de la empresa. La lógica VRIN
+lo confirma: una capa de integración propia es Valiosa (reduce el \emph{churn}), Rara
+(pocos productos SaaS de mercado medio construyen en profundidad), Inimitable (el
+conocimiento del flujo de trabajo se incorpora con el tiempo) y No sustituible. La opción
+de construir gana ---no solo por NPV sino por razones estratégicas.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Construir funcionalidad de uso común ---características que cualquier equipo de ingeniería
+podría replicar en un fin de semana, que no requieren datos propietarios y que no generan
+ningún efecto de red--- es destrucción de costos de oportunidad. Cada persona-mes destinada
+a replicar lo que puede licenciarse a bajo costo es una persona-mes que no se destina a la
+capacidad que constituye la diferenciación real de la empresa. La prueba es siempre VRIN,
+aplicada antes de redactar el plan del sprint.
+\end{admonition}
+
+\section{Lanzamiento y adopción de nuevos productos}\label{sec:adoption-curves}
+% complexity: 4
+
+Construir el producto correcto y fijarlo al precio adecuado no garantiza la adopción. La
+velocidad a la que un mercado absorbe un nuevo producto está gobernada por dinámicas
+sociales que las decisiones individuales de producto pueden influir pero no anular. El
+Modelo de Difusión de Bass es la descripción matemática fundacional de cómo se desarrollan
+esas dinámicas. Descompone la adopción en dos fuerzas conductuales: la \emph{innovación}
+---individuos que adoptan espontáneamente, impulsados por medios externos y una afinidad
+intrínseca por la nueva tecnología--- y la \emph{imitación} ---individuos que adoptan
+porque observan a sus pares que ya lo han hecho. La razón entre estas dos fuerzas
+determina no solo el nivel de adopción final, sino el momento y la altura del pico.
+
+En la forma de tiempo discreto utilizada para la elaboración de pronósticos prácticos, los
+nuevos adoptantes en el periodo \(t\) son:
+\begin{equation}\label{eq:bass}
+  N(t) \;=\; \bigl[p + q\,\tfrac{N(t-1)}{M}\bigr]\,\bigl[M - N(t-1)\bigr],
+\end{equation}
+donde \(M\) es el mercado total direccionable (techo máximo de adoptantes), \(p\) es el
+coeficiente de innovación, \(q\) es el coeficiente de imitación y \(N(t-1)\) es la base
+instalada acumulada al inicio del periodo \(t\). El primer término entre corchetes es el
+riesgo instantáneo de adopción: la probabilidad de que un no adoptante convierta,
+combinando una tasa base (\(p\)) con un término de presión social que crece conforme
+aumenta la base instalada (\(q \cdot N(t-1)/M\)). El segundo término entre corchetes es
+el conjunto de no adoptantes restantes. Cuando la base instalada es pequeña, el término
+social es insignificante y el crecimiento es lento; a medida que la base se acumula, el
+término social acelera la adopción hasta que la saturación del mercado comprime el conjunto
+restante y el crecimiento desacelera. El resultado es la característica curva de adopción
+acumulada en forma de S y la curva de nuevos adoptantes en forma de campana que se muestran
+en \cref{fig:bass-diffusion}. Las estimaciones de metaanálisis en diversas categorías de
+productos sitúan \(\bar{p} \approx 0.03\) y \(\bar{q} \approx 0.38\)
+\parencite{bass1969newproduct}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{bass-diffusion}
+  \caption{Modelo de difusión de Bass: curvas de adopción acumulada en forma de S para el
+    lanzamiento del nivel empresarial (\(M = 500\), \(p = 0.02\), \(q = 0.3\)). La curva de
+    \emph{solo innovadores} (coeficiente \(p\) actuando solo, sin imitación) sigue una
+    difusión puramente lineal; la curva completa de Bass se curva en sigmoide una vez que
+    la base instalada es lo suficientemente grande para que el boca a boca domine. La línea
+    vertical discontinua marca el pico de nuevos adoptantes (mes 10,
+    \(\approx\num{43}\) cuentas nuevas).}
+  \label{fig:bass-diffusion}
+\end{figure}
+
+\begin{example}[Lanzamiento del nivel empresarial: calibración de Bass]
+La empresa de referencia lanza un nivel de precios empresarial dirigido a \(M = 500\) cuentas
+de mercado medio en su segmento direccionable. La prospección saliente histórica sugiere una
+tasa de conversión base de \(p = 0.02\) (innovadores ---cuentas que evalúan y compran de
+forma independiente). Las entrevistas de éxito del cliente sugieren que las referencias boca
+a boca dentro de las redes de pares del sector están activas, estimadas en \(q = 0.3\).
+
+Aplicando \cref{eq:bass} de forma iterativa:
+
+\medskip
+\textbf{Mes 1.}\ Sin base instalada todavía. Nuevos adoptantes \(= (0.02 + 0.3 \times 0/500)
+\times (500 - 0) = 0.02 \times 500 = 10\). Acumulado: \num{10}.
+
+\textbf{Mes 2.}\ El término social contribuye ahora. Nuevos adoptantes \(\approx (0.02 + 0.3
+\times 10/500) \times 490 = 0.026 \times 490 \approx 13\). Acumulado: \num{23}.
+
+La aceleración continúa hasta el mes 10, donde el conteo de nuevos adoptantes alcanza su pico
+en aproximadamente \num{43} por mes (acumulado \(\approx\num{268}\) de \num{500}). Después
+del pico, el conjunto direccionable restante se contrae más rápido de lo que crece el término
+social, y los conteos de nuevos adoptantes regresan hacia el piso de solo innovadores.
+
+La implicación gerencial: el plan de lanzamiento debe concentrar el alcance en los meses 1--3,
+asegurando a los primeros innovadores cuya presencia siembra el término social. Cada referencia
+de cliente temprana ---caso de estudio, referido de un par, testimonio en conferencia del sector---
+eleva el \(q\) efectivo y adelanta el pico. Este es precisamente el papel del producto mínimo
+viable en el ciclo de la \emph{startup} lean (\cref{sec:lean-startup}): un MVP colocado con
+cinco a diez adoptantes tempranos calibra empíricamente tanto \(p\) como \(q\) antes de la
+inversión completa en el \emph{funnel} de lanzamiento.
+\end{example}
+
+\begin{admonition}{Advertencia}
+El modelo de Bass describe la difusión a nivel macro en una población de adoptantes
+potenciales independientes ---no es un modelo de CLV por cohorte. \Cref{eq:bass} no dice
+nada sobre cuánto vale cada cuenta individual después de la adopción, ni sobre las
+dinámicas de \emph{retention} dentro de la base instalada una vez adquirida. Los dos
+modelos son complementarios: Bass pronostica la oferta de cuentas nuevas a lo largo del
+tiempo; \cref{eq:retention} y \cref{eq:clv} en \cref{ch:customer-economics} determinan
+el valor extraído de cada cuenta después de que se incorpora. Confundir los dos ---usar
+las curvas de adopción de Bass para proyectar ingresos sin un análisis separado de
+retención por cohorte--- es el error de modelado más común en la planificación financiera
+de la etapa de lanzamiento. \textcite{bass1969newproduct} es explícito en cuanto al
+alcance: el modelo rige la difusión de la primera compra, no la compra repetida ni la
+retención.
+\end{admonition}

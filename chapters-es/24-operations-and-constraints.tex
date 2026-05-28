@@ -1,0 +1,143 @@
+\chapter{Operaciones y restricciones}\label{ch:operations}
+
+% Alcance: teoría de las restricciones, tambor-amortiguador-cuerda, ley de Little, rendimiento, cuellos de botella.
+% Vínculo cruzado: la ley de Little (rendimiento = tasa de llegada × tiempo de ciclo) gobierna el rendimiento
+%   del funnel y del pipeline (\cref{ch:digital-funnel-and-crm}).
+
+Las operaciones no comienzan con la optimización de procesos; comienzan con encontrar la única restricción que limita la producción, y con negarse a mejorar cualquier otra cosa hasta que esa restricción se haya resuelto.
+
+\section{La teoría de las restricciones}\label{sec:toc}
+% complejidad: 3
+
+¿Qué paso individual limita la cantidad de valor que se puede producir, y vale más resolverlo que corregir todas las demás ineficiencias combinadas? La respuesta casi siempre se remonta a un nodo del proceso --- la restricción --- y la idea central es que fortalecer cada otro eslabón de la cadena deja la carga sin cambios. La observación de Goldratt es que la mayoría de las organizaciones destinan la mayor parte de su presupuesto de mejora a elementos que no son cuellos de botella, obteniendo una ganancia de rendimiento nula.
+
+Se define el rendimiento como la tasa a la que un sistema genera dinero a través de las ventas. La restricción vinculante es el paso cuya capacidad se consume primero en su totalidad; todos los demás pasos operan por debajo de su capacidad, y su holgura es desperdicio únicamente después de que la restricción ha sido elevada:
+\begin{equation}\label{eq:throughput}
+  \text{Throughput} \;=\; \min_{i}\bigl(\text{capacity of step }i\bigr).
+\end{equation}
+Los cinco pasos de enfoque de Goldratt se repiten en ciclo hasta que la restricción cambia de lugar:
+\begin{description}
+  \item[Identificar] Encontrar la restricción vinculante --- el paso al \qty{100}{\percent} de utilización.
+  \item[Explotar] Extraer cada unidad de rendimiento posible de la restricción tal como está, antes de invertir.
+  \item[Subordinar] Alinear cada otro paso para servir a la restricción; no sobreproducir inventario que se acumule antes de ella.
+  \item[Elevar] Solo en este punto invertir para aumentar la capacidad de la restricción.
+  \item[Repetir] Una vez elevada, la restricción se desplaza; regresar al paso uno.
+\end{description}
+\cref{eq:throughput} supone una única restricción vinculante en cualquier momento --- una aproximación razonable para líneas de producción bien gestionadas, pero frágil cuando varios pasos están cerca de la saturación simultáneamente. También trata el rendimiento como tasa de producción, ignorando que los fallos de calidad pueden convertir el rendimiento aparente en desperdicio aguas abajo.
+
+\begin{example}
+El funnel de la SaaS procesa \num{10000} sesiones \(\to\) \num{800} pruebas \(\to\) \num{200} pagos por mes, con tres puertas de conversión:
+\[
+  \text{sesión}\to\text{prueba}=\qty{8}{\percent},\quad
+  \text{prueba}\to\text{pago}=\qty{25}{\percent},\quad
+  \text{global}=\qty{2}{\percent}.
+\]
+La decisión es dónde invertir. Elevar la conversión de prueba a pago de \qty{25}{\percent} a \qty{35}{\percent} produce \num{280} nuevos clientes por mes --- una ganancia del \qty{40}{\percent}. Elevar la conversión de sesión a prueba de \qty{8}{\percent} a \qty{10}{\percent} aumenta las pruebas a \num{1000}, pero la conversión de prueba a pago sigue siendo la tasa vinculante: la producción sube solo a \(0.25\times1000=250\) --- una ganancia del \qty{25}{\percent}. La restricción está identificada; explotarla y elevarla primero.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Optimización heroica de elementos que no son cuellos de botella: reducir el costo por clic para atraer sesiones más baratas mientras la conversión de prueba a pago está estancada en \qty{25}{\percent} añade pipeline que se acumula frente a la restricción sin generar ingresos adicionales. La mejora se registra en el dashboard de un equipo mientras el rendimiento del sistema permanece plano.
+\end{admonition}
+
+El tambor-amortiguador-cuerda (DBR, por sus siglas en inglés) es el mecanismo de programación de Goldratt: la restricción (tambor) marca el ritmo del sistema; un amortiguador de WIP --- trabajo en curso --- la protege del desabastecimiento; una cuerda vincula la liberación de insumos a la tasa de consumo de la restricción. Para el trabajo del conocimiento, la cadena crítica reemplaza los amortiguadores de tarea por un amortiguador de proyecto compartido al final, evitando el relleno propio del síndrome del estudiante.
+
+La teoría de las restricciones enmarca cada decisión de capacidad como una pregunta de rendimiento, que es también la perspectiva con que \textcite{goldratt2014} aborda la manufactura y con que \textcite{cachon2024matching} la generaliza a las operaciones de servicios. Las tasas de conversión del funnel anteriores se vinculan directamente con \cref{ch:digital-funnel-and-crm}.
+
+\section{La ley de Little}\label{sec:littles-law}
+% complejidad: 4 -> figura littles-law
+
+¿Cuántos elementos activos deben estar en un sistema en estado estacionario, y cuál es el tiempo de ciclo mínimo consistente con el rendimiento deseado? Cualquier sistema estable en el que los elementos llegan, permanecen durante cierto tiempo promedio y luego salen satisface una relación sorprendentemente sencilla: el número de elementos presentes es igual a la tasa de llegada multiplicada por el tiempo promedio que cada uno pasa en el sistema. La relación es libre de distribución --- exige únicamente equilibrio en estado estacionario.
+
+Sea \(L\) el número promedio a largo plazo de elementos en el sistema, \(\lambda\) la tasa de llegada (o rendimiento) en estado estacionario, y \(W\) el tiempo promedio que cada elemento pasa en el sistema. La conservación del flujo en estado estacionario impone:
+\begin{equation}\label{eq:littles-law}
+  L \;=\; \lambda \, W.
+\end{equation}
+Algebraicamente obvio una vez escrito; el contenido es que la identidad se cumple independientemente de la distribución de llegadas, la distribución de tiempos de servicio o el número de servidores --- resultado demostrado con rigor por \textcite{cachon2024matching}. Dos de los tres valores \(\{L, \lambda, W\}\) determinan el tercero.
+
+\cref{eq:littles-law} requiere que el sistema esté en estado estacionario: \(\lambda\) de entrada igual a \(\lambda\) de salida. Durante una fase de aceleración o de cierre, o con llegadas por lotes que nunca se procesan por completo, la ley no se cumple de forma instantánea. Tampoco dice nada sobre la varianza: un pipeline con \(W=4\) meses promedio puede ocultar una distribución que va de dos semanas a ocho meses.
+
+\begin{example}
+El pipeline de ventas tiene \(L=40\) negocios abiertos; el equipo cierra \(\lambda=10\) por mes. Por \cref{eq:littles-law}:
+\[
+  W \;=\; \frac{L}{\lambda} \;=\; \frac{40}{10} \;=\; 4\text{ meses de ciclo de ventas promedio.}
+\]
+La dirección quiere reducir el ciclo promedio a 2 meses. Existen exactamente dos palancas: reducir \(L\) (eliminar pipeline sin calificar) o aumentar \(\lambda\) (cerrar más negocios por mes). Duplicar la tasa de cierre a 20 por mes con el pipeline constante logra el objetivo; también lo hace reducir el pipeline a la mitad --- 20 negocios --- manteniendo la tasa de cierre. Contratar más SDRs para llenar el pipeline \emph{alargaría} el ciclo si la capacidad de cierre está fija.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Construir pipeline como métrica de vanidad: añadir \(L\) sin aumentar \(\lambda\) extiende mecánicamente \(W\). Un dashboard de CRM que celebra «un pipeline récord» puede estar anunciando un ciclo de ventas más largo.
+\end{admonition}
+
+En un sistema de colas con llegadas de Poisson y servicio exponencial (M/M/1), la ley de Little da \(L = \lambda / (\mu - \lambda)\), donde \(\mu\) es la tasa de servicio --- que explota cuando la utilización se acerca a 1. Por eso operar cerca del \qty{100}{\percent} de utilización no produce un \qty{100}{\percent} de rendimiento, sino colas casi infinitas. Para las colas de trabajo del conocimiento (backlogs de producto, cadenas de aprobación), el libro \emph{Principles of Product Development Flow} de Reinertsen aplica la misma matemática para mostrar por qué la capacidad de holgura es una inversión, no un desperdicio.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{littles-law}
+  \caption{Ley de Little: las llegadas a tasa \(\lambda\) llenan un sistema que contiene en promedio \(L\) elementos; cada elemento sale tras un tiempo promedio \(W = L/\lambda\). Reducir el tiempo de ciclo sin reducir el pipeline amplía la razón.}
+  \label{fig:littles-law}
+\end{figure}
+
+La ley de Little es la contraparte de colas del modelo de valor esperado del pipeline en \cref{eq:pipeline-ev} y gobierna la aritmética del funnel de \cref{ch:digital-funnel-and-crm}. \textcite{cachon2024matching} ofrecen la demostración formal y las aplicaciones a operaciones de servicio.
+
+\section{El efecto látigo}\label{sec:bullwhip}
+% complejidad: 4 -> figura bullwhip
+
+¿Por qué una pequeña oscilación en la demanda del cliente final produce variaciones extremas en los pedidos aguas arriba, y cómo se amortigua la amplificación antes de que desencadene una ola de contrataciones o un desabastecimiento? Cada eslabón de una cadena de suministro observa los pedidos que le coloca el eslabón anterior --- no la demanda del cliente final. Cuando cada eslabón añade su propio stock de seguridad y reacciona al ruido de los pedidos, las señales de demanda pequeñas se amplifican progresivamente aguas arriba. La cadena chasquea como un látigo.
+
+Sea \(\sigma^2_D\) la varianza de la demanda del cliente final y \(\sigma^2_O\) la varianza de los pedidos colocados por cualquier eslabón. La razón de efecto látigo mide la amplificación de la demanda:
+\begin{equation}\label{eq:bullwhip}
+  \text{Razón de efecto látigo} \;=\; \frac{\operatorname{Var}(\text{pedidos})}{\operatorname{Var}(\text{demanda})} \;\ge\; 1.
+\end{equation}
+\textcite{lee1997bullwhip} identifican cuatro causas raíz: procesamiento de señales de demanda (cada eslabón pronostica a partir de sus propios datos de pedidos ruidosos), juego de racionamiento (los compradores inflan pedidos durante la escasez), lote de pedidos (intervalos de pedido irregulares amplifican la varianza) y variación de precios (las promociones provocan picos de demanda). Para SaaS, la causa operativa es el procesamiento de señales de demanda: los planes de capacidad internos se construyen a partir de datos de conversión rezagados y agregados que guardan poca semejanza con las llegadas reales del pipeline.
+
+\cref{eq:bullwhip} supone eslabones independientes que realizan pronósticos locales. Compartir datos de punto de venta o de pipeline aguas arriba colapsa la razón hacia 1 --- la lógica detrás del inventario gestionado por el proveedor y la visibilidad compartida del CRM. El modelo también trata la varianza de la demanda como exógena; las empresas estacionales deben separar la estacionalidad estructural del ruido antes de aplicar la razón.
+
+\begin{example}
+La línea base de la SaaS es \num{200} nuevos clientes por mes. La tasa de conversión de un mes sube de forma anómala al \qty{37.5}{\percent} (desde \qty{25}{\percent}), dando \num{300} clientes. Un equipo de capacidad que lee esta señal sin suavizarla planifica una ronda de contratación para un \qty{50}{\percent} más de personal de soporte.
+
+Un promedio móvil de 3 meses sobre los meses \(t-2, t-1, t\) da:
+\[
+  \bar{\lambda} \;=\; \frac{200 + 200 + 300}{3} \;=\; \num{233}\text{ clientes/mes}.
+\]
+La señal suavizada implica un incremento del \qty{17}{\percent} en la demanda, no del \qty{50}{\percent}. El personal planificado se escala en consecuencia, y el mes anómalo se trata como un evento puntual a menos que se sostenga. Medir \(\operatorname{Var}(\text{contrataciones planificadas})/\operatorname{Var}(\text{demanda real})\) mes a mes permite hacer seguimiento de si la razón de efecto látigo mejora.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Actuar sobre anomalías de conversión de un solo período: un salto de un mes en la conversión de prueba a pago del \qty{25}{\percent} al \qty{37.5}{\percent} es estadísticamente consistente con la variación muestral en \num{800} pruebas. Tratarlo como un cambio estructural y sobrecontratar es el efecto látigo en su forma más clásica --- la varianza de las acciones supera la varianza del entorno.
+\end{admonition}
+
+La prescripción de Lee et al. es la centralización de la información (compartir señales de demanda), precios estables (eliminar los picos inducidos por promociones) y coordinación de las cantidades de pedido. En SaaS, el equivalente es un almacén de datos compartido que da a finanzas, reclutamiento y éxito del cliente acceso al mismo pipeline en tiempo real, en lugar de que cada función pronostique desde su propio informe rezagado.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{bullwhip}
+  \caption{La varianza de la demanda se amplifica en cada eslabón: la demanda del cliente final (abajo) muestra una oscilación moderada; los pedidos colocados aguas arriba (arriba) oscilan con mucha mayor amplitud. Un promedio móvil de 3 meses (línea discontinua) amortigua sustancialmente la señal.}
+  \label{fig:bullwhip}
+\end{figure}
+
+El efecto látigo es tanto un problema de información como un problema de inventario; \textcite{lee1997bullwhip} es el tratamiento canónico y \textcite{cachon2024matching} extiende la interpretación de colas.
+
+\section{\emph{Lean}, operaciones y el ciclo Construir--Medir--Aprender}\label{sec:lean-bml}
+% complejidad: 2
+
+¿Cómo se reduce el tiempo entre formular una hipótesis y saber si era correcta? La palanca central de \emph{lean} es reducir el WIP. Por \cref{eq:littles-law}, menos WIP implica menor tiempo de ciclo con el mismo rendimiento. Los ciclos más cortos comprimen el ciclo de retroalimentación: se aprende más rápido, lo que en sí mismo es una forma de rendimiento.
+
+El ciclo Construir--Medir--Aprender (BML) es un marco conceptual, no una ecuación. Su lógica:
+\begin{description}
+  \item[Construir] Implementar la funcionalidad o el cambio mínimo capaz de probar la hipótesis.
+  \item[Medir] Instrumentar el sistema; recopilar la métrica de la que depende la hipótesis.
+  \item[Aprender] ¿La hipótesis fue respaldada? Pivotar (cambiar de dirección) o perseverar (redoblar la apuesta).
+\end{description}
+El ciclo es un sistema de producción de conocimiento: cada iteración convierte la incertidumbre en aprendizaje validado, análogo a la actualización bayesiana (\cref{ch:decisions-under-uncertainty}). La ventaja de velocidad del BML proviene de minimizar el tamaño del lote --- el análogo startup del sistema de producción por demanda de \emph{lean}. La limitación del modelo es que no garantiza que se esté midiendo la métrica correcta. Optimizar un indicador proxy (vistas de página, clics de registro) desconectado de la creación de valor produce conclusiones correctas según la herramienta pero erróneas en la realidad --- las métricas de vanidad superan el ciclo BML sin generar aprendizaje real.
+
+\begin{example}
+El equipo de la SaaS plantea la hipótesis de que los tooltips de onboarding dentro de la aplicación elevan la conversión de prueba a pago del \qty{25}{\percent} al \qty{30}{\percent}. Construir: instrumentar los tooltips para un \qty{50}{\percent} aleatorio de las pruebas. Medir: tasa de conversión durante 4 semanas (volumen suficiente con \num{800} pruebas/mes). Aprender: el grupo de tratamiento convierte al \qty{28}{\percent} --- positivo en dirección pero aún no decisivo; perseverar con una variante de mayor participación. El WIP es una hipótesis a la vez; ejecutar seis experimentos simultáneos fragmenta la señal y extiende el tiempo de ciclo efectivo.
+\end{example}
+
+\begin{admonition}{Advertencia}
+El modo fábrica de funcionalidades: construir demasiado rápido sin medir. Una alta producción de funcionalidades entregadas no equivale a alto rendimiento si ninguna mueve la tasa de conversión. El WIP se infla, \cref{eq:littles-law} garantiza que el tiempo de ciclo sube, y el equipo pierde de vista qué está intentando aprender.
+\end{admonition}
+
+\textcite{ries2011} enmarca explícitamente el BML como una analogía con la manufactura \emph{lean}. La conexión más profunda es con la capa del modelo de negocio: un único ciclo BML es una micro-prueba de un supuesto incorporado en el lienzo del modelo de negocio (\cref{ch:business-models}). Los aprendizajes validados acumulados son lo que justifica los flujos de ingresos y la estructura de costos del lienzo.
+
+La lógica de rendimiento de \emph{lean}, la ley de Little y el ciclo BML son tres expresiones del mismo principio subyacente: reducir el tamaño del lote y el tiempo de ciclo para acelerar la conversión de la incertidumbre en valor. \textcite{cachon2024matching} ofrecen los fundamentos de gestión de operaciones; \textcite{ries2011} la aplicación startup.

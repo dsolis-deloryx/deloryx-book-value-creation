@@ -1,0 +1,271 @@
+\chapter{Decidir bajo incertidumbre}\label{ch:decisions-under-uncertainty}
+
+% Alcance: valor esperado, Bayes, árboles de decisión, sesgos cognitivos.
+% Vínculos cruzados: la actualización bayesiana reaparece en atribución basada en datos y MMM (\cref{ch:attribution-and-measurement});
+%   la regla de la cadena de probabilidad subyace al funnel de conversión (\cref{ch:digital-funnel-and-crm}).
+
+Toda decisión de negocio es una apuesta colocada antes de conocer el resultado. Los \emph{framework}s
+aquí presentados --- valor esperado, Bayes y teoría prospectiva --- no eliminan la incertidumbre; hacen
+explícita la estructura de la apuesta para que el directivo pueda evaluarla con claridad en lugar de
+reaccionar emocionalmente ante ella.
+
+\section{Valor esperado y árboles de decisión}\label{sec:expected-value}
+% complejidad: 4 -> figura decision-tree
+
+Cuando dos opciones tienen perfiles de riesgo distintos, ¿cuál se elige? El valor esperado convierte
+los resultados ponderados por probabilidad en un único número comparable, pero un árbol de decisión
+obliga a hacer explícita la estructura de la incertidumbre antes de calcular. Comparar una opción
+segura con una arriesgada usando el juicio intuitivo induce sistemáticamente al error, porque los
+seres humanos sobrepondera los resultados recientes, vívidos y emocionalmente salientes. El valor
+esperado es el promedio aritmético de largo plazo --- el número hacia el que se convergería si la
+decisión se tomara muchas veces en condiciones idénticas. Para decisiones únicas, EV es una línea
+base disciplinada, no una garantía.
+
+Para un conjunto discreto de resultados mutuamente excluyentes \(x_i\) con probabilidades \(p_i\)
+(\(\sum_i p_i = 1\)):
+\begin{equation}\label{eq:ev}
+  \mathbb{E}[X] \;=\; \sum_i p_i\, x_i.
+\end{equation}
+Un árbol de decisión mapea cada elección a un conjunto de ramas ponderadas por probabilidad, con EV
+calculado en cada nodo terminal y enrollado de vuelta al nodo de decisión mediante \cref{eq:ev}. El
+valor del árbol radica en obligar al analista a enumerar los resultados y asignar probabilidades, en
+lugar de razonar a partir de un único escenario esperado.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{decision-tree}
+  \caption{Árbol de decisión para dos pujas de CPA objetivo. La puja más alta (\money{900}) tiene mayor
+    valor esperado pese a una probabilidad de éxito menor, porque el piso de pérdida es pequeño en
+    relación con el techo de ganancia. Enrollar el árbol hacia el nodo de decisión revela esto sólo
+    después de hacer explícitas las probabilidades.}
+  \label{fig:decision-tree}
+\end{figure}
+
+\Cref{eq:ev} supone que los resultados y las probabilidades son conocidos. En la práctica, ambos
+requieren estimación a partir de datos o juicio experto, lo que introduce riesgo de modelo. EV
+tampoco capta la distribución alrededor de la media: dos opciones con EV idéntico pueden tener
+varianza muy diferente, y una empresa con capital restringido puede preferir racionalmente la opción
+de menor varianza aunque su EV sea inferior (aversión al riesgo --- formalizada en
+\cref{sec:prospect-theory}). Por último, el EV de un árbol de decisión colapsa a un único número y
+descarta la temporalidad de los \emph{cash flow}s; se debe incorporar descuento al comparar trayectorias
+multiperiódicas.
+
+\begin{example}
+La empresa SaaS de referencia evalúa dos niveles de CPA objetivo para una nueva campaña. Con
+\(\mathrm{CPA}=\money{600}\), el modelo de conversión asigna una probabilidad del \qty{70}{\percent} de
+adquirir un cliente con \(\mathrm{LTV}=\money{3150}\) y \qty{30}{\percent} de un cliente de bajo
+compromiso valorado en \money{900} (tres meses y luego \emph{churn}):
+\[
+  \begin{aligned}
+    \mathbb{E}[\text{value} \mid \mathrm{CPA}=\money{600}]
+      &= 0.70\times(\money{3150}-\money{600}) + 0.30\times(\money{900}-\money{600}) \\
+      &= \money{1785} + \money{90} = \money{1875}.
+  \end{aligned}
+\]
+Con \(\mathrm{CPA}=\money{900}\), el mayor gasto atrae un segmento de mayor intención:
+\qty{85}{\percent} de probabilidad del cliente de LTV completo, \qty{15}{\percent} del de bajo compromiso:
+\[
+  \begin{aligned}
+    \mathbb{E}[\text{value} \mid \mathrm{CPA}=\money{900}]
+      &= 0.85\times(\money{3150}-\money{900}) + 0.15\times(\money{900}-\money{900}) \\
+      &= \money{1912.50}.
+  \end{aligned}
+\]
+El CPA de \money{900} genera mayor beneficio esperado por cliente (\money{1912.50} frente a
+\money{1875}) pese a gastar \money{300} más por adquisición. La decisión: subir el CPA objetivo. La
+trampa es elegir \money{600} porque \emph{parece} más conservador --- \cref{sec:prospect-theory}
+explica por qué esa intuición es sistemáticamente errónea.
+\end{example}
+
+\begin{admonition}{Advertencia}
+La planificación de un único escenario --- construir un conjunto de proyecciones, denominarlo
+«caso base» y evaluarlo como si fuera cierto --- es un árbol de decisión con una sola rama, que
+asigna probabilidad~1 al escenario elegido. Hacer explícitas las ramas y sus probabilidades no es
+trabajo adicional; es la disciplina mínima que exige el análisis de EV \parencite{kahneman2011}.
+\end{admonition}
+
+Cuando las decisiones son secuenciales y la información llega entre etapas, el árbol se convierte en
+un problema de opciones reales: el valor de poder esperar, expandir o abandonar es una prima de opción
+sobre el EV estático. La valoración de Black-Scholes es el límite en tiempo continuo de un árbol
+binomial. La implicación práctica: escalonar los compromisos de capital (primero un piloto, luego el
+despliegue completo) casi siempre vale más que su costo, porque preserva la opción de abandonar.
+Modelar esto requiere métodos de valoración de opciones, no EV simple (\cref{ch:valuation}).
+
+El valor esperado es el lenguaje de la presupuestación y el análisis de escenarios; alimenta directamente
+el \emph{framework} DCF de \cref{ch:valuation} y los modelos de atribución MMM de
+\cref{ch:attribution-and-measurement}. \textcite{anderson2019statistics} cubren el aparato probabilístico;
+\textcite{kahneman2011} documentan por qué los directivos se desvían de él.
+
+\section{Actualización bayesiana}\label{sec:bayesian-updating}
+% complejidad: 3
+
+Ha llegado una nueva señal --- la descarga de un documento técnico, un resultado de piloto, una señal
+de \emph{churn}. ¿Cuánto debe mover la creencia previa? El teorema de Bayes da la respuesta exacta;
+la habilidad práctica está en elegir qué cuenta como evidencia y calibrar su poder diagnóstico.
+La inferencia frecuentista pregunta cuál es la probabilidad de estos datos dado un parámetro verdadero
+fijo; la inferencia bayesiana pregunta cuál es la probabilidad de que el parámetro sea verdadero dados
+los datos recién observados. La segunda pregunta es casi siempre la que necesita el directivo. Bayes
+dice: comience con una prior (la creencia inicial), observe la evidencia y actualice proporcionalmente
+a cuánto más probable es la evidencia bajo la hipótesis que bajo sus alternativas.
+
+Sea \(H\) una hipótesis y \(D\) los datos observados. La probabilidad posterior de \(H\) dado \(D\) es:
+\begin{equation}\label{eq:bayes}
+  P(H \mid D) \;=\; \frac{P(D \mid H)\,P(H)}{P(D)},
+\end{equation}
+donde \(P(H)\) es la prior, \(P(D \mid H)\) la verosimilitud de los datos bajo \(H\), y
+\(P(D)=P(D\mid H)P(H)+P(D\mid \neg H)P(\neg H)\) la constante normalizadora (verosimilitud marginal).
+La actualización es multiplicativa en log-odds: \(\log\frac{P(H\mid D)}{P(\neg H\mid D)} =
+\log\frac{P(H)}{P(\neg H)} + \log\frac{P(D\mid H)}{P(D\mid \neg H)}\). Cada nueva observación
+agrega su razón de log-verosimilitud al log-odds acumulado.
+
+\Cref{eq:bayes} es exacta, pero sólo tan buena como sus insumos. Una prior mal calibrada (p.\ ej.,
+una tasa base ignorada en favor del caso vívido) se propaga a la posterior. Una verosimilitud
+construida sobre datos históricos no representativos distorsiona igualmente la actualización. La
+fórmula no puede corregir insumos deficientes; sólo puede hacer transparente la estructura del
+razonamiento para que los insumos puedan cuestionarse.
+
+\begin{example}
+El equipo de ventas estima que el \qty{25}{\percent} de los usuarios en periodo de prueba acaba
+convirtiéndose a pago --- la prior: \(P(\text{paid})\!=\!0.25\). Se observa la descarga de un
+documento técnico. Los datos históricos muestran que el \qty{60}{\percent} de los usuarios que
+eventualmente pagaron descargaron un documento técnico durante el periodo de prueba, frente a sólo
+el \qty{15}{\percent} de los usuarios que hicieron \emph{churn}: \(P(D\mid\text{paid})=0.60\),
+\(P(D\mid\text{not paid})=0.15\). Aplicando \cref{eq:bayes}:
+\[
+  P(D) = 0.60\times0.25 + 0.15\times0.75 = 0.15 + 0.1125 = 0.2625,
+\]
+\[
+  P(\text{paid}\mid D) = \frac{0.60\times0.25}{0.2625} \approx 0.571.
+\]
+Una única descarga de documento técnico más que duplica la probabilidad de conversión estimada, del
+\qty{25}{\percent} al \qty{57}{\percent}. La implicación para el CRM: dirigir este \emph{lead} a una
+secuencia de ventas de mayor dedicación cuyo costo queda justificado por la estimación de LTV
+revisada. Sin la actualización bayesiana, ambos \emph{lead}s reciben un tratamiento idéntico pese a
+tener valores esperados muy distintos.
+\end{example}
+
+\begin{admonition}{Advertencia}
+La negligencia de la tasa base es el error bayesiano más común: actualizar con la señal vívida
+ignorando la prior. Una \emph{startup} anuncia que su tasa de conversión de prueba a pago es del
+\qty{40}{\percent} --- ¿pero eso es condicional a tener el mismo \emph{funnel} de adquisición y la
+misma calidad de producto que la referencia? Sin una prior calibrada y una razón de verosimilitud
+cuidadosamente medida, el \qty{40}{\percent} contamina la posterior en lugar de informarla
+\parencite{kahneman2011}.
+\end{admonition}
+
+Las pruebas A/B bayesianas reemplazan el \emph{framework} frecuentista de hipótesis nula por una
+posterior sobre la diferencia en la tasa de conversión. Esto genera una cantidad relevante para la
+decisión («¿cuál es la probabilidad de que la variante B sea mejor?») en lugar de un valor p («¿qué
+tan probables son estos datos si la hipótesis nula es verdadera?»). Los algoritmos de bandido
+multi-brazo extienden el \emph{framework} para reasignar continuamente el tráfico hacia las variantes
+de mejor rendimiento, haciendo explícito el intercambio exploración--explotación. Los modelos de
+atribución de \cref{ch:attribution-and-measurement} son bayesianos en su núcleo: actualizan los
+pesos de atribución de canal a medida que llegan nuevos datos de conversión.
+
+La actualización bayesiana es la columna vertebral de la atribución probabilística en
+\cref{ch:attribution-and-measurement} y de los modelos de puntuación de clientes que alimentan el
+\emph{funnel} en \cref{ch:digital-funnel-and-crm}. \textcite{anderson2019statistics} cubren los
+\emph{framework}s frecuentista y bayesiano en paralelo.
+
+\section{Sesgo cognitivo y teoría prospectiva}\label{sec:prospect-theory}
+% complejidad: 4 -> figura prospect-value-fn
+
+El equipo tiene dos opciones con valor esperado idéntico. Elegirá de manera fiable la menos
+arriesgada. La teoría prospectiva explica las formas específicas y predecibles en que la percepción
+del riesgo humana se desvía de la maximización de EV, para poder corregirlo. Las personas evalúan
+los resultados en relación con un punto de referencia (habitualmente el statu quo), no en términos
+absolutos. Las ganancias se perciben positivamente pero con sensibilidad decreciente; las pérdidas
+desde ese mismo punto de referencia se perciben como aproximadamente el doble de malas que las
+ganancias equivalentes se perciben de buenas. La función de valor resultante tiene forma de S:
+cóncava en el dominio de ganancias (aversión al riesgo), abruptamente convexa en el dominio de
+pérdidas (búsqueda de riesgo para evitar una pérdida segura). Esto explica por qué un CPA seguro de
+\money{600} «parece más seguro» que una puja de \money{900} con mayor beneficio esperado: el gasto
+adicional de \money{300} se codifica como una pérdida segura, ponderada a aproximadamente el doble
+de su valor nominal.
+
+\textcite{kahneman1979prospect} especifican la función de valor de la teoría prospectiva como:
+\begin{equation}\label{eq:prospect}
+  v(x) \;=\;
+  \begin{cases}
+    x^{\alpha} & x \ge 0, \\[3pt]
+    -\lambda\,(-x)^{\beta} & x < 0,
+  \end{cases}
+\end{equation}
+donde \(x\) es el resultado relativo al punto de referencia, \(\alpha,\beta\in(0,1)\) capturan la
+sensibilidad decreciente en ambos dominios (\(\alpha\approx\beta\approx0.88\) empíricamente), y
+\(\lambda>1\) es el \emph{coeficiente de aversión a la pérdida} (\(\lambda\approx2.25\) en promedio).
+La función no es una función de utilidad sobre la riqueza; es una función de valor sobre cambios.
+La teoría prospectiva también reemplaza las probabilidades objetivas por pesos de decisión que
+sobrepondera las probabilidades pequeñas y subpondera las moderadas a grandes, pero la función de
+valor impulsa la mayoría de las predicciones relevantes para la gestión.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{prospect-value-fn}
+  \caption{La función de valor de la teoría prospectiva (\cref{eq:prospect}, \(\lambda=2.25\)). Cóncava
+    en ganancias (aversión al riesgo); abruptamente convexa en pérdidas (búsqueda de riesgo para
+    evitar una pérdida segura). La asimetría en cero significa que una pérdida de cualquier
+    magnitud pesa más que una ganancia equivalente.}
+  \label{fig:prospect-value-fn}
+\end{figure}
+
+\Cref{eq:prospect} es un modelo descriptivo del comportamiento humano promedio en condiciones de
+laboratorio, no una regla normativa. No se sostiene de manera uniforme entre culturas, niveles de
+riesgo o dominios con experiencia de juego repetido. El punto de referencia en sí mismo se desplaza:
+una bonificación enmarcada como evitar una penalización genera elecciones diferentes que la misma
+bonificación enmarcada como una ganancia, incluso cuando el resultado objetivo es idéntico (el
+\emph{efecto de encuadre}). Los directivos que comprenden esto pueden diseñar estructuras de
+compensación e informes de experimentos que reduzcan el sesgo, pero no deben asumir que
+\(\lambda=2.25\) es una constante universal.
+
+\begin{example}
+Retomando las dos pujas de CPA. El CPA de \money{600} parece más seguro porque pagar \money{900}
+se codifica como una pérdida adicional de \money{300} respecto al punto de referencia de \money{600}.
+Aplicando \cref{eq:prospect} con \(\lambda=2.25\):
+\[
+  v(-\money{300}) \approx -2.25\times(300)^{0.88} \approx -2.25\times191 \approx -430
+  \quad\text{(pérdida)}
+\]
+frente a la ganancia del mayor rendimiento esperado:
+\[
+  v(+\money{37.50}) \approx (37.50)^{0.88} \approx 27
+  \quad\text{(ganancia por diferencia de EV \money{1912.50} vs.\ \money{1875})}.
+\]
+El costo psíquico de la puja mayor (\(-430\) unidades de valor) supera ampliamente la ganancia
+psíquica del EV más alto (+27 unidades) --- de modo que el directivo siente racionalmente que la
+puja de \money{600} es mejor, aunque el beneficio esperado sea mayor a \money{900}. La corrección:
+anclar la decisión al EV (\cref{eq:ev}), no a la magnitud del gasto incremental.
+\end{example}
+
+\begin{admonition}{Advertencia}
+La falacia de la planificación --- subestimar el costo y la duración de un proyecto porque el punto
+de referencia es el plan, no las tasas base históricas de proyectos similares --- amplifica la
+aversión a la pérdida: los directivos son simultáneamente demasiado confiados sobre los resultados
+y excesivamente reacios a los escenarios negativos que no pueden imaginar vívidamente
+\parencite{tversky1974judgment}. Los premortem, en los que el equipo imagina que el proyecto ya
+fracasó y pregunta por qué, son la técnica de desesgado más confiablemente eficaz.
+\end{admonition}
+
+El estatus normativo de la teoría prospectiva es objeto de debate. \textcite{kahneman1979prospect}
+la presentan como un modelo descriptivo; los teóricos de la utilidad esperada (\cref{eq:ev}) argumentan
+que la desviación de la maximización de EV es simplemente un error de decisión que mejores incentivos
+o educación pueden eliminar. Los economistas del comportamiento responden que los sesgos son demasiado
+estables y demasiado grandes para ser mero ruido. La resolución práctica: usar EV como criterio de
+decisión, pero diseñar la arquitectura de la elección --- cómo se enmarcan, secuencian y presentan
+las opciones --- para reducir la brecha entre las evaluaciones de EV y las de la teoría prospectiva
+\parencite{kahneman2011}.
+
+\textcite{thaler1985mental} introduce la contabilidad mental --- la tendencia a evaluar los resultados
+en cuentas psicológicas separadas en lugar de como cambios en la riqueza total. Una implicación para
+el \emph{marketing}: incluir un aumento de precio junto con una mejora visible del producto traslada
+el cambio neto de la cuenta de pérdidas a la cuenta de «intercambio justo», reduciendo la pérdida
+percibida. Los efectos de encuadre y la contabilidad mental son el mecanismo que subyace al anclaje
+(ejemplo resuelto de \cref{sec:prospect-theory}) y a las estrategias de partición de precios
+exploradas en \cref{ch:pricing}.
+
+La teoría prospectiva es el fundamento de la arquitectura de precios en \cref{ch:pricing} y de la
+comprensión de por qué los clientes resisten el cambio incluso cuando la alternativa tiene mayor
+valor esperado. Los \emph{framework}s bayesiano y prospectivo sustentan conjuntamente la discusión
+sobre atribución en \cref{ch:attribution-and-measurement}. \textcite{tversky1974judgment} documentan
+las heurísticas; \textcite{kahneman1979prospect} formalizan la función de valor;
+\textcite{kahneman2011} sintetizan ambas en un \emph{framework} práctico.

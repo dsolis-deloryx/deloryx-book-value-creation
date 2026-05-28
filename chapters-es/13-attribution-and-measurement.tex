@@ -1,0 +1,74 @@
+\chapter{Medición, atribución y cierre del ciclo}\label{ch:attribution-and-measurement}
+
+% Alcance: el problema de la medición, los modelos de atribución, MMM, incrementalidad y
+%   la retroalimentación de conversiones servidor a servidor que permite que \cref{ch:paid-acquisition-platforms}
+%   optimice correctamente.
+
+La subasta y la estrategia de puja de \cref{ch:paid-acquisition-platforms} optimizan hacia cualquier conversión que se reporte. Por eso, la decisión de mayor apalancamiento en la adquisición pagada no es la puja --- es qué cuenta como conversión y con qué fidelidad se retroalimenta. Eso es un problema de inferencia causal disfrazado de problema de reportería.
+
+\section{El problema de la medición}\label{sec:measurement-problem}
+
+Un cliente tuvo cinco puntos de contacto antes de comprar. La atribución y la incrementalidad responden preguntas distintas sobre ese recorrido. La atribución \emph{divide} el crédito observado entre los puntos de contacto; la incrementalidad hace la única pregunta relevante para el gasto --- qué habría ocurrido sin el anuncio. La primera es contabilidad bajo incertidumbre (\cref{ch:decisions-under-uncertainty}); la segunda requiere un contrafactual que nunca se observa directamente.
+
+\section{Modelos de atribución}\label{sec:attribution-models}
+
+Un modelo es una regla que divide el crédito de una conversión entre $n$ puntos de contacto. Las reglas de toque único (último clic, primer clic) concentran todo el peso en uno; la lineal lo reparte de forma equitativa; la de decaimiento temporal pondera la recencia; la posicional carga el primero y el último. La regla fundamentada toma el valor de Shapley de la teoría de juegos cooperativos --- el crédito de cada toque es su contribución marginal promedio sobre todos los ordenamientos de los demás:
+\begin{equation}\label{eq:shapley}
+  \phi_j \;=\; \sum_{S\subseteq N\setminus\{j\}} \frac{|S|!\,(n-|S|-1)!}{n!}\,\bigl[v(S\cup\{j\})-v(S)\bigr].
+\end{equation}
+Esto es lo que las plataformas comercializan como «atribución basada en datos» \parencite{li2014attributing,gads6259715,ga10596866}. Todo modelo de atribución en \cref{eq:shapley} se calcula sobre rutas \emph{observadas} únicamente --- es correlacional. No puede ver las conversiones que habrían ocurrido sin ningún anuncio, por lo que sobreacredita sistemáticamente los toques pagados que interceptan demanda que ya estaba en movimiento \parencite{anderl2016mapping,berman2018economics}.
+
+\begin{admonition}{Advertencia}
+Dirigir el presupuesto con el ROAS de último clic le entrega todo el crédito al toque de cierre --- normalmente búsqueda de marca o retargeting --- y desfinancia la generación de demanda en la parte alta del \emph{funnel} que creó ese clic. El número parece preciso y señala en la dirección equivocada.
+\end{admonition}
+
+\section{Marketing Mix Modeling}\label{sec:mmm}
+
+Cuando no se puede rastrear a individuos, se regresa el resultado agregado sobre el gasto agregado. MMM es inmune a la privacidad porque nunca necesita un ID de usuario --- pero debe codificar dos hechos que todo anunciante conoce: la publicidad tiene persistencia y se satura.
+
+El arrastre se modela como \emph{adstock} geométrico; los rendimientos decrecientes como una saturación de tipo Hill \parencite{hanssens2001marketing}:
+\begin{equation}\label{eq:adstock}
+  a_t \;=\; x_t + \lambda\,a_{t-1},
+  \qquad
+  f(a) \;=\; \frac{a^{\,k}}{a^{\,k}+\theta^{\,k}} .
+\end{equation}
+La curva de respuesta $f$ es la elasticidad de \cref{ch:microeconomics} de otra forma: el gasto marginal compra menos a medida que se asciende en ella, que es precisamente donde debería operar una puja o un tope de presupuesto (\cref{ch:paid-acquisition-platforms}).
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.84\linewidth]{adstock_saturation}
+  \caption{La curva de saturación de \cref{eq:adstock}: las conversiones incrementales por dólar disminuyen a medida que crece el gasto. La región eficiente de operación se sitúa antes de que la curva se aplane; más allá, el ROAS marginal colapsa.}
+  \label{fig:saturation}
+\end{figure}
+
+\section{Incrementalidad: el estándar de oro}\label{sec:incrementality}
+
+La atribución divide el crédito; solo un experimento establece causalidad. ¿Este canal está causando ventas o está atribuyéndoselas?
+
+Se retiene un control aleatorizado --- un área geográfica, una audiencia, o los \emph{ghost ads} nativos de plataforma que registran la victoria en la subasta sin servir el anuncio \parencite{johnson2017ghost} --- y se mide el retorno incremental:
+\begin{equation}\label{eq:iroas}
+  \mathrm{iROAS} \;=\; \frac{\text{ingreso}_\text{prueba}-\text{ingreso}_\text{control}}{\text{gasto}_\text{prueba}} .
+\end{equation}
+
+\begin{example}
+Una prueba geográfica con \emph{holdout}: las regiones tratadas generan \money{520000}, los controles emparejados \money{400000}, sobre un gasto incremental de \money{60000}. Entonces $\mathrm{iROAS}=(520000-400000)/60000=\num{2.0}$ --- frente a un ROAS de último clic reportado por la plataforma de \num{4.5}. Más de la mitad del «retorno» era demanda que habría convertido de todas formas.
+\end{example}
+
+Los experimentos cuestan alcance y demandan tiempo; los grandes experimentos de campo en Facebook muestran que los métodos observacionales pueden errar los efectos reales por márgenes amplios e inconsistentes, así que la prueba vale la pena ejecutarla precisamente cuando el presupuesto en juego es grande \parencite{gordon2019comparison}. Decidir si se realiza la prueba es en sí misma un cálculo de valor esperado (\cref{ch:decisions-under-uncertainty}).
+
+\section{Cierre del ciclo}\label{sec:closing-loop}
+
+Tras la ATT, los píxeles de navegador pierden gran parte de iOS, por lo que las conversiones deben viajar de servidor a servidor. La API de Conversiones de Meta deduplica respecto al píxel mediante \texttt{event\_id} y puntúa la calidad de coincidencia del evento \parencite{metadev-deduplicate-pixel-and-se,metadev-verifying-setup}. Las Conversiones Mejoradas de Google aplican hash a los datos propios para recuperar señal \parencite{gads9888656,gads13258081}; la importación de conversiones fuera de línea retroalimenta los resultados de etapas del CRM para la puja basada en valor \parencite{gads2998031,gdev-upload-offline}; GA4 y el modo de consentimiento gobiernan cómo se modela esa señal y qué se recopila \parencite{ga10597962,gads13695607}.
+
+\begin{admonition}{Advertencia}
+Cerrar el ciclo con la señal incorrecta es el error más sutil en la adquisición pagada. Retroalimentar «\emph{lead}» hace que el algoritmo de \cref{ch:paid-acquisition-platforms} optimice para leads baratos; retroalimentar el valor de \emph{pipeline} calificado o el LTV (\cref{ch:customer-economics}) lo hace optimizar para clientes. La jerarquía de señales --- clic $<$ \emph{lead} $<$ MQL $<$ SQL $<$ venta cerrada --- debe ascender hacia el ingreso (\cref{fig:signal-quality}).
+\end{admonition}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\linewidth]{signal-quality}
+  \caption{La jerarquía de señales de conversión. Retroalimentar a las plataformas una señal más alta y más escasa intercambia volumen por relevancia --- y enseña al optimizador a encontrar clientes, no rellenos de formulario.}
+  \label{fig:signal-quality}
+\end{figure}
+
+La atribución divide el pasado, MMM modela el agregado y solo la incrementalidad mide la causa; el ciclo se cierra cuando la señal que se retorna es el valor que realmente se quiere ampliar. Ese valor es el valor de vida del cliente de \cref{ch:customer-economics}, la misma cantidad descontada en \cref{eq:gordon}. \textcite{hanssens2001marketing} desarrollan el lado de la medición en profundidad.

@@ -1,0 +1,126 @@
+\chapter{Cómo crecen las marcas en la práctica}\label{ch:brand-growth}
+
+% Alcance: CBBE de Keller vs. leyes empíricas de Sharp (disponibilidad mental y física).
+% Vinculación cruzada: el valor de marca reduce el CPC de búsqueda de marca (\cref{ch:paid-acquisition-platforms})
+%   y eleva la tasa de crecimiento terminal g usada en valoración (\cref{ch:valuation}).
+
+La marca es el residuo que explica por qué dos productos objetivamente similares alcanzan precios diferentes. Si ese residuo proviene de asociaciones estructuradas (Keller) o de la disponibilidad mental impulsada por el alcance (Sharp) es la disputa viva en el campo --- y la respuesta cambia lo que un presupuesto de marca debería comprar.
+
+\section{Valor de marca basado en el cliente}\label{sec:cbbe}
+% complejidad: 3
+
+¿Qué estructuras de conocimiento específicas en el cliente generan una prima de precio y cómo audita la empresa si esas estructuras se están construyendo o erosionando? El valor de marca vive en la mente de los clientes, no en el balance general. Es el conjunto de asociaciones, sentimientos y juicios ligados a un nombre de marca que hacen que los clientes estén dispuestos a pagar más, buscar menos o perdonar más. El modelo de Keller traza el camino desde el simple conocimiento hasta la fidelidad de marca profunda como una pirámide de cuatro peldaños.
+
+La pirámide de valor de marca basado en el cliente (CBBE) (\textcite{keller1993customer}) estructura la construcción del valor como cuatro capas secuenciales:
+
+\begin{description}
+  \item[Saliencia de marca (¿Quién eres?)] Profundidad y amplitud del conocimiento de marca: recuerdo espontáneo y reconocimiento en los puntos de entrada a la categoría (\cref{sec:jtbd}).
+  \item[Desempeño e imagen (¿Qué eres?)] Asociaciones funcionales (fiabilidad, facilidad de implementación) y asociaciones de imagen del usuario («lo usa el equipo serio de RevOps»).
+  \item[Juicios y sentimientos (¿Qué pienso/siento sobre ti?)] Calidad percibida, credibilidad y la textura emocional de la experiencia de marca.
+  \item[Resonancia (¿Qué hay entre tú y yo?)] Fidelidad de marca conductual, apego actitudinal, sentido de comunidad --- el estado en que los clientes abogan activamente.
+\end{description}
+
+Construir resonancia exige satisfacer cada peldaño por debajo. Invertir en campañas de difusión antes de lograr una saliencia de marca sólida es el error de secuencia más frecuente. La pirámide supone una construcción racional y secuencial --- pero los clientes pueden saltarse peldaños (los productos virales alcanzan resonancia antes de una amplia saliencia de marca) o retroceder (una filtración de datos colapsa los juicios sin tocar las asociaciones de desempeño). En categorías donde los compradores no invierten atención (FMCG, SaaS de tipo commodity), la distinción juicio/sentimiento se colapsa y sólo la saliencia de marca y el desempeño impulsan la elección.
+
+\begin{example}[Auditoría de CBBE para una SaaS en su segundo año]
+Se mapea la SaaS de referencia en la pirámide CBBE al cierre del segundo año:
+\begin{itemize}
+  \item \textbf{Saliencia de marca:} \qty{22}{\percent} de recuerdo espontáneo entre los compradores de RevOps del segmento mediano (medido por encuesta). La amplitud es estrecha --- el recuerdo se activa principalmente en el punto de entrada a la categoría funcional («necesito un CRM»), pero rara vez en los puntos de entrada sociales.
+  \item \textbf{Desempeño:} Asociaciones sólidas con implementación rápida; débiles en reportes de nivel empresarial.
+  \item \textbf{Juicios:} NPS 42 (promotores menos detractores) --- por encima del promedio de la categoría, aunque no excepcional.
+  \item \textbf{Resonancia:} Baja; menos del \qty{5}{\percent} de los clientes han escrito una reseña o referido a un colega de forma espontánea.
+\end{itemize}
+Implicación: la siguiente inversión de marca debería apuntar al punto de entrada social (elevar la amplitud de la saliencia de marca) y a la mecánica de referidos (elevar la resonancia), no a más publicidad de conocimiento.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Usar el NPS como sustituto de un rastreador completo de salud de marca. El NPS captura satisfacción e intención de recomendación, pero no tiene visibilidad sobre el conocimiento, las asociaciones ni las razones detrás de los juicios. Véase \cref{sec:brand-tracking} para el instrumento más completo.
+\end{admonition}
+
+El modelo revisado de resonancia de marca de Keller (\textcite{keller2019}) integra los puntos de contacto digitales: cada peldaño puede ahora energizarse o erosionarse por interacciones individuales (un ticket de soporte, una reseña en G2, una publicación en LinkedIn) y no sólo por campañas en medios masivos. Esto acelera tanto la construcción como la erosión, y exige una medición de la salud de marca con mayor frecuencia. La pirámide CBBE traduce la inversión de marca en una auditoría estructurada: ¿en qué peldaño se está destruyendo el valor? Ese diagnóstico orienta la asignación del presupuesto. La consecuencia financiera del valor por peldaño se desarrolla en \cref{sec:brand-multiplier}. \textcite{keller1993customer} y \textcite{keller2019} desarrollan el modelo; \textcite{aaker1996} aporta el encuadre paralelo desde los activos financieros.
+
+\section{El valor de marca como activo financiero}\label{sec:brand-multiplier}
+% complejidad: 4 -> la fórmula eq:brand-multiplier es la pieza visual (derivada parcial multivariable)
+
+¿Cuánto vale en términos de valor presente un punto porcentual adicional en la tasa de crecimiento estacionaria de clientes --- y cómo produce ese incremento la inversión en marca? El valor de marca no es un intangible blando: se manifiesta en la tasa de crecimiento \(g\) de la base de clientes y en la tasa de descuento \(r\) (mediante menor churn y mayores costos de cambio). Un pequeño incremento permanente en \(g\) se compone hasta un gran beneficio en valor presente, porque el incremento afecta todos los períodos futuros.
+
+Se parte de la fórmula de la perpetuidad creciente \cref{eq:gordon}: \(PV = D/(r-g)\). Se diferencia respecto de \(g\):
+\begin{equation}\label{eq:brand-multiplier}
+  \frac{\partial PV}{\partial g} \;=\; \frac{D}{(r-g)^{2}} .
+\end{equation}
+\cref{eq:brand-multiplier} es el \emph{multiplicador de marca}: cada punto porcentual adicional de crecimiento sostenible \(g\) vale \(D/(r-g)^2\) en valor presente incremental. El denominador está elevado al cuadrado, por lo que el multiplicador crece rápidamente conforme \(g\) se acerca a \(r\).
+
+\cref{eq:brand-multiplier} supone que el incremento de crecimiento es permanente y no eleva la tasa de descuento requerida \(r\). Si la inversión en marca se financia con deuda, \(r\) (vía \cref{eq:wacc}) sube y la fórmula subestima el efecto neto. El modelo de perpetuidad también sobrevalúa cuando el \(g\) elevado no puede sostenerse más allá de una ventana finita --- en ese caso se debe usar un modelo de dos etapas. El valor terminal como constructo DCF completo se desarrolla en \cref{ch:valuation}.
+
+\begin{example}[Cuantificar una inversión en marca en términos de tasa de crecimiento]
+La SaaS tiene un margen anual por cliente \(D = \money{252}\), una tasa de descuento \(r = \qty{11}{\percent}\) y un crecimiento base \(g = \qty{3}{\percent}\). A partir de \cref{eq:gordon}:
+\[
+  LTV_{\text{base}} \;=\; \frac{\money{252}}{0.11-0.03} \;=\; \money{3150}.
+\]
+Una inversión en marca eleva \(g\) de \qty{3}{\percent} a \qty{4}{\percent} --- un punto porcentual. Aplicando \cref{eq:brand-multiplier}:
+\[
+  \frac{\partial PV}{\partial g} \;=\; \frac{\money{252}}{(0.11-0.03)^2} \;=\; \frac{\money{252}}{0.0064} \;\approx\; \money{39375} \text{ por punto porcentual}.
+\]
+Con \(g=\qty{4}{\percent}\): \(LTV_{\text{new}} = \money{252}/(0.11-0.04) = \money{3600}\). Incremento relativo: \qty{14}{\percent} sobre el LTV a partir de un solo punto porcentual de \(g\). Si la campaña de marca cuesta \money{50000} y eleva \(g\) permanentemente un punto en 200 nuevos clientes al mes, el NPV del incremento supera el costo de la campaña en seis meses. La implicación: la marca no es un centro de costos; es una inversión en tasa \(g\) cuyo rendimiento es capturado por \cref{eq:brand-multiplier}.
+
+Un efecto paralelo en el canal: un mayor valor de marca eleva las tasas de clic orgánicas en la búsqueda de marca, mejora el Quality Score \(Q\) de Google y reduce el CPC efectivo vía \cref{eq:ecpc} (\cref{ch:paid-acquisition-platforms}). La reducción de costos potencia el incremento en valor presente.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Tratar el gasto en marca como un gasto de un solo período. El tratamiento contable es de gasto; la realidad económica es un activo multiperiódico que desplaza el parámetro \(g\) en todos los cálculos futuros de LTV. Un CFO que recorta el presupuesto de marca para alcanzar un objetivo de EBITDA está liquidando un activo de tasa \(g\) --- exactamente el mismo error que recortar el capex de mantenimiento.
+\end{admonition}
+
+\cref{eq:brand-multiplier} también ilumina las primas de marca en fusiones y adquisiciones: un adquirente paga una prima de control en parte porque el valor de marca eleva la tasa \(g\) de largo plazo del objetivo por encima de lo que el adquirente podría lograr de forma orgánica. Las consultoras de valoración de marca (Interbrand, BrandZ) estiman los incrementos de \(g\) a partir del rastreo de marca y los descuentan a una \(r\) específica de marca ajustada por la volatilidad del flujo de ingresos de la marca --- un refinamiento de \cref{eq:brand-multiplier} a escala. La disciplina financiera de \cref{eq:brand-multiplier} conecta la inversión en marca con el valor terminal que \cref{ch:valuation} descontará. \textcite{keller1993customer}, \textcite{keller2019} y \textcite{aaker1996} abordan la cadena del valor de marca desde distintos ángulos; la mecánica de la perpetuidad creciente está en \textcite{brealey2020}.
+
+\section{Las leyes empíricas de Sharp}\label{sec:sharp}
+% complejidad: 3
+
+¿Debe la empresa invertir en diferenciación y segmentación precisa (la prescripción de Keller) o en saliencia de marca que maximice el alcance entre todos los compradores de la categoría (la prescripción de Sharp) --- y depende la respuesta del tamaño actual de la marca? Las leyes de Sharp se derivan de datos de paneles de escáner en docenas de categorías. Describen lo que las marcas \emph{realmente hacen}, no lo que la teoría de marca dice que deberían hacer. El hallazgo central --- que la mayor parte del crecimiento de marca proviene de adquirir compradores esporádicos, no de profundizar la fidelidad de marca --- invierte gran parte de la intuición centrada en CRM.
+
+Dos regularidades empíricas se sostienen en categorías y países:
+
+\begin{description}
+  \item[Doble jeopardy] Las marcas pequeñas tienen tanto menos compradores \emph{como} menor frecuencia de compra que las marcas grandes. Las métricas de fidelidad de marca (frecuencia, NPS) se explican casi en su totalidad por la cuota de mercado: la fidelidad de marca no causa cuota, la cuota causa fidelidad de marca. Implicación: crecer en cuota exige crecer en la base de compradores, no extraer más de los clientes leales.
+  \item[Disponibilidad mental y física] Las marcas crecen siendo fáciles de recordar (disponibilidad mental --- vinculada a muchos puntos de entrada a la categoría, \cref{sec:jtbd}) y fáciles de comprar (disponibilidad física --- puntos de distribución, diversidad de formatos). Invertir en una sin la otra es inútil.
+\end{description}
+
+Los datos de Sharp son principalmente de FMCG y categorías de consumo masivo con compras repetidas. El software B2B tiene ciclos más largos, cambio deliberado y venta basada en relaciones --- condiciones en las que la diferenciación y la segmentación importan más de lo que las leyes sugieren. Las leyes describen la \emph{tendencia central}; las categorías con altos costos de cambio se desvían de ella.
+
+\begin{example}[Aplicar el doble jeopardy con 22\% de recuerdo espontáneo]
+Con \qty{22}{\percent} de recuerdo espontáneo, la SaaS es una marca pequeña en su categoría. El doble jeopardy predice que su frecuencia de compra y su NPS son \emph{estructuralmente bajos} respecto a Salesforce --- no por fallas del producto, sino por tamaño. La implicación es que invertir en programas de fidelidad antes de crecer en disponibilidad mental es exactamente al revés. La prioridad es ampliar el alcance de los puntos de entrada a la categoría (más situaciones en las que la marca se activa) en lugar de profundizar en la cohorte existente del \qty{22}{\percent}.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Celebrar un NPS alto con baja cuota de mercado. En tamaño pequeño, el NPS es alto porque sólo los compradores más entusiastas han adoptado la marca --- sesgo de selección. A medida que la marca escala hacia compradores esporádicos, el NPS caerá mecánicamente hacia el promedio de la categoría. Esto es normal, no un problema de calidad.
+\end{admonition}
+
+El debate Sharp-vs-Keller es en parte un debate de medición. Sharp mide el comportamiento de compra a nivel de mercado; Keller mide las asociaciones y sentimientos a nivel individual. Ambos pueden tener razón simultáneamente: las asociaciones diferenciadas pueden generar la primera prueba que el alcance de Sharp amplifica. \textcite{keller2019} reconoce las regularidades empíricas a la vez que defiende el modelo estructural.
+
+Sharp sostiene que la diferenciación es en gran medida ilusoria --- que los clientes perciben las marcas como similares y eligen únicamente por saliencia de marca. Keller argumenta que las asociaciones diferenciadas producen primas de precio empíricamente observables. La resolución en la mayoría de los estudios de mercado es que ambos operan: la saliencia de marca impulsa la \emph{entrada al conjunto de consideración}, la diferenciación impulsa la \emph{elección dentro del conjunto}. Una marca con alcance pero sin diferenciación compite por precio; una marca con diferenciación pero sin alcance sencillamente no es recuperada. La implicación accionable para \cref{sec:positioning}: consolidar primero el posicionamiento, luego expandir el alcance --- no sacrificar la distinción por cobertura antes de que el posicionamiento sea defendible.
+
+Las leyes de Sharp son el complemento empírico de la pirámide CBBE: la pirámide describe el mecanismo, las leyes describen el resultado. Juntas acotan el rendimiento esperado de la inversión en marca. \textcite{sharp2010} es la fuente primaria; \textcite{keller2019} es la respuesta.
+
+\section{Rastreo de marca}\label{sec:brand-tracking}
+% complejidad: 2
+
+¿Cuál es el aparato mínimo de medición que convierte la inversión en marca de un acto de fe en un activo gestionado --- y qué métricas conectan la marca con el funnel? El valor de marca no es observable directamente; debe inferirse a partir de métricas proxy medidas a intervalos regulares. La señal clave es si el conocimiento espontáneo (sin ayuda) está creciendo --- es la primera puerta del funnel de conversión y el indicador adelantado de ingresos futuros.
+
+Un sistema mínimo de rastreo de marca mide tres constructos trimestralmente:
+
+\begin{description}
+  \item[Conocimiento espontáneo] «¿Qué marcas en [categoría] puede nombrar?» El conocimiento espontáneo en alza eleva la primera puerta de \cref{eq:funnel-chain} (\cref{ch:digital-funnel-and-crm}): más compradores potenciales entran al funnel.
+  \item[Asociaciones] Pregunta abierta: «¿qué le viene a la mente cuando piensa en [marca]?», codificada en los ejes de posicionamiento. Permite rastrear si las asociaciones deseadas se están construyendo.
+  \item[Net Promoter Score] \emph{¿Lo recomendaría?} Un resumen conveniente de juicio y resonancia, comparable trimestre a trimestre y frente a referencias de la categoría.
+\end{description}
+
+Las encuestas de rastreo de marca requieren metodología consistente --- mismo panel, misma redacción, mismo timing --- para poder interpretarse como tendencias. Los estudios de marca ad hoc con diseños inconsistentes no son comparables. El NPS es especialmente susceptible al timing de la encuesta (inmediatamente después de una interacción lo infla) y al sesgo de tasa de respuesta (los clientes insatisfechos no responden).
+
+\begin{example}[Traducir un resultado de rastreo de marca en impacto sobre el funnel]
+La SaaS ejecuta un rastreo de marca trimestral sobre 400 compradores de RevOps del segmento mediano (panel reclutado de proveedores de datos de intención). El conocimiento espontáneo sube de \qty{22}{\percent} a \qty{27}{\percent} en dos trimestres tras una campaña de liderazgo de pensamiento en LinkedIn dirigida al punto de entrada situacional. El incremento de \qty{5}{\percent} puntos se traduce, mediante el modelo de funnel, en aproximadamente 500 sesiones calificadas adicionales por mes a las tasas de conversión actuales --- un impacto medible en ingresos proveniente de una actividad de marca.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Optimizar el NPS de forma aislada. El NPS es una métrica rezagada y agregada. Una marca puede mantener el NPS estable mientras el conocimiento espontáneo colapsa --- perdiendo el mercado mientras satisface a los compradores existentes. Siempre emparéjese el NPS con métricas de conocimiento y asociación.
+\end{admonition}
+
+El NPS como predictor de crecimiento ha sido ampliamente adoptado y severamente criticado. \textcite{bendle2020marketing} documentan la fragilidad de la correlación del NPS con el crecimiento entre categorías. Un instrumento más completo de salud de marca (índice de valor de marca, tasa de consideración, participación de preferencia) es más predictivo pero más costoso. El catálogo de métricas en \cref{ch:metrics-catalog} lista el instrumento completo con referencias. El rastreo de marca cierra el ciclo entre el posicionamiento establecido en \cref{sec:positioning} y el desempeño medido en \cref{ch:metrics-catalog}. El conocimiento espontáneo es el indicador adelantado; el crecimiento del LTV (\cref{eq:brand-multiplier}) es el rezagado. \textcite{kotler2021} cubre el diseño del rastreo de marca; \textcite{bendle2020marketing} evalúa las métricas.

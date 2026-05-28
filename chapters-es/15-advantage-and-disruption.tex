@@ -1,0 +1,357 @@
+\chapter{Ventaja y disrupción}\label{ch:advantage-and-disruption}
+
+% Alcance: visión basada en recursos, VRIN, Océano Azul, el dilema del innovador.
+% Enlace cruzado: la ventaja durable es lo que sostiene LTV > CAC a lo largo del tiempo (\cref{ch:customer-economics}).
+
+El análisis estructural (\cref{ch:competitive-analysis}) explica los retornos a nivel de industria;
+no puede explicar por qué algunas empresas obtienen retornos por encima del promedio \emph{dentro}
+de industrias poco atractivas durante décadas. La visión basada en recursos, la Estrategia de
+Océano Azul y el dilema del innovador ofrecen cada una una respuesta diferente a esa pregunta
+--- y cada una implica una respuesta estratégica distinta cuando la respuesta cambia.
+
+\section{La visión basada en recursos y VRIN}\label{sec:rbv-vrin}
+% complejidad: 3
+
+¿Cuáles de los activos y capacidades de la empresa sostendrán una ventaja competitiva, y cuáles
+serán erosionados por la competencia? La auditoría debe preceder a cualquier apuesta de crecimiento.
+Las industrias compiten por clientes; las empresas compiten por recursos. Si los recursos que
+impulsan el desempeño pueden copiarse o comprarse, los retornos revierten al costo de capital
+independientemente de la cuota de mercado. La ventaja durable requiere recursos que, en un
+sentido técnico preciso, no sean replicables por los rivales.
+
+\textcite{barney1991resource} define un recurso como fuente de ventaja competitiva sostenida
+únicamente cuando satisface los cuatro criterios de manera simultánea:
+\begin{description}
+  \item[Valioso] El recurso permite a la empresa explotar oportunidades o neutralizar amenazas
+        en su entorno --- es decir, está vinculado a la disposición a pagar del cliente o a la
+        reducción de costos. Un recurso que no supera ninguna prueba de las Cinco Fuerzas
+        (\cref{ch:competitive-analysis}) no es valioso en el sentido de Barney.
+  \item[Raro] El recurso no está en posesión de un gran número de competidores actuales o
+        potenciales. Los recursos comunes generan paridad competitiva, no ventaja.
+  \item[Inimitable] Los rivales no pueden copiar ni adquirir fácilmente el recurso. La
+        inimitabilidad surge de la dependencia de la trayectoria (acumulada mediante una historia
+        irrepetible), la ambigüedad causal (los competidores no pueden identificar qué recurso
+        causa el desempeño) o la complejidad social (por ejemplo, la cultura organizacional,
+        las alianzas basadas en la confianza).
+  \item[No sustituible] No existe ningún recurso alternativo estratégicamente equivalente.
+        Incluso un recurso raro e inimitable pierde valor si un sustituto entrega el mismo
+        resultado estratégico.
+\end{description}
+Estos cuatro criterios forman un árbol de decisión, no una lista de verificación: si se falla
+en cualquiera de ellos, el recurso obtiene a lo sumo una ventaja transitoria. Los recursos que
+superan los cuatro generan \emph{rentas ricardianas} --- retornos por encima del costo de
+oportunidad del recurso que persisten porque la oferta del recurso es inelástica.
+
+VRIN es diagnóstico, no prescriptivo: identifica dónde vive actualmente la ventaja, pero no
+ofrece una teoría sobre cómo construir nuevos recursos. El \emph{framework} también subestima
+la importancia de las \emph{capacidades dinámicas} --- la habilidad de la empresa para
+reconfigurar su base de recursos conforme el entorno cambia. Un recurso que hoy es VRIN puede
+quedar obsoleto por una discontinuidad tecnológica (\cref{sec:innovators-dilemma}), momento en
+el que la auditoría estática de Barney devuelve la respuesta equivocada.
+
+\begin{example}
+\emph{Decisión: ¿en qué debería invertir la empresa SaaS para proteger su margen?}
+
+Auditoría de recursos candidatos frente a VRIN:
+
+\begin{itemize}
+  \item \textbf{Datos propietarios de clientes (comportamiento + registros de integración)}: Valioso
+        (permite personalización e ingresos por expansión); Raro (el conjunto de datos de cada
+        empresa es único); Inimitable (acumulación dependiente de la trayectoria --- no puede
+        comprarse al por mayor); No sustituible (los datos de intención de terceros no replican
+        las señales longitudinales de uso). \emph{Veredicto: VRIN --- el núcleo defendible.}
+  \item \textbf{Ecosistema de integraciones (más de 50 conectores nativos)}: Valioso y Raro en el
+        lanzamiento; Inimitable si la profundidad de integración supera un umbral de replicación;
+        No sustituible si el costo de cambio (\cref{ch:growth}) es suficientemente alto.
+        \emph{Veredicto: parcialmente VRIN --- invertir para profundizar.}
+  \item \textbf{Nombre de marca}: Valioso (reduce el CAC mediante búsqueda orgánica); aún no
+        Raro en un mercado fragmentado. \emph{Veredicto: no VRIN --- apoya, no protege.}
+  \item \textbf{Base de código}: No es raro (los \emph{frameworks} modernos están estandarizados)
+        e imitable con suficiente gasto en ingeniería. \emph{Veredicto: paridad competitiva, no
+        ventaja.}
+\end{itemize}
+
+La inversión en I+D debería profundizar la infraestructura de datos y las integraciones
+(recursos que superan el criterio VRIN) en lugar de reconstruir funcionalidades genéricas que
+los rivales ya ofrecen. Esto eleva directamente el LTV mediante menor \emph{churn}
+(\cref{ch:customer-economics}) y es el mecanismo por el cual \cref{eq:roic} supera al WACC
+de manera sostenida.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Clasificar todo lo que tiene la empresa como «recurso estratégico». Los criterios VRIN son
+restrictivos por diseño. La mayoría de los recursos son \emph{necesidades competitivas} ---
+requeridas para competir, pero que no confieren ninguna ventaja. Confundir una necesidad (un
+CRM) con una ventaja (los datos propietarios que contiene) desvía el capital hacia mantener
+la paridad en lugar de construir rentas.
+\end{admonition}
+
+\textcite{dranove7theconomics} sintetizan la visión basada en recursos con la organización
+industrial: las rentas ricardianas requieren tanto recursos VRIN \emph{como} ciertas barreras
+a la competencia en el mercado de recursos. Un recurso no puede ser VRIN en el mercado de
+productos si se negocia libremente en el mercado de recursos a su NPV completo --- los
+mercados de recursos competitivos disipan las rentas antes de que el mercado de productos las
+perciba.
+
+La auditoría VRIN completa el panorama estructural que comenzó con las Cinco Fuerzas:
+\cref{ch:competitive-analysis} identifica las amenazas externas; VRIN identifica los recursos
+que las resisten. El ROIC sostenido que supera al WACC (\cref{eq:advantage-spread} más
+adelante) es la expresión financiera de un recurso que supera esta prueba. \textcite{barney1991resource}
+es la fuente primaria; \textcite{dranove7theconomics} aportan la integración con la organización
+industrial.
+
+\section{Estrategia de Océano Azul}\label{sec:blue-ocean}
+% complejidad: 3
+
+En lugar de competir con más fuerza en un mercado existente en disputa, ¿se puede definir una
+nueva curva de valor que haga a la competencia temporalmente irrelevante? La mayoría de la
+estrategia trata de ganar una mayor parte de un pastel existente. El Océano Azul pregunta si
+el pastel puede reformarse reduciendo costos \emph{y} elevando el valor para el comprador
+simultáneamente --- eliminando características en las que la industria compite pero que los
+clientes no valoran, y creando características que los clientes desean pero que nadie ofrece.
+
+\textcite{kim2015} proponen la cuadrícula ERRC como herramienta operativa:
+\begin{description}
+  \item[Eliminar] ¿Cuáles de los factores que la industria da por sentados deben eliminarse por
+        completo? Estos añaden costo sin añadir valor percibido; eliminarlos financia la columna
+        «Crear».
+  \item[Reducir] ¿Cuáles factores deben reducirse muy por debajo del estándar de la industria?
+        Los competidores sobre-entregan en estos; el ahorro de costo es redistribuible.
+  \item[Elevar] ¿Cuáles factores deben elevarse muy por encima del estándar de la industria?
+        Estos abordan necesidades genuinas no satisfechas.
+  \item[Crear] ¿Qué factores deben introducirse que la industria nunca ha ofrecido? Este es el
+        mecanismo de creación de demanda; apunta al no-consumo en lugar de captar clientes de
+        los rivales.
+\end{description}
+El resultado es una \emph{curva de valor} --- un gráfico del nivel de oferta a lo largo de los
+factores competitivos --- que diverge visiblemente del promedio de la industria. La divergencia
+es la prueba: una curva que simplemente puntúa más alto en todo no es un movimiento de Océano
+Azul, es una estrategia premium.
+
+La cuadrícula ERRC es direccional y cualitativa; no proporciona ningún mecanismo para estimar
+si la nueva curva de valor genera suficiente demanda para cubrir la inversión. Una oferta
+rediseñada que ningún segmento de clientes valora supera la prueba ERRC pero fracasa
+comercialmente. Combinar con la perspectiva de segmentación de \cref{ch:segmentation-targeting-positioning}
+para verificar a qué no-consumidores llega realmente el movimiento.
+
+\begin{example}
+\emph{Decisión: ¿puede la empresa SaaS crear un Océano Azul frente a Salesforce y CRM
+empresariales similares?}
+
+\begin{itemize}
+  \item \textbf{Eliminar}: Implementación compleja (despliegues de 6 a 12 meses), roles de
+        administrador dedicados, opciones de datos en las instalaciones.
+  \item \textbf{Reducir}: Precio en comparación con el CRM empresarial (Salesforce tiene un
+        precio de \money{150}--\money{300}/usuario/mes; nuestro \money{50}/puesto es un
+        recorte deliberado), conjunto de funcionalidades en relación con el Salesforce Sales
+        Cloud completo.
+  \item \textbf{Elevar}: Tiempo hasta el primer valor (objetivo: en funcionamiento en un día),
+        integraciones nativas con herramientas modernas de productividad, facturación por uso
+        transparente.
+  \item \textbf{Crear}: \emph{Onboarding} de autoservicio sin necesidad de contacto comercial;
+        flujos de trabajo guiados dentro del producto diseñados para operadores no técnicos.
+\end{itemize}
+
+La curva apunta a \emph{no-consumidores} del CRM --- pymes que no podían absorber el costo de
+implementación empresarial --- en lugar de los clientes existentes de Salesforce. Si tiene
+éxito, el CAC de este segmento es menor (no se requiere equipo de ventas para el autoservicio)
+y el \emph{churn} es menor (mayor velocidad hacia el primer valor). Ambos mejoran la razón
+LTV:CAC en \cref{ch:customer-economics}.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Aplicar la cuadrícula ERRC de manera \emph{a posteriori} para racionalizar el posicionamiento
+existente en lugar de usarla como \emph{herramienta de diseño prospectivo}. Los críticos
+(\parencite{dranove7theconomics}) señalan que la mayoría de los casos de Océano Azul se
+escriben después del hecho, cuando la curva de valor que resultó exitosa recibe la etiqueta
+de un movimiento ERRC deliberado. Usada rigurosamente, la cuadrícula es una hipótesis sobre
+la demanda; validarla con experimentos de mercado antes de comprometer capital.
+\end{admonition}
+
+\begin{admonition}{Controvertido}
+La Estrategia de Océano Azul es el \emph{framework} estratégico más controvertido de este
+libro. La objeción central de los críticos: los casos exitosos de Océano Azul sólo son
+distinguibles de apuestas de producto afortunadas en retrospectiva. La cuadrícula ERRC no
+indica \emph{qué} factores eliminar o crear --- eso requiere una perspectiva del lado de la
+demanda que el \emph{framework} no suministra. Los defensores responden que la visualización
+de la curva de valor disciplina a un equipo directivo para alejarse del pensamiento
+incremental. Ambos lados tienen razón; tratar el Océano Azul como un estímulo a la
+creatividad validado por evidencia del cliente, no como una metodología de planificación.
+\end{admonition}
+
+La Estrategia de Océano Azul se intersecta con la visión de la demanda desde los
+trabajos-por-realizar (\cref{ch:customer-economics}): la columna «Crear» tiene éxito cuando
+aborda un trabajo que ningún producto existente realiza bien. El mecanismo está más cerca de
+la innovación disruptiva (más adelante) que de la diferenciación tradicional, porque apunta a
+criterios de éxito distintos en lugar de superar a los incumbentes en criterios compartidos.
+
+La cuadrícula ERRC responde la pregunta de diseño; la auditoría VRIN (\cref{sec:rbv-vrin})
+pregunta luego si la oferta resultante es defendible una vez que los rivales pueden observarla.
+Un Océano Azul que supera el criterio VRIN es duradero; uno que no lo hace será imitado y la
+ventaja se comprimirá. \textcite{kim2015} es la fuente primaria.
+
+\section{El dilema del innovador}\label{sec:innovators-dilemma}
+% complejidad: 5 -> figure disruption-scurve
+
+¿Es un entrante aparentemente inferior una amenaza de disrupción genuina, o simplemente un
+producto diferente? La respuesta determina si se debe responder agresivamente, ignorar o
+adquirir. Los incumbentes pierden no porque estén mal gestionados sino porque están bien
+gestionados: escuchan a sus mejores clientes, invierten donde los márgenes son más altos y
+mejoran el desempeño en las dimensiones que sus clientes más valoran. Los disruptores entran
+en dimensiones que ningún cliente actual solicita, sirven a no-consumidores o a los
+sub-atendidos, y mejoran hasta superar al segmento \emph{mainstream}. El peligro es invisible
+hasta que es demasiado tarde.
+
+\textcite{christensen1997} identifica dos tipos de innovación:
+\begin{description}
+  \item[Innovaciones incrementales] Mejoran el desempeño en las dimensiones que los clientes
+        existentes valoran. Los incumbentes casi siempre ganan estos concursos; tienen escala,
+        canales establecidos e incentivos correctos.
+  \item[Innovaciones disruptivas] Introducen una dimensión de desempeño diferente --- a menudo
+        inicialmente inferior en la métrica establecida (desempeño, funcionalidades,
+        confiabilidad) pero superior en accesibilidad, precio o simplicidad. Entran en segmentos
+        de no-consumo o del extremo inferior que el incumbente no defiende.
+\end{description}
+El mecanismo de la disrupción es un desfase de curvas en S: la trayectoria incremental del
+incumbente supera el techo de demanda del mercado \emph{mainstream}. La trayectoria de mejora
+del disruptor comienza por debajo del umbral pero, a medida que asciende en la curva en S de
+su propia tecnología, eventualmente cruza el umbral de desempeño \emph{mainstream} --- punto
+en el que la base de clientes del incumbente migra en masa porque el disruptor es ahora
+«suficientemente bueno» y más barato.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{disruption-scurve}
+  \caption{El dilema del innovador como curvas en S duales. La trayectoria del incumbente supera
+    el umbral de demanda \emph{mainstream}; el disruptor entra por debajo de él en un segmento
+    sub-atendido y cruza el umbral a medida que su curva en S madura. El punto de cruce es
+    cuando ocurre la disrupción.}
+  \label{fig:disruption-scurve}
+\end{figure}
+
+El criterio de Christensen para la disrupción es la entrada en segmentos \emph{sub-atendidos
+o de no-consumo} --- no simplemente «entrada desde abajo» en sentido de precio. Todo incumbente
+llama «disruptivo» a todo entrante de bajo precio; el poder predictivo del \emph{framework}
+depende de identificar correctamente si la trayectoria de desempeño del entrante eventualmente
+satisfará la demanda \emph{mainstream}. Muchos entrantes del extremo inferior permanecen
+confinados en segmentos del extremo inferior de forma permanente (invasión del extremo inferior,
+no disrupción). La prueba es la trayectoria, no el precio actual.
+
+\begin{example}
+\emph{Decisión: ¿debería la empresa SaaS tratar a las herramientas de automatización sin
+código (Zapier, Make, Airtable) como una amenaza disruptiva?}
+
+Las herramientas sin código actualmente puntúan bajo en las dimensiones que los clientes
+existentes de la SaaS valoran (profundidad de datos, reportes, cumplimiento normativo). No
+son competitivas \emph{hoy} para el comprador del mercado medio.
+
+La pregunta disruptiva es: ¿está la curva en S del sin-código mejorando con suficiente rapidez
+como para alcanzar los requisitos de desempeño del mercado medio dentro del horizonte de
+planificación? La evidencia sugiere que sí: el financiamiento de Airtable en 2022 apuntó
+explícitamente a los flujos de trabajo del mercado medio. La prueba de Christensen es si las
+herramientas sin código están mejorando en la \emph{trayectoria correcta}, no si son
+competitivas hoy.
+
+Respuesta: invertir en los recursos VRIN (profundidad de datos, integraciones) que las
+herramientas sin código no pueden replicar rápidamente, mientras se monitorea la tasa de
+mejora del sin-código como indicador adelantado. Un rezago de dos años entre «entra al
+no-consumo» y «cruza el umbral \emph{mainstream}» es históricamente común --- esa es la
+ventana de respuesta.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Todo incumbente etiqueta a todo entrante como «disruptivo» porque la palabra se ha convertido
+en un cumplido. \emph{Disruptivo} en el sentido de Christensen es un término técnico preciso:
+significa que el entrante compite inicialmente en criterios de desempeño diferentes en un
+segmento de mercado diferente. Un entrante premium que apunta a los mejores clientes del
+incumbente es una amenaza \emph{incremental} (más difícil de superar en funcionalidades, no
+disrupción). Clasificar erróneamente el tipo de amenaza produce la respuesta incorrecta: la
+disrupción requiere una unidad de negocio de extremo inferior separada; las amenazas
+incrementales requieren inversión directa en el producto.
+\end{admonition}
+
+El dilema es tanto organizacional como tecnológico: un incumbente racional asigna recursos
+hacia sus clientes de mayor margen, precisamente los que el disruptor no apunta inicialmente.
+La solución de Christensen --- una unidad estructuralmente separada con estructura de costos y
+métricas diferentes --- es un problema de gobierno corporativo (\cref{ch:organizational-behavior}).
+La expresión financiera del dilema es un ROIC que luce excelente justo hasta el cruce de la
+disrupción, y luego colapsa (\cref{eq:advantage-spread}).
+
+La disrupción reinicia la auditoría VRIN: un recurso previamente inimitable (la distribución
+física, en el caso de la música) puede ser sustituido por una nueva infraestructura tecnológica.
+La sección final del capítulo vincula la dinámica de la disrupción con la métrica financiera
+que la hace legible. \textcite{christensen1997} es la fuente primaria.
+
+\section{La ventaja como diferencial de valor}\label{sec:advantage-spread}
+% complejidad: 3
+
+¿Cómo sabemos si la empresa posee actualmente una ventaja competitiva, y si esta se está
+ampliando o estrechando con el tiempo? Los \emph{frameworks} cualitativos diagnostican la
+\emph{fuente} de la ventaja; se necesita una métrica financiera para confirmar su
+\emph{magnitud} y rastrear si la estrategia está funcionando. La medida natural es si los
+retornos superan el costo de capital por un margen suficiente para justificar el riesgo ---
+la misma prueba que aplicaría un accionista.
+
+La ventaja competitiva se define operacionalmente como un diferencial de valor positivo
+sostenido:
+\begin{equation}\label{eq:advantage-spread}
+  \text{Diferencial de ventaja} \;=\; \mathrm{ROIC} - \mathrm{WACC},
+\end{equation}
+donde ROIC se define en \cref{eq:roic} y WACC en \cref{eq:wacc}. Cuando el diferencial es
+positivo, la empresa obtiene rentas ricardianas y crea beneficio económico
+(\cref{eq:economic-profit}). Cuando es cero o negativo, la empresa obtiene paridad
+competitiva o destruye valor independientemente del beneficio contable.
+
+El diferencial se conecta directamente con la economía del cliente: un ROIC sostenido
+$>$ WACC requiere un LTV sostenido $>$ CAC (\cref{eq:ltv-cac} en \cref{ch:customer-economics}),
+porque el valor presente neto de cada cohorte debe ser positivo y creciente. Un diferencial de
+ventaja en expansión es la expresión agregada de un \emph{moat} en profundización.
+
+El ROIC puede manipularse mediante elecciones contables (gastos vs. capitalización de I+D,
+pasivos fuera del balance). Una empresa que capitaliza el desarrollo de software infla la base
+de capital invertido y suprime el ROIC; una que lo gasta deflacta la base. Normalizar antes de
+comparar entre empresas o a lo largo del tiempo. Del mismo modo, un diferencial positivo en un
+solo año puede reflejar un pico cíclico en lugar de una ventaja estructural --- el diferencial
+debe ser persistente para ser evidencia de un \emph{moat}.
+
+\begin{example}
+\emph{Decisión: ¿tiene actualmente la empresa SaaS una ventaja medible?}
+
+Según la hoja de datos: NOPAT $\approx$\money{600000}, capital invertido $\approx$\money{3000000},
+lo que da ROIC $= \money{600000}/\money{3000000} = \qty{20}{\percent}$. WACC $= \qty{11}{\percent}$
+(\cref{eq:wacc}).
+\[
+  \text{Diferencial de ventaja} = \qty{20}{\percent} - \qty{11}{\percent} = \qty{9}{\percent}.
+\]
+El diferencial es positivo y material. Pero debe evaluarse frente al análisis del \emph{moat}:
+si la auditoría VRIN muestra sólo ventajas transitorias, el diferencial se comprimirá a medida
+que los rivales repliquen. Un diferencial del \qty{9}{\percent} sostenido durante cinco años
+con \money{3000000} de capital invertido crea $5 \times 0{,}09 \times \money{3000000} = \money{1350000}$
+de beneficio económico acumulado --- la recompensa por recursos VRIN genuinos.
+
+Si la inversión en el \emph{moat} (\cref{ch:growth}) eleva el LTV en \money{500} (por ejemplo,
+menor \emph{churn} gracias a integraciones más profundas), la empresa puede gastar \money{500}
+más por cliente adquirido sin violar el piso de LTV:CAC (\cref{eq:ltv-cac}).
+\end{example}
+
+\begin{admonition}{Advertencia}
+Comparar el ROIC con el costo contable de la deuda en lugar de con el WACC. La deuda es barata
+en términos nominales; el WACC incorpora el retorno requerido sobre el \emph{equity}, que es
+considerablemente mayor. Una empresa que obtiene \qty{8}{\percent} de ROIC y se financia a
+\qty{5}{\percent} de deuda nominal \emph{parece} rentable pero destruye valor de \emph{equity}
+si el WACC $=\qty{11}{\percent}$.
+\end{admonition}
+
+El \emph{framework} de valoración de McKinsey (\parencite{dranove7theconomics}) muestra que el
+valor de mercado es el valor presente de los futuros beneficios económicos descontados, no de
+los beneficios contables. Una empresa que cotiza con prima respecto al valor en libros tiene
+un NPV positivo del diferencial de ventaja futuro; una empresa que cotiza con descuento indica
+que el mercado espera que el ROIC caiga por debajo del WACC. Los múltiplos de EV en
+\cref{ch:valuation} son el pronóstico del mercado sobre el diferencial futuro, no una
+instantánea del diferencial actual.
+
+El diferencial de ventaja (\cref{eq:advantage-spread}) vincula los \emph{frameworks} cualitativos
+de este capítulo --- VRIN, Océano Azul, disrupción --- con el lenguaje financiero de
+\cref{ch:corporate-finance-core} y \cref{ch:valuation}. El diferencial sostenido es la prueba
+empírica que distingue la ventaja durable de la buena fortuna temporal. \cref{ch:growth}
+pregunta luego cómo ampliarlo mediante la construcción del \emph{moat}.

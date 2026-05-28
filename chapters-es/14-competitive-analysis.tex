@@ -1,0 +1,253 @@
+\chapter{Análisis de la Industria y la Competencia}\label{ch:competitive-analysis}
+
+% Alcance: las cinco fuerzas, la cadena de valor, estructura del sector y rentabilidad (HHI).
+% Enlace cruzado: la ventaja duradera que sobrevive a estas fuerzas es el tema de
+%   \cref{ch:advantage-and-disruption}; el poder de fijación de precios trazado aquí tiene su
+%   raíz en \cref{ch:pricing} (índice de Lerner) y \cref{ch:customer-economics} (LTV).
+
+La rentabilidad de una industria no es aleatoria. Las condiciones estructurales que rodean a
+una empresa --- el apalancamiento de los proveedores, el apalancamiento de los compradores,
+los sustitutos, los nuevos entrantes y la rivalidad interna --- establecen un techo a los
+rendimientos antes de que la estrategia siquiera comience. La cadena de valor pregunta,
+entonces, dónde dentro de esa industria la empresa captura lo que queda.
+
+\section{Las Cinco Fuerzas de Porter}\label{sec:five-forces}
+% Complejidad: 4 → figura five-forces
+
+Antes de asignar capital o entrar a un mercado, el estratega necesita saber qué características
+estructurales limitarán los rendimientos y cuáles los apoyarán. Las Cinco Fuerzas responden esa
+pregunta antes de que se firme un solo cliente. El mecanismo es directo: un mercado de alto margen
+atrae entrantes y compradores poderosos hasta que los rendimientos se comprimen al costo de capital.
+Las Cinco Fuerzas nombran los cinco canales por los cuales ocurre esa compresión y preguntan qué
+tan intensa es cada una en este momento --- no si la industria es atractiva en abstracto, sino si
+\emph{esta empresa} puede sostener una posición en ella.
+
+El \emph{framework} es cualitativo; su trabajo analítico es una secuencia diagnóstica aplicada a
+cada fuerza por separado \parencite{porter1980}:
+\begin{description}
+  \item[Rivalidad entre competidores existentes] Concentración (véase \cref{eq:hhi}),
+        transparencia de precios, diferenciación del producto, costos de salida e incrementos
+        de capacidad. Los costos fijos elevados y los productos de tipo \emph{commodity} hacen
+        intensa la rivalidad.
+  \item[Amenaza de nuevos entrantes] Escala mínima eficiente, tecnología propia,
+        efectos de red, lealtad de marca, costos de cambio y barreras regulatorias.
+        Los bajos requerimientos de capital y la tecnología madura reducen esta barrera de entrada.
+  \item[Amenaza de sustitutos] Productos de categorías adyacentes que cumplen el mismo
+        trabajo-por-hacer; evaluados mediante la elasticidad cruzada de precios (\cref{eq:elasticity}).
+        Los sustitutos establecen un techo de precio suave.
+  \item[Poder de negociación de compradores] Concentración de compradores, costos de cambio,
+        amenaza de integración hacia atrás, participación del gasto del comprador y sensibilidad
+        al precio.
+  \item[Poder de negociación de proveedores] Concentración de proveedores, unicidad del insumo,
+        amenaza de integración hacia adelante y costo de cambio de proveedor.
+\end{description}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{five-forces}
+  \caption{Las Cinco Fuerzas. La rivalidad competitiva ocupa el centro; cuatro fuerzas ejercen
+    presión hacia adentro sobre la rentabilidad del sector. La intensidad de cada flecha
+    representa la magnitud de la negociación o de la amenaza.}
+  \label{fig:five-forces}
+\end{figure}
+
+\begin{admonition}{Advertencia}
+Las Cinco Fuerzas son una fotografía estática a nivel de industria. Omiten tres aspectos cada
+vez más relevantes en los mercados tecnológicos. Primero, los \emph{complementos de plataforma}:
+la rentabilidad de un mercado digital depende de la inversión de los complementadores, que no son
+ni proveedores ni compradores en el sentido tradicional. Segundo, la \emph{competencia dinámica}:
+el modelo no tiene reloj; una fuerza que hoy parece débil (por ejemplo, la entrada) puede ser
+irrelevante en un mercado que se reestructura con rapidez. Tercero, la visión basada en recursos
+(\cref{ch:advantage-and-disruption}) sostiene que la heterogeneidad de capacidades a nivel de
+empresa --- no sólo la estructura del sector --- explica las diferencias de rendimiento dentro
+de una industria. Utilizar las Cinco Fuerzas para elegir la arena; utilizar VRIN para preguntar
+si se puede ganar en ella.
+\end{admonition}
+
+\begin{example}
+Aplicación al mercado B2B SaaS de referencia. \emph{Decisión: ¿conviene invertir en
+diferenciación o competir en precio?}
+
+\begin{itemize}
+  \item \textbf{Poder de compradores --- alto.} Los compradores son pymes con bajos costos de
+        cambio (las exportaciones de datos son estándar), múltiples alternativas y un gasto por
+        asiento reducido en relación con sus presupuestos. Esto comprime el poder de fijación de
+        precios hacia el piso del índice de Lerner (\cref{eq:lerner}).
+  \item \textbf{Amenaza de entrada --- alta.} La infraestructura sin código y las APIs abiertas
+        permiten ensamblar una solución puntual creíble por bastante menos de \money{500000}.
+        Los efectos de red son débiles al momento del lanzamiento.
+  \item \textbf{Rivalidad --- intensa.} El mercado está fragmentado (HHI $\approx$\num{2150},
+        véase \cref{eq:hhi}); la paridad de funcionalidades es habitual; los sitios de comparación
+        de precios hacen visible el cambio de proveedor. A \money{50}/mes el producto está plenamente
+        en la zona de peligro de \emph{commodity}.
+  \item \textbf{Sustitutos --- moderados.} Las hojas de cálculo y herramientas SaaS más simples
+        sirven al mismo trabajo; la amenaza es real pero manejable si las integraciones generan
+        \emph{stickiness}.
+  \item \textbf{Poder de proveedores --- bajo.} La infraestructura en la nube (AWS, GCP) es
+        competitiva; ningún insumo propietario está cautivo en un solo proveedor.
+\end{itemize}
+
+El alto poder de compradores más la alta amenaza de entrada en un mercado fragmentado impone una
+respuesta de diferenciación --- singularidad de producto que eleve los costos de cambio --- en
+lugar de una carrera de liderazgo en costos que la empresa no puede ganar a su escala actual.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Tratar las cinco fuerzas como si tuvieran el mismo peso y promediarlas en una única
+«puntuación de atractivo». Un mercado puede ser \emph{estructuralmente poco atractivo} en
+cuatro dimensiones y aun así ser muy rentable para una empresa que haya neutralizado la quinta
+(por ejemplo, una barrera de patentes que elimina la amenaza de entrada). Evaluar cada fuerza
+por separado; luego preguntar cuál de ellas aborda la estrategia.
+\end{admonition}
+
+\textcite{dranove7theconomics} amplían las Cinco Fuerzas con un análisis de la rivalidad
+basado en la teoría de juegos: cuando los competidores interactúan de forma repetida, las
+estrategias de ojo-por-ojo pueden sostener precios supracompetitivos sin necesidad de colusión.
+El modelo también se inscribe dentro del paradigma más amplio «estructura--conducta--desempeño»
+(SCP, por sus siglas en inglés), cuya validez empírica es objeto de debate (véase
+\cref{ch:advantage-and-disruption} para la crítica basada en recursos).
+
+El diagnóstico de las Cinco Fuerzas establece el contexto para cada decisión de precios en
+\cref{ch:pricing} y cada elección de segmentación en
+\cref{ch:segmentation-targeting-positioning}: entrar sólo donde al menos una fuerza sea
+genuinamente manejable. \textcite{porter1980} y \textcite{dranove7theconomics} desarrollan el
+sustento empírico de la economía industrial.
+
+\section{La Cadena de Valor}\label{sec:value-chain}
+% Complejidad: 3
+
+¿Qué actividades dentro de la empresa generan el costo o la diferenciación que importa al
+cliente, y cuáles son gastos generales que deben minimizarse o externalizarse? Una empresa no
+es sólo un producto; es una secuencia de actividades. Tanto el costo como la diferenciación
+se originan en eslabones específicos de esa cadena. Saber qué eslabón importa es la condición
+previa para asignar la inversión correctamente --- y para entender dónde un competidor con una
+estructura de cadena diferente puede socavar o superar a la empresa.
+
+\textcite{porter1985} organiza las actividades de la empresa en dos niveles:
+\begin{description}
+  \item[Actividades primarias] Las que tocan directamente el producto o servicio:
+    logística de entrada $\to$ operaciones $\to$ logística de salida $\to$
+    \emph{marketing} y ventas $\to$ servicio postventa.
+  \item[Actividades de apoyo] Las que habilitan las primarias: infraestructura de la empresa,
+    gestión de recursos humanos, desarrollo tecnológico y adquisiciones.
+\end{description}
+Para una empresa B2B SaaS, la cadena primaria se comprime a cuatro eslabones:
+desarrollo de producto $\to$ ventas y \emph{marketing} $\to$ éxito del cliente $\to$
+infraestructura/operaciones. Las actividades de apoyo (finanzas, legal, RRHH) se aplican sin
+cambios. El «margen» es el excedente agregado que queda después del costo combinado de todos
+los eslabones.
+
+La cadena de valor \emph{no} es una cadena de suministro: las cadenas de suministro rastrean
+insumos y productos físicos entre empresas; la cadena de valor mapea actividades que agregan
+valor \emph{dentro} de una sola empresa. Confundirlas conduce a decisiones de externalización
+basadas únicamente en el costo, ignorando la diferenciación y el conocimiento tácito
+incorporados en la actividad. El modelo también asume que las actividades son separables, lo
+que sobreestima la separabilidad en productos digitales altamente integrados.
+
+\begin{example}
+\emph{Decisión: ¿dónde gasta la empresa SaaS y dónde está construyendo ventaja?}
+
+Mezcla observada de gastos operativos (aproximación, coherente con un margen bruto
+$\approx$\qty{70}{\percent}):
+\begin{itemize}
+  \item Ventas y \emph{marketing}: $\approx$\qty{50}{\percent} del ingreso
+        (el eslabón dominante --- coherente con un presupuesto publicitario de \money{120000}/mes
+        más un equipo de ventas).
+  \item I+D / producto: $\approx$\qty{30}{\percent} del ingreso.
+  \item Éxito del cliente / infraestructura: $\approx$\qty{15}{\percent} del ingreso.
+  \item G\&A: $\approx$\qty{5}{\percent}.
+\end{itemize}
+Las ventas y el \emph{marketing} dominan porque la empresa está en la etapa pre-\emph{moat}:
+debe comprar clientes que aún no puede retener de forma orgánica. Una empresa post-\emph{moat}
+(\cref{ch:growth}) desplaza el gasto hacia producto y éxito del cliente a medida que los costos
+de cambio reducen el costo marginal de retención. La lente de la cadena de valor hace visible
+esta trayectoria como un desplazamiento en qué eslabón lleva la inversión.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Equiparar la cadena de valor con un desglose de costos por actividad y luego «optimizar» cada
+eslabón de forma independiente. El valor de la cadena proviene de los \emph{vínculos}: una
+actividad de servicio superior aumenta el valor de la actividad de producto al reducir el
+\emph{churn} (véase \cref{eq:retention} en \cref{ch:customer-economics}). Recortar el área
+de éxito del cliente para reducir el costo por eslabón destruye el valor del vínculo ---
+y eleva el \emph{churn}.
+\end{admonition}
+
+La cadena de valor es anterior al modelo de negocio de plataforma, donde las actividades
+primarias se invierten: la plataforma produce una infraestructura de intermediación y el valor
+se crea en las interacciones entre los participantes de terceros, no en las operaciones propias
+de la empresa. Las implicaciones para la estructura de costos y el análisis competitivo se
+exploran en \cref{ch:business-models}.
+
+La concentración de costos de la cadena de valor en ventas y \emph{marketing} refleja la
+estructura competitiva que las Cinco Fuerzas diagnosticaron antes: cuando la amenaza de entrada
+y el poder de compradores son ambos altos, la demanda debe adquirirse de forma costosa. El
+camino hacia la mejora del margen pasa por construir el \emph{moat} primero (\cref{ch:growth})
+y luego reconfigurar la cadena. \textcite{porter1985} es la fuente primaria.
+
+\section{Estructura del Sector y Rentabilidad}\label{sec:industry-structure}
+% Complejidad: 3
+
+¿Qué tan concentrado es el mercado en el que competimos, y qué implica eso sobre los niveles
+de precio sostenibles y la intensidad competitiva? Un mercado con cuatro rivales aproximadamente
+iguales se comporta de manera diferente a uno con una empresa dominante y una franja periférica.
+La concentración de mercado no es destino --- un mercado concentrado puede ser ferozmente
+competitivo (véanse las aerolíneas) --- pero es el primer hecho estructural que hay que
+establecer. El Índice de Herfindahl--Hirschman (HHI) traduce las cuotas de mercado en un
+único número que tanto reguladores como estrategas utilizan.
+
+Sea \(i\) una empresa con cuota \(s_i \in [0,1]\) (expresada como fracción). El HHI es:
+\begin{equation}\label{eq:hhi}
+  \mathrm{HHI} \;=\; \sum_{i} s_i^2.
+\end{equation}
+Expresado en cuotas en puntos porcentuales (es decir, \(s_i\) en \([0,100]\)), el HHI varía
+desde cerca de 0 (atomístico) hasta \num{10000} (monopolio puro). Las guías antimonopolio
+de EE.UU. \parencite{dranove7theconomics} señalan mercados por encima de \num{2500} como
+altamente concentrados y fusiones que eleven el HHI en más de \num{200} en un mercado por
+encima de \num{1500}.
+
+La \cref{eq:hhi} asume que las cuotas de mercado aproximan la intensidad competitiva, pero dos
+empresas con 50\%\ cada una pueden coludirse tácitamente o competir de forma brutal. El índice
+también es sensible a cómo se define el mercado: una definición amplia deflacta el HHI y puede
+ocultar la dominancia local. El índice no dice nada sobre las barreras de entrada ni las
+asimetrías de costos; es un punto de partida, no una conclusión.
+
+\begin{example}
+\emph{Decisión: ¿está nuestro mercado lo suficientemente concentrado como para apoyar el
+liderazgo en precios, o debemos competir en valor?}
+
+Supóngase un mercado con cuatro actores con cuotas
+\(s = (0.30,\,0.25,\,0.20,\,0.15)\) y una franja competitiva que suma \(0.10\):
+\[
+  \begin{aligned}
+    \mathrm{HHI} &= 0.30^2 + 0.25^2 + 0.20^2 + 0.15^2 + 0.10^2 \\
+                 &= 0.090 + 0.063 + 0.040 + 0.023 + 0.010 \\
+                 &= 0.226 \;\approx\; \num{2260}\text{ (pp-cuadrado)}.
+  \end{aligned}
+\]
+Con \num{2260}, el mercado está \emph{moderadamente concentrado} --- por debajo del umbral de
+alta concentración de \num{2500}. El liderazgo en precios es débil; la empresa líder no puede
+subir precios sin arriesgar pérdida de cuota. Una \emph{startup} que entre con
+\(s \approx 0.02\) aporta \(0.0004\) al HHI --- insignificante para el agregado, pero no
+para su propio estado de resultados. La entrada es viable precisamente porque no se ha
+alcanzado el precipicio de concentración: ninguna empresa tiene la escala para responder de
+forma aplastante.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Usar el HHI en solitario para concluir que un mercado es «competitivo». Un mercado
+fragmentado de 50 empresas con \qty{2}{\percent} de cuota cada una (HHI = \num{200}) puede
+seguir siendo \emph{estructuralmente poco atractivo} si los costos de entrada son nulos y los
+sustitutos son abundantes --- las Cinco Fuerzas dicen lo que el HHI no puede decir.
+\end{admonition}
+
+El índice de Lerner (\cref{eq:lerner}) conecta el HHI con los márgenes precio-costo a través
+de la elasticidad precio promedio de la industria: en un oligopolio de Cournot simétrico,
+\(\mathcal{L} = \mathrm{HHI}/|\varepsilon|\). Esto vincula directamente la estructura de
+mercado con el poder de fijación de precios y es el puente entre la organización industrial
+y \cref{ch:pricing}. \parencite{mankiw2020,dranove7theconomics}.
+
+La concentración de mercado cuantifica la arena; la cadena de valor revela dónde dentro de
+ella la empresa crea y captura valor. Ambas alimentan el análisis de ventaja en
+\cref{ch:advantage-and-disruption}. \textcite{mankiw2020} y \textcite{dranove7theconomics}
+fundamentan la literatura empírica de organización industrial detrás de \cref{eq:hhi}.

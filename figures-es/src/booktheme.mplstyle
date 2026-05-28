@@ -1,0 +1,55 @@
+# booktheme.mplstyle — matplotlib style for deloryx-book-value-creation.
+# Goal: data plots that read as typographically continuous with the LaTeX body.
+#   serif body font, restrained palette matching the tcolorbox colours in
+#   preamble.sty, no chart junk, vector PDF with embedded fonts.
+# Note: text.usetex is intentionally OFF (speed); do NOT put LaTeX escapes like
+#   "\%" in labels — use plain text.
+
+# --- Fonts ---
+font.family       : serif
+font.serif        : Latin Modern Roman, CMU Serif, DejaVu Serif, serif
+font.size         : 9
+axes.titlesize    : 10
+axes.labelsize    : 9
+xtick.labelsize   : 8
+ytick.labelsize   : 8
+legend.fontsize   : 8
+figure.titlesize  : 11
+
+# --- Palette (approximations of the preamble.sty tcolorbox colours) ---
+#   decision blue!55!black  #1A5276   intuition teal!60!black #0E6655
+#   derivation violet       #6C3483   breaks red!60!black     #7B241C
+#   trap orange!75!black    #935116   deeper gray!55          #777777
+#   contested purple        #5B2C6F   worked black!70         #4D4D4D
+axes.prop_cycle   : cycler('color', ['1A5276','0E6655','6C3483','7B241C','935116','777777','5B2C6F','4D4D4D'])
+
+# --- Lines & markers ---
+lines.linewidth      : 1.5
+lines.markersize     : 5
+lines.solid_capstyle : round
+
+# --- Axes ---
+axes.spines.top   : False
+axes.spines.right : False
+axes.linewidth    : 0.8
+axes.axisbelow    : True
+axes.grid         : True
+grid.color        : DDDDDD
+grid.linewidth    : 0.5
+grid.linestyle    : -
+
+# --- Figure size (A4 text block ~127mm at 85% ≈ 5in; golden-ratio height) ---
+figure.figsize    : 5.0, 3.09
+figure.dpi        : 150
+
+# --- PDF backend: embed TrueType (avoid Type 3) ---
+pdf.fonttype      : 42
+pdf.use14corefonts: False
+
+# --- Legend & ticks ---
+legend.frameon    : False
+legend.loc        : best
+xtick.direction   : out
+ytick.direction   : out
+xtick.major.size  : 3.5
+ytick.major.size  : 3.5

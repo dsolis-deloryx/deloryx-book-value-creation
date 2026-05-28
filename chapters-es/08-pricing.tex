@@ -1,0 +1,200 @@
+\chapter{Precios e ingresos}\label{ch:pricing}
+
+% Alcance: disposición a pagar, discriminación de precios, el índice de Lerner, fijación psicológica de precios.
+
+El precio es la única palanca de ingresos que no requiere gasto. Es también la palanca que la mayoría de las empresas calibra por convención (costo más margen) en lugar de por análisis (basado en valor). La diferencia entre ambos enfoques es valor no capturado --- dinero que los clientes habrían pagado y que la empresa dejó sobre la mesa.
+
+\section{Disposición a pagar y valor económico para el cliente}\label{sec:evc}
+% complejidad: 3
+
+¿A qué precio captura la empresa una parte justa del valor que crea para el cliente --- y cuánto valor no capturado está dejando a los competidores para que lo aprovechen? Un cliente pagará hasta el punto en que el producto ya no valga la pena comprarlo --- su disposición a pagar (DAP). La DAP no es lo mismo que el precio cobrado; la brecha es el excedente del consumidor. La tarea de la empresa es fijar el precio lo suficientemente cerca de la DAP como para capturar la mayor parte del valor creado, manteniendo el precio lo bastante bajo para que el cliente aún compre.
+
+El valor económico para el cliente (EVC, por sus siglas en inglés) descompone la DAP en un precio de referencia más el valor neto de la diferenciación:
+\begin{equation}\label{eq:evc}
+  \mathrm{EVC} \;=\; P_{\text{ref}} + \sum_k \Delta v_k ,
+\end{equation}
+donde \(P_{\text{ref}}\) es el precio de la mejor alternativa disponible y \(\Delta v_k\) es el valor monetizado (positivo o negativo) de cada elemento de diferenciación \(k\) con respecto a esa alternativa. Fijar el precio igual al EVC extrae todo el excedente del comprador; la fijación de precios basada en valor apunta a un reparto del EVC entre comprador y vendedor.
+
+El EVC requiere que los clientes puedan cuantificar sus alternativas y el valor de la diferenciación --- supuesto razonable en B2B, pero frágil en mercados de consumo donde las decisiones son emocionales o habituales. \cref{eq:evc} también asume un único competidor de referencia; cuando los compradores tienen diversas mejores alternativas, debe calcularse un EVC específico por segmento para cada una. Los valores de diferenciación \(\Delta v_k\) deben ser de suma positiva: si el producto es genuinamente inferior en algunos atributos, estos entran como negativos y reducen el EVC por debajo de \(P_{\text{ref}}\).
+
+\begin{example}[Construcción de la tabla EVC para un CRM de mercado medio]
+La SaaS de referencia compite principalmente contra Salesforce Sales Cloud a \money{150}/asiento/mes. Valores de diferenciación con respecto a Salesforce:
+
+\medskip
+\begin{tabular}{lr}
+  \toprule
+  Elemento de diferenciación & \(\Delta v\) (por asiento/mes) \\
+  \midrule
+  Implementación más rápida (ahorra 3 meses de honorarios de consultoría) & $+\money{30}$ \\
+  Menor carga administrativa (0.5 FTE ahorrado)                           & $+\money{20}$ \\
+  Reportes y analíticas más débiles (inferior)                            & $-\money{20}$ \\
+  \midrule
+  Total \(\sum_k \Delta v_k\)                                             & $+\money{30}$ \\
+  \bottomrule
+\end{tabular}
+
+\medskip
+\[
+  \mathrm{EVC} \;=\; \money{150} + \money{30} \;=\; \money{180}/\text{asiento/mes}.
+\]
+
+Precio actual: \money{50}/asiento/mes. La brecha entre el EVC (\money{180}) y el precio actual (\money{50}) es \money{130} de valor no capturado por asiento por mes. Incluso un aumento de precio modesto a \money{80} --- capturando \money{30} de los \money{130} de brecha --- representa un incremento de ingresos del \qty{60}{\percent} sin costo incremental. La implicación: la pregunta de fijación de precios no es si subir los precios, sino cuánto puede subirlos la empresa antes de que los compradores migren al competidor de referencia. Ese umbral lo determina el índice de Lerner (\cref{sec:optimal-markup}).
+\end{example}
+
+\begin{admonition}{Advertencia}
+Anclar el EVC al costo en lugar de a la alternativa del cliente. Si el punto de referencia es el propio costo marginal de la empresa en vez de la mejor alternativa disponible, el análisis degenera en costo más margen --- lo que ignora todo el valor creado. El único punto de referencia relevante es lo que el cliente haría a continuación si este producto no existiera.
+\end{admonition}
+
+El análisis conjunto (\emph{conjoint analysis}) es el método cuantitativo para estimar \(\Delta v_k\) a partir de datos de preferencias, en lugar de inferencias: los compradores valoran perfiles de producto y la regresión recupera las utilidades parciales por atributo que suman la DAP. Para productos B2B, las entrevistas de valor económico (conversaciones estructuradas sobre la estructura de costos del comprador) son más manejables que el análisis conjunto mediante encuestas y producen el EVC directamente. El EVC establece el techo. El precio óptimo por debajo de ese techo lo determina la elasticidad de la demanda --- tema de \cref{sec:optimal-markup}. \textcite{nagle2023strategy} es el libro de texto estándar de fijación de precios; el \emph{framework} del EVC se origina allí. \textcite{kotler2021} lo sitúa en el \emph{marketing} mix más amplio.
+
+\section{El índice de Lerner y el margen óptimo}\label{sec:optimal-markup}
+% complejidad: 3
+
+Dada la estructura de costos de la empresa y la sensibilidad al precio de su segmento objetivo, ¿qué margen sobre el costo marginal maximiza el beneficio --- y cuán lejos está el precio actual de ese óptimo? El poder de mercado es la capacidad de fijar precios por encima del costo marginal. El índice de Lerner mide cuánto de ese poder está utilizando actualmente la empresa. Al precio que maximiza el beneficio, el margen es exactamente igual a la inversa del valor absoluto de la elasticidad precio de la demanda. Fijar el precio por debajo del óptimo deja margen sobre la mesa; fijarlo por encima destruye volumen más rápido de lo que genera margen.
+
+A partir de la condición de primer orden de la maximización del beneficio (igualar ingreso marginal con costo marginal), el índice de Lerner en el óptimo es (\cref{eq:lerner}; definido en \cref{ch:microeconomics}):
+\begin{equation*}
+  L^* \;=\; \frac{P^* - MC}{P^*} \;=\; \frac{1}{|\varepsilon|} ,
+\end{equation*}
+donde \(\varepsilon\) es la elasticidad precio de la demanda (\cref{eq:elasticity}; definida en \cref{ch:microeconomics}) y \(P^*\) es el precio que maximiza el beneficio. Despejando \(P^*\) a partir de un \(MC\) conocido:
+\begin{equation}\label{eq:optimal-markup}
+  P^* \;=\; \frac{MC}{1 - 1/|\varepsilon|} .
+\end{equation}
+\cref{eq:optimal-markup} es la forma operativa para el gerente de precios: dado un costo marginal y una elasticidad estimada, devuelve directamente el precio que maximiza el beneficio.
+
+\cref{eq:optimal-markup} requiere \(|\varepsilon| > 1\) (demanda elástica); con \(|\varepsilon| \le 1\) la fórmula implica un precio infinito, lo cual es físicamente imposible --- la restricción es que la demanda llega a cero primero. También requiere que \(MC\) sea constante (o que la fórmula se evalúe al nivel de producción pertinente). Por último, la elasticidad varía según el punto de precio: la \(\varepsilon\) estimada a \money{50} puede diferir sustancialmente a \money{87}, lo que convierte a \cref{eq:optimal-markup} en una aproximación que requiere validación iterativa.
+
+\begin{example}[Cálculo del precio óptimo según Lerner]
+Elasticidad precio estimada para el segmento de mercado medio: \(\varepsilon = -1.5\) (un aumento de precio del \qty{10}{\percent} reduce la demanda en \qty{15}{\percent}). Costo marginal (\emph{hosting} más soporte variable) por asiento/mes: \(MC = \money{29}\). A partir de \cref{eq:optimal-markup}:
+\[
+  P^* \;=\; \frac{\money{29}}{1 - 1/1.5} \;=\; \frac{\money{29}}{1 - 0.667} \;=\; \frac{\money{29}}{0.333} \;\approx\; \money{87}.
+\]
+El índice de Lerner óptimo: \(L^* = 1/1.5 = 0.67\), lo que implica un margen bruto del \qty{67}{\percent} en \(P^*\). El precio actual de \money{50} implica un índice de Lerner de \((50-29)/50 = 0.42\) --- la SaaS opera al \qty{42}{\percent} de su poder de maximización de beneficios, muy por debajo del techo EVC de \money{180} (\cref{sec:evc}) y por debajo del óptimo de Lerner de \money{87}. La implicación: subir el precio a \money{87} está justificado tanto por el criterio de elasticidad de la demanda como por el criterio basado en valor. Un movimiento intermedio a \money{69}--\money{79} capturaría la mayor parte de la ganancia de Lerner con menor riesgo competitivo.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Usar la elasticidad promedio de la categoría en lugar de la elasticidad específica por segmento. La elasticidad precio es una propiedad de un segmento, no de un mercado. Los compradores de pequeñas y medianas empresas (SMB) suelen ser más elásticos que los de mercado medio; los de empresa son menos elásticos. Aplicar una elasticidad ponderada a un segmento específico fija mal el precio para ese segmento y falla en ambas direcciones --- demasiado alto para SMB, demasiado bajo para empresa.
+\end{admonition}
+
+En mercados con efectos de red o fuerte complementariedad (por ejemplo, productos de plataforma), la fijación de precios óptima se desvía de \cref{eq:optimal-markup} porque subsidiar un lado del mercado hace crecer la red y eleva la DAP en el otro lado. La condición de primer orden generalizada incluye entonces el término de elasticidad cruzada entre lados. Este es el análogo en fijación de precios del mecanismo de crecimiento de Metcalfe en \cref{ch:growth}. El análisis de Lerner da el precio óptimo por segmento dado un único nivel (\emph{tier}). Los mercados reales permiten extraer más excedente mediante la discriminación de precios, tema que se aborda a continuación. \textcite{nagle2023strategy} y \textcite{pindyck2017} derivan ambos \cref{eq:optimal-markup}; los conceptos de elasticidad e índice de Lerner que \cref{eq:lerner,eq:elasticity} formalizan se encuentran en \cref{ch:microeconomics}.
+
+\section{Discriminación de precios y bueno-mejor-óptimo}\label{sec:price-discrimination}
+% complejidad: 3
+
+Si los clientes tienen disposiciones a pagar heterogéneas, ¿cómo captura la empresa el excedente de cada segmento sin perder ningún segmento por completo --- y qué mecanismo de discriminación es viable? Un precio único necesariamente deja dinero sobre la mesa: es demasiado alto para los segmentos sensibles al precio (volumen perdido) o demasiado bajo para los insensibles al precio (margen perdido). La discriminación de precios es el mecanismo que cobra más cerca de la DAP de cada segmento, capturando más excedente total sin la disyuntiva binaria.
+
+Tres grados de discriminación definen el espacio de diseño:
+
+\begin{description}
+  \item[Primer grado (perfecta)] Cada unidad vendida al exacto nivel de DAP del comprador. Extrae todo el excedente del consumidor. Requiere conocer las DAP individuales --- inviable a escala. Se aproxima en contratos B2B negociados.
+  \item[Segundo grado (versionado/autoselección)] Diferentes combinaciones precio-cantidad o precio-calidad; los compradores se autoseleccionan. Los niveles bueno-mejor-óptimo (GBB) son la forma canónica. Viable sin conocer las DAP individuales.
+  \item[Tercer grado (precio por segmento)] Precios diferentes para grupos observables (descuentos para estudiantes, tarifas para organizaciones sin fines de lucro, precios geográficos). Legal donde los grupos pueden identificarse pero el arbitraje puede prevenirse.
+\end{description}
+
+El versionado (segundo grado) es el mecanismo digital más escalable. Funciona cuando: (a) el segmento de alta DAP valora las características adicionales lo suficiente como para pagar una prima, y (b) el nivel bajo de DAP no es tan atractivo que los compradores de alta DAP migren hacia abajo. GBB se rompe cuando los niveles no están diferenciados de forma creíble: si el nivel medio es \emph{casi} tan bueno como el nivel superior a la mitad del precio, los compradores de alta DAP migran hacia abajo. La restricción de características (no la adición) es el mecanismo habitual para crear las limitaciones del nivel Bueno que hacen atractivos los niveles Mejor y Óptimo sin degradar el valor para el comprador del nivel Bueno.
+
+\begin{example}[Diseño de una estructura de niveles bueno-mejor-óptimo]
+Niveles actuales de la SaaS:
+
+\medskip
+\begin{tabular}{llr}
+  \toprule
+  Nivel & Principales diferenciadores & Precio/mes \\
+  \midrule
+  Bueno   & CRM básico, hasta 5 usuarios, reportes estándar                 & \money{29} \\
+  Mejor   & Usuarios ilimitados, analíticas avanzadas, acceso a API         & \money{50} \\
+  Óptimo  & SSO, registros de auditoría, CSM dedicado, SLA                  & \money{99} \\
+  \bottomrule
+\end{tabular}
+
+\medskip
+El nivel Bueno apunta a las SMB sensibles al precio (capturando compradores que no pagarían \money{50}) sin canibalizar al nivel Mejor: el límite de 5 usuarios crea un disparador natural de actualización a medida que los equipos crecen. El nivel Óptimo apunta a los compradores de mercado medio con mentalidad empresarial: el SSO y los registros de auditoría son requisitos del área de TI para adquisiciones, no características --- crean demanda obligatoria en lugar de discrecional. Según el análisis EVC (\cref{sec:evc}), \money{99} sigue estando muy por debajo del techo EVC de \money{180}, por lo que hay margen para un cuarto nivel «Enterprise» una vez que la marca pueda sustentarlo.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Fijar el precio según el costo en lugar de la diferencia de DAP entre niveles. Las características que son baratas de entregar (un \emph{endpoint} de API adicional) pueden tener un valor muy alto para un segmento específico (los desarrolladores). El costo de entregar la característica es irrelevante para el precio del nivel; solo importa el diferencial de DAP.
+\end{admonition}
+
+El paquete (\emph{bundling}) es un mecanismo de discriminación relacionado: combinar productos con demandas negativamente correlacionadas (diferentes segmentos valoran los componentes de manera distinta) captura más excedente que vender cada producto por separado. Las disyuntivas entre paquete puro y paquete mixto se analizan en la literatura de organización industrial (\textcite{pindyck2017}). Para el \emph{software}, el paquete suele ser la plataforma en sí --- los componentes tienen costo marginal cero y alta varianza en la DAP, lo que hace que el paquete sea casi siempre superior al precio à la carte.
+
+Los defensores del costo más margen argumentan que la fijación de precios basada en valor es circular (se necesita conocer el valor para fijar precios basados en valor) y explotadora (extrae excedente que los clientes «merecen» conservar). Los defensores de la fijación de precios basada en valor responden: el costo más margen fija sistemáticamente precios demasiado bajos en productos de alta diferenciación y demasiado altos en los de baja diferenciación, destruyendo tanto el margen como la cuota de mercado. La evidencia apoya el enfoque basado en valor en mercados diferenciados; el costo más margen domina donde los productos son \emph{commodities} y la restricción competitiva es vinculante. La SaaS no es una \emph{commodity} (\cref{eq:evc} muestra una brecha de valor de \money{130} sobre el costo más margen), por lo que el costo más margen es el ancla incorrecta.
+
+La discriminación de precios convierte el precio óptimo único de \cref{eq:optimal-markup} en un esquema. Los niveles establecidos aquí alimentan directamente la distribución de ARR entre segmentos de clientes y el ARPU promedio que entra en cada cálculo de CLV en \cref{ch:customer-economics}. \textcite{nagle2023strategy} y \textcite{pindyck2017} desarrollan la teoría; las restricciones de estructura de mercado a la discriminación de precios se encuentran en \cref{ch:competitive-analysis}.
+
+\section{Fijación psicológica de precios y contabilidad mental}\label{sec:psych-pricing}
+% complejidad: 2
+
+Para un precio económico dado, ¿qué encuadre y estructura de pago maximiza el valor percibido y reduce el \emph{churn} --- independientemente del número cobrado? La contabilidad mental de Thaler (\textcite{thaler1985mental}) muestra que las personas no evalúan los pagos como flujos de caja fungibles; los segregan en cuentas y aplican reglas diferentes a cada una. Un pago anual de \money{480} y doce pagos de \money{40} son económicamente equivalentes pero psicológicamente distintos --- y el pago anual, a pesar de ser mayor, suele percibirse como menor porque entra en una cuenta mental diferente.
+
+A partir de la teoría prospectiva (\cref{eq:prospect}; definida en \cref{ch:decisions-under-uncertainty}), las pérdidas pesan más que las ganancias equivalentes. La aplicación de Thaler a la fijación de precios produce cuatro reglas:
+
+\begin{description}
+  \item[Segregar las ganancias] Mostrar las ganancias por separado (dos características a \money{10} cada una se siente mejor que un paquete a \money{20}).
+  \item[Integrar las pérdidas] Combinar los pagos en un total único (una cuota anual se siente menos dolorosa que 12 recordatorios mensuales de gasto).
+  \item[Cancelar pérdidas pequeñas contra ganancias grandes] Encuadre de recargo: «\money{5} adicionales» se siente menos relevante junto a un pedido de \money{500} que junto a uno de \money{5}.
+  \item[Segregar ganancias pequeñas de pérdidas grandes] «Envío gratis» en un pedido de \money{100} se siente mejor que un pedido de \money{90}; la ganancia está segregada.
+\end{description}
+
+Los efectos de la contabilidad mental son más fuertes cuando los compradores tienen \emph{baja capacidad numérica o alta presión de tiempo}. Los equipos sofisticados de compras B2B con modelos explícitos de TCO son menos susceptibles. El efecto del encuadre anual frente al mensual es real, pero se atenúa en los acuerdos empresariales donde el área de finanzas ajusta explícitamente el calendario de pagos mediante NPV.
+
+\begin{example}[Facturación anual vs.\ mensual y la brecha de retención]
+La SaaS ofrece \money{50}/mes o \money{480}/año (equivalente a \money{40}/mes --- un descuento del \qty{20}{\percent}). El precio económico del plan anual es menor, pero el tratamiento psicológico es diferente:
+
+\begin{itemize}
+  \item El pago anual de \money{480} sale del presupuesto operativo mensual del cliente y entra en una cuenta de capital/licencias de \emph{software} --- un compartimento mental diferente que se revisa anualmente, no mensualmente.
+  \item Los planes mensuales generan una reevaluación recurrente de «¿vale la pena?» doce veces al año. Los planes anuales suprimen esa pregunta durante 11 de los 12 meses.
+  \item Empíricamente: la SaaS mide una retención a 12 meses del \qty{94}{\percent} para los pagadores anuales frente al \qty{78}{\percent} para los pagadores mensuales --- una brecha del \qty{16}{\percent} impulsada en parte por la autoselección (los compradores anuales tienen mayor compromiso) y en parte por la reevaluación suprimida.
+\end{itemize}
+
+Contribución del plan anual (usando el modelo de \emph{churn} mensual de \cref{eq:clv}): \(m = \money{480} \times 0.42 = \money{201.6}/\text{año}\) con retención anual del \qty{94}{\percent} (\(c \approx \qty{0.5}{\percent}/\text{mes}\)):
+\[
+  \mathrm{CLV}_{\text{annual}} \;=\; \frac{\money{201.6}}{0.11 - 0.03} \;=\; \money{2520}.
+\]
+Menores ingresos por año (\money{480} frente a \money{600}), pero la mejora en retención y el efecto de la cuenta mental se acumulan a lo largo de la vida del cliente. La implicación: incorporar a los nuevos clientes por defecto en la facturación anual con una visualización clara del precio «mensual equivalente» --- el ancla de \money{40}/mes hace que los \money{480} se sientan como un ahorro.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Asumir que el descuento anual debe compensar el costo total del pago anticipado. El descuento no es un cálculo de TIR financiera --- es un mecanismo de desbloqueo de cuenta mental. Los clientes que cambian al plan anual no exigen un retorno a tasa libre de riesgo; aceptan el \qty{20}{\percent} por la simplicidad psicológica. No sobredescontar.
+\end{admonition}
+
+El encuadre del precio interactúa con el precio de referencia en \cref{eq:evc}: un precio mostrado junto a un ancla más alta (Salesforce \money{150}) se evalúa como una ganancia, no como un costo. El primer movimiento del vendedor en cualquier demostración es establecer el costo del competidor de referencia --- esto fija el ancla contra la cual el precio de la SaaS se evalúa como dramáticamente más barato, independientemente del número absoluto. La fijación psicológica de precios no cambia el precio económico; cambia el precio percibido. Cuando el encuadre es coherente con el posicionamiento del producto (\cref{ch:segmentation-targeting-positioning}) --- los compradores de mercado medio valoran la simplicidad y la previsibilidad --- los efectos psicológicos refuerzan la propuesta de valor en lugar de contradecirla. \textcite{thaler1985mental} es la fuente principal; los fundamentos de la teoría prospectiva se encuentran en \cref{eq:prospect} (\cref{ch:decisions-under-uncertainty}).
+
+\section{Construcción de la oferta}\label{sec:offer-construction}
+% complejidad: 3
+
+El precio es un número; la oferta es el paquete completo que el comprador evalúa frente a él. El capítulo de fijación de precios hasta este punto ha establecido el techo (\cref{eq:evc}) y el margen (\cref{eq:optimal-markup}); convertir esa disposición a pagar latente en una transacción real requiere componer cuatro palancas que el comprador pondera en paralelo. \textcite{hormozi2021offers}, la síntesis práctica más conocida, las operacionaliza como una razón simple:
+
+\begin{equation}\label{eq:value-equation}
+  \mathrm{ValorPercibido}
+  \;=\;
+  \frac{\mathrm{ResultadoDeseado}\;\times\;\mathrm{ProbabilidadPercibidaDeLogro}}
+       {\mathrm{Demora}\;\times\;\mathrm{EsfuerzoYSacrificio}}.
+\end{equation}
+
+La ecuación es una heurística, no un coeficiente de regresión --- pero cada variable se corresponde con evidencia que el resto del libro establece de forma independiente.
+
+\begin{description}
+  \item[Resultado deseado] El valor económico para el cliente (\cref{eq:evc}): ingresos incrementados, costos evitados, riesgos cubiertos. Aumentar el tamaño percibido de esta ganancia eleva el numerador. La disponibilidad mental de la marca (\cref{ch:brand-growth}) y una propuesta de valor precisa (\cref{ch:segmentation-targeting-positioning}) determinan si el comprador siquiera percibe la ganancia.
+  \item[Probabilidad percibida de logro] La creencia del comprador de que el resultado prometido llegará. Este es el componente de confianza (\cref{eq:trust}): la fiabilidad validada metaanalíticamente \parencite{colquitt2007meta} y los experimentos de campo de prueba social \parencite{goldstein2008field} desplazan esta evaluación de probabilidad sin modificar el producto.
+  \item[Demora] Cuánto tiempo tarda el comprador en ver el resultado. La activación durante el \emph{onboarding} (\cref{ch:product-management}) determina el tiempo hasta la generación de valor; cada semana de demora comprime el numerador percibido mediante el descuento temporal.
+  \item[Esfuerzo y sacrificio] Lo que el comprador debe hacer, ceder o arriesgar para obtener el resultado --- esfuerzo de migración, bloqueo contractual, desembolso monetario. El comprador codifica cada uno como una pérdida, y la teoría prospectiva \parencite{tversky1992cumulative} sitúa el coeficiente de aversión a la pérdida en $\lambda \approx 2.25$: cualquier sacrificio en el lado derecho de la razón tiene un peso más del doble que una ganancia de igual magnitud en el lado izquierdo.
+\end{description}
+
+La implicación estratégica es asimétrica. Duplicar el Resultado deseado y reducir a la mitad el Esfuerzo y sacrificio son matemáticamente equivalentes para la razón --- pero operativamente, lo segundo suele ser más barato. Eliminar la fricción (migración con un clic, garantía de devolución de dinero, piloto gratuito, \emph{onboarding} con asistencia personalizada) se amplifica con el multiplicador $\lambda \approx 2.25$ sobre el sacrificio ponderado por pérdida del comprador. La reversión de riesgo se trata formalmente en \cref{sec:risk-reversal}.
+
+\begin{example}[Rediseño de la oferta para la SaaS de referencia]
+La SaaS B2B de referencia vende el nivel empresarial a \money{299}/mes frente a un EVC de aproximadamente \money{400}/mes en conciliación manual evitada. La oferta base pide al comprador comprometerse anualmente, migrar 40 ERP manualmente y esperar seis semanas para obtener valor. La conversión de prueba a pago es del \qty{25}{\percent} (\cref{eq:funnel-chain}). Cuatro palancas mejoran el valor percibido por el comprador sin cambiar el precio:
+
+\begin{itemize}
+  \item \emph{Resultado deseado:} cuantificar la pérdida evitada explícitamente --- «ahorre \money{4800}/año en tiempo de CFO» --- en lugar de listar características.
+  \item \emph{Probabilidad percibida de logro:} dos casos de estudio con clientes nombrados \parencite{goldstein2008field} más una insignia de SOC~2 / SLA elevan la fiabilidad en las dimensiones de capacidad, benevolencia e integridad de Mayer \parencite{mayer1995model}.
+  \item \emph{Demora:} incluir la migración como un \emph{sprint} de implementación de 14 días con un ingeniero dedicado; «valor en dos semanas, no en seis.»
+  \item \emph{Esfuerzo y sacrificio:} reemplazar el bloqueo anual con una garantía de devolución de dinero de \num{90} días; la pérdida percibida por el comprador se contrae por el multiplicador $\lambda \approx 2.25$.
+\end{itemize}
+
+Suponga que esto eleva la conversión de prueba a pago del \qty{25}{\percent} al \qty{30}{\percent} con tráfico constante. La cohorte de 800 pruebas produce $800 \times 0.30 = 240$ clientes de pago, \num{40} adicionales por encima de la línea base de \num{200}. Con CLV \money{3150} (\cref{eq:clv}), eso representa \money{126000} de valor presente de cartera de clientes por cohorte, obtenido con CAC incremental cero. El precio no cambió; la oferta sí.
+\end{example}
+
+\begin{admonition}{Nota}
+\Cref{eq:value-equation} no es una regresión. Es una heurística de ordenamiento para saber qué palanca accionar primero cuando la conversión es el cuello de botella. El respaldo empírico --- EVC (\cref{eq:evc}), teoría prospectiva \parencite{tversky1992cumulative}, confianza \parencite{mayer1995model,colquitt2007meta} e incrementos de cumplimiento por experimentos de campo \parencite{goldstein2008field} --- reside en los capítulos citados anteriormente; la ecuación reúne las palancas en un solo lugar.
+\end{admonition}

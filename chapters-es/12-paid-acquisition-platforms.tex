@@ -1,0 +1,101 @@
+\chapter{Adquisición de pago: cómo funcionan realmente las plataformas}\label{ch:paid-acquisition-platforms}
+
+% Alcance: subasta y entrega en Meta y Google, estructura de campaña, estrategias
+%   de puja, la fase de aprendizaje, ritmo del presupuesto y automatización
+%   Advantage+ / Performance Max.
+%   Implementación de referencia para la parte digital (cf. \cref{ch:corporate-finance-core}).
+
+Dos empresas --- Google y Meta --- arbitran la mayor parte de la demanda de pago del mundo, y lo hacen de la misma manera: una subasta en tiempo real que \emph{no} vende simplemente al mejor postor. Entender la función de valor que cada una maximiza explica por qué un mejor anuncio resulta más barato, por qué un objetivo de costo más estricto compra menos clientes y por qué fragmentar presupuestos destruye silenciosamente el rendimiento.
+
+\section{La subasta de anuncios}\label{sec:ad-auction}
+
+Se puede controlar un único número por subasta --- la puja --- y aun así pagar menos de lo pujado y perder ante un competidor que pujó menos. La plataforma clasifica los anuncios según un criterio distinto a la puja bruta; comprender ese criterio y cómo moverlo a favor propio es la mecánica central de la adquisición de pago.
+
+La plataforma vende atención pero vive de la retención: un anuncio irrelevante que gana por precio aleja a los usuarios, de modo que ambas redes descuentan la puja en función de la calidad del anuncio. La puja concede acceso a la subasta; la \emph{calidad predicha} decide cuánto vale esa puja. Elevar la calidad suele ser más barato que elevar la puja.
+
+Meta clasifica cada impresión mediante un valor total que multiplica la puja por la tasa de acción predicha y añade un término de experiencia \parencite{metadev-advantage-campaigns}:
+\begin{equation}\label{eq:metavalue}
+  V_{\text{Meta}} \;=\; \underbrace{b\,\hat p}_{\text{ingreso esperado}} \;+\; u,
+\end{equation}
+donde $b$ es la puja, $\hat p$ la tasa estimada de acción (conversión) y $u$ un término de calidad del anuncio / valor para el usuario. Google clasifica mediante Ad Rank, la puja escalada por un Quality Score $Q$ (CTR esperado, relevancia del anuncio, experiencia de la página de destino), sujeto a umbrales mínimos \parencite{gads1722122,gads7634668}:
+\begin{equation}\label{eq:adrank}
+  \mathrm{AdRank} \;=\; b \times Q \;+\;(\text{factores de formato y contexto}).
+\end{equation}
+Dado que la subasta se liquida al rango necesario para superar al anunciante inmediatamente inferior, el costo efectivo por clic cae a medida que sube la propia calidad:
+\begin{equation}\label{eq:ecpc}
+  \mathrm{CPC} \;\approx\; \frac{\mathrm{AdRank}_{\text{below}}}{Q} + \$0.01 .
+\end{equation}
+El mecanismo es la subasta generalizada de segundo precio con ponderación por calidad --- la misma estructura analizada bajo teoría de subastas en \cref{ch:microeconomics}. Las \cref{eq:adrank,eq:metavalue} son los esqueletos publicados por las plataformas; los sistemas en producción añaden decenas de variables de contexto y recalculan $\hat p$ por usuario.
+
+\begin{example}
+Un competidor debajo obtiene $\mathrm{AdRank}=16$. Con un Quality Score de $8$, la \cref{eq:ecpc} da un precio por clic de $16/8+\$0.01\approx\money{2}$. Al mejorar la relevancia y la experiencia de la página de destino hasta $Q=10$, la misma posición cuesta $16/10+\$0.01\approx\money{1}.61$ --- una reducción de \qty{20}{\percent} en el costo conseguida con la creatividad, no con el presupuesto.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Tratar la puja como el acelerador es un error. Duplicar la puja de un anuncio de baja calidad puede dejar el Ad Rank por debajo del umbral de entrega, de modo que el gasto sube sin incrementar las impresiones servidas; mientras tanto, un competidor con la mitad de la puja y el doble de $Q$ ocupa posiciones superiores. Una marca sólida obtiene un CTR orgánico más alto y, por lo tanto, un $Q$ mayor por sus propios méritos (\cref{ch:brand-growth}).
+\end{admonition}
+
+Ambas redes expresan esta subasta mediante una jerarquía de tres niveles, pero sitúan la segmentación en lugares distintos (\cref{fig:campaign-hierarchy}): Google organiza en torno a \emph{palabras clave / intención} en el nivel del grupo de anuncios \parencite{gads14752782,gads2375404}, Meta en torno a \emph{audiencias} en el nivel del conjunto de anuncios. Cada objeto de segmentación es la forma operativa del segmento elegido en \cref{ch:segmentation-targeting-positioning}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\linewidth]{campaign-hierarchy}
+  \caption{La jerarquía tripartita de campaña. Google centra la segmentación en palabras clave (intención) en el nivel del grupo de anuncios; Meta la centra en audiencias en el nivel del conjunto de anuncios. Las recomendaciones actuales consolidan ambas para alimentar la fase de aprendizaje (\cref{sec:learning-phase}).}
+  \label{fig:campaign-hierarchy}
+\end{figure}
+
+\section{Puja: comunicarle a la máquina el objetivo}\label{sec:bidding}
+
+Ya no se establecen pujas por clic; se le entrega al algoritmo un objetivo. La elección del objetivo --- volumen, un objetivo de costo o un objetivo de retorno --- y el nivel en que se fija determinan si la entrega se estabiliza o si la rentabilidad se erosiona.
+
+Una estrategia de puja es una restricción sobre un maximizador. «Maximizar conversiones» gasta todo el presupuesto para conseguir la mayor cantidad de eventos; añadir un Target CPA o un Target ROAS le ordena al sistema retirarse de las subastas cuyo costo predicho sea demasiado alto. Cada restricción adicional intercambia volumen por control.
+
+Smart Bidding de Google ofrece Maximizar conversiones (acotado opcionalmente por \emph{Target CPA}) y Maximizar valor de conversión (acotado opcionalmente por \emph{Target ROAS}) \parencite{gads7381968,gads6268632,gads6268637}. La API de Marketing de Meta expone el conjunto paralelo \parencite{metadev-advantage-campaigns}: \texttt{LOWEST\_COST\_WITHOUT\_CAP} (mayor volumen), \texttt{COST\_CAP}, \texttt{LOWEST\_COST\_WITH\_BID\_CAP} (techo fijo por subasta) y \texttt{LOWEST\_COST\_WITH\_MIN\_ROAS}. El régimen práctico: comenzar con volumen o menor costo mientras los datos de conversión son escasos; agregar un límite de CPA o ROAS una vez que los eventos sean suficientes para optimizar.
+
+Las dos métricas de eficiencia que imponen los objetivos son simplemente
+\begin{equation}\label{eq:roas-cpa}
+  \mathrm{ROAS}=\frac{\text{valor de conversión}}{\text{gasto en anuncios}},
+  \qquad
+  \mathrm{CPA}=\frac{\text{gasto en anuncios}}{\text{conversiones}} .
+\end{equation}
+
+\begin{example}
+El negocio de suscripción de referencia genera un margen de \qty{42}{\percent} sobre un plan de \money{50}/mes: \money{21}/mes, o \money{252}/año de contribución. Descontando al \qty{11}{\percent} con una tasa de crecimiento de margen del \qty{3}{\percent}, el valor de vida del cliente es la perpetuidad creciente de la \cref{eq:gordon}:
+\[
+  \mathrm{LTV}=\frac{\money{252}}{0.11-0.03}=\money{3150}.
+\]
+Manteniendo el piso de $\text{LTV}:\text{CAC}=3$ del libro de texto (\cref{ch:customer-economics}), el costo de adquisición máximo es $\mathrm{CAC}\le\money{1050}$. Un Target CPA de \money{600} es seguro (LTV:CAC $=5.25$); con \money{120000}/mes eso financia $120000/600=200$ conversiones --- unas \num{50} por semana, superando el mínimo de la fase de aprendizaje descrito a continuación.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Fijar el objetivo de costo al nivel del margen en lugar de por debajo es el error de puja más frecuente. Reducir el Target CPA a \money{300} «para ser más eficiente» lleva al sistema a abstenerse en la mayoría de las subastas: los eventos semanales caen por debajo de \num{50}, el conjunto de anuncios nunca se estabiliza (\cref{sec:learning-phase}) y el CPA realizado \emph{sube}. La decisión rentable es un CPA cómodamente por debajo del techo de LTV, no al límite de él.
+\end{admonition}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{bid_response}
+  \caption{La disyuntiva volumen-eficiencia. Ajustar el Target CPA mejora la eficiencia pero reduce las conversiones; por debajo del mínimo de la fase de aprendizaje (\(\sim\)50 eventos/semana) la entrega se desestabiliza. La ventana viable se sitúa entre ese mínimo y el techo LTV:CAC.}
+  \label{fig:bid-response}
+\end{figure}
+
+\section{La fase de aprendizaje}\label{sec:learning-phase}
+
+El modelo de entrega es un predictor de $\hat p$; con pocos datos sus estimaciones son ruidosas, de modo que el costo por resultado oscila bruscamente al inicio. Necesita un mínimo de conversiones recientes antes de que sus predicciones --- y los costos --- se estabilicen.
+
+Un conjunto de anuncios de Meta sale de la fase de aprendizaje tras acumular aproximadamente \num{50} eventos de optimización en \num{7} días; si no los alcanza, se marca como \emph{Aprendizaje limitado} \parencite{metadev-advantage-campaigns}. Smart Bidding de Google se calibra con unas \num{50} conversiones o dos o tres ciclos de conversión \parencite{gads13020501}. Una «edición significativa» --- un cambio de presupuesto superior al \(\sim\)\qty{20}{\percent}, una nueva estrategia de puja o un cambio de segmentación --- reinicia el contador en ambas plataformas.
+
+\begin{admonition}{Advertencia}
+Fragmentar el gasto frustra la fase de aprendizaje. Diez conjuntos de anuncios con \money{3000}/mes cada uno acumulan muy por debajo de 50 eventos individualmente y \emph{todos} quedan en Aprendizaje limitado, dividiendo la señal de conversión y compitiendo en la misma subasta. Consolidar en uno o dos conjuntos más gruesos es la corrección de mayor apalancamiento --- la misma lógica de capacidad que agrupar una cola (\cref{ch:operations}).
+\end{admonition}
+
+\section{Ritmo del presupuesto}\label{sec:pacing}
+
+Ninguna plataforma divide el presupuesto diario entre 24. Google puede gastar hasta \num{2}$\times$ el presupuesto diario en un día de alta oportunidad, acotado por un límite mensual de \num{30.4}$\times$ la cifra diaria \parencite{gads13685469,gads10486637}. Meta permite hasta \num{1.75}$\times$ en un día dado, acotado por un límite semanal rotativo de \num{7}$\times$. El ritmo persigue las franjas horarias donde $\hat p$ es más alto, razón por la cual la segmentación horaria manual suele costar más de lo que ahorra.
+
+\section{Automatización: Advantage+ y Performance Max}\label{sec:automation}
+
+Performance Max de Google colapsa Search, YouTube, Display, Discover, Gmail y Maps en un único motor alimentado por activos creativos que controla puja, ubicación y ensamblado creativo hacia un objetivo de CPA o ROAS \parencite{gads10724817,gads10724896}. Advantage+ Sales de Meta hace el equivalente en todo el inventario de Meta, señalizado por una marca \texttt{advantage\_state\_info} una vez que audiencia, presupuesto y automatización de ubicaciones están todos activados \parencite{metadev-advantage-plus-campaign-}.
+
+La automatización optimiza para el objetivo que se le proporciona --- y solo ese. Si se le entrega «leads» sin calificar, producirá leads baratos y de baja calidad; si se le entrega ingresos verificados o valor de lead cualificado, se compone a favor del anunciante. Si la caja negra transfiere excedente del anunciante a la plataforma es genuinamente \emph{controvertido}; lo que no está en disputa es que su resultado es tan bueno como la señal de conversión que se le devuelve --- tema de \cref{ch:attribution-and-measurement}.
+
+La subasta premia la calidad, la estrategia de puja convierte un objetivo de negocio en una restricción y la fase de aprendizaje exige suficiente señal para cumplirla. Los tres dependen de medir la conversión correcta y devolverla a la plataforma; ese ciclo de retroalimentación y la atribución que lo sustenta son el objeto de \cref{ch:attribution-and-measurement}. La mecánica oficial aquí está documentada por \textcite{gads1722122} y \textcite{metadev-advantage-campaigns}.

@@ -1,0 +1,336 @@
+\chapter{El Modelo Operativo y las Proyecciones de una Startup}\label{ch:operating-model}
+
+% Alcance: puente de economía unitaria a P&L (construcción de ingresos por cohorte), el modelo
+%   de tres palancas para EBITDA, presupuesto por escenarios y análisis de sensibilidad, runway.
+%   Capítulo nuevo (cierra la brecha en modelos financieros).
+% Conecta la economía unitaria (\cref{ch:customer-economics}) con el DCF (\cref{ch:valuation}):
+%   construye las proyecciones de FCF que el DCF da por sentadas.
+% Referencias cruzadas: \cref{ch:customer-economics} (CLV/CAC), \cref{ch:valuation} (DCF),
+%   \cref{ch:fundraising-and-dilution} (disparador de runway), \cref{ch:financial-statements} (tres estados).
+% Borrador según estilo de la casa: prosa continua + separadores example/admonition;
+%   ejemplos trabajados con la SaaS de referencia.
+
+\section{El Puente de Economía Unitaria al P\&L}\label{sec:unit-econ-to-pl}
+% complexity: 3
+
+¿Cómo se convierte un conjunto de supuestos de economía unitaria en un pronóstico de ingresos?
+La respuesta es la pila de cohortes: los nuevos clientes de cada mes entran en una cohorte que
+se reduce por deserción en cada mes posterior, contribuyendo al ARR mientras permanezcan
+activos. Al sumar las contribuciones supervivientes de cada cohorte se obtiene el ARR actual de
+la empresa. No se trata de un ejercicio descendente de participación en el TAM; es una identidad
+contable ascendente que hace que toda proyección de ingresos sea trazable a dos palancas
+operativas --- entrada de nuevos clientes y \emph{retention} --- y una palanca de precio, el ARPU.
+
+Sea $N_s$ el número de nuevos clientes adquiridos en el mes $s$, ARPU el ingreso anualizado por
+cliente y $c$ la tasa mensual de \emph{churn}. El ARR al final del período $t$ es la suma sobre
+todas las cohortes anteriores de los clientes aún activos:
+\begin{equation}\label{eq:cohort-revenue}
+  \mathrm{ARR}_{t}
+  \;=\;
+  \mathrm{ARPU}
+  \sum_{s=1}^{t}
+  N_{s}\,(1-c)^{\,t-s}.
+\end{equation}
+Cuando $N_s$ es constante en $N$ y la serie lleva el tiempo suficiente para aproximarse al estado
+estacionario, la suma colapsa a $N\,\mathrm{ARPU}/c$; el techo de estado estacionario exacto se
+alcanza sólo asintóticamente, por lo que las empresas reales se encuentran siempre en algún
+punto de la curva de crecimiento por debajo de él.
+\Cref{eq:cohort-revenue} es el gemelo de ingresos de la fórmula de CLV: \cref{eq:clv} valora a
+un único cliente, mientras que \cref{eq:cohort-revenue} apila la misma mecánica de supervivencia
+en todas las cohortes del libro. La identidad de la tasa de crecimiento de MRR en
+\cref{eq:mrr-growth} es la derivada de \cref{eq:cohort-revenue} con respecto al tiempo.
+
+\begin{example}[Pila de cohortes hacia ARR y FCF del Año~1]
+La empresa adquiere \num{200} nuevos clientes por mes a ARPU \money{600}/año, con \emph{churn}
+mensual de \qty{0.65}{\percent}. Tras \num{38} meses de rampa, \cref{eq:cohort-revenue} produce:
+\[
+  \mathrm{ARR}_{38}
+  \;=\; \money{600}\times
+        \frac{200\,\bigl(1-0.9935^{38}\bigr)}{0.0065}
+  \;\approx\; \money{4050000},
+\]
+lo que redondea al ARR de \money{4000000} del plan operativo. Con esta base, capital invertido
+de \money{3000000} y ROIC del \qty{20}{\percent} (\cref{eq:roic}), el NOPAT equivale a
+\(\money{3000000}\times 0.20=\money{600000}\). Dado que una empresa SaaS tiene gasto de capital
+casi nulo y variaciones mínimas en el capital de trabajo, el flujo de caja libre es
+aproximadamente igual al NOPAT; \emph{el FCF del Año~1 de \money{600000}} alimenta directamente
+el DCF en \cref{eq:dcf} como ancla del período de pronóstico explícito, cuya suma de valores
+presentes es aproximadamente \money{3377825}.
+
+La implicación es operativa: tanto el ARR de \money{4000000} como el FCF de \money{600000} son
+resultados derivados de tres tasas observables --- entrada, \emph{retention} y precio. Un
+fundador que no pueda nombrar el valor actual de las tres no puede cerrar el ciclo desde el
+gasto en \emph{marketing} hasta el valor de la empresa.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Las estadísticas de \emph{retention} combinadas ocultan la heterogeneidad entre cohortes. Una
+empresa que adquiere la mitad de sus clientes a través de un canal de baja \emph{retention}
+reportará un \emph{churn} agregado aceptable mientras las cohortes saludables subvencionan a las
+deficientes. Modele la \emph{retention} \emph{por cohorte de adquisición}; la mezcla en la cima
+del \emph{funnel} es tan importante como la tasa en sí.
+\end{admonition}
+
+La pila de cohortes se conecta directamente al P\&L: el ARR es la línea de ingresos; la
+estructura de costos variables de \cref{ch:financial-statements} --- margen bruto del
+\qty{70}{\percent}, margen de contribución del \qty{42}{\percent} --- determina qué fracción
+del ingreso de cada cohorte fluye hacia el EBITDA. La siguiente sección convierte esas tasas en
+un modelo de palancas explícito.
+
+
+\section{El Modelo de Tres Palancas}\label{sec:three-driver-model}
+% complexity: 3
+
+Una vez que el ARR se proyecta a partir de la pila de cohortes, el P\&L se deriva de tres
+tasas: el margen bruto, la base de costos fijos y su composición entre los tres rubros de gastos
+operativos. El margen bruto refleja la ingeniería del producto y no puede modificarse
+rápidamente; la composición de costos refleja decisiones de gestión sobre dónde invertir. La
+línea de EBITDA no es más que el residuo aritmético de aplicar estas tasas a una base de ARR en
+crecimiento. La disciplina de expresar el modelo de esta forma obliga al equipo a ser explícito
+sobre el momento en que el apalancamiento operativo se activa --- el punto en que el crecimiento
+del ARR supera al de la base de costos fijos y el EBITDA se vuelve positivo.
+
+Formalice la relación como:
+\begin{equation}\label{eq:op-model}
+  \mathrm{EBITDA}_{t}
+  \;=\;
+  \mathrm{ARR}_{t}\cdot g_{\mathrm{m}}
+  \;-\;
+  \mathrm{FixedCosts}_{t},
+\end{equation}
+donde $g_{\mathrm{m}}$ es la tasa de margen bruto y $\mathrm{FixedCosts}_{t}$ es la suma de
+Ventas y \emph{Marketing} (S\&M), Investigación y Desarrollo (R\&D) y Gastos Generales y
+Administrativos (G\&A). En una empresa SaaS el margen bruto es relativamente estable (el costo
+de atender a un cliente adicional a escala es cercano a cero), de modo que la expansión del
+EBITDA depende principalmente de la rapidez con que el crecimiento del ARR supere al de los
+costos fijos --- la definición canónica del apalancamiento operativo.
+\textcite{koller2025valuation} rastrean esta dinámica a través del puente EBITDA; \textcite{ross2022}
+ofrecen el tratamiento de finanzas corporativas del apalancamiento operativo y sus implicaciones
+para el riesgo del capital.
+
+\begin{example}[Progresión del modelo de tres palancas: margen EBITDA y Regla del 40]
+Partiendo de un ARR de \money{4000000} que crece al \qty{30}{\percent} anual, con margen bruto
+del \qty{70}{\percent}, la mezcla de gastos operativos evoluciona conforme la empresa escala:
+
+\medskip
+\noindent\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+ & Año~0 & Año~1 & Año~2 & Año~3 \\
+\midrule
+ARR                       & \money{3077000} & \money{4000000} & \money{5200000} & \money{6760000} \\
+Beneficio bruto (70\%)    & \money{2154000} & \money{2800000} & \money{3640000} & \money{4732000} \\
+S\&M (\% del ARR)         & 50\%       & 50\%       & 45\%       & 35\%       \\
+R\&D (\% del ARR)         & 25\%       & 25\%       & 25\%       & 20\%       \\
+G\&A (\% del ARR)         & 10\%       & 10\%       & 15\%\textsuperscript{*} & 8\%        \\
+Total opex                & 85\%       & 85\%       & 85\%       & 63\%       \\
+Margen EBITDA             & \(-15\%\)  & \(-15\%\)  & \;\;0\%    & \;\,+7\%   \\
+\bottomrule
+\end{tabular}%
+}
+
+\medskip
+\noindent\textsuperscript{*}G\&A sube temporalmente en el Año~2 mientras la empresa invierte
+en infraestructura legal y financiera antes de una ronda de financiamiento; se comprime al
+\qty{8}{\percent} en el Año~3 a medida que el ARR escala por encima de la función escalón de
+G\&A.
+
+\medskip
+La puntuación de la Regla del 40 (\cref{eq:rule40}) es la suma de la tasa de crecimiento del
+ARR y el margen EBITDA: el Año~1 obtiene \(30+(-15)=15\), el Año~2 obtiene \(30+0=30\) y el
+Año~3 obtiene \(30+7=37\) --- una progresión desde la baja rentabilidad profunda hasta acercarse
+al umbral de referencia. La implicación: el relato del apalancamiento operativo sólo es creíble
+si las curvas de G\&A y R\&D se aplanan genuinamente conforme el ARR escala. Cualquier modelo
+que mantenga los porcentajes de opex constantes mientras el ARR crece no está modelando
+apalancamiento operativo; está modelando un negocio de costo más margen.
+\end{example}
+
+\begin{admonition}{Advertencia}
+El apalancamiento operativo actúa en ambas direcciones. La misma base de costos fijos que
+produce expansión del EBITDA con un crecimiento del \qty{30}{\percent} genera pérdidas
+aceleradas si el crecimiento cae al \qty{15}{\percent}. Someta el modelo a una prueba de
+estrés al \qty{50}{\percent} del crecimiento planificado antes de presentarlo a un consejo
+directivo: con un crecimiento de ARR del \qty{15}{\percent}, el margen EBITDA del Año~3 en el
+ejemplo anterior permanece cerca del \(-5\%\) y la puntuación de la Regla del 40 no cruza el
+umbral. Un plan que requiere ejecución perfecta para evitar una crisis de liquidez es un plan
+sin margen para el error.
+\end{admonition}
+
+\Cref{eq:op-model} produce el EBITDA que alimenta el puente EBITDA (\cref{eq:nopat-bridge})
+y en última instancia el flujo de caja libre que \cref{eq:dcf} descuenta. La siguiente sección
+pregunta qué tan sensible es ese resultado a los supuestos que lo sustentan.
+
+
+\section{Presupuesto por Escenarios y Análisis de Sensibilidad}\label{sec:scenario-budget}
+% complexity: 4
+
+Un modelo operativo de un solo escenario es un pronóstico disfrazado. La versión honesta del
+mismo trabajo es una superficie de sensibilidad que mapea el resultado del modelo a lo largo de
+un rango de supuestos de entrada, para que la dirección sepa qué palanca importa más y en qué
+medida. Las dos palancas más peligrosas en un modelo de economía unitaria SaaS son CAC y
+\emph{churn}: el CAC governa el costo de llenar la cima de la pila de cohortes; el \emph{churn}
+governa la velocidad a la que se vacía. Ambos pueden moverse de forma independiente y su
+interacción no es lineal.
+
+La derivada parcial del EBITDA con respecto al CAC (manteniendo todo lo demás constante) es
+simplemente el número de nuevos clientes adquiridos por período. Con \num{200} nuevos clientes
+por mes:
+\begin{equation}\label{eq:sensitivity}
+  \begin{aligned}
+    \frac{\partial\,\mathrm{EBITDA}}{\partial\,\mathrm{CAC}} \;=\; -N
+    \quad&\Longrightarrow\quad \Delta\mathrm{CAC}=\money{100} \\
+    &\Rightarrow\; \Delta\mathrm{EBITDA} = -\money{100}\times 200 = -\money{20000}\text{ por mes},
+  \end{aligned}
+\end{equation}
+o \money{240000} por año. El signo negativo es fundamental: el CAC es una salida de efectivo
+que impacta el EBITDA antes de que se realice un solo dólar de valor de vida. El \emph{churn}
+opera a través de la línea de ARR mediante \cref{eq:cohort-revenue}: un aumento de la tasa de
+\emph{churn} de \qty{0.35}{\percent} mensual (de \qty{0.65}{\percent} a \qty{1.00}{\percent})
+reduce el recuento de clientes en estado estacionario en aproximadamente un \qty{35}{\percent},
+lo que, con un ARR de \money{4000000}, representa una reducción estructural de \money{1400000}
+en el techo de ingresos --- un orden de magnitud mayor que un año de exceso de gasto en CAC.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\textwidth]{op-model-bridge}
+  \caption{Cascada del modelo operativo: desde los insumos de economía unitaria (ARPU, margen
+    bruto, \emph{churn}, nuevos clientes por mes) hasta el ARR y el EBITDA, y de ahí al flujo
+    de caja libre. Las alturas de las barras muestran cómo cada palanca contribuye o sustrae;
+    la barra más a la derecha es el FCF del Año~1 de \money{600000}.}
+  \label{fig:op-model-bridge}
+\end{figure}
+
+\begin{example}[Análisis de sensibilidad bidireccional: NPV a 3 años en función de CAC y churn]
+La tabla siguiente mantiene ARR\textsubscript{0} en \money{4000000}, la adquisición anual de
+nuevos clientes en \num{2400}, R\&D\,+\,G\&A en \money{2000000}, el margen bruto en
+\qty{70}{\percent} y la tasa de descuento en \qty{11}{\percent}. Cada celda es el valor
+presente neto a tres años del NOPAT, con una tasa impositiva del \qty{30}{\percent} aplicada
+al EBITDA positivo.
+
+\medskip
+\noindent\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrr}
+\toprule
+\multicolumn{1}{c}{CAC}
+  & \multicolumn{1}{c}{Churn 0.50\%/mes}
+  & \multicolumn{1}{c}{Churn 0.75\%/mes}
+  & \multicolumn{1}{c}{Churn 1.00\%/mes} \\
+\midrule
+\money{400} & \money{2410000}  & \money{2120000}  & \money{1840000} \\
+\money{500} & \money{2000000}  & \money{1710000}  & \money{1430000} \\
+\money{600} & \money{1590000}  & \money{1300000}  & \money{1020000} \\
+\money{700} & \money{1170000}  & \money{860000}   & \money{560000}  \\
+\money{800} & \money{700000}   & \money{380000}   & \money{90000}   \\
+\bottomrule
+\end{tabular}%
+}
+
+\medskip
+El caso base (CAC \money{600}, \emph{churn} \qty{0.65}{\percent}) produce un NPV a tres años
+cercano a \money{1400000}, coherente con el VP del período explícito de \money{3377825} en el
+DCF completo a cinco años (\cref{eq:scenario-ev}). El caso bajista --- CAC \money{800} y
+\emph{churn} mensual del \qty{1.00}{\percent} --- reduce el NPV a apenas \money{90000}, un
+colapso del \qty{94}{\percent} frente al caso base, ilustrando que las dos palancas se
+componen: un CAC más alto eleva el lado de los costos justo en el momento en que un
+\emph{churn} más alto comprime la base de ingresos. Nótese que ninguna celda de la tabla es
+negativa; incluso el caso bajista genera FCF acumulado positivo en tres años. El riesgo en
+\money{800}/\qty{1.00}{\percent} no es, por tanto, la insolvencia en este horizonte temporal,
+sino un FCF insuficiente para justificar el múltiplo de valoración requerido para una ronda de
+financiamiento.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Un modelo sensible a una sola palanca está mal calibrado. Si variar el CAC en un \qty{30}{\percent}
+modifica el NPV en un \qty{50}{\percent} mientras que variar el \emph{churn} en la misma fracción
+lo cambia sólo en un \qty{5}{\percent}, uno de los dos insumos no está siendo modelado con
+suficiente granularidad. El análisis de sensibilidad no es sólo una herramienta de comunicación
+de riesgos; es un diagnóstico que revela si la estructura del modelo coincide con las palancas
+reales del negocio.
+\end{admonition}
+
+La superficie de sensibilidad alimenta la lógica de escenarios. Tres escenarios internamente
+coherentes --- bajista, base y alcista --- deben contener cada uno su propia trayectoria de
+EBITDA y su propio \emph{runway} implícito, porque la pregunta que el consejo directivo hace
+siempre después de ver la tabla de sensibilidad es la misma: ¿cuánto tiempo falta para que
+necesitemos recaudar capital?
+
+
+\section{El \emph{Runway} y la Decisión de Financiamiento}\label{sec:runway}
+% complexity: 2
+
+El \emph{runway} es el puente entre el modelo operativo y la decisión de financiamiento.
+Convierte la tasa neta de consumo de efectivo en un contador regresivo y establece la fecha
+disparadora para la recaudación de capital. La mecánica es sencilla; la disciplina consiste en
+ejecutar dos versiones de forma simultánea --- un \emph{runway} de crecimiento que asume que la
+adquisición planificada de nuevos clientes continúa, y un \emph{runway} conservador que asume
+crecimiento cero a partir de la base actual.
+
+Sea $B$ el saldo de efectivo actual, $E$ el gasto operativo mensual (tasa de quema bruta o
+\emph{burn} bruto) y $R_{\mathrm{m}}$ el efectivo cobrado mensualmente de los clientes (MRR
+cobrado, no diferido):
+\begin{equation}\label{eq:runway}
+  \text{Runway (meses)}
+  \;=\;
+  \frac{B}{\,E - R_{\mathrm{m}}\,}
+  \;=\;
+  \frac{B}{\text{tasa de quema neta mensual}}.
+\end{equation}
+El denominador es el \emph{burn} neto: lo que pierde la cuenta bancaria cada mes después de
+contabilizar las entradas de efectivo. La distinción entre \emph{burn} bruto y neto importa
+porque una empresa de alto crecimiento con MRR sustancial tiene un reloj de supervivencia muy
+diferente al que podría sugerir su estado de resultados. El \emph{burn} bruto es el piso
+mínimo de costos; el \emph{burn} neto es la métrica existencial.
+\textcite{brealey2020} desarrollan la mecánica del estado de flujos de efectivo que subyace a la
+relación entre ingreso neto, cargos no monetarios y movimiento real de caja --- la misma
+mecánica que explica por qué el MRR cobrado puede diferir del ingreso reconocido en el mes en
+que se registra.
+
+\begin{example}[Runway y disparador de recaudación de capital]
+La empresa mantiene \money{2500000} en efectivo. El gasto operativo mensual (salarios,
+infraestructura en la nube, salidas de S\&M) es de \money{650000}; el MRR actualmente cobrado
+es de \money{340000}, coherente con la base de ARR de \money{4000000} y el hecho de que los
+suscriptores anuales pagan mensualmente. Aplicando \cref{eq:runway}:
+\[
+  \text{Burn neto}
+  \;=\; \money{650000} - \money{340000}
+  \;=\; \money{310000}\text{ por mes},
+\]
+\[
+  \text{Runway}
+  \;=\; \frac{\money{2500000}}{\money{310000}}
+  \;\approx\; \text{8 meses}.
+\]
+El \emph{disparador de recaudación} es la fecha que deja suficiente \emph{runway} para cerrar
+una ronda. Un proceso competitivo de Serie A tarda de cuatro a seis meses desde el primer
+contacto hasta la transferencia de fondos; agregar dos meses de margen establece el disparador
+en seis meses de \emph{runway} restante. Ocho meses de \emph{runway} menos seis meses de plazo
+necesario significa que la empresa debe comenzar la recaudación \emph{de inmediato} --- no en
+la marca de los seis meses.
+
+La implicación para el modelo operativo: el cálculo del \emph{runway} debe re-ejecutarse
+mensualmente contra el efectivo real y el \emph{burn} neto real. Una tasa de \emph{burn} que
+supera el plan en \money{50000} al mes durante tres meses ha consumido una ronda completa de
+margen sin que aparezca ninguna línea en el estado de resultados. El capítulo sobre
+financiamiento y dilución (\cref{ch:fundraising-and-dilution}) toma esta fecha disparadora y
+trabaja la mecánica de valoración y las implicaciones del term sheet cuando se recauda capital
+desde esta posición.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Ejecute siempre tanto el \emph{runway} de crecimiento como el conservador, y use el conservador
+para establecer la fecha disparadora. El \emph{runway} de crecimiento es el escenario alcista;
+el \emph{runway} conservador --- que mantiene el MRR plano al nivel actual e ignora las ventas
+nuevas --- es el reloj de supervivencia. Una empresa que basa el calendario de su recaudación
+en el \emph{runway} de crecimiento está apostando su supervivencia a que el plan se ejecute
+exactamente como fue modelado. El proceso de recaudación no esperará una recuperación.
+\end{admonition}
+
+El modelo operativo está ahora completo como instrumento de planificación: \cref{eq:cohort-revenue}
+construye el ARR a partir de insumos de economía unitaria observables; \cref{eq:op-model}
+convierte el ARR y la estructura de costos en EBITDA; \cref{eq:sensitivity} cuantifica el
+impacto de los cambios en palancas individuales; y \cref{eq:runway} convierte el perfil de
+efectivo resultante en una línea temporal de supervivencia. El resultado de FCF de esta cadena
+--- \money{600000} en el Año~1, creciendo a las tasas de \cref{eq:op-model} --- es el insumo
+que el DCF en \cref{eq:dcf} descuenta hacia un valor empresarial.
+\textcite{koller2025valuation} cierran el ciclo entre los resultados del modelo operativo y el
+valor empresarial del DCF en los capítulos sobre pronósticos y palancas de valor.

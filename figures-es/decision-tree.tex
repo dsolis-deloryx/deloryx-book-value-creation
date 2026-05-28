@@ -1,0 +1,66 @@
+% figures-es/decision-tree.tex
+% Standalone TikZ: árbol de decisión de dos ramas comparando pujas CPA objetivo (ch.02).
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+
+\definecolor{vcblue}{HTML}{1A5276}
+\definecolor{vcteal}{HTML}{0E6655}
+\definecolor{vcgray}{HTML}{555555}
+
+\begin{document}
+\begin{tikzpicture}[
+  node distance=10mm,
+  decision/.style={draw=vcblue, line width=0.9pt, fill=vcblue!8,
+                   font=\sffamily\small, align=center,
+                   minimum width=28mm, minimum height=10mm, text=black!85},
+  chance/.style={draw=vcteal, line width=0.9pt, fill=vcteal!8,
+                 font=\sffamily\small, align=center,
+                 minimum width=28mm, minimum height=10mm, text=black!85},
+  outcome/.style={draw=vcgray, line width=0.6pt, fill=vcgray!6,
+                  font=\sffamily\scriptsize, align=left,
+                  minimum width=34mm, minimum height=8mm, text=black!85},
+  edge/.style={-{Stealth[length=4pt]}, vcblue, line width=0.9pt},
+  label/.style={font=\sffamily\scriptsize, text=black!60},
+]
+
+  %% Nodo raíz de decisión
+  \node[decision] (root) {Elección de puja\\(\$CPA objetivo)};
+
+  %% Rama 1: CPA = $600
+  \node[chance, above right=18mm and 36mm of root] (c600) {CPA = \$600};
+  %% Rama 2: CPA = $900
+  \node[chance, below right=18mm and 36mm of root] (c900) {CPA = \$900};
+
+  %% Resultados para CPA $600
+  \node[outcome, above right=10mm and 32mm of c600] (o600h)
+    {Cliente con LTV completo\\EV = \$3150 $-$ \$600 = \$2550};
+  \node[outcome, below right=10mm and 32mm of c600] (o600l)
+    {Abandono por baja interacción\\EV = \$900 $-$ \$600 = \$300};
+
+  %% Resultados para CPA $900
+  \node[outcome, above right=10mm and 32mm of c900] (o900h)
+    {Cliente con LTV completo\\EV = \$3150 $-$ \$900 = \$2250};
+  \node[outcome, below right=10mm and 32mm of c900] (o900l)
+    {Abandono por baja interacción\\EV = \$900 $-$ \$900 = \$0};
+
+  %% Flechas raíz -> nodos de azar
+  \draw[edge] (root.east) -- node[label, above, sloped] {Opción A} (c600.west);
+  \draw[edge] (root.east) -- node[label, below, sloped] {Opción B} (c900.west);
+
+  %% Flechas azar -> resultados (CPA $600)
+  \draw[edge] (c600.east) -- node[label, above, sloped] {p = 0.70} (o600h.west);
+  \draw[edge] (c600.east) -- node[label, below, sloped] {p = 0.30} (o600l.west);
+
+  %% Flechas azar -> resultados (CPA $900)
+  \draw[edge] (c900.east) -- node[label, above, sloped] {p = 0.85} (o900h.west);
+  \draw[edge] (c900.east) -- node[label, below, sloped] {p = 0.15} (o900l.west);
+
+  %% Etiquetas de retroceso EV en nodos de azar
+  \node[font=\sffamily\scriptsize\bfseries, text=vcblue, below=1.5mm of c600]
+    {EV = \$1,875};
+  \node[font=\sffamily\scriptsize\bfseries, text=vcteal, below=1.5mm of c900]
+    {EV = \$1,912.50};
+
+\end{tikzpicture}
+\end{document}

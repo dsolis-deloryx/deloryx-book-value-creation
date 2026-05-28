@@ -1,0 +1,340 @@
+\chapter{Experimentos e inferencia estadística}\label{ch:experiments-and-inference}
+
+% Alcance: contraste de hipótesis nula, potencia estadística y tamaño de muestra, regresión OLS,
+%   diseño de pruebas A/B para decisiones de negocio. Capítulo nuevo (cierra la brecha de diseño experimental).
+% El libro emplea pruebas A/B y RCT de incrementalidad (\cref{ch:attribution-and-measurement})
+%   sin enseñar la maquinaria subyacente; este capítulo la provee, ampliando \cref{ch:decisions-under-uncertainty}.
+% Redacción según el estilo de la obra: prosa continua + recuadros example/admonition; ejemplos con la SaaS de referencia.
+
+\section{El marco de la hipótesis nula}\label{sec:null-hypothesis}
+% complexity: 2
+
+Toda decisión de producto es una apuesta. El marco de la hipótesis nula obliga al tomador de
+decisiones a cuantificar cuán improbables serían los datos observados si la intervención no
+tuviera \emph{ningún} efecto, y luego decidir si esa improbabilidad es suficientemente baja
+para actuar. La intuición gerencial es simple: recolectar evidencia, preguntar con qué
+frecuencia datos tan extremos aparecerían por azar bajo el statu quo, y rechazar el statu
+quo solo cuando esa probabilidad cae por debajo de un umbral acordado con antelación. La
+disciplina radica en el compromiso previo: elegir el umbral antes de ver los resultados, no
+después.
+
+Bajo la hipótesis nula \(H_0: \mu_1 = \mu_2\) de que dos grupos tienen la misma media, el
+estadístico de prueba para muestras grandes es la distancia estandarizada entre las medias
+grupales observadas, escalada por el error estándar de su diferencia:
+\begin{equation}\label{eq:z-test}
+  z \;=\; \frac{\bar{x}_1 - \bar{x}_2}%
+               {\sqrt{\dfrac{\sigma_1^2}{n_1}+\dfrac{\sigma_2^2}{n_2}}}.
+\end{equation}
+Se rechaza \(H_0\) cuando \(|z| > z_{\alpha/2}\), el valor crítico para una prueba bilateral
+al nivel de significancia \(\alpha\). Para el convencional \(\alpha=0.05\), \(z_{\alpha/2}=1.96\).
+Para resultados de proporción---tasas de conversión, tasas de conversión de prueba a pago---\(\sigma_i^2 = p_i(1-p_i)\).
+La fórmula se apoya en el Teorema del Límite Central, que requiere muestras suficientemente
+grandes para que la distribución muestral de la media sea aproximadamente normal; en la
+práctica, \(n \geq 30\) por grupo es un piso habitual, aunque para proporciones pequeñas se
+necesitan muestras mucho mayores antes de que la aproximación sea confiable.
+
+\begin{example}[Prueba A/B del \emph{onboarding} SaaS]
+El equipo de producto prueba un flujo de \emph{onboarding} rediseñado. Control: \num{200}
+pruebas, \num{50} convierten a pago (\(\hat{p}_c = \qty{25}{\percent}\)). Tratamiento:
+\num{200} pruebas, \num{62} convierten (\(\hat{p}_t = \qty{31}{\percent}\)). La decisión:
+¿el aumento de \qty{6}{\percent} es real o es ruido?
+
+Se fija \(\alpha=0.05\), por lo que el valor crítico es \(z_{0.025}=1.96\). Se estima la
+proporción agrupada bajo \(H_0\) como \(\hat{p} = (50+62)/(200+200) = 0.28\), lo que da
+\(\hat{\sigma}^2 = 0.28 \times 0.72 = 0.2016\). El error estándar es
+\[
+  \mathrm{SE} \;=\; \sqrt{\frac{0.2016}{200}+\frac{0.2016}{200}}
+               \;=\; \sqrt{0.002016}
+               \;\approx\; 0.0449.
+\]
+Aplicando \cref{eq:z-test},
+\[
+  z \;=\; \frac{0.31 - 0.25}{0.0449} \;\approx\; 1.34.
+\]
+Como \(|z|=1.34 < 1.96\), el resultado \emph{no} es estadísticamente significativo con
+\(n=200\) por brazo. El aumento de \qty{6}{\percent} bien podría deberse al azar. La
+implicación no es que el tratamiento falle; es que el experimento es demasiado pequeño para
+distinguir un efecto real de esta magnitud del ruido muestral. Recolectar más datos es el
+único remedio---cuántos más es el tema de \cref{sec:power-and-sample-size}.
+\end{example}
+
+\begin{admonition}{Advertencia}
+El valor p es la probabilidad de observar un estadístico de prueba al menos tan extremo
+\emph{si la hipótesis nula fuera verdadera}. No es, en absoluto, la probabilidad de que la
+hipótesis nula sea verdadera, ni de que la alternativa sea falsa. Un valor p de \num{0.03}
+no significa que haya un \qty{97}{\percent} de probabilidad de que el tratamiento funcione;
+significa que los datos son moderadamente incompatibles con «ningún efecto». Igualmente, la
+significancia estadística no dice nada sobre el tamaño del efecto: un aumento trivial de
+\qty{0.1}{\percent} alcanzará \(p<0.05\) con una muestra suficientemente grande. Las
+decisiones de negocio requieren tanto un resultado significativo \emph{como} un efecto lo
+bastante grande para importar económicamente.
+\end{admonition}
+
+El estadístico de prueba en \cref{eq:z-test} proporciona la maquinaria; \cref{sec:power-and-sample-size}
+establece cuántas observaciones se necesitan antes de que esa maquinaria sea lo bastante
+potente para merecer ejecutarse. \textcite{anderson2019statistics} desarrollan la teoría
+completa de la distribución muestral; \textcite{wooldridge2020introductory} la extiende a
+los escenarios de regresión donde múltiples covariables entran simultáneamente.
+
+
+\section{Potencia estadística y tamaño de muestra}\label{sec:power-and-sample-size}
+% complexity: 4
+
+Un experimento incapaz de detectar el efecto para el que fue diseñado no es un resultado
+neutro; es un desperdicio. La potencia estadística---la probabilidad de rechazar correctamente
+una hipótesis nula falsa---cuantifica el riesgo de ese fracaso. Una potencia baja significa
+que el experimento devolverá con más frecuencia un resultado no concluyente incluso cuando
+el tratamiento funciona genuinamente, generando una cadena de hallazgos de «diferencia no
+significativa» que se interpretan erróneamente como evidencia de que el producto está bien.
+El costo de negocio es simétrico: los experimentos con baja potencia desperdician tiempo en
+mejoras reales y dan falsa tranquilidad cuando un cambio está causando daño.
+
+La potencia depende de tres insumos que el experimentador controla: el tamaño de muestra
+\(n\), el nivel de significancia \(\alpha\) y el efecto mínimo detectable \(\delta\). Para
+una prueba de dos brazos con grupos de igual tamaño y varianza común \(\sigma^2\), el
+tamaño de muestra requerido por brazo es:
+\begin{equation}\label{eq:sample-size}
+  n \;=\; \frac{2\,(z_{\alpha/2}+z_{\beta})^{2}\,\sigma^{2}}{\delta^{2}}.
+\end{equation}
+Aquí \(z_{\beta} = \Phi^{-1}(1-\beta)\) es el valor crítico para la potencia deseada
+\(1-\beta\); con \qty{80}{\percent} de potencia, \(z_{\beta}=0.84\). La relación de cuadrado
+inverso entre \(\delta\) y \(n\) es el hecho central del diseño experimental: reducir a la
+mitad el tamaño del efecto de interés \emph{cuadruplica} el tamaño de muestra requerido. La
+intuición es que las señales más pequeñas son más difíciles de distinguir del ruido, por lo
+que se necesitan más observaciones para ahogar ese ruido. \Cref{fig:power-curve} grafica la
+potencia en función del tamaño del efecto para tres tamaños de muestra, haciendo concreta
+la disyuntiva.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{power-curve}
+  \caption{Potencia estadística frente al tamaño del efecto absoluto (incremento en la tasa
+    de conversión sobre una base de \qty{25}{\percent}) con \(\alpha=0.05\), prueba bilateral,
+    para \num{100}, \num{200} y \num{550} observaciones por brazo. La línea punteada marca
+    el objetivo de \qty{80}{\percent} de potencia; el diamante marca el punto de diseño
+    requerido. Detectar el incremento de \qty{6}{pp} de \cref{sec:null-hypothesis} con
+    \qty{80}{\percent} de potencia requiere aproximadamente \num{879} observaciones por brazo.}
+  \label{fig:power-curve}
+\end{figure}
+
+\begin{example}[Cálculo del tamaño de muestra para la prueba A/B de \emph{onboarding}]
+¿Cuántas pruebas se necesitan para detectar el incremento de \qty{25}{\percent} \(\to\)
+\qty{31}{\percent} en \emph{onboarding} con \qty{80}{\percent} de potencia y \(\alpha=0.05\)?
+El efecto mínimo detectable es \(\delta=0.06\). Se usa la proporción agrupada
+\(\hat{p}=0.28\) para estimar \(\sigma^2 = 0.28\times 0.72 = 0.2016\) y se sustituye en
+\cref{eq:sample-size}:
+\[
+  n \;=\; \frac{2\,(1.96+0.84)^{2}\times 0.2016}{0.06^{2}}
+      \;=\; \frac{2\times 7.84 \times 0.2016}{0.0036}
+      \;\approx\; \num{879} \text{ por brazo}.
+\]
+El \emph{funnel} entrega \num{800} pruebas por mes, de modo que con \num{400} por brazo el
+experimento alcanza \num{879} en aproximadamente \num{2.2} meses---un horizonte manejable.
+¿Vale la pena la espera? El valor de confirmar el incremento: \qty{6}{pp} más en conversiones
+de pago \(\times\) \num{200} nuevos clientes/mes \(\times \money{3150}\) CLV por cliente
+\(= \money{37800}\) de contribución mensual incremental---un flujo recurrente que vale
+\(\money{37800}/0.08 \approx \money{472500}\) a perpetuidad al WACC del \qty{11}{\percent}
+de la empresa menos \qty{3}{\percent} de crecimiento (\cref{eq:gordon}). Frente a un retraso
+de dos meses, esa razón favorece abrumadoramente realizar una prueba disciplinada antes que
+adivinar y potencialmente lanzar un cambio que no hace nada o causa daño.
+\end{example}
+
+\begin{admonition}{Advertencia}
+La detención opcional---revisar los resultados a diario y detener el experimento en el momento
+en que \(p<0.05\)---infla el error de Tipo I real muy por encima del \qty{5}{\percent} nominal.
+Si se revisan los resultados diez veces durante un experimento, la probabilidad de un resultado
+significativo espurio puede superar el \qty{30}{\percent}. La solución es directa: pre-registrar
+la regla de detención y el \(n\) requerido antes del lanzamiento, y leer los resultados exactamente
+una vez. Las plataformas que ofrecen pruebas secuenciales «siempre válidas» (\textcite{johari2022always})
+permiten monitoreo continuo sin inflar el error, pero requieren un estadístico de prueba
+subyacente diferente (una prueba de razón de probabilidad secuencial mixta, mSPRT) y típicamente
+necesitan muestras más grandes que la fórmula de horizonte fijo anterior para alcanzar la misma
+potencia.
+\end{admonition}
+
+El cálculo del tamaño de muestra en \cref{eq:sample-size} es el compromiso previo que hace
+honesto a \cref{eq:z-test}. Sin él, un equipo siempre puede encontrar significancia ejecutando
+el experimento por más tiempo---una práctica que destruye la validez estadística de todo lo
+que toca.
+
+
+\section{Regresión: control de covariables}\label{sec:regression}
+% complexity: 3
+
+Los experimentos aleatorizados establecen causalidad por construcción: la asignación aleatoria
+equilibra todos los confusores observados y no observados entre tratamiento y control, por lo
+que cualquier diferencia en los resultados debe reflejar el tratamiento. Pero muchas preguntas
+de negocio no pueden aleatorizarse: el \emph{churn} depende de la antigüedad, la profundidad
+del producto, el \emph{tier} del plan y el canal de ventas, y los clientes no fueron asignados
+aleatoriamente a esos estados. La regresión de mínimos cuadrados ordinarios (OLS) responde a
+la pregunta «¿cuánto importa cada factor, manteniendo fijos todos los demás?» Es la herramienta
+central del análisis de negocio observacional precisamente porque es el instrumento más sencillo
+para mantener algunas cosas constantes mientras se examinan otras.
+
+El modelo de regresión lineal múltiple postula que el resultado \(y_i\) es una función lineal
+de \(k\) variables explicativas más un término de error que captura todo lo que el modelo
+omite:
+\begin{equation}\label{eq:ols}
+  y_i \;=\; \beta_0 + \beta_1 x_{1i} + \cdots + \beta_k x_{ki} + \varepsilon_i,
+  \qquad
+  \hat{\boldsymbol{\beta}} \;=\; (\mathbf{X}^{\!\top}\mathbf{X})^{-1}\mathbf{X}^{\!\top}\mathbf{y}.
+\end{equation}
+La solución matricial \(\hat{\boldsymbol{\beta}}\) minimiza la suma de cuadrados de los
+residuos. Por el teorema de Gauss--Markov, OLS es el Mejor Estimador Lineal Insesgado (BLUE,
+por sus siglas en inglés) cuando los errores tienen media cero, varianza constante
+(homocedasticidad) y no están correlacionados con los regresores. Cada coeficiente
+\(\hat{\beta}_j\) mide el cambio marginal en \(y\) ante un cambio unitario en \(x_j\),
+\emph{ceteris paribus}. Esa condición de «todo lo demás igual» es la fuente tanto del poder
+del método como de su peligro: mantiene constante solo lo que está en el modelo, y los
+confusores no observados absorbidos en \(\varepsilon\) sesgará las estimaciones si se
+correlacionan con los regresores.
+
+\begin{example}[Cuantificación del \emph{moat} de costo de cambio por integraciones]
+El equipo de éxito del cliente quiere saber cuánto protege contra el \emph{churn} la
+profundidad del producto. Regresa la tasa mensual de \emph{churn} sobre tres variables a
+nivel de cliente: antigüedad en meses, número de integraciones activas y \emph{tier} del
+plan (1~=~inicial, 2~=~profesional, 3~=~empresarial). El modelo estimado sobre la cohorte
+de \num{1200} clientes de la empresa devuelve:
+\begin{align*}
+  \widehat{\text{churn}}_i \;=\;{}
+    & 0.032
+      - 0.00012\,\text{tenure}_i
+      - 0.0080\,\text{integrations}_i
+      - 0.0031\,\text{tier}_i.
+\end{align*}
+El coeficiente sobre integraciones es \(\hat{\beta}_{\text{int}} = -0.008\): cada integración
+activa adicional reduce el \emph{churn} mensual en \qty{0.8}{pp}, manteniendo antigüedad y
+\emph{tier} fijos. Con el \emph{churn} mensual base de la empresa en \qty{0.65}{\percent},
+un cliente con cinco integraciones en lugar de una tiene un \emph{churn} previsto de
+\(0.65\% - 4\times0.8\% = 0.65\% - 3.2\% \approx \) prácticamente cero---un perfil de
+retención casi perfecto. Este coeficiente cuantifica el \emph{moat} de costo de cambio
+descrito en \cref{sec:moat-taxonomy}: cada integración que el cliente construye es un hilo
+que lo vincula a la plataforma. La implicación para la inversión en producto: una
+funcionalidad que lleve a los clientes a añadir una integración más vale, en CLV anual
+esperado, la reducción en \emph{churn} multiplicada por el CLV por cliente de \money{3150}.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Los coeficientes de regresión son correlacionales, no causales, a menos que el mecanismo de
+asignación esté aleatorizado o se use un instrumento válido. La correlación negativa entre
+integraciones y \emph{churn} podría reflejar en parte \emph{selección}: los clientes que
+construyen integraciones profundas pueden haber elegido el producto porque planeaban quedarse,
+no solo porque las integraciones elevan el costo de cambio. La única manera de aislar la
+contribución causal de las integraciones es un experimento aleatorizado---incentivar a un
+subconjunto aleatorio de usuarios a añadir integraciones adicionales y comparar el
+\emph{churn} posterior (\cref{sec:ab-test-design}). La regresión observacional controla los
+confusores medidos; la aleatorización controla todo.
+\end{admonition}
+
+\textcite{wooldridge2020introductory} demuestra el resultado de Gauss--Markov y detalla los
+diagnósticos necesarios para evaluar si sus supuestos se cumplen; \textcite{angrist2009mostly}
+conecta OLS con la inferencia causal y explica cuándo se necesitan variables instrumentales
+o diseños de diferencias en diferencias. El coeficiente de costo de cambio anterior es un
+ejemplo de una clase más amplia de mecanismos de creación de valor catalogados en
+\cref{sec:moat-taxonomy}; el mismo \emph{framework} de regresión aplicado a datos a nivel
+geográfico subyace a la medición de incrementalidad en \cref{sec:incrementality}.
+
+
+\section{Diseño de pruebas A/B para decisiones de negocio}\label{sec:ab-test-design}
+% complexity: 3
+
+Conocer la mecánica de \cref{eq:z-test} y \cref{eq:sample-size} es necesario pero no
+suficiente. Una prueba bien diseñada requiere cuatro decisiones previas que nada tienen que
+ver con la fórmula: qué métrica primaria optimizar, qué métricas de protección no pueden
+degradarse, a qué nivel aleatorizar los usuarios y por cuánto tiempo ejecutar el experimento.
+Omitir cualquiera de ellas convierte un cálculo estadísticamente válido en un experimento
+comercialmente poco confiable. La disciplina del practicante es anotar las cuatro antes de
+que se recolecte cualquier dato.
+
+La \textbf{métrica primaria} (criterio de evaluación global, OEC) debe ser la métrica más
+directamente vinculada al valor a largo plazo. Para una prueba de \emph{onboarding} SaaS,
+la conversión de prueba a pago es la métrica primaria correcta: determina directamente los
+\num{200} nuevos clientes por mes de la hoja de datos y, a través del CLV, el incremento de
+\money{37800}/mes calculado en \cref{sec:power-and-sample-size}. El ingreso por prueba es
+tentador pero demasiado ruidoso; la sesión a prueba es anterior y puede moverse sin beneficio
+corriente abajo. Las \textbf{métricas de protección} salvaguardan la salud básica del negocio:
+si el tratamiento mejora la conversión de prueba a pago pero ralentiza la carga de página en
+dos segundos, la ganancia a corto plazo quedará borrada por el menor compromiso a largo plazo.
+Preespecificar las métricas de protección evita que el equipo lance un tratamiento que gana
+en la métrica primaria mientras daña silenciosamente el \emph{funnel}.
+
+La \textbf{unidad de aleatorización} determina qué violaciones de las métricas de protección
+son detectables y rige si se cumple el Supuesto del Valor de Tratamiento de Unidad Estable
+(SUTVA). Aleatorizar a nivel de sesión es sencillo, pero puede contaminar los resultados si
+el mismo usuario cae en ambos brazos a lo largo de sesiones. Para una prueba de
+\emph{onboarding}, la asignación a nivel de usuario o dispositivo es la elección correcta:
+el tratamiento es la experiencia completa de \emph{onboarding}, no una sola visita de página,
+y el evento de conversión ocurre a lo largo de múltiples sesiones. La aleatorización a nivel
+de sesión mezclaría experiencias de control y tratamiento para el mismo usuario en prueba,
+sesgando la tasa de conversión observada en ambos brazos. Cuando los efectos de red
+significan que el resultado de un usuario depende del estado de tratamiento de otro---habitual
+en productos sociales y mercados de dos lados---la aleatorización a nivel geográfico (como en
+el \emph{framework} de incrementalidad de \cref{sec:incrementality} y el estimador iROAS en
+\cref{eq:iroas}) es el único diseño que evita las violaciones del SUTVA.
+
+\begin{example}[Diseño de la prueba de la página de precios]
+El equipo de \emph{growth} quiere probar un rediseño de la página de precios que hace más
+prominente el plan profesional. El \emph{framework} de decisión es:
+
+\begin{description}
+  \item[Métrica primaria] Tasa de conversión de prueba a pago. Base actual \qty{25}{\percent};
+    efecto mínimo detectable \qty{4}{pp} (un incremento de \qty{25}{\percent} a
+    \qty{29}{\percent}), anclado al margen esperado de \num{8} conversiones de pago
+    incrementales por mes (\(0.04\times 200\)) multiplicadas por \money{3150} CLV
+    \(= \money{25200}\)/mes.
+  \item[Métricas de protección] (a) Tasa de sesión a prueba: no debe caer más de \qty{2}{pp}
+    (una caída relativa del \qty{10}{\percent} eliminaría la ganancia en el \emph{funnel});
+    (b) Volumen de tickets de soporte: no más del \qty{15}{\percent} de aumento (una página
+    de precios muy interrogada infla el costo de atención).
+  \item[Unidad de aleatorización] Usuario (\emph{cookie} + inicio de sesión), asignado en
+    la primera sesión. Un usuario en el brazo de tratamiento ve la página de precios
+    rediseñada en cada visita; un usuario de control siempre ve la original.
+  \item[Tamaño de muestra y duración] Usando \cref{eq:sample-size} con \(\delta=0.04\),
+    \(\sigma^2=0.25\times 0.75=0.1875\), \(\alpha=0.05\), \(1-\beta=0.80\):
+    \[
+      n \;=\; \frac{2\,(1.96+0.84)^{2}\times 0.1875}{0.04^{2}} \approx \num{1838}
+        \text{ por brazo.}
+    \]
+    Con \num{800} pruebas por mes divididas equitativamente entre dos brazos (del \emph{funnel}
+    en la hoja de datos), la prueba requiere aproximadamente \num{4.6} meses de datos---una
+    espera significativa. El equipo debe o bien aceptar un efecto mínimo detectable mayor
+    (digamos, \qty{6}{pp} \(\to\) \num{879} por brazo \(\approx\) 2.2 meses) o invertir en
+    reducir la varianza de conversión mediante ajuste de covariables previo al experimento al
+    estilo CUPED. Pre-registrar la regla de detención a tres semanas con \num{879}-por-brazo
+    y leer los resultados exactamente una vez elimina el sesgo de detención opcional.
+\end{description}
+
+La implicación: la restricción vinculante en la velocidad de experimentación no es la teoría
+estadística sino el tamaño del \emph{funnel}. Una empresa que adquiere solo \num{200} clientes
+de pago por mes necesita meses para ejecutar pruebas con potencia razonable sobre conversiones
+corriente abajo. Invertir en la parte superior del \emph{funnel} de adquisición
+(\cref{ch:decisions-under-uncertainty}) amplía la superficie experimental tanto como amplía
+los ingresos.
+\end{example}
+
+\begin{admonition}{Nota}
+Pre-registrar el diseño---métrica primaria, métricas de protección, unidad de aleatorización,
+tamaño de muestra y regla de detención---antes del lanzamiento no es burocracia; es el
+mecanismo que mantiene honesto el valor p del análisis. Sin pre-registro, un equipo siempre
+puede encontrar una métrica que se movió, una ventana temporal que muestra significancia o
+un subgrupo que confirma su hipótesis previa. \textcite{kohavi2020trustworthy} documentan
+los modos de fallo más comunes de los programas de prueba A/B a gran escala en Microsoft y
+otras empresas; \textcite{gordon2019comparison} muestran que los métodos observacionales
+pueden perder efectos causales reales por márgenes grandes e inconsistentes, lo que es
+precisamente la razón por la que una prueba correctamente diseñada---incluso una lenta---vale
+la pena ejecutar cuando los ingresos en juego justifican el cálculo del iROAS en \cref{eq:iroas}.
+\end{admonition}
+
+El \emph{framework} de diseño de pruebas aquí presentado es el complemento operativo de la
+caja de herramientas de incrementalidad en \cref{sec:incrementality}: ambos responden la
+misma pregunta causal---¿produce esta intervención más ingresos que el contrafactual?---pero
+a distintas granularidades. Los experimentos de producto aleatorizan usuarios dentro de una
+superficie de producto y miden la conversión; los experimentos de \emph{holdout} geográfico
+aleatorizan mercados geográficos y miden el iROAS de pleno \emph{funnel} del gasto en
+medios. \textcite{johnson2017ghost} demuestran la magnitud de la sobreestimación del anunciante
+cuando la aleatorización a nivel geográfico se omite en favor de la atribución reportada por
+la propia plataforma. El hilo conductor entre los tres capítulos---este capítulo,
+\cref{ch:attribution-and-measurement} y \cref{ch:decisions-under-uncertainty}---es el marco
+de resultados potenciales: un efecto causal solo existe como comparación frente a un
+contrafactual que nunca se observó, y la única manera confiable de construir ese contrafactual
+es la aleatorización.

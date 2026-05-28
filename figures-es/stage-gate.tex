@@ -1,0 +1,71 @@
+% figures-es/stage-gate.tex
+% Standalone TikZ: proceso Stage-Gate de desarrollo de nuevos productos — cinco etapas con rombos de decisión Seguir/Cancelar/Esperar.
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+
+\definecolor{vcblue}{HTML}{1A5276}
+\definecolor{vcteal}{HTML}{0E6655}
+\definecolor{vcgrey}{HTML}{5D6D7E}
+\definecolor{vcred}{HTML}{7B241C}
+
+\begin{document}
+\begin{tikzpicture}[
+  node distance=6mm and 5mm,
+  stage/.style={
+    draw=vcblue, line width=0.9pt, rounded corners=2pt, fill=vcblue!7,
+    font=\sffamily\small, align=center,
+    minimum width=20mm, minimum height=14mm, text=black!85},
+  gate/.style={
+    diamond, draw=vcteal, line width=0.9pt, fill=vcteal!8,
+    font=\sffamily\tiny, align=center,
+    minimum width=14mm, minimum height=14mm,
+    inner sep=1pt, text=black!85,
+    aspect=1},
+  arrow/.style={-{Stealth[length=4pt]}, vcblue, line width=0.9pt},
+  kill/.style={-{Stealth[length=3pt]}, vcred, line width=0.7pt, dashed},
+  ann/.style={font=\sffamily\scriptsize, text=vcgrey, align=center},
+]
+
+  %% ---- Etapas ----
+  \node[stage] (disc)  {Descubrimiento\\{\scriptsize\textit{Ideación}}};
+  \node[stage, right=9mm of disc]  (scope) {Alcance\\{\scriptsize\textit{Evaluación}}};
+  \node[stage, right=9mm of scope] (bcase) {Caso de\\{\scriptsize\textit{negocio}}};
+  \node[stage, right=9mm of bcase] (dev)   {Desarrollo\\{\scriptsize\textit{Construcción}}};
+  \node[stage, right=9mm of dev]   (test)  {Pruebas y\\{\scriptsize\textit{Validación}}};
+  \node[stage, right=9mm of test]  (laun)  {Lanzamiento\\{\scriptsize\textit{Escala}}};
+
+  %% ---- Compuertas (posicionadas a la mitad entre etapas) ----
+  \node[gate] (g1) at ($(disc.east)!0.5!(scope.west)$) {C.\\1};
+  \node[gate] (g2) at ($(scope.east)!0.5!(bcase.west)$) {C.\\2};
+  \node[gate] (g3) at ($(bcase.east)!0.5!(dev.west)$)   {C.\\3};
+  \node[gate] (g4) at ($(dev.east)!0.5!(test.west)$)    {C.\\4};
+  \node[gate] (g5) at ($(test.east)!0.5!(laun.west)$)   {C.\\5};
+
+  %% ---- Flujo hacia adelante ----
+  \draw[arrow] (disc.east)  -- (g1.west);
+  \draw[arrow] (g1.east)    -- (scope.west);
+  \draw[arrow] (scope.east) -- (g2.west);
+  \draw[arrow] (g2.east)    -- (bcase.west);
+  \draw[arrow] (bcase.east) -- (g3.west);
+  \draw[arrow] (g3.east)    -- (dev.west);
+  \draw[arrow] (dev.east)   -- (g4.west);
+  \draw[arrow] (g4.east)    -- (test.west);
+  \draw[arrow] (test.east)  -- (g5.west);
+  \draw[arrow] (g5.east)    -- (laun.west);
+
+  %% ---- Salidas de Cancelar / Esperar (hacia abajo desde cada compuerta) ----
+  \foreach \g/\lbl in {g1/{Cancelar/Esperar},g2/{Cancelar/Esperar},g3/{Cancelar/Esperar},g4/{Cancelar/Esperar},g5/{Cancelar/Esperar}}{
+    \draw[kill] (\g.south) -- ++(0,-7mm)
+      node[below, font=\sffamily\tiny, text=vcred, align=center] {\lbl};
+  }
+
+  %% ---- Anotaciones de criterio de compuerta (encima de cada compuerta) ----
+  \node[ann, above=4mm of g1] {¿Ajuste al\\mercado?};
+  \node[ann, above=4mm of g2] {¿Valor\\estratégico?};
+  \node[ann, above=4mm of g3] {¿Viabilidad\\financiera?};
+  \node[ann, above=4mm of g4] {¿Factibilidad\\técnica?};
+  \node[ann, above=4mm of g5] {¿Preparación\\para lanzar?};
+
+\end{tikzpicture}
+\end{document}

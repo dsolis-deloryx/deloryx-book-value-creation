@@ -1,0 +1,42 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{preamble-es}[2026/05/28 Spanish localisation overlay for Value Creation]
+%% Thin overlay on preamble.sty: loads the canonical English preamble, then
+%% applies only the Spanish-locale changes. The English edition is untouched.
+
+% Polyglossia must load BEFORE biblatex/cleveref/hyperref (which all live in
+% preamble.sty) so they detect Spanish at their own load time. fontspec is a
+% polyglossia prerequisite; loading it here is idempotent (preamble.sty's
+% later \usepackage{fontspec} is a no-op once it's already loaded).
+\RequirePackage{fontspec}
+\RequirePackage{polyglossia}
+\setdefaultlanguage{spanish}
+\setotherlanguage{english}                                      % for occasional English loanwords / quotations
+
+\RequirePackage{preamble}                                       % fonts, packages, envs (biblatex + cleveref see Spanish)
+
+% Figures: prefer the Spanish-translated PDFs; fall back to the English PDFs
+% for anything not yet translated (defensive — keeps the build resilient).
+\graphicspath{{figures-es/}{figures/}}
+
+% Spanish runs ~10-15% longer than English; relax line-breaking tolerance.
+\setlength{\emergencystretch}{4em}
+
+% Re-issue the `example` environment with a Spanish title.
+% Mirrors the definition in preamble.sty but with "Ejemplo" instead of "Example".
+% The auto-counter init options are NOT repeated; the counter is already
+% declared by \newtcolorbox in preamble.sty.
+\renewtcolorbox{example}[1][]{%
+  setoff,
+  borderline north={0.7pt}{0pt}{black!70},
+  attach title to upper={\par\smallskip},
+  title={Ejemplo~\thetcbcounter\ifblank{#1}{}{\ \textmd{\itshape #1}}},
+  before upper={\smallskip}, after upper={\smallskip},
+  borderline south={0.7pt}{0pt}{black!70},
+}
+
+% Note: the `admonition` environment keeps its definition from preamble.sty.
+% Its label is a caller-supplied argument; chapter authors pass Spanish labels
+% directly: \begin{admonition}{Advertencia}, \begin{admonition}{Nota},
+% \begin{admonition}{Controvertido}.
+
+\endinput

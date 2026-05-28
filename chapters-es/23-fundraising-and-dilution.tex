@@ -1,0 +1,368 @@
+\chapter{Financiamiento, Dilución y \emph{Runway}}\label{ch:fundraising-and-dilution}
+
+% Alcance: \emph{cap tables} y dilución (pre/post-money), SAFEs y notas convertibles,
+%   \emph{term sheets} y preferencias de liquidación, métricas para inversores y el
+%   múltiplo de ARR. Capítulo nuevo (cierra la brecha entre el fundador y las finanzas).
+%   Sigue a valoración (\cref{ch:valuation}) y estructura de capital
+%   (\cref{ch:risk-and-capital-structure}): del valor empresarial a cómo los fundadores
+%   financian en la práctica.
+% Referencias cruzadas: eq:scenario-ev (ancla del caso pesimista del Seed pre-money, ch.20);
+%   eq:dcf / eq:ev-revenue (cadena de valoración reutilizada como marco del inversor);
+%   eq:rule40 / eq:burn-multiple / eq:runway (métricas de eficiencia de los ch.21/26
+%   que impulsan la narrativa de financiamiento).
+
+\section{Cap Tables y Dilución de Propiedad}\label{sec:cap-table}
+% complexity: 3
+
+¿Qué le cuesta al fundador levantar una ronda? La \emph{cap table} --- el registro de
+cada acción, opción e instrumento convertible --- responde a esa pregunta con precisión, y
+su aritmética no perdona. Entender la dilución antes de firmar significa dominar la fórmula
+post-money de memoria.
+
+Cuando una empresa emite nuevas acciones para inversores a una valoración acordada, el
+porcentaje de los dueños existentes disminuye aunque el valor total de su participación
+pueda aumentar. Las dos cantidades que un fundador debe rastrear son (i) la \emph{valoración
+post-money}, que fija el precio por acción, y (ii) el \emph{porcentaje de propiedad del
+fundador} tras absorber las nuevas acciones en el conteo totalmente diluido. La identidad
+central es:
+\begin{equation}\label{eq:post-money}
+\begin{gathered}
+  \mathrm{PostMoney} \;=\; \mathrm{PreMoney} \;+\; \mathrm{Inversión}, \\
+  \text{Inversor\%} \;=\; \frac{\mathrm{Inversión}}{\mathrm{PostMoney}}, \qquad
+  \text{Fundador\%}_{\mathrm{post}} \;=\; \text{Fundador\%}_{\mathrm{pre}}\,\bigl(1 - \text{Inversor\%}\bigr).
+\end{gathered}
+\end{equation}
+Los fundadores comienzan en \qty{100}{\percent} y se diluyen de forma multiplicativa en
+cada ronda. Cada financiamiento sucesivo multiplica el porcentaje superviviente por
+\((1 - \text{nuevo inversor\%})\); los porcentajes de todos los dueños existentes ---
+fundadores, ángeles e inversores de rondas previas --- se reducen proporcionalmente para
+dar cabida al capital entrante.
+
+Una sutileza que la \cref{eq:post-money} oculta es el \emph{option pool shuffle}. Los
+inversores suelen exigir que el grupo de opciones para empleados no asignadas se amplíe
+\emph{antes} de contabilizar el nuevo dinero, lo que significa que la dilución recae
+íntegramente sobre los fundadores en lugar de compartirse con el nuevo inversor
+\parencite{feld2019venture}. Un \emph{term sheet} que exige un grupo del \qty{15}{\percent}
+post-money en una empresa con pre-money de \money{10000000} obliga al fundador a absorber
+la dilución del grupo antes de que se fije el precio por acción. Los fundadores que ignoran
+esta aritmética la pagan dos veces.
+
+\begin{example}[Cap table de dos rondas]
+El valor empresarial ponderado por probabilidad de escenario de la empresa se estimó en
+aproximadamente \money{16500000} (véase \cref{eq:scenario-ev}), pero el caso pesimista de
+\money{8000000} es el ancla conservadora para la negociación del pre-money Seed. La empresa
+levanta una ronda Seed a una valoración pre-money de \money{6000000} con una inversión de
+\money{2000000}.
+
+Aplicando \cref{eq:post-money}:
+\[
+  \mathrm{PostMoney}_{\text{Seed}} \;=\; \money{6000000} + \money{2000000} \;=\; \money{8000000}.
+\]
+La participación del inversor Seed: \(\money{2000000}/\money{8000000} = \qty{25}{\percent}\).
+La participación del fundador cae de \qty{100}{\percent} a \qty{75}{\percent}.
+
+Luego la empresa levanta una \emph{Series~A} a una valoración pre-money de \money{10000000},
+emitiendo \money{2000000} de nueva equity.
+\[
+  \mathrm{PostMoney}_{\text{Series A}} \;=\; \money{10000000} + \money{2000000} \;=\; \money{12000000}.
+\]
+La participación del inversor Series~A: \(\money{2000000}/\money{12000000} \approx \qty{16.7}{\percent}\).
+Aplicando la regla multiplicativa de \cref{eq:post-money}:
+\[
+  \text{Fundador\%}_{\text{post-A}}
+  \;=\; \qty{75}{\percent} \;\times\; (1 - 0.167)
+  \;=\; \qty{75}{\percent} \;\times\; 0.833
+  \;\approx\; \qty{62.5}{\percent}.
+\]
+La cap table post-Series~A acumulada: fundador \qty{62.5}{\percent}; inversor Seed
+\qty{20.8}{\percent}; inversor Series~A \qty{16.7}{\percent}. Total: \qty{100}{\percent}.
+
+La implicación no es que el fundador «perdió» el \qty{37.5}{\percent}: en un post-money de
+\money{12000000}, su \qty{62.5}{\percent} vale \money{7500000} --- más de lo que valía la
+empresa entera antes del Seed.
+\end{example}
+
+\begin{admonition}{Advertencia}
+El porcentaje que retiene un fundador tras una ronda es casi irrelevante en aislamiento. Lo
+que importa es el resultado absoluto: el \qty{62.5}{\percent} de una salida de
+\money{200000000} vale más que el \qty{90}{\percent} de una salida de \money{10000000} por
+un factor de 11. Optimizar la retención de propiedad a expensas del capital que acelera el
+crecimiento es un error frecuente del fundador. El marco correcto es el valor esperado de la
+posición en dólares del fundador, no la fracción de la torta --- una distinción que la lógica
+DCF de \cref{eq:dcf} hace rigurosa.
+\end{admonition}
+
+La dilución se acumula entre rondas como el producto de las fracciones supervivientes; los
+grupos de opciones, warrants e instrumentos convertibles expanden aún más el denominador.
+El cuadro completo requiere rastrear el conteo de acciones \emph{totalmente diluido} en
+lugar de sólo las acciones emitidas.
+\textcite{metrick2021venture} desarrollan la mecánica completa de múltiples rondas, incluidos
+los ajustes por grupo de opciones y warrants, y muestran que los fundadores de etapa tardía
+con inversores estratégicos suelen retener entre \qty{10}{\percent} y \qty{30}{\percent} al
+momento de la salida a bolsa.
+
+\section{SAFEs y Notas Convertibles}\label{sec:safes-convertibles}
+% complexity: 3
+
+Las empresas en etapa temprana raramente tienen el historial operativo para justificar una
+negociación dura de pre-money. Dos instrumentos difieren esa conversación: el Simple
+Agreement for Future Equity (SAFE), introducido por Y Combinator en 2013, y la nota
+convertible, más antigua. Ambos inyectan capital de inmediato y se convierten en equity en
+una ronda futura con precio definido, pero sus estructuras económicas difieren materialmente.
+Una nota convertible es deuda --- acumula intereses, tiene fecha de vencimiento y puede
+forzar al fundador a incumplimiento si no llega una ronda con precio a tiempo. Un SAFE no es
+deuda; no acumula intereses ni tiene vencimiento. La protección económica para los
+inversores tempranos proviene en cambio de dos parámetros: un \emph{tope de valoración}
+(la valoración máxima a la que el SAFE se convierte, independientemente de cuán alto se
+fije el precio de la Series~A) y una \emph{tasa de descuento} (una reducción porcentual
+sobre el precio por acción de la Series~A). La mayoría de los SAFEs usan uno o ambos.
+
+El precio de conversión --- el precio por acción que paga el inversor del SAFE --- es:
+\begin{equation}\label{eq:safe-conversion}
+  P_{\mathrm{conv}}
+  \;=\; \min\!\bigl(\mathrm{Cap},\;\mathrm{SeriesA}_{\mathrm{pre}}\bigr)
+        \;\times\; (1 - \delta),
+  \qquad
+  N_{\mathrm{new}}
+  \;=\; \frac{\mathrm{Inversión}}{P_{\mathrm{conv}}},
+\end{equation}
+donde \(\delta\) es la tasa de descuento y \(N_{\mathrm{new}}\) es el número de nuevas
+acciones emitidas al titular del SAFE al convertirse. Cuando el pre-money de la Series~A
+supera el tope, el tope es vinculante; cuando cae por debajo del tope, el precio de la
+Series~A (descontado por \(\delta\)) rige. El límite que produce el mayor número de
+acciones --- y por lo tanto el menor precio efectivo por acción --- será siempre el que el
+inversor prefiera.
+
+\begin{example}[Conversión de SAFE con tope y descuento]
+Un ángel invierte \money{500000} en un SAFE con un tope de \money{5000000} y un descuento
+del \qty{20}{\percent}. La empresa levanta posteriormente una Series~A a una valoración
+pre-money de \money{12000000}.
+
+Primero, determinar qué límite rige:
+\begin{itemize}
+  \item Valoración efectiva basada en el tope: \money{5000000}.
+  \item Valoración efectiva basada en el descuento: \(\money{12000000} \times (1 - 0.20) = \money{9600000}\).
+\end{itemize}
+El tope (\money{5000000}) es menor, por lo que el tope es vinculante --- el inversor del
+SAFE convierte como si el pre-money fuera sólo \money{5000000}. Aplicando
+\cref{eq:safe-conversion} con \(\delta = 0\) una vez que el tope rige (el tope ya incorpora
+el beneficio económico; usar el tope y el descuento simultáneamente contaría doble):
+\[
+  P_{\mathrm{conv}} \;=\; \money{5000000} \;\times\; 1.00
+                   \;=\; \money{5000000} \text{ (valoración efectiva).}
+\]
+La fracción de propiedad del titular del SAFE al convertirse:
+\[
+  \text{SAFE\%}
+  \;=\; \frac{\mathrm{Inversión}}{\mathrm{Cap}}
+  \;=\; \frac{\money{500000}}{\money{5000000}}
+  \;=\; \qty{10}{\percent} \;\text{(base pre-Series-A, post-SAFE).}
+\]
+Tras el inversor de la Series~A tomar el \qty{16.7}{\percent} (como en el ejemplo anterior),
+todos los dueños existentes --- inversor del SAFE y fundadores --- se diluyen
+proporcionalmente:
+\[
+  \text{SAFE\%}_{\text{post-A}}
+  \;=\; \qty{10}{\percent} \;\times\; (1 - 0.167)
+  \;\approx\; \qty{8.3}{\percent}.
+\]
+El inversor del SAFE termina con el \qty{8.3}{\percent} de un post-money de
+\money{12000000}, un valor implícito de aproximadamente \money{1000000} sobre una inversión
+de \money{500000} --- un incremento de \qty{2}{\times} en el momento del cierre de la
+Series~A, antes de cualquier salida.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Múltiples SAFEs con distintos topes y distintos descuentos se convierten a precios
+diferentes, emitiendo distintos números de acciones. Los fundadores que levantan un SAFE de
+\money{250000} a un tope de \money{3000000}, luego un SAFE de \money{500000} a un tope de
+\money{5000000}, y luego un SAFE de \money{1000000} a un tope de \money{8000000} deben
+modelar la cascada de conversión completa antes de firmar el \emph{term sheet} de la
+Series~A --- la interacción puede ser mucho más dilutiva de lo que cualquier SAFE individual
+implicaba. Cada SAFE se resuelve de forma independiente usando \cref{eq:safe-conversion}, y
+los conteos de acciones resultantes se acumulan antes de admitir el nuevo dinero
+institucional.
+\end{admonition}
+
+Los SAFEs y las notas convertibles intercambian economía y velocidad contra complejidad en
+el evento de conversión. La economía está gobernada íntegramente por los parámetros del
+tope y el descuento; la estructura legal está estandarizada \parencite{feld2019venture}. Una
+vez que se fija el precio de la Series~A, el SAFE desaparece en la cap table como acciones
+preferentes, sujetas a la misma mecánica de liquidación descrita en la siguiente sección.
+
+\section{Term Sheets y Economía del Inversor}\label{sec:term-sheets}
+% complexity: 3
+
+Un \emph{term sheet} de capital de riesgo asigna simultáneamente derechos sobre flujos de
+efectivo, derechos de control y protección contra pérdidas. El núcleo económico es la
+\emph{preferencia de liquidación}: el derecho de los accionistas preferentes a recuperar su
+inversión (o un múltiplo de ella) antes de que los accionistas comunes reciban algo en una
+venta, fusión o disolución. Entender la preferencia es entender quién cobra en cada
+escenario de salida realista.
+
+Dos estructuras de preferencia dominan. En la \emph{preferencia no participante}, el
+inversor elige el mejor de dos resultados: tomar la preferencia establecida o convertir a
+acciones comunes y participar pro rata. En la \emph{preferencia participante}, el inversor
+toma la preferencia \emph{y luego} participa pro rata en el remanente --- el «doble cobro».
+La preferencia no participante es el estándar del mercado; la participante aparece en mercados
+competitivos y rondas de dificultad financiera, y es materialmente peor para los fundadores.
+La fórmula para los ingresos de salida al inversor es:
+\begin{equation}\label{eq:liquidation-preference}
+  \mathrm{Inversor}_{\text{no-part}}
+  \;=\; \max\!\bigl(\mathrm{Pref},\; p \cdot \mathrm{Salida}\bigr),
+  \qquad
+  \mathrm{Inversor}_{\text{part}}
+  \;=\; \mathrm{Pref} \;+\; p \cdot (\mathrm{Salida} - \mathrm{Pref}),
+\end{equation}
+donde \(\mathrm{Pref} = m \times \mathrm{Inversión}\) es la preferencia de liquidación
+(múltiplo \(m\), normalmente \(1\times\)) y \(p\) es la fracción de propiedad del inversor.
+Los fundadores reciben lo que queda una vez satisfechos los inversores.
+
+\begin{example}[Preferencia no participante vs.\ participante]
+Un inversor de Series~A invierte \money{5000000} por el \qty{25}{\percent} de la empresa.
+La preferencia de liquidación es \(1\times\) no participante. La empresa se vende por
+\money{8000000}.
+
+\emph{No participante}: la preferencia del inversor es \money{5000000}; la conversión pro
+rata rendiría \(25\% \times \money{8000000} = \money{2000000}\). Aplicando
+\cref{eq:liquidation-preference}:
+\[
+  \mathrm{Inversor}_{\text{no-part}}
+  \;=\; \max(\money{5000000},\;\money{2000000})
+  \;=\; \money{5000000}.
+\]
+Los fundadores y accionistas comunes reciben \(\money{8000000} - \money{5000000} = \money{3000000}\).
+
+\emph{Participante}: el inversor primero toma \money{5000000} y luego participa en el
+remanente:
+\[
+  \begin{aligned}
+    \mathrm{Inversor}_{\text{part}}
+    &\;=\; \money{5000000} \;+\; 0.25 \times (\money{8000000} - \money{5000000}) \\
+    &\;=\; \money{5000000} \;+\; \money{750000} \;=\; \money{5750000}.
+  \end{aligned}
+\]
+Los fundadores reciben \(\money{8000000} - \money{5750000} = \money{2250000}\). La cláusula
+de participación transfirió \money{750000} de los fundadores al inversor --- el «doble cobro»
+es de \money{750000} en este escenario, o aproximadamente el \qty{25}{\percent} del upside
+incremental por encima del umbral de preferencia.
+
+La magnitud del doble cobro crece con el tamaño de la salida: ante una salida de
+\money{20000000}, el inversor participante tomaría \(\money{5000000} + 25\%\times\money{15000000} =
+\money{8750000}\), frente a \(\max(\money{5000000},\,\money{5000000}) = \money{5000000}\)
+no participante. La participación siempre tiene un costo para los fundadores en salidas
+intermedias.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Las disposiciones antiditución componen la estructura de preferencia. La antidilución de
+promedio ponderado de base amplia --- el estándar del mercado --- ajusta el precio de
+conversión de las acciones preferentes existentes proporcionalmente si ocurre una ronda a
+la baja, limitando, pero sin eliminar, el reprecio efectivo. La antidilución de trinquete
+pleno reprecia el \emph{bloque completo} de preferentes previo al nuevo precio bajo
+independientemente del volumen, lo que puede aniquilar el equity del fundador en una sola
+ronda a la baja. La aritmética punitiva hace que las disposiciones de trinquete pleno sean
+una señal de alerta desfavorable para el fundador; insista en el promedio ponderado de base
+amplia \parencite{feld2019venture}. En mercados en dificultades, la combinación de una
+preferencia participante \(1\times\) y antidilución de trinquete pleno puede dejar a los
+accionistas comunes con ingresos casi nulos incluso a valores de salida moderados.
+\end{admonition}
+
+El análisis empírico de Kaplan y Strömberg sobre contratos de capital de riesgo muestra que
+la asignación de derechos sobre flujos de efectivo (preferencias, antidilución), derechos de
+control (asientos en la junta, vetos de votación) y derechos de liquidación se desacoplan
+deliberadamente para alinear incentivos bajo incertidumbre \parencite{kaplan2003financial}.
+Una preferencia que parece protectora al cierre de la ronda puede volverse punitiva al
+momento de la salida; modelar la cascada completa a través de escenarios de salida plausibles
+antes de firmar no es opcional.
+
+\section{Métricas del Inversor y la Narrativa de Financiamiento}\label{sec:investor-metrics}
+% complexity: 4
+
+¿Cómo debe un fundador presentar el valor de la empresa a un inversor? La respuesta no es
+sólo la narrativa; es la narrativa \emph{anclada en los números} que los inversores usan
+realmente para comparar y fijar el precio de las startups. En 2026 el filtro cuantitativo
+primario no es la tasa de crecimiento en aislamiento, sino la relación entre crecimiento y
+consumo de capital, expresada a través de la Regla del 40 (\cref{eq:rule40}) y el múltiplo
+de quema (\cref{eq:burn-multiple}). El ancla de valoración, a su vez, es el múltiplo de
+EV/ARR de \cref{eq:ev-revenue}:
+\begin{equation}\label{eq:arr-multiple}
+  \mathrm{PreMoney} \;\approx\; \mathrm{ARR} \;\times\; \frac{\mathrm{EV}}{\mathrm{ARR}},
+\end{equation}
+donde el múltiplo de EV/ARR (\cref{eq:ev-revenue}) es el precio de equilibrio actual del
+mercado por cada dólar de ingreso recurrente, ajustado por el perfil de eficiencia de
+crecimiento de la empresa. Una empresa de alto crecimiento y eficiente en capital exige un
+múltiplo premium; una empresa de crecimiento lento y alto burn enfrenta un descuento
+pronunciado. La puntuación de la Regla del 40 y el múltiplo de quema son las dos palancas
+que los inversores usan para mover el múltiplo \parencite{metrick2021venture}.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.92\linewidth]{cap-table-waterfall}
+  \caption{%
+    \textbf{Dilución de cap table y cascada de liquidación.}
+    \emph{Panel izquierdo:} propiedad del fundador a través de tres rondas de financiamiento
+    (Pre-seed \qty{100}{\percent} $\to$ Seed \qty{75}{\percent} $\to$ Series~A \qty{62.5}{\percent}).
+    \emph{Panel derecho:} ingresos de salida para fundadores frente al inversor de Series~A
+    bajo preferencias de liquidación \(1\times\) no participante y participante, para valores
+    de salida de \money{5000000} a \money{30000000} (Series~A: \money{5000000} invertidos,
+    \qty{25}{\percent} de propiedad). El punto de inflexión de la participación es visible
+    alrededor de \money{20000000}, donde el valor de conversión del inversor supera la
+    preferencia.%
+  }
+  \label{fig:cap-table-waterfall}
+\end{figure}
+
+\begin{example}[Narrativa de métricas del inversor para un pitch de Series~A]
+La empresa de referencia: ARR = \money{4000000}; crecimiento de ARR en los últimos doce
+meses = \qty{30}{\percent}; margen bruto = \qty{70}{\percent}. En aislamiento, un
+crecimiento del \qty{30}{\percent} a este ARR podría sustentar un múltiplo de EV/ARR de
+\(8\times\), lo que implica un pre-money de
+\[
+  \money{4000000} \;\times\; 8 \;=\; \money{32000000}.
+\]
+Pero el inversor examina \cref{eq:rule40}: puntuación de la Regla del 40 =
+\qty{30}{\percent} de crecimiento $+ (-\qty{15}{\percent})$ de margen EBITDA $= 15$. Una
+puntuación de 15 está muy por debajo del umbral de 40 puntos donde crecimiento y
+rentabilidad están equilibrados; el inversor descuenta el múltiplo de $8\times$ a $6\times$:
+\[
+  \mathrm{PreMoney} \;=\; \money{4000000} \;\times\; 6 \;=\; \money{24000000}.
+\]
+El múltiplo de quema (\cref{eq:burn-multiple}): la empresa añadió \money{1200000} de ARR
+nuevo neto (30\% de \money{4000000}) mientras quemaba \money{1500000} de efectivo neto, lo
+que arroja un múltiplo de quema de \(\money{1500000}/\money{1200000} = 1.25\times\). A
+$1.25\times$, el múltiplo de quema es aceptable --- por debajo del umbral de $2\times$ que
+desencadena descuentos materiales --- y el fundador debería liderarlo. Combinado con el
+pronóstico de \emph{runway} de \cref{eq:runway} (efectivo / tasa de quema neta), la
+narrativa se convierte en: «Tenemos 18 meses de \emph{runway} al ritmo de quema actual, un
+múltiplo de quema de $1.25\times$, y un camino claro hacia la paridad con la Regla del 40
+en el mes 24 conforme se materialice el apalancamiento del margen bruto.»
+
+El pre-money de \money{24000000} se sitúa cómodamente entre los escenarios base y optimista
+de DCF de \cref{eq:scenario-ev} (\money{15000000}--\money{28000000}), proporcionando a los
+inversores un ancla comparable al mercado para el DCF que ejecutarán de forma independiente.
+Vincular el múltiplo al DCF elimina la apariencia de fijación arbitraria de precios y
+centra la conversación en los fundamentos.
+\end{example}
+
+\begin{admonition}{Nota}
+Los múltiplos de ARR varían significativamente según sector, nivel de crecimiento y
+condiciones de mercado; la cifra de $6\times$ del ejemplo refleja un perfil de eficiencia
+moderada y crecimiento medio en el entorno de 2026. Las empresas líderes que superan 60
+puntos en la Regla del 40 han alcanzado múltiplos de \(10\times\)--\(15\times\) ARR. El
+múltiplo apropiado no es el resultado de una fórmula, sino una observación de mercado; el
+marco de EV/ARR de \cref{eq:ev-revenue} provee el ancla teórica (la tasa de crecimiento, el
+margen y la tasa de descuento determinan el valor), mientras que las transacciones
+comparables proporcionan la verificación empírica.
+\end{admonition}
+
+La narrativa de financiamiento es una capa de traducción: convierte la lógica DCF de
+\cref{eq:dcf} en las métricas operativas que los inversores realmente rastrean. La Regla del
+40, el múltiplo de quema y el múltiplo de ARR no son alternativas al pensamiento de flujo de
+caja descontado; son atajos hacia la misma conclusión de valor presente. Un fundador que
+entiende por qué \cref{eq:arr-multiple} es simplemente una versión comprimida de
+\cref{eq:ev-revenue} --- que a su vez es una versión comprimida de \cref{eq:dcf} --- puede
+defender cualquier métrica que cuestione un inversor sofisticado, porque la cadena conduce
+de vuelta a los primeros principios. \textcite{metrick2021venture} documentan cómo los
+inversores institucionales construyen sus propios modelos DCF junto con los múltiplos,
+usando la brecha entre ambos como señal de si el fundador entiende su propio negocio.

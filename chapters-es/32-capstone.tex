@@ -1,0 +1,560 @@
+\chapter{Síntesis: una empresa, todos los lentes}\label{ch:capstone}
+
+% Alcance: la empresa de referencia B2B SaaS recorrida a través de cada Parte del libro en
+%   secuencia, trazando cómo cada disciplina alimenta la siguiente a lo largo de la columna
+%   vertebral de creación de valor. Sin nuevas etiquetas eq:. Solo referencias cruzadas.
+%   Una figura: value-spine. Estructura: párrafo introductorio → tabla de la hoja de datos →
+%   9 secciones (una por Parte + los añadidos de 2026).
+
+Cada \emph{framework} de este libro se introdujo de forma independiente. Aquí convergen. La misma
+empresa B2B SaaS de \money{4000000} de ARR que apareció en cada ejemplo trabajado se recorre
+de principio a fin a través de las 9 Partes y los 32 capítulos: desde la primera prueba de
+creación de valor y el sustrato contable que fundamenta cada número, pasando por la economía
+del cliente y la adquisición paga, entrando en la posición competitiva y la durabilidad
+estratégica, luego el modelo financiero que valora el conjunto, y finalmente las disciplinas de
+ejecución que determinan si el plan sobrevive al contacto con un trimestre. El propósito no es
+la repetición --- cada sección supone que su capítulo ha sido leído --- sino la integración:
+las conexiones que los capítulos por separado solo podían prometer son ahora explícitas. Las
+siete Partes operativas (Fundamentos, Cliente, Adquisición, Estrategia, Finanzas, Ejecución y
+el Fundador) van seguidas de una Parte de Referencia y esta Síntesis; los once capítulos
+añadidos en la edición de 2026 --- que cubren estados financieros, experimentos, gestión de
+producto, canales y salida al mercado (\emph{GTM}), estrategia de datos e IA, el modelo
+operativo, la mecánica de la captación de fondos y el propio oficio del fundador en
+persuasión, narrativa, psicología y liderazgo --- están integrados en cada sección a
+continuación.
+
+\medskip
+\noindent\textbf{Hoja de datos de la empresa de referencia.}
+
+\medskip
+\noindent\begin{tabularx}{\linewidth}{@{}l >{\raggedright\arraybackslash}X@{}}
+  \toprule
+  Parámetro & Valor \\
+  \midrule
+  Precio del plan (ARPU)                 & \money{50}/mes (\money{600}/año) \\
+  LTV (perpetuidad creciente)            & \money{3150} \\
+  Margen de contribución                 & \qty{42}{\percent} → \money{21}/mes \\
+  CAC objetivo (operativo)               & \money{600} → LTV:CAC 5,25× \\
+  Crecimiento en estado estacionario $g$ & \qty{3}{\percent}/año \\
+  Presupuesto de anuncios mensual → nuevos clientes & \money{120000} → 200/mes \\
+  WACC / tasa de descuento               & \qty{11}{\percent}/año \\
+  \emph{Funnel}                          & 10.000 sesiones → 800 pruebas → 200 pagos \\
+  NOPAT (aprox.)                         & \money{600000} \\
+  ARR / MRR                              & \money{4000000} / \money{340000} \\
+  Capital invertido                      & \money{3000000} \\
+  ROIC                                   & \qty{20}{\percent} \\
+  Beta ($\beta$)                         & 1,4 → costo de \emph{equity} \qty{11}{\percent} \\
+  Margen bruto                           & \qty{70}{\percent} \\
+  Margen EBITDA año 3                    & \qty{+7}{\percent} (puntuación Rule-of-40: 37) \\
+  Valoración pre-money Serie A (mercado) & \money{24000000} (\(6\times\) ARR × ajuste Rule-of-40) \\
+  Valoración pre-money Serie A (piso DCF) & \money{15000000} (escenario base, \cref{eq:scenario-ev}) \\
+  \emph{Runway} al \emph{burn} actual   & 8 meses (\money{2500000} en caja ÷ \money{310000} \emph{burn} neto) \\
+  SAFE pendiente                         & \money{500000} a cap de \money{5000000}, descuento \qty{20}{\percent} \\
+  \bottomrule
+\end{tabularx}
+\medskip
+
+% complexity: 5 -> figura value-spine
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.96\linewidth]{value-spine}
+  \caption{La columna vertebral de creación de valor. Cada etapa del libro alimenta la
+    siguiente: los Fundamentos establecen la prueba ROIC\,>\,WACC; la economía del Cliente
+    fija el CLV que limita el gasto en adquisición; la Adquisición valida la eficiencia del
+    canal mediante ROAS e iROAS; la Estrategia establece la tasa de crecimiento $g$ impulsada
+    por el \emph{moat} que se usa en el valor terminal; las Finanzas descuentan los flujos de
+    caja resultantes al WACC; las disciplinas de Ejecución (Rule of 40, \emph{quick ratio})
+    confirman que el plan se está realizando; las habilidades del Fundador (influencia,
+    narrativa, liderazgo) convierten el plan en clientes cerrados, una ronda de financiación y
+    un equipo dirigido; el capítulo de Referencia cierra el bucle de medición.}
+  \label{fig:value-spine}
+\end{figure}
+
+%% ─────────────────────────────────────────────────────────────
+\section{Fundamento: ¿crea valor?}\label{sec:capstone-value}
+%% ─────────────────────────────────────────────────────────────
+
+La prueba maestra es \cref{eq:economic-profit}: el beneficio económico es igual al NOPAT menos
+el cargo por capital. El NOPAT de \money{600000}, el capital invertido de \money{3000000} y el
+ROIC del \qty{20}{\percent} no son supuestos --- se derivan del modelo de tres estados financieros
+de \cref{ch:financial-statements}. \Cref{sec:three-statements} y \cref{sec:statement-analysis}
+rastrean cada dólar desde el estado de resultados hasta el puente de NOPAT de
+\cref{eq:nopat-bridge}: EBIT \(\times (1-30\%) = \money{860000}\times0.70 \approx \money{600000}\).
+Los operadores que no pueden rastrear esos números hasta los estados contables trabajan desde la
+fe. La disciplina de inferencia de \cref{ch:experiments-and-inference} subyace a cada afirmación
+causal del libro: la maquinaria estadística de \cref{eq:z-test} y \cref{eq:sample-size} determina
+si una mejora observada de ROIC es real o ruido muestral, y el \emph{framework} OLS de
+\cref{eq:ols} controla las covariables que de otro modo confundirían la atribución.
+
+Con NOPAT \(\approx\money{600000}\) y capital invertido de \money{3000000},
+\cref{eq:roic} arroja \(\mathrm{ROIC}=20\%\). El WACC, derivado en \cref{ch:risk-and-capital-structure}
+mediante \cref{eq:wacc} y \cref{eq:capm} con \(\beta=1.4\), es \qty{11}{\percent}:
+\[
+  \mathrm{EP}
+    = (0.20 - 0.11)\times\money{3000000}
+    = \qty{9}{\percent}\times\money{3000000}
+    = \money{270000}.
+\]
+El diferencial es positivo y sustancial. Una brecha ROIC--WACC del \qty{9}{\percent} no es un
+error de redondeo; es evidencia de que el negocio gana \money{270000} anuales por encima del
+costo de oportunidad de los inversores. Cada dólar adicional de capital invertido desplegado
+al ROIC actual genera \money{0.09} de beneficio económico anual --- una afirmación de
+capitalización, no una ganancia única.
+
+La implicación de \cref{eq:economic-profit} opera en ambas direcciones. Si el WACC sube ---
+por ejemplo, porque el aumento de las tasas empuja \cref{eq:capm} del \qty{11}{\percent} al
+\qty{13}{\percent} --- el diferencial se comprime del \qty{9}{\percent} al \qty{7}{\percent} y el
+beneficio económico cae a \money{210000} sin ningún deterioro operativo. A la inversa, reducir el
+capital invertido en \money{500000} (mediante una gestión más estricta del capital de trabajo)
+manteniendo el NOPAT constante eleva el ROIC al \qty{24}{\percent} y el beneficio económico a
+\money{325000}. El denominador del capital es tan importante como el numerador.
+
+Este veredicto de \cref{ch:value-creation} enmarca todo análisis posterior. Los capítulos que
+siguen traducen esta única pregunta a sus propios términos: CLV:CAC es su expresión por cliente
+(\cref{ch:customer-economics}); el valor de empresa en DCF es su valor presente acumulado
+(\cref{ch:valuation}); el \emph{moat} es el mecanismo que lo sostiene
+(\cref{ch:advantage-and-disruption}). \textcite{brealey2020} y \textcite{damodaran2012}
+desarrollan la arquitectura de finanzas corporativas detrás de \cref{eq:economic-profit,eq:roic,eq:wacc}.
+
+%% ─────────────────────────────────────────────────────────────
+\section{Comprensión del cliente: ¿quién y cuánto?}\label{sec:capstone-customer}
+%% ─────────────────────────────────────────────────────────────
+
+La creación de valor comienza con la elección de a quién servir. \cref{eq:segment-score} aplicado en
+\cref{ch:segmentation-targeting-positioning} puntúa al mercado mediano (50--500 puestos) en 7,70
+frente a 6,20 de las pymes, considerando tamaño de mercado, intensidad competitiva, potencial
+de LTV y encaje con el ciclo de ventas. El criterio decisivo es el potencial de LTV: el ARR del
+mercado mediano es aproximadamente \(10\times\) el nivel de las pymes, lo que se propaga en
+cascada a cada número posterior.
+
+Con el segmento objetivo fijado, el margen de precio está acotado por el valor económico para
+el cliente (\cref{eq:evc} en \cref{ch:pricing}): la contribución del producto al resultado del
+cliente establece el techo de precio teórico por encima del cual la disposición a pagar colapsa.
+Nuestro precio de \money{50}/mes se sitúa muy por debajo de ese techo para los compradores de
+mercado mediano --- la justificación principal del movimiento de desarrollo de producto hacia un
+\emph{tier} empresarial de \money{299}/mes explorado en \cref{ch:growth}.
+
+El caso financiero por cliente es \cref{eq:clv}. Con un margen de contribución del \qty{42}{\percent}
+(\money{252}/año), WACC del \qty{11}{\percent} y crecimiento del margen en estado estacionario del
+\qty{3}{\percent}:
+\[
+  \mathrm{CLV} \;=\; \frac{\money{252}}{0.11 - 0.03} \;=\; \money{3150}.
+\]
+Este es el techo del gasto racional en adquisición. \cref{eq:ltv-cac} lo convierte en la
+restricción operativa: con un CAC objetivo de \money{600}, LTV:CAC\,=\,5,25×, muy por encima del
+piso de 3× que sirve de proxy para la prueba ROIC\,>\,WACC a nivel de cliente. La brecha entre
+5,25× y el piso de 3× representa el margen que absorbe la incertidumbre del modelo en el CLV ---
+el equivalente práctico del margen de seguridad en \cref{ch:corporate-finance-core}.
+
+El enfoque de marca de \cref{ch:brand-growth} añade una observación del lado de la demanda: la
+notoriedad de marca reduce el esfuerzo mental que los compradores dedican en los puntos de
+entrada a la categoría, reduciendo el CAC efectivo en el margen. Una empresa que gana el CLV de
+\money{3150} pero gasta solo \money{400} en CAC porque los compradores llegan ya predispuestos
+tiene una posición estructuralmente superior en la economía de unidad --- la misma prueba ROIC,
+ejecutada con menor costo de capital.
+
+\Cref{ch:product-management} establece \emph{qué} construir antes de que el precio fije cuánto
+cobrar. El \emph{tier} empresarial --- la expansión de producto de \money{299}/mes referenciada en
+\cref{ch:pricing} --- no surgió de la intuición. Superó la puerta de priorización RICE de
+\cref{eq:rice}, que lo puntuó por encima de las alternativas al alcanzar a más usuarios con mayor
+confianza por unidad de esfuerzo de ingeniería. El modelo de lanzamiento Bass (\cref{eq:bass})
+pronostica luego con qué rapidez el segmento empresarial absorberá el nuevo \emph{tier}: con un
+techo alcanzable de 500 cuentas de mercado mediano y un coeficiente de imitación de \(q=0.3\),
+el volumen de nuevos adoptantes alcanza su punto máximo alrededor del mes 10, antes del cual la
+captación debe concentrarse para sembrar el término social. El encaje producto-mercado en sí
+se mide mediante \cref{eq:retention}: la curva de supervivencia asintótica que confirma el
+encaje genuino es la misma curva de retención por cohorte que impulsa el CLV.
+
+En conjunto, \cref{ch:segmentation-targeting-positioning}, \cref{ch:brand-growth},
+\cref{ch:pricing}, \cref{ch:product-management} y \cref{ch:customer-economics} responden la
+mitad de la ecuación de valor correspondiente al cliente: quién genera \money{3150} de valor,
+qué construir para sostenerlo, y a qué costo de adquisición.
+\textcite{gupta2004customer} es el tratamiento más riguroso del CLV como impulsor del valor de
+la empresa.
+
+%% ─────────────────────────────────────────────────────────────
+\section{Adquisición: comprar demanda con rentabilidad}\label{sec:capstone-acquisition}
+%% ─────────────────────────────────────────────────────────────
+
+La economía del cliente establece cuánto vale una conversión; los canales de adquisición
+determinan cuánto cuesta. \cref{eq:funnel-chain} en \cref{ch:digital-funnel-and-crm} traza la
+cascada de conversión: 10.000 sesiones producen 800 pruebas gratuitas a una tasa de prueba del
+\qty{8}{\percent}, y 200 de esas pruebas se convierten en clientes de pago al \qty{25}{\percent}.
+La tasa de conversión global es del \qty{2}{\percent}. La restricción vinculante en el estado
+estacionario es la puerta de conversión de prueba a pago, no la parte superior del \emph{funnel}
+--- un hallazgo de la teoría de restricciones que \cref{ch:operations} generaliza: elevar el paso
+de sesiones no vinculante del \qty{8}{\percent} al \qty{10}{\percent} añade solo 50 clientes
+adicionales al mes; elevar la tasa de conversión de prueba a pago del \qty{25}{\percent} al
+\qty{35}{\percent} añade 80.
+
+En el lado pago, \cref{eq:roas-cpa} de \cref{ch:paid-acquisition-platforms} rige la prueba de
+eficiencia. Un CPA objetivo de \money{600} con \money{120000}/mes entrega 200 conversiones ---
+precisamente el volumen en la fase de aprendizaje que los algoritmos de distribución de las
+plataformas necesitan para estabilizarse. Fijar el objetivo en \money{300} para «mejorar la
+eficiencia» reduce a la mitad el volumen de eventos, atrapa el conjunto de anuncios en Aprendizaje
+Limitado y hace que el CPA realizado suba en lugar de bajar: la plataforma no puede estimar
+\(\hat{p}\) con precisión por debajo de aproximadamente 50 eventos de conversión por semana.
+
+La pregunta más difícil es si el CPA de \money{600} refleja clientes verdaderamente incrementales
+o incluye demanda orgánica que habría convertido de todas formas. \cref{eq:iroas} de
+\cref{ch:attribution-and-measurement} lo responde mediante experimentos de geo-retención o
+\emph{ghost-bidding}: el iROAS aísla el incremento atribuible a los medios pagos, eliminando la
+inflación del último clic. Un negocio que opera con un iROAS sustancialmente inferior a su
+supuesto de ROAS objetivo está subvencionando la demanda orgánica con presupuesto pago y
+sobreestimando la eficiencia del canal.
+
+\Cref{ch:channels-gtm-and-sales} se sitúa aguas arriba del propio \emph{funnel}: el movimiento
+GTM elegido en \cref{sec:gtm-motion} determina qué \emph{funnel} construye la empresa. Un
+movimiento de crecimiento liderado por el producto (PLG) llena la parte superior del \emph{funnel}
+con activaciones de prueba de autoservicio; un movimiento liderado por ventas lo llena con
+transferencias de MQL. Para esta empresa, un movimiento híbrido producto-liderado-ventas es
+óptimo --- PLG para pymes, asistido por SDR para PQL de mercado mediano. El dimensionamiento de
+la fuerza de ventas fluye a través de \cref{eq:sales-productivity}: para añadir \money{2000000}
+de ARR con cuotas de \money{500000} al \qty{80}{\percent} de cumplimiento, se requieren cinco
+ejecutivos de cuenta, con un CAC asistido por ventas mixto de aproximadamente \money{180} ---
+aún dentro del piso de LTV:CAC de \cref{eq:ltv-cac}. Ese número de personas y el costo de
+compensación se incorporan directamente en el modelo operativo de \cref{ch:operating-model}
+como partidas en la proyección de gasto en S\&M.
+
+Los tres capítulos de la Parte~III (\cref{ch:digital-funnel-and-crm}, \cref{ch:paid-acquisition-platforms},
+\cref{ch:attribution-and-measurement}) forman un bucle cerrado: el \emph{funnel} cuantifica
+lo que se convierte; la mecánica de la plataforma determina cuánto cuesta; la atribución
+confirma si el gasto fue causal. \Cref{ch:channels-gtm-and-sales} extiende el bucle una etapa
+antes, a la elección estructural de \emph{cómo} llegar al mercado antes de comprometer
+cualquier dólar de gasto en adquisición.
+
+%% ─────────────────────────────────────────────────────────────
+\section{Estrategia: posicionar y defender}\label{sec:capstone-strategy}
+%% ─────────────────────────────────────────────────────────────
+
+Una buena economía de unidad en un mercado estructuralmente débil es temporal.
+\cref{eq:hhi} en \cref{ch:competitive-analysis} sitúa el mercado B2B SaaS en aproximadamente
+\num{2260} (puntos porcentuales al cuadrado), justo por debajo del umbral de alta concentración
+--- moderadamente concentrado, con rivalidad significativa y bajas barreras de entrada. En el
+lenguaje de las Cinco Fuerzas de Porter (\cref{ch:competitive-analysis}): el poder de los
+compradores es alto (los costos de cambio son bajos sin integraciones), la amenaza de entrada
+es alta (los costos de infraestructura han caído drásticamente) y la rivalidad es intensa en un
+punto de precio de \money{50}/mes donde la paridad de características es habitual. El
+diagnóstico estructural es claro: la empresa no puede ganar por precio ni por completitud de
+características a su escala actual. Debe construir barreras estructurales.
+
+La taxonomía de \emph{moat} de \cref{ch:growth} identifica los costos de cambio como la palanca
+principal. Cada integración API añadida al flujo de trabajo de un cliente aumenta el costo de
+migración al salir en un estimado de \money{3000}--\money{6000} --- varios años de valor de
+suscripción al precio actual. Un cliente profundamente integrado se enfrenta a una decisión de
+deserción genuinamente irracional incluso si llega un producto nominalmente superior. El
+\emph{moat} secundario es el efecto de red del mercado de integraciones: \cref{eq:metcalfe}
+muestra que con \(n=100\) integraciones de proveedores, existen \(n(n-1)/2 = 4{.}950\) pares
+de interacción únicos, frente a solo 1.225 con \(n=50\). Cada nueva integración hace más valiosa
+a cada integración existente, lo que atrae a más proveedores, lo que atrae a más clientes ---
+la capitalización por el lado de la demanda que está ausente en una ventaja de calidad de
+producto pura.
+
+La prueba VRIN de \cref{ch:advantage-and-disruption} aplica: los datos de uso propietarios
+acumulados en el mercado de integraciones son \emph{valiosos} (habilitan características de
+comparación), \emph{raros} (los competidores no pueden observar el mismo conjunto de datos
+entre clientes), \emph{inimitables} (los datos solo se acumulan operando a escala con el tiempo)
+y \emph{no sustituibles} (ningún conjunto de datos público replica lo que crea la red).
+Un activo de datos que satisface VRIN sostiene el diferencial ROIC\,>\,WACC de \cref{eq:roic}
+más allá del horizonte en que cualquier ventaja de característica individual se habría erosionado.
+
+\Cref{ch:data-and-ai-strategy} operacionaliza la prueba VRIN de \cref{sec:rbv-vrin} para la
+capa de datos específicamente. La telemetría de uso multicliente propietaria (\cref{sec:data-asset})
+supera las cuatro pruebas VRIN: la característica de comparación que habilita es valiosa, el
+corpus es raro e inimitable, y ningún conjunto de datos público lo sustituye. La decisión de
+construir versus comprar en IA (\cref{sec:ai-build-buy}) aplica \cref{eq:npv} para determinar
+que el ajuste fino (\emph{fine-tuning}) sobre este corpus solo tiene NPV positivo si la retención
+mejora en aproximadamente \money{50} por cliente, no solo un incremento marginal de calidad. La
+gobernanza de IA (\cref{sec:ai-governance}) enmarca el riesgo del modelo como un problema de
+agencia y concentra la revisión humana en el bucle donde el producto de la probabilidad de error
+y el CLV es mayor. La materialidad ESG (\cref{sec:esg-data}) se trata como un problema de
+medición con límites de doble materialidad, donde el mecanismo financiero principal a
+\money{4000000} de ARR es la reducción del WACC mediante la reducción de la fricción en la
+captación de fondos, no el NOPAT directamente.
+
+La producción financiera de la sección de estrategia se incorpora directamente en la valoración:
+el \emph{moat} justifica una tasa de crecimiento terminal $g$ distinta de cero en
+\cref{eq:terminal-value}. Sin un \emph{moat}, la competencia comprime $g$ hacia cero; con un
+efecto de red de integración y un volante de datos con VRIN positivo, $g$ puede mantenerse en
+\qty{3}{\percent} o más durante el período terminal. \textcite{porter1985} fundamenta el
+\emph{framework} de análisis competitivo; \textcite{dranove7theconomics} conecta el HHI y la
+fortaleza del \emph{moat} con los márgenes sostenibles.
+
+%% ─────────────────────────────────────────────────────────────
+\section{Finanzas: el valor cuantificado}\label{sec:capstone-finance}
+%% ─────────────────────────────────────────────────────────────
+
+\cref{ch:risk-and-capital-structure} fundamenta la tasa de descuento. \cref{eq:capm} con
+\(\beta=1.4\), una tasa libre de riesgo del \qty{4}{\percent} y una prima de riesgo de
+\emph{equity} del \qty{5}{\percent} arroja un costo de \emph{equity} del \qty{11}{\percent}.
+Como la empresa está financiada con \emph{equity}, \cref{eq:wacc} se reduce a ese mismo
+\qty{11}{\percent}. Este único número se propaga por cada cálculo de valor presente del libro:
+es el denominador de \cref{eq:clv}, la tasa de descuento en \cref{eq:dcf} y la referencia de
+tasa de crecimiento en \cref{eq:terminal-value}.
+
+\cref{eq:dcf} en \cref{ch:valuation} descuenta cinco años explícitos de pronóstico de flujo de
+caja libre. El FCF del Año 1 es \money{600000}; la trayectoria crece al \qty{30}{\percent} en
+los años 1--3 y luego desacelera al \qty{10}{\percent} en los años 4--5, produciendo una suma de
+valores presentes de los años explícitos de aproximadamente \money{3380000}. El valor terminal
+es el componente mayor:
+
+\begin{example}[Cálculo del valor terminal]
+\cref{eq:terminal-value} con un FCF normalizado del año 5 de \money{1263748} (\money{1226940}
+aumentado un período al \qty{3}{\percent}), descontado a \(\mathrm{WACC}-g = 0.11-0.03 = 0.08\):
+\[
+  \mathrm{TV} \;=\; \frac{\money{1263748}}{0.08} \;\approx\; \money{15800000}.
+\]
+Añadir el valor presente del valor terminal (\(\approx\money{9400000}\) después de descontar
+5 años al \qty{11}{\percent}) a la suma de los años explícitos da un valor de empresa
+\(\approx\money{12800000}\). El valor terminal representa el \qty{74}{\percent} del total ---
+es una apuesta por el estado estacionario, no por los próximos cinco años.
+\end{example}
+
+El análisis de escenarios mediante \cref{eq:scenario-ev} convierte esta estimación puntual en
+una distribución ponderada por probabilidades. Tres escenarios --- pesimista (\(p=0.25\), EV
+\money{8000000}), base (\(p=0.50\), EV \money{15000000}), optimista (\(p=0.25\), EV
+\money{28000000}) --- arrojan:
+\[
+  EV^* \;=\; 0.25\times\money{8000000}
+           + 0.50\times\money{15000000}
+           + 0.25\times\money{28000000}
+         \;=\; \money{16500000}.
+\]
+La brecha de \money{3700000} entre el DCF de un solo punto (\money{12800000}) y el EV esperado
+(\money{16500000}) refleja el peso del escenario optimista: su diferencial al alza supera el del
+pesimista a la baja, de modo que ponderar por probabilidad eleva la expectativa por encima de la
+estimación conservadora. Capturar el escenario optimista --- efectos de red de plataforma ---
+es tan valioso como gestionar el riesgo del escenario pesimista de erosión del \emph{moat} por
+regulación de portabilidad de datos.
+
+\Cref{ch:operating-model} construye los flujos de caja libres explícitos del DCF desde cero en
+lugar de tomarlos como dados. \Cref{eq:cohort-revenue} apila la mecánica de supervivencia de
+cada cohorte mensual en un pronóstico de ARR --- el propio ARR de \money{4000000} es la
+producción de 38 meses de \num{200} nuevos clientes al mes con un \emph{churn} mensual del
+\qty{0.65}{\percent}. El modelo EBITDA de tres impulsores de \cref{eq:op-model} convierte luego
+el ARR y las tasas de costo en el FCF que alimenta \cref{eq:dcf}. Para el Año~3, con S\&M
+cayendo del \qty{50}{\percent} al \qty{35}{\percent} del ARR a medida que el canal madura, el
+margen EBITDA alcanza el \qty{+7}{\percent} y la puntuación Rule-of-40 sube a 37 ---
+acercándose al umbral de referencia. El análisis de sensibilidad mediante \cref{eq:sensitivity}
+muestra que un aumento de \money{100} en el CAC reduce el EBITDA anual en \money{240000};
+un aumento del \emph{churn} del \qty{0.35}{\percent} reduce el techo de ingresos en estado
+estacionario en \money{1400000} --- un orden de magnitud mayor que un año de gasto excesivo en
+CAC. El modelo operativo convierte estas sensibilidades en las trayectorias de FCF pesimista,
+base y optimista que \cref{eq:scenario-ev} pondera por probabilidad.
+
+\Cref{ch:fundraising-and-dilution} convierte el valor de empresa DCF de \money{12800000} en
+una valoración pre-money de la Serie~A. Los inversores no usan el DCF de forma aislada; aplican
+\cref{eq:arr-multiple} para anclar la pre-money a los comparables de mercado. Con ARR de
+\money{4000000} y una puntuación Rule-of-40 de 15 (Año~1), el múltiplo de mercado se descuenta
+de \(8\times\) a \(6\times\), dando una pre-money implícita de mercado de \money{24000000} ---
+cómodamente entre los escenarios base (\money{15000000}) y optimista (\money{28000000}) de
+\cref{eq:scenario-ev}. La estimación puntual DCF de \money{12800000} sirve así como piso
+conservador; el EV ponderado por probabilidad de \money{16500000} y el múltiplo de mercado
+\(6\times\) se sitúan ambos por encima de él. El SAFE pendiente ---
+\money{500000} a un cap de \money{5000000}, descuento del \qty{20}{\percent}
+(\cref{eq:safe-conversion}) --- convierte al cap, dando al inversor SAFE el \qty{10}{\percent}
+pre-Serie~A, antes de que se admita el nuevo dinero institucional. Un \emph{runway} de 8 meses
+frente a un proceso de 4--6 meses significa que el disparador de captación de fondos ya se ha
+cruzado: \cref{eq:runway} con \money{2500000} en caja y \money{310000} de \emph{burn} neto no
+deja margen para el retraso.
+
+\textcite{damodaran2012} ofrece el tratamiento más sistemático de la sensibilidad del valor
+terminal; \textcite{brealey2020} cubre el umbral de rentabilidad por escenarios como complemento
+al DCF de estimación puntual.
+
+%% ─────────────────────────────────────────────────────────────
+\section{Ejecución: restricciones e incentivos}\label{sec:capstone-execution}
+%% ─────────────────────────────────────────────────────────────
+
+El valor financiero es una afirmación de valor presente sobre la ejecución futura. El enfoque
+operativo pregunta si existen los procesos para materializarlo. \cref{eq:littles-law} en
+\cref{ch:operations} establece \(L = \lambda W\): con 40 operaciones abiertas en el
+\emph{pipeline} de mercado mediano y 10 cerradas al mes, el ciclo de ventas promedio es
+exactamente 4 meses. Comprimirlo a 2 meses requiere o bien reducir a la mitad el
+\emph{pipeline} (eliminando operaciones no calificadas) o duplicar la tasa de cierre ---
+pero no añadir personal SDR para inflar \(L\) mientras \(\lambda\) es fija, lo que
+alargaría \(W\) de forma mecánica.
+
+En el lado de la eficiencia del crecimiento, \cref{ch:business-models} proporciona dos pruebas
+en tiempo real. En un mes dado, la empresa SaaS añade \money{30000} en nuevo MRR y
+\money{20000} en expansión; pierde \money{5000} por contracción y \money{22000} por
+\emph{churn}. \cref{eq:quick-ratio} da:
+\[
+  \text{Quick Ratio} \;=\; \frac{\money{30000}+\money{20000}}{\money{5000}+\money{22000}}
+    \;=\; \frac{50000}{27000} \;\approx\; 1.85.
+\]
+El crecimiento es positivo pero el denominador (\money{27000} perdidos) casi compensa el flujo
+de expansión (\money{20000}), revelando que la base existente está cerca de auto-sabotearse. El
+principal cuello de botella es el \emph{churn}, no la adquisición de nuevos clientes.
+
+\cref{eq:rule40} confirma el perfil crecimiento-rentabilidad: con un crecimiento de ARR del
+\qty{30}{\percent} y un margen EBITDA de \(\qty{-15}{\percent}\), el Rule of 40 puntúa
+\(30 + (-15) = 15\) --- por debajo del umbral del \qty{40}{\percent} pero coherente con una
+fase de inversión eficiente en capital. \cref{eq:burn-multiple} con \money{1500000} de caja
+neta consumida frente a \money{1200000} de ARR neto nuevo da un múltiplo de \emph{burn} de
+\(1.25\times\), que es sólido: el negocio genera más de un dólar de ARR nuevo por cada dólar
+y cuarto consumido, muy por debajo del umbral de precaución de 2.
+
+El riesgo organizativo es la desalineación de incentivos que \cref{ch:organizational-behavior}
+denomina por el nombre de Kerr: recompensar lo que es medible (MRR bruto nuevo, volumen del
+\emph{funnel}) en lugar de lo que importa (beneficio económico neto, ROIC). Un equipo de ventas
+compensado por operaciones cerradas no tiene incentivos para evitar a los clientes mal encajados
+con alta probabilidad de \emph{churn}; un equipo de producto recompensado por la velocidad de
+características no tiene incentivos para construir la profundidad de integración que reduce el
+\emph{churn}. La gobernanza del consejo (\cref{sec:board-governance}) proporciona el respaldo
+estructural: un consejo constituido con miembros independientes, un comité de auditoría y
+compensación vinculada al ROIC a largo plazo --- no a las reservas trimestrales de ARR ---
+crea la arquitectura de supervisión que mantiene unida la lógica de incentivos de Kerr. Alinear
+los incentivos del consejo, la dirección y los colaboradores individuales con la métrica que
+unifica todo el sistema --- el ROIC, o su proxy por cliente LTV:CAC --- resuelve la
+desalineación de forma estructural en lugar de mediante supervisión gerencial.
+
+%% ─────────────────────────────────────────────────────────────
+\section{El fundador: influencia, narrativa y equipo}\label{sec:capstone-founder}
+%% ─────────────────────────────────────────────────────────────
+
+Cada número anterior es producido por personas a las que el fundador debe persuadir, financiar
+y liderar. La Parte~VII trata esas capacidades no como habilidades blandas sino como insumos
+para la misma prueba ROIC --- cada una mueve una variable que los capítulos de finanzas
+mantienen fija.
+
+La persuasión y la negociación (\cref{ch:persuasion-influence}) fijan dónde, dentro del rango
+de negociación, se captura el valor. El término de la Serie~A es una negociación cuya zona de
+posible acuerdo (ZOPA, \cref{eq:zopa}) va desde el valor de reserva del fundador
+(\cref{eq:reservation}) --- el piso DCF de \money{15000000} por debajo del cual captar fondos
+destruye más propiedad de la que compra --- hasta el techo del inversor cerca del caso
+optimista de \money{28000000}. Dónde se fija el precio de la ronda dentro de esa banda es
+excedente distributivo puro: un fundador que ancla en el comparable de \(6\times\) ARR en lugar
+del caso pesimista retiene millones en propiedad que ninguna mejora operativa podría igualar.
+La ecuación de confianza del mismo capítulo (\cref{eq:trust}) rige el lado de la demanda ---
+los compradores que llegan pre-confiados a través de referencias convierten por debajo del
+objetivo de CAC de \money{600} --- y es la razón por la que el género manipulador de las «leyes
+del poder» se rechaza de plano: la confianza erosionada eleva el \emph{churn} y colapsa el
+propio CLV sobre el que descansa todo el modelo.
+
+La narrativa (\cref{ch:storytelling-communication}) es el mecanismo de entrega de esa persuasión.
+El \emph{pitch} que convierte el piso de \money{15000000} en una pre-money financiada de
+\money{24000000} es una narrativa, no una hoja de cálculo leída en voz alta; la misma disciplina
+narrativa eleva la conversión de prueba a pago en la puerta vinculante del \emph{funnel} de
+\cref{eq:funnel-chain} y siembra el boca a boca que reduce el CAC mixto. Una propuesta de valor
+real que no puede transmitirse es, para el mercado, indistinguible de una que no existe.
+
+La psicología del fundador (\cref{ch:founder-psychology}) es la disciplina que mantiene unido
+el plan a lo largo de los ocho meses de \emph{runway}, y sus afirmaciones son las que sobreviven
+al metaanálisis: la autoeficacia predice el rendimiento, los objetivos específicos y difíciles
+superan a la intención vaga, el capital humano relevante para la tarea predice el éxito del
+emprendimiento más que la experiencia genérica, y los hábitos de intención de implementación
+convierten el propósito en rutina. Estos son precisamente los que sostienen la disciplina de
+ejecución que \cref{eq:quick-ratio} y \cref{eq:burn-multiple} miden. El valor de empresa de
+\money{12800000} se construye a partir de curvas de supervivencia de cohortes, densidad de señal
+en la fase de aprendizaje y una distribución de escenarios explícita --- lo realiza un fundador
+que instala esas rutinas, no uno que visualiza el resultado.
+
+El liderazgo (\cref{ch:leadership-charisma}) cierra el bucle de vuelta al ROIC a través de la
+plantilla. El liderazgo transformacional y las tácticas de carisma entrenables que
+\cref{ch:storytelling-communication} suministra reclutan y retienen a los cinco ejecutivos de
+cuenta que asume el modelo operativo de \cref{ch:operating-model}; la seguridad psicológica
+determina si el hallazgo de reducción de \emph{churn} de la sección de ejecución se implementa
+o se ignora silenciosamente; y las decisiones del dilema del fundador sobre los repartos de
+\emph{equity} de cofundadores establecen la \emph{cap table} que \cref{eq:safe-conversion} diluye
+después. Un equipo que no puede ser liderado con \money{4000000} de ARR no puede entregar el
+plan que está valorando la pre-money de \money{24000000}. El liderazgo no es adyacente al
+modelo financiero --- es el mecanismo que produce el NOPAT.
+
+%% ─────────────────────────────────────────────────────────────
+\section{Datos, IA y ESG: los añadidos de 2026}\label{sec:capstone-new}
+%% ─────────────────────────────────────────────────────────────
+
+Los tres temas añadidos con mayor prominencia en la edición de 2026 --- los datos como activo
+estratégico (\cref{sec:data-asset}), la gobernanza de IA (\cref{sec:ai-governance}) y el ESG
+como disciplina de asignación de capital (\cref{sec:esg-capital}) --- no son agendas estratégicas
+separadas. Se reducen a la misma prueba ROIC\,>\,WACC que el resto del libro aplica a cada
+decisión. Un volante de datos es estratégicamente valioso solo si genera mejoras de producto que
+mueven el NOPAT hacia arriba o permiten a la empresa defender una prima de precio que sostiene el
+margen de contribución; si no hace ninguna de las dos, es un costo de infraestructura disfrazado
+de \emph{moat}. La gobernanza de IA vale su sobrecarga si y solo si el valor esperado de los
+errores detectados supera el costo de revisión --- precisamente el cálculo de NPV que el libro
+aplica a cualquier decisión de inversión, y exactamente el cálculo que \cref{sec:ai-governance}
+establece con el CLV como denominador del valor en riesgo. El gasto en ESG crea beneficio
+económico solo a través de dos canales específicos: reducir el WACC bajando la prima de riesgo
+que los inversores asignan a la disrupción regulatoria o de talento, o mejorar el NOPAT
+reduciendo el \emph{churn} (retención de talento) o elevando el poder de fijación de precios
+(confianza de marca). Con \money{4000000} de ARR, el canal dominante es la reducción del WACC
+mediante la fricción en la captación de fondos de la Serie~A --- la calidad de los datos ESG es
+una puerta de diligencia, no un ejercicio altruista. Los tres temas son estratégicos solo cuando
+mueven el NOPAT, el WACC o el capital invertido. Cuando no lo hacen, son costos.
+
+%% ─────────────────────────────────────────────────────────────
+\section{La síntesis}\label{sec:capstone-synthesis}
+%% ─────────────────────────────────────────────────────────────
+
+La columna vertebral de creación de valor en \cref{fig:value-spine} no es una metáfora; es una
+cadena causal. Se comienza por la izquierda.
+
+\emph{Los Fundamentos} establecen la prueba: el ROIC debe superar el WACC. Esa prueba es
+abstracta hasta que la empresa rellena sus propios números. Para esta empresa, el veredicto es
+\money{270000} de beneficio económico anual --- positivo, pero no seguro. El diferencial es del
+\qty{9}{\percent} hoy; la pregunta es si persiste.
+
+\emph{La economía del cliente} da a la prueba su contenido operativo. El segmento de mercado
+mediano se eligió porque su potencial de LTV (\money{3150}) proporciona suficiente margen sobre
+un CAC de \money{600} para sostener una razón de 5,25× --- la expresión por cliente del ROIC\,>\,WACC.
+El trabajo de marca reduce el CAC efectivo con el tiempo; la disciplina de precios mantiene la
+estructura de margen que genera los \money{252}/año de contribución. Sin ambas, el CLV se
+contrae y la razón cae hacia el piso de 3×.
+
+\emph{La adquisición} convierte el modelo de economía de unidad en demanda real. El \emph{funnel}
+entrega 200 nuevos clientes al mes al costo objetivo, pero solo porque la fase de aprendizaje de
+la plataforma tiene suficiente densidad de señal para pujar de forma inteligente. La máquina de
+adquisición es frágil: fragmentar el presupuesto entre diez conjuntos de anuncios, o fijar el
+objetivo de CPA por debajo del mínimo de la fase de aprendizaje, y todo el motor se detiene. La
+disciplina de atribución --- iROAS en lugar de ROAS de último clic --- garantiza que la eficiencia
+reportada es real, no tomada prestada de la demanda orgánica.
+
+\emph{La estrategia} determina cuánto duran los resultados económicos. Un producto sin
+\emph{moat} gana su diferencial ROIC\,>\,WACC hasta que un competidor replica las características;
+típicamente ese período es de dos a cuatro años. Los costos de cambio por integración y el
+naciente efecto de red del mercado de proveedores amplían el período elevando el costo de la
+deserción y capitalizando el valor con cada nuevo nodo. Estos no son extras convenientes; son el
+mecanismo por el cual la tasa de crecimiento terminal del \qty{3}{\percent} en el DCF es
+defendible en lugar de arbitraria. La estrategia fija $g$.
+
+\emph{Las finanzas} descuentan todo el sistema a la tasa apropiada, traduciendo la historia
+operativa en un valor de empresa. El DCF no es un modelo de valoración; es una disciplina que
+fuerza cada supuesto sobre crecimiento, margen y durabilidad en un único número que puede
+someterse a pruebas de estrés. El análisis de escenarios revela que el caso pesimista ---
+la regulación colapsa el \emph{moat} de costos de cambio, el crecimiento se detiene, el EV cae
+a \money{8000000} --- es un evento con probabilidad del \qty{25}{\percent}. Gestionar ese riesgo
+explícitamente, en lugar de asumir el caso base, es la diferencia entre las finanzas como función
+de reporte y las finanzas como herramienta estratégica.
+
+\emph{La ejecución} es donde la estrategia y las finanzas se realizan o no. El \emph{quick ratio}
+de 1,85 y el múltiplo de \emph{burn} de 1,25 no son calificaciones; son coordenadas. Ubican al
+negocio en la frontera de eficiencia y revelan la siguiente restricción: la reducción del
+\emph{churn}, no el volumen de nueva adquisición, es la palanca que mueve ambas métricas hacia
+territorio élite. La Ley de Little dice que el ciclo de ventas de 4 meses puede reducirse a 2
+meses, pero solo reduciendo el \emph{pipeline} no calificado, no añadiendo vendedores a un
+\emph{pipeline} que el equipo de cierre no puede liquidar más rápido. Las estructuras de
+incentivos deben reforzar estos hallazgos, o la organización optimizará la métrica por la que
+se le paga --- que rara vez es la métrica que importa.
+
+\emph{El fundador} es la variable que el modelo no puede mantener constante. La persuasión fija
+dónde en el rango de negociación se fija el precio de la ronda; la narrativa decide si el
+\emph{pitch} y el \emph{funnel} convierten; la psicología suministra la disciplina --- y el
+rechazo del pensamiento ilusorio --- que mantiene el pronóstico honesto; el liderazgo recluta y
+retiene al equipo que convierte el plan en NOPAT. Estos no son un epílogo más blando a los
+capítulos financieros; son los insumos humanos de cada número que la columna vertebral sostiene.
+
+El bucle completo se cierra en el ROIC. La posición determina si los clientes están dispuestos
+a pagar el precio que genera el margen de contribución. La economía del cliente determina si el
+costo de adquisición es recuperable dentro de la vida del producto. La eficiencia de adquisición
+determina si el CAC es realmente \money{600} o silenciosamente \money{900}. La durabilidad
+estratégica determina si el margen y el crecimiento persisten lo suficiente para justificar el
+valor terminal que domina el DCF. La disciplina de ejecución determina si el plan llega a tiempo.
+Cada instrumento del libro apunta a la misma lectura: \(\mathrm{ROIC}>\mathrm{WACC}\) ---
+sostenido, no solo hoy, sino a través del horizonte terminal que el mercado está valorando.
+
+\textcite{brealey2020}, \textcite{damodaran2012}, \textcite{gupta2004customer},
+\textcite{porter1985} y \textcite{osterwalder2010} son los cinco pilares cuyos \emph{frameworks}
+este capítulo entrelaza. La integración es la contribución del libro; las fuentes son de ellos.

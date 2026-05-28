@@ -1,0 +1,370 @@
+\chapter{Estados Financieros y Contabilidad}\label{ch:financial-statements}
+
+% Alcance: el modelo de tres estados y sus vínculos, devengo vs. efectivo (ingreso diferido),
+%   contabilidad de costos (margen de contribución vs. margen bruto, ABC), el puente estado→ROIC.
+%   Capítulo NUEVO (cierra la brecha de mayor impacto: los cap. 19–22 usan NOPAT/FCF/EBITDA sin definición).
+% Prerrequisito de \cref{ch:corporate-finance-core}. FIJA la estructura de costos que produce el
+%   42% de margen de contribución / $21/mes de la empresa de referencia --- reconciliar, no contradecir.
+% Borrador según estilo de la obra: prosa continua + set-offs example/admonition; ejemplos con la SaaS de referencia.
+
+Cada número de valoración en este libro --- el NOPAT de \money{600000}, el capital invertido de
+\money{3000000}, el ROIC del \qty{20}{\percent}, el CLV de \money{3150} --- se deriva de los
+estados financieros. Los operadores que no pueden rastrear esas cifras hasta los estados de
+resultados, balances generales y estados de flujo de efectivo trabajan por fe, no por análisis.
+Este capítulo construye el sustrato contable que el resto del libro presupone: cómo se vinculan
+los tres estados, por qué el devengo y el efectivo divergen, cómo la estructura de costos determina
+el margen de contribución que gobierna los precios y la economía de adquisición, y cómo convertir
+la contabilidad estatutaria en los insumos de NOPAT y flujo de caja libre que alimentan la
+valoración por descuento de flujos.
+
+\section{El Modelo de Tres Estados}\label{sec:three-statements}
+% complejidad: 4
+
+¿Cómo fluye una venta de hoy a través de la posición financiera de una empresa durante los
+próximos doce meses? La mayoría de los egresados de escuelas de negocios puede nombrar los tres
+estados financieros; son menos quienes pueden rastrear una sola transacción a través de los tres
+simultáneamente, y menos aún quienes comprenden por qué ese vínculo importa para la valoración.
+El estado de resultados registra ingresos y gastos durante un período. El balance general registra
+lo que la empresa posee y debe en un momento dado. El estado de flujo de efectivo reconcilia ambos
+rastreando el movimiento real de efectivo. Ninguno de los tres es interpretable de manera aislada;
+los tres son necesarios para obtener una imagen completa.
+
+La arquitectura del vínculo es precisa. La utilidad neta --- la línea inferior del estado de
+resultados --- fluye directamente a las utilidades retenidas, la cuenta acumulada de capital en el
+balance general; cada dólar de beneficio no distribuido como dividendo se acumula allí. El estado
+de flujo de efectivo parte de la utilidad neta y la ajusta por dos distorsiones sistemáticas: los
+cargos no monetarios (principalmente depreciación y amortización, que reducen la utilidad pero no
+consumen efectivo) y los cambios en el capital de trabajo (cuentas por cobrar, cuentas por pagar e
+inventario que desplazan el momento en que el efectivo se recibe respecto al reconocimiento de
+ingresos). El gasto de capital fluye de la sección de inversión del estado de flujo de efectivo
+hacia las propiedades, planta y equipo del balance general, incrementando la base de activos que
+genera ingresos futuros. La deuda obtenida o reembolsada aparece en la sección de financiamiento y
+modifica directamente el lado del pasivo del balance general.
+
+Estos cuatro vínculos definen la identidad de efectivo para cualquier período:
+\begin{equation}\label{eq:three-statement-link}
+  \text{Cash}_t \;=\; \text{Cash}_{t-1} \;+\; \mathrm{CFO}_t \;+\; \mathrm{CFI}_t \;+\; \mathrm{CFF}_t,
+\end{equation}
+donde CFO es el \emph{cash flow} de operaciones (utilidad neta ajustada por D\&A y cambios en
+capital de trabajo), CFI es el \emph{cash flow} de inversión (principalmente gasto de capital,
+negativo cuando se invierte), y CFF es el \emph{cash flow} de financiamiento (emisión de deuda
+positiva, pago negativo). La restricción es aritmética contable: las tres categorías de actividad
+deben sumar el cambio en efectivo, \(\text{Cash}_t - \text{Cash}_{t-1}\). Una empresa puede
+operar con CFO negativo de manera indefinida sólo si CFF --- capital externo de inversionistas o
+prestamistas --- es suficientemente grande para compensarlo. Esta es precisamente la condición de
+fase de crecimiento que importa para las empresas SaaS en etapa temprana.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{three-statement}
+  \caption{El vínculo de los tres estados. La utilidad neta fluye a las utilidades retenidas
+    (capital); D\&A se añade de vuelta en CFO; CapEx reduce CFI e incrementa PP\&E (neto de
+    depreciación); los recursos de deuda fluyen a través de CFF hacia el lado del pasivo del
+    balance general. \Cref{eq:three-statement-link} captura la identidad de efectivo resultante.}
+  \label{fig:three-statement}
+\end{figure}
+
+\begin{example}[Año 1 de la SaaS: quema de efectivo en fase de crecimiento]
+La empresa de referencia cierra el Año~0 con \num{6667} clientes de pago (ARR \money{4000000} a
+\money{600}/cliente/año). En el Año~1 incorpora \num{2400} nuevos clientes (\num{200}/mes a
+\money{600} de CAC), cerrando el año con \num{9067} clientes y un ARR de aproximadamente
+\money{5440000}. Trazando los tres estados:
+
+\medskip
+\textit{Estado de resultados.} Ingresos anuales \money{4000000} (cohorte del Año~1; los nuevos
+clientes aportan un año parcial). COGS variable al \qty{30}{\percent} de los ingresos
+(\money{15}/mes por cliente) genera una utilidad bruta de \money{2800000} (\qty{70}{\percent} de
+margen bruto). Los costos operativos fijos --- ingeniería, G\&A, producto --- suman
+aproximadamente \money{1940000}. El EBIT es, por lo tanto, \money{860000} y, con una tasa
+impositiva del \qty{30}{\percent}, la utilidad neta es aproximadamente \money{602000}.
+
+\medskip
+\textit{Balance general.} La utilidad neta de \money{602000} incrementa las utilidades retenidas.
+La empresa gasta \money{300000} en servidores e infraestructura de software (CapEx), aumentando
+PP\&E por ese monto neto de \money{60000} de depreciación (\money{240000} de adición neta).
+También invierte \money{1440000} en adquisición de clientes (\num{2400} clientes a \money{600}
+de CAC), financiado con efectivo operativo.
+
+\medskip
+\textit{Estado de flujo de efectivo.} CFO comienza con la utilidad neta de \money{602000}; se
+agrega D\&A de \money{60000}; se resta el incremento en cuentas por cobrar derivado de la
+base de clientes en crecimiento (\money{40000}), produciendo un CFO de aproximadamente
+\money{622000}. CFI es \money{-300000} (CapEx de infraestructura). El gasto de adquisición de
+clientes de \money{1440000} es una salida de efectivo operativa que se ubica dentro del CFO
+(gasto de ventas y \emph{marketing}). Aplicando \cref{eq:three-statement-link}, el movimiento
+neto de efectivo es \money{622000} + \money{-300000} = \money{322000} antes del gasto de
+adquisición; después de la salida de CAC de \money{1440000}, la empresa tiene un efectivo neto
+negativo de aproximadamente \money{1118000} en el año.
+
+\medskip
+La implicación clave: el estado de resultados reporta \money{602000} de utilidad neta mientras que
+la empresa consumió en realidad más de \money{1000000} de efectivo. El negocio es rentable en
+términos de devengo en su sentido de NOPAT en estado estacionario --- \cref{sec:statement-analysis}
+derivará ese \money{600000} con precisión --- pero tiene flujo de caja negativo en el Año~1 porque
+la inversión en nuevos clientes (una salida de efectivo hoy) precede a los ingresos que esos
+clientes generarán (una entrada de efectivo distribuida a lo largo de años futuros). La quema de
+efectivo en fase de crecimiento no es señal de un negocio roto; es la consecuencia aritméticamente
+inevitable del gasto de adquisición por adelantado. El modelo de tres estados hace esto visible;
+el P\&L por sí solo lo oscurece.
+\end{example}
+
+\begin{admonition}{Nota}
+La adición de D\&A en el CFO se interpreta erróneamente con frecuencia como «dinero que la empresa
+recupera». No lo es. D\&A es un cargo no monetario --- el efectivo salió cuando se compró el activo
+(registrado como CFI en ese momento). La adición simplemente revierte una deducción contable que
+redujo la utilidad neta sin consumir nuevo efectivo en el período. Confundir esta adición con
+efectivo libre es uno de los errores más comunes en el análisis financiero de primera instancia.
+\end{admonition}
+
+La arquitectura de los tres estados es el esqueleto sobre el que se construyen todos los capítulos
+que siguen. \textcite{libby2022financial} ofrecen el tratamiento canónico del análisis de
+transacciones y el enfoque de bloques constructivos que rastrea entradas individuales a través de
+los tres estados. \textcite{weygandt2019financial} desarrollan el mismo marco con atención
+detallada al método indirecto del estado de flujo de efectivo utilizado por la mayoría de las
+empresas públicas. Las implicaciones de inversión del vínculo --- y la derivación del flujo de
+caja libre a partir de estos estados --- se desarrollan en \textcite{brealey2020}.
+
+\section{Contabilidad de Devengo vs. Efectivo}\label{sec:accrual}
+% complejidad: 3
+
+¿Cuándo existe el ingreso? La respuesta depende completamente del sistema contable que se utilice,
+y la elección tiene consecuencias materiales para cualquier empresa SaaS que cobra suscripciones
+por adelantado. Bajo la \emph{contabilidad de efectivo}, el ingreso se reconoce en el momento en
+que se recibe el efectivo. Bajo la \emph{contabilidad de devengo} --- el sistema exigido por GAAP e
+IFRS para cualquier empresa de tamaño significativo --- el ingreso se reconoce cuando se cumple la
+obligación de servicio, independientemente de cuándo cambie de manos el efectivo. La brecha entre
+ambos sistemas aparece en el balance general como ingreso diferido: un pasivo que representa el
+efectivo recibido por servicios aún no prestados.
+
+Para un negocio de suscripción con pago anual anticipado, la identidad en cualquier punto del año
+es:
+\begin{equation}\label{eq:accrual-revenue}
+  \text{Cash received} \;=\; \text{Revenue recognised} \;+\; \Delta\text{Deferred Revenue},
+\end{equation}
+donde \(\Delta\text{Deferred Revenue}\) es el incremento en el pasivo de ingreso diferido durante
+el período. El 1~de enero, el efectivo cobrado anualmente es igual al ingreso reconocido (cero días
+transcurridos) más el monto total diferido; el 31~de diciembre el saldo diferido es cero y todo el
+ingreso ha sido reconocido. La ecuación se cumple en cada momento intermedio. \Cref{eq:accrual-revenue}
+es una identidad contable, no un modelo --- no puede violarse.
+
+\begin{example}[Pago anual anticipado: efectivo vs. P\&L]
+El 1~de enero, \num{100} clientes prepagan \money{600} cada uno por un año de acceso al software.
+El efectivo recibido es \money{60000}. Bajo contabilidad de devengo (\cref{eq:accrual-revenue}),
+el P\&L de enero puede reconocer sólo un mes de servicio prestado:
+\[
+  \text{Ingreso reconocido en enero} \;=\; \frac{\money{60000}}{12} \;=\; \money{5000}.
+\]
+Los \money{55000} restantes quedan en el balance general como ingreso diferido --- un pasivo,
+porque la empresa aún debe once meses de servicio. Aplicando \cref{eq:accrual-revenue}:
+\[
+  \money{60000} \;=\; \money{5000} \;+\; \money{55000}. \checkmark
+\]
+Para el 31~de diciembre, el saldo de ingreso diferido ha descendido a cero y los \money{60000}
+completos han sido reconocidos como ingreso. El efectivo no volvió a cambiar; sólo la clasificación
+contable se desplazó. El P\&L anual y el estado de flujo de efectivo coinciden al cierre del año,
+pero los P\&L mensuales lucen radicalmente distintos de los flujos de efectivo mensuales durante
+todo el año --- una distinción relevante para los convenios financieros, los reportes al consejo y
+cualquier inversionista que lea un estado financiero a mitad de año.
+
+Los mecanismos aquí son los mismos que gobiernan el MRR y el ARR en \cref{sec:saas-mrr}: el pago
+anual anticipado es una forma de financiamiento de capital de trabajo por parte de los clientes, y
+el saldo de ingreso diferido es la obligación flotante de la empresa de prestar servicio futuro.
+\end{example}
+
+\begin{admonition}{Advertencia}
+El pago anual anticipado es una fuente de capital de trabajo \emph{favorable} para una empresa SaaS:
+los clientes financian las operaciones por adelantado. Esa ventaja desaparece de inmediato si la
+empresa cambia a facturación mensual o si el \emph{churn} se acelera antes de que se cumpla la
+obligación. Los inversionistas que leen un balance general de SaaS deben tratar un saldo elevado de
+ingreso diferido como señal de calidad sólo cuando la retención es alta; un saldo diferido elevado
+junto con un \emph{churn} creciente es un déficit de ingresos futuros que se oculta como un pasivo
+presente.
+\end{admonition}
+
+Las normas de reconocimiento de ingresos que rigen los negocios de suscripción se formalizaron
+bajo ASC~606 (US~GAAP) e IFRS~15 (norma internacional), ambas con una transición de un marco
+basado en reglas a un modelo basado en principios de obligaciones de desempeño. Para contratos SaaS
+de múltiples elementos --- servicios de implementación agrupados con licencias recurrentes ---
+la asignación del precio de transacción entre obligaciones requiere criterio que puede afectar
+materialmente el momento del reconocimiento de ingresos. \textcite{weygandt2019financial} y
+\textcite{libby2022financial} abordan el modelo de cinco pasos de ASC~606; las implicaciones en el
+capital de trabajo para los operadores de suscripción se desarrollan en el modelo operativo de
+\cref{ch:operating-model}.
+
+\section{Contabilidad de Costos: Margen de Contribución y Asignación de Costos}\label{sec:cost-accounting}
+% complejidad: 3
+
+¿Cuánto cuesta en realidad un cliente más, y cuánto aporta en realidad un cliente más? El margen
+bruto y el margen de contribución pretenden responder esta pregunta, y darán números distintos para
+el mismo negocio. Comprender qué número usar --- y cuándo --- es una de las distinciones más
+prácticamente importantes de la contabilidad gerencial.
+
+El margen bruto es una métrica estatutaria regulada por GAAP: ingresos menos el COGS, donde el
+COGS incluye tanto los costos variables de producción como cualquier costo fijo indirecto asignado
+a cada unidad. Para una empresa SaaS, el COGS es principalmente alojamiento, infraestructura y
+costos directos de soporte técnico --- la fracción variable de atender a cada cliente. El margen de
+contribución es una métrica gerencial no-GAAP: ingresos menos \emph{todos} los costos variables,
+independientemente de si esos costos se ubican en el COGS, en ventas o en operaciones. La
+distinción importa porque las empresas SaaS tienen costos variables fuera del COGS --- tarifas de
+procesamiento de pagos, mano de obra de éxito del cliente vinculada al número de clientes, costos
+variables de soporte --- que son costos económicos reales de cada cliente incremental, pero
+invisibles en la línea de margen bruto.
+
+La ecuación del margen de contribución es:
+\begin{equation}\label{eq:contribution-margin}
+  \mathrm{CM} \;=\; \text{Revenue} \;-\; \text{Total variable costs},
+  \qquad
+  \mathrm{CM\%} \;=\; \frac{\mathrm{CM}}{\text{Revenue}}.
+\end{equation}
+Este es el umbral que debe superarse antes de que los costos fijos aporten a la utilidad. Cada
+unidad vendida a un precio superior a su costo variable contribuye algo a cubrir los gastos fijos
+y, en última instancia, a generar NOPAT; fijar precios por debajo del costo variable destruye
+valor en cada unidad, independientemente del volumen.
+
+Para una asignación de costos más precisa --- particularmente cuando múltiples líneas de producto o
+segmentos de clientes comparten infraestructura y recursos de soporte --- el costeo basado en
+actividades (ABC) asigna costos a los productos en proporción a su consumo real de cada actividad
+de costo indirecto, en lugar de distribuir los costos uniformemente por número de empleados o por
+ingresos. Un costo unitario ABC ilustrativo para un segmento de clientes determinado es:
+\begin{equation}\label{eq:abc-cost}
+  \text{Unit cost}_{\text{ABC}} \;=\; \sum_{a} \frac{\text{Cost pool}_a}{\text{Activity volume}_a} \times \text{Activity consumed by unit},
+\end{equation}
+donde cada grupo de costos \(a\) representa una actividad indirecta distinta (aprovisionamiento de
+servidores, resolución de tickets de soporte, procesamiento de pagos). El ABC evita que los
+productos de alto volumen y bajo costo subsidien a los de bajo volumen y alto costo, algo que el
+análisis convencional de margen bruto obscurece sistemáticamente \parencite{datar2025horngrens}.
+
+\begin{example}[Reconciliando el margen bruto del 70\% y el margen de contribución del 42\%]
+La empresa cobra \money{50}/mes por cliente. COGS variable --- costos de alojamiento e
+infraestructura que escalan directamente con el número de clientes --- son \money{15}/mes por
+cliente:
+\[
+  \text{Margen bruto} \;=\; \frac{\money{50} - \money{15}}{\money{50}} \;=\; \frac{\money{35}}{\money{50}} \;=\; \qty{70}{\percent}.
+\]
+Pero la empresa también tiene costos variables adicionales fuera del COGS: personal de soporte al
+cliente (variable con el volumen de tickets, que escala con el número de clientes), tarifas de
+procesamiento de pagos (un porcentaje de cada transacción) y cobertura de éxito del cliente
+(plantilla vinculada al número de clientes). Estos suman aproximadamente \money{14}/mes por
+cliente. El costo variable total por cliente por mes es, por lo tanto, \money{15} + \money{14} =
+\money{29}. Aplicando \cref{eq:contribution-margin}:
+\[
+  \mathrm{CM} \;=\; \money{50} \;-\; \money{29} \;=\; \money{21}/\text{mes},
+  \qquad
+  \mathrm{CM\%} \;=\; \frac{\money{21}}{\money{50}} \;=\; \qty{42}{\percent}.
+\]
+Anualmente, cada cliente contribuye \money{21} \(\times\) 12 = \money{252}/año a cubrir los costos
+fijos y generar NOPAT.
+
+La implicación para la fijación de precios: la empresa debe cobrar más de \money{29}/mes en cada
+plan para evitar destruir valor. El precio de \money{50} supera ese umbral por \money{21} --- un
+margen real, aunque no extravagante. Un competidor que fije precio en \money{35}/mes creyendo que el
+margen bruto es la restricción vinculante (\money{35} \(>\) \money{15} de COGS, aparentemente
+seguro) en realidad está fijando un precio por debajo del costo variable total y pierde
+\money{6}/mes por cliente a escala.
+\end{example}
+
+\begin{admonition}{Advertencia}
+El margen de contribución no es el margen bruto, y confundirlos produce decisiones de fijación de
+precios y adquisición sistemáticamente erróneas. El margen bruto (\qty{70}{\percent}) sólo descuenta
+el COGS variable de los ingresos; el margen de contribución (\qty{42}{\percent}) descuenta
+\emph{todos} los costos variables. La brecha del \qty{28}{\percent} --- \money{14}/mes por cliente
+en esta empresa --- representa costos económicos reales que la línea de margen bruto simplemente no
+captura. Un cálculo de \emph{payback} de CAC realizado con el margen bruto sobreestima la velocidad
+a la que se recupera el costo de adquisición; el \emph{payback} correcto utiliza el margen de
+contribución. \Cref{eq:cac-payback} en los capítulos de economía del cliente implementa esto
+correctamente.
+\end{admonition}
+
+El principio de «distintos costos para distintos propósitos» \parencite{datar2025horngrens} se
+aplica directamente: el margen bruto es la métrica correcta para el reporte estatutario y para
+comparar la eficiencia de la infraestructura entre empresas SaaS homólogas; el margen de
+contribución es la métrica correcta para la fijación de precios, las decisiones de adquisición y
+el análisis de umbral de rentabilidad. \textcite{weygandt2019financial} abordan el tratamiento GAAP
+del COGS; las aplicaciones de la toma de decisiones gerenciales del análisis de margen de
+contribución se desarrollan en detalle en \textcite{datar2025horngrens}.
+
+\section{Análisis de Estados: Del Registro Contable al ROIC}\label{sec:statement-analysis}
+% complejidad: 4
+
+Los estados financieros sirven a propósitos de reporte estatutario; la valoración requiere medidas
+económicas. La transición de uno a otro no es cosmética. La utilidad neta según GAAP está
+distorsionada por las decisiones de financiamiento (deducciones de intereses), efectos fiscales y
+asientos contables no monetarios. El valor empresarial descansa sobre los flujos de caja operativos
+que pertenecen a \emph{todos} los proveedores de capital, con independencia de cómo esté financiada
+la empresa. Convertir la contabilidad en economía requiere dos pasos: aislar la utilidad operativa
+no apalancada (NOPAT) y luego ajustar por el efectivo que las actividades de inversión consumen o
+liberan (FCF).
+
+NOPAT elimina el efecto del apalancamiento financiero para revelar lo que el negocio gana sobre sus
+activos operativos. FCF ajusta entonces el NOPAT por el cargo de depreciación no monetario (se
+agrega de vuelta, ya que el efectivo salió cuando se compró el activo, no cuando se deprecia) y por
+el efectivo consumido por la nueva inversión de capital (CapEx) y los cambios en el capital de
+trabajo (\(\Delta\)WC). El puente es:
+\begin{equation}\label{eq:nopat-bridge}
+  \mathrm{NOPAT} \;=\; \mathrm{EBIT} \times (1 - t),
+  \qquad
+  \mathrm{FCF} \;=\; \mathrm{NOPAT} \;+\; \mathrm{D\&A} \;-\; \Delta\mathrm{WC} \;-\; \mathrm{CapEx},
+\end{equation}
+donde \(t\) es la tasa impositiva efectiva, \(\Delta\mathrm{WC}\) es el incremento en el capital de
+trabajo neto (positivo cuando el negocio consume efectivo para financiar el crecimiento), y CapEx es
+el gasto bruto de capital en activos de larga vida. ROIC es NOPAT dividido entre el capital
+invertido (IC), el capital total --- \emph{equity} más deuda que genera intereses --- desplegado
+para generar ese beneficio: \(\mathrm{ROIC} = \mathrm{NOPAT} / \mathrm{IC}\). Cuando el ROIC
+supera el costo de ese capital (\cref{eq:economic-profit}), la empresa crea valor económico; cuando
+cae por debajo, lo destruye, independientemente de lo que reporte la utilidad neta.
+
+\begin{example}[Derivación de NOPAT, FCF y ROIC desde el estado de resultados]
+Del ejemplo de los tres estados anterior, el estado de resultados de la empresa muestra un EBIT de
+\money{860000} en el estado estacionario de \num{6667} clientes (ARR \money{4000000}, COGS
+variable \money{1200000} al \qty{30}{\percent} de los ingresos, gastos operativos variables
+adicionales \money{1120000}, gastos operativos fijos \money{820000} incluyendo D\&A de
+\money{60000}). Aplicando \cref{eq:nopat-bridge} con una tasa impositiva del \qty{30}{\percent}:
+\[
+  \mathrm{NOPAT} \;=\; \money{860000} \times (1 - 0.30) \;=\; \money{860000} \times 0.70 \;=\; \money{602000} \;\approx\; \money{600000}.
+\]
+Este es el NOPAT de \money{600000} al que se hace referencia a lo largo del libro.
+
+Para derivar FCF, se agrega D\&A (\money{60000}) y se asume un CapEx de \money{60000} en estado
+estacionario (sólo reposición, de modo que CapEx equivale a D\&A) y un cambio en capital de trabajo
+\(\Delta\mathrm{WC} = 0\) en estado estacionario (el efectivo de los nuevos clientes se cobra
+mensualmente, sin acumulación significativa de cuentas por cobrar):
+\[
+  \mathrm{FCF} \;=\; \money{600000} \;+\; \money{60000} \;-\; \money{0} \;-\; \money{60000} \;=\; \money{600000}.
+\]
+El capital invertido es el \emph{equity} desplegado para financiar el negocio en estado estacionario
+--- servidores, desarrollo de software y el capital de trabajo necesario para operar:
+IC = \money{3000000}.
+\[
+  \mathrm{ROIC} \;=\; \frac{\money{600000}}{\money{3000000}} \;=\; \qty{20}{\percent}.
+\]
+WACC es \qty{11}{\percent} (\cref{eq:wacc}), por lo que el \emph{spread} ROIC--WACC es
+\qty{9}{\percent}. De \cref{eq:economic-profit}, la utilidad económica es
+\(\money{3000000} \times 0.09 = \money{270000}\)/año --- lo que significa que el negocio genera
+\money{270000}/año de valor por encima del rendimiento exigido por sus proveedores de capital.
+
+Estos son los números que \cref{eq:roic} y \cref{eq:dcf} utilizan a lo largo del libro. El FCF de
+\money{600000}, descontado al WACC con crecimiento \(g = \qty{3}{\percent}\) durante cinco años
+explícitos más un valor terminal, produce el valor empresarial desarrollado en el capítulo de DCF
+(\cref{eq:dcf}, \cref{eq:npv}). Cada eslabón de esa cadena comienza aquí, en el estado de
+resultados.
+\end{example}
+
+\begin{admonition}{Advertencia}
+EBITDA no es flujo de caja libre. EBITDA agrega D\&A al EBIT pero no deduce CapEx ni los cambios
+en capital de trabajo. Una empresa intensiva en capital puede reportar un EBITDA sólido mientras
+consume casi todo en CapEx de mantenimiento; su FCF es una fracción del EBITDA. Para las empresas
+SaaS con CapEx físico modesto, la diferencia es menor, pero no es cero: la acumulación de capital
+de trabajo y los costos de desarrollo intangible aún pueden crear una brecha material. Los
+prestamistas y adquirentes que se basan en múltiplos de EBITDA sin conversión a FCF pagan
+sistemáticamente de más por negocios intensivos en capital y de menos por los de capital ligero.
+El insumo correcto para la valoración es siempre el FCF derivado de \cref{eq:nopat-bridge}, no el
+EBITDA.
+\end{admonition}
+
+El puente NOPAT--FCF--ROIC desarrollado aquí alimenta directamente el modelo de DCF de
+\cref{eq:dcf} y la prueba de utilidad económica de \cref{eq:economic-profit}. Los inversionistas
+utilizan \cref{eq:roic} para evaluar si la empresa gana su costo de capital; los operadores aplican
+el mismo cálculo para evaluar las decisiones de asignación de capital. \textcite{koller2025valuation}
+ofrecen el tratamiento definitivo de esta conversión y sus aplicaciones a la valoración empresarial.
+\textcite{brealey2020} conectan el puente contable con la regla NPV de \cref{eq:npv} y el costo
+promedio ponderado de capital de \cref{eq:wacc}.

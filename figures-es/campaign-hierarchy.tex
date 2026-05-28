@@ -1,0 +1,41 @@
+% figures-es/campaign-hierarchy.tex
+% Standalone TikZ: jerarquía de campañas Google vs Meta (ch.09 adquisición pagada).
+% Compilado a figures-es/campaign-hierarchy.pdf via tools/build-figures-es.sh.
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+
+% Paleta coincidente con los colores de tcolorbox de preamble.sty
+\definecolor{gblue}{HTML}{1A5276}   % columna Google (blue!55!black)
+\definecolor{mteal}{HTML}{0E6655}   % columna Meta (teal!60!black)
+\definecolor{lvl}{HTML}{4D4D4D}
+
+\begin{document}
+\begin{tikzpicture}[
+  node distance=6mm,
+  box/.style={draw=#1, line width=0.8pt, rounded corners=1pt, text=black!85,
+              font=\sffamily\small, minimum width=42mm, minimum height=8mm, align=center},
+  lbl/.style={font=\sffamily\bfseries, text=#1},
+  ar/.style={-{Stealth[length=3pt]}, gray!55},
+]
+% Encabezados de columna
+\node[lbl=gblue] (gh) {Google Ads};
+\node[box=gblue, below=4mm of gh] (g1) {Campaña\\{\scriptsize presupuesto + estrategia de puja}};
+\node[box=gblue, below=of g1] (g2) {Grupo de anuncios\\{\scriptsize \textbf{palabras clave / intención}}};
+\node[box=gblue, below=of g2] (g3) {Anuncio\\{\scriptsize creativo adaptable}};
+\draw[ar] (g1) -- (g2);
+\draw[ar] (g2) -- (g3);
+
+% Columna Meta
+\node[lbl=mteal, right=34mm of gh] (mh) {Meta Ads};
+\node[box=mteal, below=4mm of mh] (m1) {Campaña\\{\scriptsize objetivo + presupuesto}};
+\node[box=mteal, below=of m1] (m2) {Conjunto de anuncios\\{\scriptsize \textbf{audiencia} + ubicación}};
+\node[box=mteal, below=of m2] (m3) {Anuncio\\{\scriptsize creativo + texto}};
+\draw[ar] (m1) -- (m2);
+\draw[ar] (m2) -- (m3);
+
+% Nota explicativa de nivel de segmentación
+\node[font=\sffamily\scriptsize\itshape, text=black!55, below=10mm of g3] (cap)
+  {La segmentación actúa en niveles distintos: intención (Google) vs audiencia (Meta).};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,140 @@
+\chapter{Economía del cliente}\label{ch:customer-economics}
+
+% Alcance: CLV, CAC, LTV:CAC, período de recuperación, curvas de retención por cohorte, modelo shifted-beta-geometric de supervivencia.
+% Cruce de referencias: CLV es el gemelo de la perpetuidad creciente -- \cref{eq:gordon} en \cref{ch:corporate-finance-core};
+%   su tasa de descuento es el WACC (\cref{ch:risk-and-capital-structure}); LTV:CAC refleja ROIC > WACC
+%   (\cref{ch:value-creation}). Las fichas de métricas de referencia se encuentran en \cref{ch:metrics-catalog}.
+
+Todo negocio es una cartera de relaciones con clientes. La disciplina de la economía del cliente traduce esa cartera en cuatro cifras que determinan si el modelo de negocio funciona: cuánto vale un cliente (CLV), cuánto cuesta adquirirlo (CAC), cuánto tiempo tarda en recuperarse la inversión de adquisición y si la tasa de \emph{retention} subyacente respalda el valor supuesto.
+
+\section{Valor del cliente a lo largo de su vida}\label{sec:clv}
+% complejidad: 3
+
+¿Cuánto puede gastar racionalmente la empresa para adquirir un cliente --- y cuál es el techo más allá del cual la adquisición destruye valor independientemente del volumen? Una relación con el cliente es una corriente de pagos de margen que se deteriora con el tiempo a medida que los clientes realizan \emph{churn}. Si esa corriente crece a la tasa \(g\) y se descuenta a la tasa \(r\), su valor presente es idéntico en estructura al Modelo de Crecimiento de Gordon para una acción. CLV es el gemelo de \emph{marketing} de \cref{eq:gordon}.
+
+Sea \(m\) el margen anual por cliente (contribución tras costos variables), \(r\) la tasa de descuento de la empresa y \(g\) la tasa de crecimiento anual de \(m\) (por ventas adicionales, aumentos de precio y mayor uso). La perpetuidad creciente del CLV es:
+\begin{equation}\label{eq:clv}
+  \mathrm{CLV} \;=\; \frac{m}{\,r - g\,} .
+\end{equation}
+Esto refleja \cref{eq:gordon} de forma exacta: \(D \to m\), el rendimiento en efectivo se convierte en el margen anual por cliente. El arrastre neto \((r-g)\) es el denominador equivalente al \emph{churn} --- bajo \emph{churn} constante \(c\), la tasa de \emph{retention} anual es \((1-c)^{12}\) y en tiempo continuo \(r-g\) absorbe \(c\) junto con la tasa de descuento.
+
+\cref{eq:clv} converge solo cuando \(r > g\); equivalentemente, cuando la tasa neta de \emph{churn} más descuento supera la tasa de crecimiento del margen. Para SaaS de tipo contractual con \emph{retention} neta de ingresos superior al \qty{100}{\percent}, \(g\) puede superar a \(r\) en el corto plazo --- la fórmula de perpetuidad sobreestima entonces el valor y se requiere un modelo de horizonte finito. La perpetuidad también es exacta solo bajo \emph{churn} constante; las cohortes con \emph{churn} heterogéneo requieren el modelo shifted-beta-geometric (\textcite{fader2005rfm}).
+
+\begin{example}[Cálculo del techo CLV para un producto SaaS]
+La SaaS aporta un margen de \qty{42}{\percent} sobre un ARPU de \money{50}/mes: \(m = \money{21}/\text{mes} = \money{252}/\text{año}\). Tasa de descuento (WACC) \(r = \qty{11}{\percent}\) (\cref{eq:wacc}), crecimiento del margen en estado estacionario \(g = \qty{3}{\percent}\):
+\[
+  \mathrm{CLV} \;=\; \frac{\money{252}}{0.11 - 0.03} \;=\; \frac{\money{252}}{0.08} \;=\; \money{3150}.
+\]
+La decisión que informa este número: \money{3150} es el \emph{techo} del gasto de adquisición económicamente racional por cliente. Cada paso que sigue acota ese techo hacia un objetivo operativo. Contraste con \cref{ch:corporate-finance-core}: el valor presente de cohorte calculado allí (\money{6562500}) es la forma \emph{agregada}; \money{3150} es el equivalente por cliente, consistente una vez contabilizado el tamaño de la cohorte.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Confundir ingreso bruto con margen. El CLV usa el \emph{margen de contribución}, no el ARR ni el ingreso. Incluir el costo de bienes vendidos, el alojamiento y el soporte al cliente en \(m\) requiere restarlos explícitamente. Un contrato de \money{600}/año con un margen bruto del \qty{70}{\percent} y un margen de contribución del \qty{60}{\percent} tiene \(m = \money{360}\), no \money{600} --- una sobreestimación del \qty{40}{\percent} que se propaga en todos los cálculos posteriores.
+\end{admonition}
+
+El modelo shifted-beta-geometric (sBG) (\textcite{fader2005rfm}) es el equivalente no contractual: modela la probabilidad de \emph{churn} a nivel individual como extraída de una distribución beta, produciendo una curva de supervivencia cóncava hacia arriba (alto \emph{churn} temprano, menor desgaste entre los sobrevivientes). El sBG ofrece un CLV esperado en forma cerrada sin el supuesto de perpetuidad y es más preciso para cohortes con compromiso heterogéneo. CLV es la piedra angular de \cref{eq:ltv-cac} y establece el techo de adquisición para cada canal en \cref{ch:paid-acquisition-platforms}. Su tasa de descuento es el WACC desarrollado en \cref{ch:risk-and-capital-structure}. \textcite{gupta2004customer} es la derivación canónica del CLV; los fundamentos de finanzas corporativas se encuentran en \textcite{brealey2020}.
+
+\section{Costo de adquisición de clientes}\label{sec:cac}
+% complejidad: 2
+
+¿Cuánto gasta realmente la empresa, en costo total, para llevar a un nuevo cliente desde el contacto frío hasta la contratación --- y qué partidas de costo se están excluyendo ilegítimamente? El CAC tiene una sola función: compararse con el CLV. Su precisión depende enteramente de incluir todo el gasto necesario para generar una conversión --- incluido el gasto que no parece \emph{marketing}.
+
+En un período dado, sea \(S\) el gasto total en ventas y \emph{marketing} (salarios, herramientas, inversión en medios, honorarios de agencia, eventos) y \(N\) el número de clientes \emph{nuevos} adquiridos:
+\begin{equation}\label{eq:cac}
+  \mathrm{CAC} \;=\; \frac{S}{N} .
+\end{equation}
+El período debe coincidir con la duración promedio del ciclo de ventas (no el mes calendario si los ciclos abarcan varios meses). \(N\) cuenta solo logos \emph{nuevos} --- las ventas adicionales y expansiones no son adquisiciones.
+
+\cref{eq:cac} es un promedio del período. Durante las fases de inversión (incorporación de un equipo de ventas, lanzamiento de un nuevo canal), el CAC estará elevado antes de que el \emph{pipeline} resultante se cierre --- la atribución rezagada lo hace parecer peor de lo que es. En las métricas combinadas, un canal orgánico o de referidos de alto volumen puede suprimir el CAC combinado, ocultando un canal de pago que es antieconómico por sí solo.
+
+\begin{example}[CAC en costo total frente a CAC combinado]
+La SaaS gasta \money{120000}/mes en adquisición de pago (medios + agencia + herramientas), más \money{40000}/mes en salarios de ventas atribuibles a la adquisición de logos nuevos. Total \(S = \money{160000}\). Clientes nuevos \(N = 200\). Si se excluyen los \money{40000} de salarios de ventas:
+\[
+  \mathrm{CAC}_{\text{combinado}} \;=\; \frac{\money{120000}}{200} \;=\; \money{600}.
+\]
+\[
+  \mathrm{CAC}_{\text{costo\ total}} \;=\; \frac{\money{160000}}{200} \;=\; \money{800}.
+\]
+Con CLV = \money{3150}, el \(\mathrm{LTV:CAC}\) en costo total es \(3150/800 = 3{,}94\times\) --- todavía por encima del piso de \(3\times\), pero materialmente por debajo del \(5{,}25\times\) reportado solo sobre inversión en medios. La decisión: ¿vale la pena la modalidad asistida por ventas dado su mayor costo frente al autoservicio? La respuesta requiere análisis de cohorte por canal de adquisición.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Dos errores capitales. Primero, \emph{excluir salarios y herramientas}: si dos vendedores cierran el acuerdo, su costo cargado pertenece a \(S\). Segundo, \emph{mezclar nuevos clientes con existentes}: una expansión de éxito de clientes que se registra como nuevo pedido no es una nueva adquisición. Ambos errores inflan la eficiencia aparente y conducen a una inversión crónicamente insuficiente en \emph{marketing}.
+\end{admonition}
+
+El CAC por canal (CAC de búsqueda de pago, CAC de salida, CAC de referidos) es más accionable que el CAC combinado. Combine el CAC por canal con el CLV por canal (¿los clientes del canal \(X\) retienen mejor?) para calcular el LTV:CAC por canal. La mezcla de canales que maximiza el LTV:CAC de cartera es la respuesta correcta; el canal con el menor CAC nominal rara vez lo es. El CAC alimenta directamente los cálculos de período de recuperación y razón que se presentan a continuación. Su precisión es un prerrequisito para la asignación racional del presupuesto entre los canales de pago de \cref{ch:paid-acquisition-platforms}. \textcite{bendle2020marketing} cubre las convenciones de medición.
+
+\section{LTV:CAC y período de recuperación}\label{sec:ltv-cac}
+% complejidad: 3
+
+¿El negocio genera más valor por cliente del que gasta para adquirirlo --- y cuánto tiempo está inmovilizado el capital antes de recuperar la inversión de adquisición? LTV:CAC es la forma por cliente de la prueba ROIC/WACC: ¿supera el retorno de la adquisición marginal el costo del capital desplegado? Una razón inferior a 1 destruye valor por definición; una razón de 3 es el piso de la industria porque deja margen para la incertidumbre en las estimaciones de LTV y CAC. El período de recuperación convierte la misma prueba en una pregunta de liquidez: ¿cuánto tiempo hasta que la empresa recupera su dinero?
+
+La razón:
+\begin{equation}\label{eq:ltv-cac}
+  \mathrm{LTV:CAC} \;=\; \frac{\mathrm{CLV}}{\mathrm{CAC}} .
+\end{equation}
+LTV:CAC \(\ge 3\) es el piso convencional --- no una regla arbitraria, sino una aproximación de la condición ROIC \(>\) WACC de \cref{eq:roic} cuando la incertidumbre del CLV es de aproximadamente \(\pm 30\%\). El período de recuperación, en meses:
+\begin{equation}\label{eq:cac-payback}
+  \mathrm{Payback} \;=\; \frac{\mathrm{CAC}}{\text{margen mensual}} ,
+\end{equation}
+donde el margen mensual es \(m/12\). Un \emph{payback} menor a 12 meses es la referencia SaaS para un modelo eficiente y de bajo capital; por encima de 24 meses se requiere capital de crecimiento sustancial para cubrir la brecha.
+
+LTV:CAC ignora el tiempo: una razón de 5 con un \emph{payback} de 36 meses es peor que una razón de 3 con un \emph{payback} de 12 meses desde el punto de vista del capital de trabajo. Use ambas métricas juntas. La razón también hereda toda la incertidumbre del modelo en el CLV: un CLV basado en perpetuidad con \(g\) optimista produce una razón engañosamente alta.
+
+\begin{example}[Diagnóstico de la desconexión entre razón y período de recuperación]
+Usando el CAC sobre inversión en medios de \money{600} y CLV de \money{3150}:
+\[
+  \mathrm{LTV:CAC} \;=\; \frac{\money{3150}}{\money{600}} \;=\; 5{,}25\times .
+\]
+Margen mensual: \(m/12 = \money{252}/12 = \money{21}\). Período de recuperación:
+\[
+  \mathrm{Payback} \;=\; \frac{\money{600}}{\money{21}} \;\approx\; 28{,}6 \;\text{meses}.
+\]
+La razón es sólida (\(5{,}25\times\)); el período de recuperación es largo (\(28{,}6\) meses). La desconexión se origina en que el ARPU es bajo (\money{50}/mes) y el margen es estrecho (\money{21}/mes). El negocio tiene una buena razón de economía unitaria pero un camino hacia ese retorno que requiere mucho capital. Implicaciones: (a) la empresa necesita capital de crecimiento para sostener \money{120000}/mes de gasto antes de recuperarlo; (b) cualquier aumento de precio o venta adicional que eleve el ARPU a \money{70}/mes recorta el período de recuperación a \(\approx 20\) meses, una mejora cualitativa. Esto es exactamente la prueba ROIC \(>\) WACC de \cref{eq:roic}: el diferencial por cliente es positivo, pero la velocidad del capital es lenta. Las implicaciones sobre el modelo de negocio se analizan en \cref{ch:business-models}; el denominador WACC se desarrolla en \cref{ch:risk-and-capital-structure}.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Usar LTV:CAC para justificar gasto de crecimiento indefinido. La razón no dice nada sobre el cliente \emph{marginal}. El cliente número 201 adquirido en un mes puede tener un CLV mucho menor que los primeros 200 (rendimientos decrecientes del canal). Monitoree LTV:CAC en la unidad marginal, no en el promedio, auditando la calidad de la cohorte por mes y canal de adquisición.
+\end{admonition}
+
+La versión teóricamente correcta de \cref{eq:ltv-cac} considera el patrón temporal de los flujos de efectivo del LTV y el patrón temporal del gasto en CAC (parte del gasto precede a la venta en varios meses). Un NPV de adquisición propio (\(NPV_{\text{acq}} = CLV - CAC\)) captura esto y se reduce a \cref{eq:ltv-cac} solo cuando el CAC es una suma única en el tiempo cero. Para ventas empresariales de ciclo largo, la forma NPV difiere materialmente de la razón. Las métricas LTV:CAC y período de recuperación son los tableros de control de \cref{ch:metrics-catalog} y las restricciones primarias sobre los presupuestos de canales de pago de \cref{ch:paid-acquisition-platforms}. El paralelismo con ROIC se desarrolla en \cref{ch:value-creation}. \textcite{gupta2004customer} y \textcite{bendle2020marketing} ofrecen los tratamientos canónicos.
+
+\section{Retención por cohorte y supervivencia}\label{sec:retention}
+% complejidad: 4 -> reutilizar figura retention_curve
+
+¿La tasa de \emph{churn} supuesta en el modelo CLV es consistente con lo que las cohortes hacen realmente --- y cómo cambia la forma de la curva de supervivencia la estimación del valor? El CLV es tan confiable como su supuesto de \emph{churn}. La mayoría de los modelos suponen una tasa de \emph{churn} mensual constante, lo que produce una curva de supervivencia exponencial. Las cohortes reales exhiben una supervivencia \emph{cóncava} (alto \emph{churn} temprano, menor desgaste entre los sobrevivientes): los clientes nuevos que sobreviven al mes 3 son sistemáticamente más fieles que el cliente promedio en el mes 0. Ajustar una tasa constante a una curva cóncava sobreestima el \emph{churn} en el período inicial y subestima la \emph{retention} en la cola.
+
+Bajo una tasa de \emph{churn} mensual constante \(c\), la fracción de una cohorte inicial que permanece activa después de \(t\) meses es:
+\begin{equation}\label{eq:retention}
+  S(t) \;=\; (1 - c)^{t} .
+\end{equation}
+El área bajo la curva de supervivencia \(S(t)\) desde \(t=0\) hasta \(\infty\) es igual a la vida útil esperada del cliente en meses; multiplicada por el margen mensual \(m/12\), recupera el CLV. Para un modelo de \emph{churn} constante, \(\int_0^\infty (1-c)^t\,dt = 1/c\) y CLV \(= m/(12c)\) --- consistente con \cref{eq:clv} cuando \(g=0\) y \(r\approx 12c\) (aproximación de \(c\) pequeño).
+
+\cref{eq:retention} supone que todos los clientes de una cohorte tienen la misma probabilidad de \emph{churn} \(c\) en cada período --- el supuesto de riesgo constante. Implica que la curva de supervivencia es exponencial y sin memoria (un cliente que sobrevivió 24 meses no está más seguro que uno en el mes 1). Empíricamente, la supervivencia en SaaS B2B es fuertemente cóncava: los clientes de alto riesgo se van pronto, de modo que los sobrevivientes son un grupo selecto y de menor riesgo. El modelo sBG (\textcite{fader2005rfm}) relaja ambos supuestos.
+
+\begin{example}[Lectura de la curva de supervivencia frente al área CLV]
+\emph{Churn} mensual \(c = \qty{0.65}{\percent}\) (consistente con la ficha de referencia: tasa neta de \emph{retention} \(r - g = \qty{8}{\percent}/\text{año}\)). A partir de \cref{eq:retention}:
+
+\[
+  S(12) \;=\; (1 - 0.0065)^{12} \;\approx\; 0{,}9247.
+\]
+
+Después de 12 meses, el \qty{92,5}{\percent} de la cohorte permanece --- aproximadamente el \qty{7,5}{\percent} perdido. A los 36 meses:
+\[
+  S(36) \;=\; (1 - 0.0065)^{36} \;\approx\; 0{,}792.
+\]
+Alrededor del \qty{21}{\percent} perdido al tercer año. \cref{fig:retention_curve} muestra la curva de supervivencia de esta cohorte frente al área CLV que implica: el área sombreada bajo la curva (ponderada por el margen mensual) converge a \money{3150} por cliente (\cref{eq:clv}). La curva es casi lineal a esta baja tasa de \emph{churn} --- una señal de advertencia de que el supuesto de riesgo constante puede \emph{sobreestimar} el \emph{churn} temprano en un producto B2B con altos costos de cambio. Un estudio cuidadoso de cohortes re-examinaría por separado las tasas de abandono del mes 1 y el mes 2.
+\end{example}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{retention_curve}
+  \caption{Curva de supervivencia mensual de cohorte a \(\qty{0.65}{\percent}\) de \emph{churn} mensual (\cref{eq:retention}). El área sombreada bajo la curva, ponderada por el margen mensual de \money{21}, converge al CLV de \money{3150} (\cref{eq:clv}). La forma casi lineal a tasas bajas de \emph{churn} es característica de los productos B2B con altos costos de cambio.}
+  \label{fig:retention_curve}
+\end{figure}
+
+\begin{admonition}{Advertencia}
+Medir el \emph{churn} sobre usuarios activos mensuales en lugar de sobre clientes contratados. El \emph{churn} de uso (un cliente que deja de iniciar sesión) anticipa al \emph{churn} contractual (cancelación formal) por semanas o meses en SaaS. Monitoree ambos, trate el \emph{churn} de uso como la señal de alerta temprana e intervenga antes del evento contractual.
+\end{admonition}
+
+El análisis de supervivencia proveniente de la literatura de bioestadística (estimador de Kaplan-Meier, regresión de riesgos proporcionales de Cox) se aplica directamente a las cohortes de clientes. Kaplan-Meier ofrece una curva de supervivencia no paramétrica que maneja observaciones censuradas (clientes aún activos en la fecha de medición); la regresión de Cox identifica covariables (segmento, canal de adquisición, nivel de servicio) que predicen el riesgo de \emph{churn}. Estas son las herramientas de nivel productivo detrás de la simplificación de riesgo constante de \cref{eq:retention}. La curva de \emph{retention} es la prueba empírica de cada supuesto en \cref{eq:clv}. Ejecútela sobre cada cohorte trimestralmente. Las desviaciones respecto a la curva esperada son la señal más temprana de problemas de ajuste producto-mercado o erosión competitiva --- antes de que aparezcan en el ARR. \textcite{fader2005rfm} desarrollan los modelos de supervivencia; \textcite{gupta2004customer} conecta la \emph{retention} con el valor.

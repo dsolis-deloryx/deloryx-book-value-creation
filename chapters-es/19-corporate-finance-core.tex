@@ -1,0 +1,174 @@
+\chapter{Fundamentos de finanzas corporativas}\label{ch:corporate-finance-core}
+
+% Alcance: valor del dinero en el tiempo, NPV, la tasa de descuento como hurdle rate, la perpetuidad creciente.
+% Referencia canónica del estilo de la edición: prosa fluida bajo títulos de sección, con
+% números trabajados en `example` y advertencias precisas en `admonition`.
+% El gemelo de marketing de la perpetuidad creciente se encuentra en \cref{ch:customer-economics}.
+
+\section{La perpetuidad creciente}\label{sec:growing-perpetuity}
+% complexity: 3
+
+¿Cuánto vale hoy un flujo de caja que crece a una tasa constante \(g\) de forma indefinida? La
+pregunta no es académica: este modelo único subyace al valor terminal de los flujos de caja
+descontados y al valor de vida del cliente por igual, y un error en él se propaga a través de
+toda valoración que dependa de ambos. La intuición es el fundamento de toda la disciplina
+financiera. Un dólar el año próximo vale menos que un dólar hoy, porque el dólar de hoy puede
+invertirse; el crecimiento compensa ese descuento solo en parte. Cuando la tasa de descuento
+supera la tasa de crecimiento, una corriente infinita de flujos crecientes suma de todos modos
+un número finito.
+
+Sumando los flujos de caja descontados y reconociendo una serie geométrica de razón
+\(\frac{1+g}{1+r}<1\), la suma infinita se colapsa en una sola razón:
+\begin{equation}\label{eq:gordon}
+  PV \;=\; \sum_{t=1}^{\infty}\frac{D\,(1+g)^{t-1}}{(1+r)^{t}}
+      \;=\; \frac{D}{\,r-g\,}.
+\end{equation}
+El denominador \((r-g)\) es la fricción neta: la presión del descuento menos el impulso del
+crecimiento. La serie converge \emph{solo} cuando \(r>g\). Si \(g\ge r\), el denominador
+se vuelve cero o negativo y \cref{eq:gordon} devuelve un resultado sin sentido --- el error
+de valoración más común, y el primero que un lector escéptico debería verificar en cualquier
+modelo que reciba.
+
+\begin{example}
+Una cohorte de suscriptores genera \money{1250000} el año próximo con un margen de contribución
+del \qty{42}{\percent}, que crece \qty{3}{\percent} por año, y la empresa descuenta al \qty{11}{\percent}. El
+margen es lo que efectivamente acumula la empresa, por lo que es la \(D\) en \cref{eq:gordon};
+el \(\qty{11}{\percent}\) es el costo de oportunidad del capital inmovilizado en atender la
+cohorte:
+\[
+  PV \;=\; \frac{\money{1250000}\times 0.42}{0.11-0.03}\;\approx\;\money{6562500}.
+\]
+La cohorte vale aproximadamente \money{6562500} hoy. Nótese cuán sensible es esa cifra a la
+brecha \(r-g\): ampliarla al \qty{10}{\percent} reduce el valor en una quinta parte, razón por la
+cual el supuesto de crecimiento merece más escrutinio que cualquier otro insumo del modelo.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Reutilizar la misma \(g\) elevada para diez años de pronóstico explícito \emph{y} para el valor
+terminal duplica el crecimiento. La \(g\) terminal debe reflejar únicamente el estado estacionario
+--- generalmente igual o inferior al crecimiento del PIB a largo plazo. Una tasa terminal tomada
+del hipercrecimiento reciente de una empresa es la forma más rápida de fabricar una valoración
+que no resiste el contacto con la realidad.
+\end{admonition}
+
+Al relajar el crecimiento constante, el modelo se convierte en uno de dos etapas o en un
+modelo H; al relajar el \emph{churn} constante en su gemelo de \emph{marketing}, el valor del
+cliente requiere un modelo de supervivencia \emph{beta}-geométrica desplazada. La fórmula
+limpia es el \emph{piso} del análisis, no el techo. El álgebra idéntica reaparece como valor
+de vida del cliente en \cref{ch:customer-economics}: renombrando \(D\) como el margen anual por
+cliente y \(g\) como su tasa de crecimiento, \cref{eq:gordon} valora a un cliente exactamente
+igual que valora una cohorte. \textcite{brealey2020} desarrollan en profundidad el lado de las
+finanzas corporativas.
+
+\section{El valor del dinero en el tiempo}\label{sec:time-value-of-money}
+% complexity: 2
+
+¿Cuánto vale hoy un pago futuro en efectivo? Toda decisión de asignación de capital ---
+invertir, adquirir o recomprar acciones --- depende de responder esto antes que cualquier
+otra cosa. Un dólar en mano hoy puede reinvertirse a la tasa \(r\), acumulando \((1+r)^n\)
+dólares en \(n\) años; recorriendo esa lógica en sentido inverso, un pago futuro vale menos
+que su valor nominal exactamente por el factor que el interés compuesto habría producido.
+
+Si una suma \(\mathrm{FV}\) llega en \(n\) años y el costo de oportunidad del capital es \(r\)
+por período, su valor presente se obtiene descontando:
+\begin{equation}\label{eq:pv}
+  PV \;=\; \frac{\mathrm{FV}}{(1+r)^{n}}.
+\end{equation}
+El denominador \((1+r)^{n}\) es el factor de valor futuro; su recíproco es el
+\emph{factor de descuento}. \Cref{eq:gordon} no es más que la aplicación repetida de \cref{eq:pv}
+a lo largo de una corriente infinita y creciente. La fórmula supone que \(r\) es constante y
+conocida, que el \emph{cash flow} llega en la fecha indicada y que el inversor puede
+efectivamente reinvertir al mismo \(r\); para horizontes cortos o flujos de bajo riesgo el error
+derivado de estos supuestos es pequeño, pero para flujos de caja ilíquidos y de largo plazo
+puede dominar el resultado.
+
+\begin{example}
+¿Cuánto vale hoy un pago de \money{252} que llega en tres años, a la tasa de descuento del
+\qty{11}{\percent} de la empresa? Esa tasa es el costo de oportunidad del capital propio derivado
+en \cref{ch:risk-and-capital-structure}; aplicando \cref{eq:pv},
+\[
+  PV \;=\; \frac{\money{252}}{(1.11)^{3}}
+      \;=\; \frac{\money{252}}{1.3676}
+      \;\approx\; \money{184}.
+\]
+La brecha de \money{68} entre el valor nominal y el valor presente es el costo de esperar ---
+no la inflación, sino el interés compuesto no percibido. La decisión que esto informa: una
+promesa de pagar \money{252} en tres años vale la pena aceptarla solo si el uso alternativo de
+\money{184} hoy rinde menos del \qty{11}{\percent}.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Descontar flujos nominales con una tasa real, o viceversa, es el error clásico. La consistencia
+entre el flujo y la tasa es el único invariante de la fórmula de valor presente: los flujos
+nominales requieren una \(r\) nominal; los flujos ajustados por inflación requieren una \(r\)
+real. Mezclarlos distorsiona el valor aproximadamente en la tasa de inflación por año, que se
+acumula silenciosamente a lo largo de un proyecto de varios años.
+\end{admonition}
+
+Para flujos de caja riesgosos, la \(r\) «correcta» es en sí misma una salida del modelo, no un
+dato --- véase \cref{eq:capm} en \cref{ch:risk-and-capital-structure}. La fórmula de valor
+presente es la unidad atómica de todo el trabajo de valoración en este libro; \textcite{brealey2020}
+la derivan desde primeros principios y la extienden a bonos, anualidades y el caso de la
+perpetuidad creciente de \cref{eq:gordon}.
+
+\section{Valor presente neto}\label{sec:net-present-value}
+% complexity: 3
+
+¿Debe la empresa realizar una inversión? El valor presente neto convierte un calendario
+completo de flujos de caja --- un desembolso hoy, retornos a lo largo del tiempo --- en un
+número único cuyo signo resuelve la pregunta. Un NPV positivo significa que la inversión rinde
+más que la \emph{hurdle rate}; uno negativo significa que destruye valor a esa tasa. La
+pregunta de fondo es directa: ¿cuánto más rico hace esto al inversor, medido en dólares de hoy,
+después de cargar completamente el costo del capital desplegado?
+
+Sea \(\mathrm{FCF}_t\) el \emph{cash flow} libre en el período \(t\), \(I_0\) el desembolso
+inicial en \(t=0\), y \(r\) la tasa de descuento:
+\begin{equation}\label{eq:npv}
+  \mathrm{NPV} \;=\; \sum_{t=1}^{T}\frac{\mathrm{FCF}_t}{(1+r)^{t}} \;-\; I_0.
+\end{equation}
+Cada término \(\mathrm{FCF}_t/(1+r)^t\) es \cref{eq:pv} aplicada al período \(t\). La tasa de
+descuento \(r\) es el costo de capital promedio ponderado de la empresa, derivado en
+\cref{ch:risk-and-capital-structure} como \cref{eq:wacc}: captura tanto el costo del capital
+propio (\cref{eq:capm}) como el costo de la deuda con su escudo fiscal, ponderados por la
+estructura de capital. La fórmula supone que los flujos de caja son conocidos, \(r\) es
+constante y el proyecto no incorpora opcionalidad --- ninguna capacidad de expandirse, abandonarse
+o diferirse --- por lo que puede valorar erróneamente inversiones cuyo principal valor reside en
+la flexibilidad que crean.
+
+\begin{example}
+¿Adquirir un cliente a \money{600} crea valor a la \emph{hurdle rate} del \qty{11}{\percent} de la
+empresa? Tratar el costo de adquisición de \money{600} como el desembolso \(I_0\). El margen de
+contribución anual del cliente de \money{252} crece al \qty{3}{\percent}, de modo que el flujo de
+entradas es una perpetuidad creciente, valorada por \cref{eq:gordon}:
+\[
+  \sum_{t=1}^{\infty}\frac{\mathrm{FCF}_t}{(1.11)^t}
+  \;=\; \frac{\money{252}}{0.11-0.03}
+  \;=\; \money{3150}.
+\]
+Aplicando \cref{eq:npv},
+\[
+  \mathrm{NPV} \;=\; \money{3150} \;-\; \money{600} \;=\; \money{2550}.
+\]
+Cada dólar de costo de adquisición devuelve \money{5.25} de valor presente --- un excedente muy
+por encima de la \emph{hurdle rate}. La implicación es que la restricción vinculante aquí no es
+el costo del capital sino la oferta de clientes: la empresa debería aumentar su presupuesto de
+adquisición hasta que el costo marginal de un cliente se aproxime a los \money{3150} que ese
+cliente vale.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Usar una tasa de descuento demasiado baja para fabricar un NPV positivo es el pecado cardinal
+de la evaluación de inversiones. Un proyecto que parece atractivo al \qty{6}{\percent} pero es
+negativo al correcto \qty{11}{\percent} no crea valor --- lo destruye lentamente, hasta que el
+verdadero costo del capital se impone a través de presión de refinanciamiento o dilución del
+capital propio. Anclar la \emph{hurdle rate} al costo real del capital es la disciplina que
+\cref{eq:npv} existe para hacer cumplir.
+\end{admonition}
+
+El NPV es el análogo corporativo de la decisión de economía del cliente en
+\cref{ch:customer-economics}: ambos preguntan si un desembolso presente --- \(I_0\) o el costo
+de adquisición --- se justifica por la corriente descontada que genera. La equivalencia no es
+una coincidencia; es la lógica unificadora de la columna vertebral de creación de valor.
+\textcite{brealey2020} demuestran la consistencia del NPV con la maximización del valor para
+el accionista, y \textcite{ross2022} analizan su comparación con la tasa interna de retorno y
+las condiciones bajo las cuales ambos divergen.

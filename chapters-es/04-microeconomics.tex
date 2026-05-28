@@ -1,0 +1,361 @@
+\chapter{Microeconomía para directivos}\label{ch:microeconomics}
+
+% Alcance: elasticidad, análisis marginal, estructura de mercado y teoría de subastas.
+% Vínculos cruzados: elasticidad <-> respuesta de oferta y saturación en MMM (\cref{ch:paid-acquisition-platforms},
+%   \cref{ch:attribution-and-measurement}); teoría de subastas <-> la subasta publicitaria (\cref{ch:paid-acquisition-platforms}).
+
+Los mercados asignan recursos a través de precios; los directivos mueven precios sin comprender cómo
+precio y cantidad interactúan en el margen. La elasticidad cuantifica esa interacción; el análisis
+de estructura de mercado ubica a la empresa en el espectro de presión competitiva; la teoría de
+subastas explica el mecanismo por el que dos de los mercados de medios más grandes de la historia
+se liquidan en milisegundos. En conjunto, proporcionan una base microeconómica a cada decisión de
+precio, posicionamiento y adquisición.
+
+\section{Elasticidad del precio y análisis marginal}\label{sec:elasticity}
+% complejidad: 3
+
+Si se sube el precio, ¿se obtiene más o menos ingreso total? La respuesta depende enteramente de
+cuán sensible es la demanda al precio --- pregunta que la elasticidad responde antes de comprometerse
+con el cambio. Las curvas de demanda tienen pendiente negativa: mayor precio, menos unidades. Pero
+el efecto sobre el ingreso de un cambio de precio depende de qué efecto domina --- el incremento
+de precio por unidad o la pérdida de volumen. Un alza de precio genera más ingreso total únicamente
+si los clientes son relativamente insensibles (demanda inelástica). En mercados elásticos, la
+pérdida de volumen supera la ganancia de margen. El análisis marginal precisa esto: la regla de
+maximización de utilidades es producir hasta que el ingreso marginal de la última unidad iguale su
+costo marginal --- cualquier desviación deja dinero sobre la mesa.
+
+La elasticidad precio de la demanda es el cambio porcentual en la cantidad demandada por cada uno
+por ciento de cambio en el precio:
+\begin{equation}\label{eq:elasticity}
+  \varepsilon \;=\; \frac{\partial Q/Q}{\partial P/P}
+              \;=\; \frac{\partial Q}{\partial P}\cdot\frac{P}{Q}.
+\end{equation}
+\(\varepsilon<0\) siempre (ley de la demanda). El punto de maximización del ingreso es \(\varepsilon=-1\)
+(elasticidad unitaria); por debajo (inelástica, \(|\varepsilon|<1\)) un alza de precio eleva el ingreso;
+por encima (elástica, \(|\varepsilon|>1\)) un alza de precio reduce el ingreso. El ingreso marginal se
+vincula a la elasticidad mediante:
+\[
+  \mathrm{MR} \;=\; P\!\left(1+\frac{1}{\varepsilon}\right).
+\]
+Igualar \(\mathrm{MR}=\mathrm{MC}\) produce el máximo de utilidades estándar. El ingreso varía como:
+\[
+  \frac{\Delta R}{\Delta P} \;=\; Q\!\left(1 + \frac{1}{\varepsilon}\right),
+\]
+de modo que subir el precio en un mercado elástico (\(|\varepsilon|>1\)) genera un cambio negativo en el
+ingreso --- la pérdida de volumen domina.
+
+\Cref{eq:elasticity} supone una curva de demanda estática, preferencias constantes y sin respuesta
+estratégica de los competidores. La elasticidad varía a lo largo de la curva de demanda (no es
+constante para una función de demanda lineal), por lo que una calibración en un punto de precio no
+se transfiere a un precio muy diferente. Las elasticidades de largo plazo son, en general, mayores
+que las de corto plazo: los clientes necesitan tiempo para encontrar sustitutos, cambiar hábitos
+o migrar de plataforma. En mercados digitales, el bloqueo de plataforma y los costos de cambio
+pueden comprimir la elasticidad medida muy por debajo del valor estructural de largo plazo.
+
+\begin{example}[La SaaS de referencia --- elasticidad del precio base]
+La empresa SaaS de referencia fija su plan base en \money{50}/mes (\money{600}/año).
+Supóngase que un estudio de demanda estima \(\varepsilon=-1.5\) al precio actual --- moderadamente elástica.
+Un alza de precio propuesta del \qty{10}{\percent} a \money{55}/mes implica una caída de volumen de
+\(1.5\times10\%=\qty{15}{\percent}\):
+\[
+  \Delta R \;\approx\; Q\!\left(1+\frac{1}{-1.5}\right)\times\Delta P
+           = Q\times\frac{1}{3}\times\money{5}.
+\]
+El ingreso por cliente existente sube \money{5}, pero el \qty{15}{\percent} de los clientes genera
+\emph{churn} --- para una base de \num{200} clientes, eso equivale a \num{30} suscripciones perdidas con
+\(\mathrm{LTV}=\money{3150}\) cada una, un valor no generado de \money{94500}. Es poco probable que el
+alza de precio sea positiva en términos netos a menos que la estimación de elasticidad esté materialmente
+equivocada o exista un cohorte de clientes genuinamente inelástico. Conviene ejecutar el experimento
+de precio en un segmento pequeño antes del lanzamiento general y medir la respuesta del churn
+directamente, en lugar de depender del estimado agregado de \(\varepsilon\).
+\end{example}
+
+\begin{admonition}{Advertencia}
+Usar la elasticidad agregada para una decisión de segmento oculta heterogeneidad peligrosa. Un
+\(\varepsilon=-1.5\) global enmascara una distribución: algunos clientes son casi inelásticos
+(empresas medianas y grandes, alto costo de cambio), otros muy elásticos (usuarios en prueba de
+pymes). Un alza de precio uniforme no extrae valor de ninguno de los dos grupos de forma óptima.
+La tarificación por segmento --- tema de \cref{ch:pricing} --- es la respuesta correcta; la
+segmentación por elasticidad es su base empírica.
+\end{admonition}
+
+En el modelado de mezcla de \emph{marketing}, la curva de saturación --- rendimientos decrecientes
+al gasto adicional --- es precisamente una elasticidad del lado de la demanda: la \emph{elasticidad
+de respuesta} de las conversiones respecto a los dólares de medios, medida en el nivel de gasto
+actual. A medida que el gasto aumenta, la respuesta marginal disminuye, razón por la que el
+\(\mathrm{iROAS}\) (\cref{eq:iroas}) estimado por \textcite{hanssens2001marketing} y la
+literatura de MMM es un estimado de elasticidad local alrededor del punto de presupuesto actual.
+El modelo de adstock-saturación en \cref{ch:attribution-and-measurement} es la versión
+temporalmente distribuida de \cref{eq:elasticity}: la misma disyuntiva entre gasto y rendimientos
+decrecientes, extendida a lo largo de múltiples períodos mediante el decaimiento de adstock
+(\cref{eq:adstock}).
+
+La elasticidad alimenta directamente la arquitectura de precios (\cref{ch:pricing}), la
+optimización del presupuesto de campañas (\cref{ch:paid-acquisition-platforms}) y las curvas de
+saturación del modelado de mezcla de \emph{marketing} (\cref{ch:attribution-and-measurement}).
+\textcite{pindyck2017} ofrece el tratamiento teórico completo; \textcite{mankiw2020} la
+derivación de nivel introductorio.
+
+\section{Estructura de mercado e índice de Lerner}\label{sec:lerner}
+% complejidad: 3
+
+¿Cuánto poder de fijación de precios tiene realmente la empresa? La estructura de mercado ---
+el número y la simetría de los competidores --- determina el límite superior del margen sostenible.
+El índice de Lerner convierte esa posición estructural en un número. La competencia perfecta fuerza
+el precio al costo marginal; el monopolio puro permite el margen máximo. Entre esos extremos se
+encuentran el oligopolio (pocas empresas, interdependencia estratégica) y la competencia
+monopolística (muchas empresas, productos diferenciados). La mayoría de las empresas de tecnología
+y SaaS operan en competencia monopolística: el poder de precio existe, pero está restringido por la
+amenaza de sustitución. El índice de Lerner mide la fracción del precio que corresponde al margen,
+vinculándose directamente con la elasticidad: un alto poder de precio requiere demanda inelástica.
+
+El índice de Lerner es el margen precio-costo expresado como fracción del precio:
+\begin{equation}\label{eq:lerner}
+  L \;=\; \frac{P - \mathrm{MC}}{P} \;=\; -\frac{1}{\varepsilon}.
+\end{equation}
+La segunda igualdad se obtiene de igualar \(\mathrm{MR}=\mathrm{MC}\) en el máximo de utilidades y
+sustituir \(\mathrm{MR}=P(1+1/\varepsilon)\). \(L\in[0,1]\): cero en competencia perfecta
+(\(P=\mathrm{MC}\)), uno en monopolio puro (\(\mathrm{MC}=0\)). La fórmula codifica la misma
+disyuntiva que \cref{eq:elasticity}: menor elasticidad (menor sensibilidad al precio) permite un
+índice de Lerner más alto.
+
+Tipología de estructura de mercado:
+\begin{description}
+  \item[Competencia perfecta] \(P=\mathrm{MC}\), \(L=0\). Muchas empresas idénticas, beneficio
+    económico cero en el largo plazo. Agricultura de \emph{commodities}, algunos instrumentos
+    financieros de mercado al contado.
+  \item[Competencia monopolística] Productos diferenciados, entrada libre, \(L>0\) en el corto plazo
+    pero erosionado por imitación. La mayoría de bienes de consumo, SaaS con muchos sustitutos
+    cercanos.
+  \item[Oligopolio] Pocas empresas grandes, interdependencia estratégica (el precio de cada empresa
+    afecta a las rivales). Telecomunicaciones, infraestructura en la nube, publicidad en búsqueda.
+  \item[Monopolio] Proveedor único, \(L\) máximo, sujeto a restricción regulatoria. Poco frecuente
+    y regulado; un efecto de red fuerte (\cref{ch:growth}) puede aproximarlo temporalmente.
+\end{description}
+
+\Cref{eq:lerner} supone una curva de demanda estática y sin restricción regulatoria sobre precios.
+En la práctica, índices de Lerner altos atraen escrutinio antimonopolio (la medida estándar en
+economía de la competencia). La fórmula también asigna una única elasticidad a todo el mercado;
+una empresa con múltiples segmentos enfrenta diferentes elasticidades --- y por lo tanto precios
+óptimos distintos --- para cada uno. El equilibrio de largo plazo en competencia monopolística
+lleva \(L\to 0\) a medida que los nuevos participantes imitan; el tiempo hasta el equilibrio depende
+de qué tan defendible sea la diferenciación (tema de \cref{ch:advantage-and-disruption}).
+
+\begin{example}[SaaS de referencia --- índice de Lerner]
+La empresa SaaS enfrenta \(\varepsilon=-1.5\) al precio actual. Aplicando \cref{eq:lerner}:
+\[
+  L = -\frac{1}{-1.5} \approx 0.67.
+\]
+Un índice de Lerner de \num{0.67} significa que el \qty{67}{\percent} del precio del plan \money{50}
+es margen sobre el costo marginal. Como referencia, el software de tipo \emph{commodity} se acerca
+a \(L=0\) y el software empresarial frecuentemente supera \(L>0.80\); este resultado es consistente
+con competencia monopolística con diferenciación moderada. La implicación gerencial: mayor
+diferenciación --- integraciones, efectos de red, certificaciones --- puede reducir \(|\varepsilon|\)
+(hacer la demanda menos elástica) y así ampliar el \(L\) sostenible sin cambios de precio.
+\textcite{dranove7theconomics} presenta el rango empírico por industria.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Confundir el índice de Lerner con el margen bruto es un error frecuente y de consecuencias
+importantes. El margen bruto es \((P-\mathrm{COGS})/P\); el índice de Lerner es
+\((P-\mathrm{MC})/P\), donde \(\mathrm{MC}\) es el verdadero costo marginal --- el costo de
+atender a un cliente adicional en el margen --- que en SaaS es cercano a cero. Un margen bruto del
+\qty{70}{\percent} a escala no implica \(L=0.70\): los dos convergen sólo cuando no existen costos
+fijos y el COGS captura todos los costos variables, lo cual no es cierto ni en la etapa de
+crecimiento ni a escala.
+\end{admonition}
+
+En un oligopolio, el índice de Lerner se generaliza al modelo de Cournot: \(L_i = s_i / |\varepsilon|\),
+donde \(s_i\) es la cuota de mercado de la empresa \(i\). Esto implica que las empresas con mayor
+participación tienen más poder de precio incluso con la misma elasticidad de mercado. El Índice
+Herfindahl-Hirschman (\cref{eq:hhi}) en \cref{ch:competitive-analysis} cuantifica la concentración;
+el \(L\) promedio de la industria y el HHI están correlacionados en la mayoría de los estudios empíricos.
+
+El razonamiento basado en el índice de Lerner se aplica directamente en la tarificación por valor
+(\cref{ch:pricing}) e informa las decisiones de eficiencia de adquisición
+(\cref{ch:paid-acquisition-platforms}). \textcite{pindyck2017} y \textcite{mankiw2020} derivan las
+reglas de margen estándar; \textcite{dranove7theconomics} desarrolla las extensiones para oligopolio.
+
+\section{Teoría de subastas y la subasta publicitaria}\label{sec:auction-theory}
+% complejidad: 4 -> tabla es suficiente (caso discreto de 2 oferentes ilustra la estructura sin curvas)
+
+Se participa en una subasta en tiempo real que se ejecuta en milisegundos. Conocer la estrategia
+de oferta en equilibrio --- y por qué es óptimo ofertar el valor verdadero --- marca la diferencia
+entre un gasto eficiente y el sobrepago sistemático. Una subasta de primer precio (se paga lo que
+se oferta) incentiva a reducir la oferta por debajo del valor verdadero para evitar la maldición
+del ganador; el descuento óptimo depende de las creencias sobre los valores de los competidores.
+Una subasta de Vickrey (segundo precio) elimina ese incentivo: se paga únicamente la segunda oferta
+más alta, por lo que ofertar el valor verdadero es una estrategia débilmente dominante
+independientemente de lo que hagan los demás. Google y Meta ejecutan subastas de segundo precio
+generalizado (GSP, por sus siglas en inglés) con un peso de calidad --- un multiplicador por
+anunciante que convierte las ofertas brutas en ofertas efectivas, alterando el precio de cierre
+y el ranking.
+
+En la subasta de segundo precio (Vickrey) con \(n\) oferentes, la oferta veraz es una estrategia
+dominante: si se gana (el valor verdadero \(v\) supera todos los valores rivales), se paga el
+mayor valor rival \(v_{(2)}\) --- inferior a \(v\), lo que genera un excedente positivo. Si se
+pierde, la oferta no tuvo efecto. Ninguna desviación de la oferta veraz mejora el resultado.
+
+La subasta de segundo precio generalizado (GSP) con peso de calidad \(Q_i\) clasifica a los
+oferentes por oferta efectiva \(b_i Q_i\) y cobra al ganador el monto necesario para superar al
+siguiente anunciante clasificado:
+\begin{equation}\label{eq:gsp}
+  \mathrm{CPC}_i \;=\; \frac{b_{i+1}\,Q_{i+1}}{Q_i} + \delta,
+\end{equation}
+donde \(b_{i+1}Q_{i+1}\) es el AdRank efectivo del oferente clasificado justo por debajo de \(i\)
+y \(\delta\) es un incremento pequeño (p.\ ej.\ \$0.01). Esta estructura --- ya derivada
+operacionalmente en \cref{eq:ecpc} --- tiene una implicación clave: mejorar la calidad \(Q_i\)
+reduce el costo por clic en cualquier ranking dado.
+
+Ejemplo de dos oferentes con valores \(v_A=\money{5}\), \(v_B=\money{3}\) y puntajes de calidad
+\(Q_A=10\), \(Q_B=8\):
+\begin{center}\small
+\begin{tabular}{lrrrl}
+  \toprule
+  Oferente & Valor real & Puntaje de calidad & Oferta efectiva & Resultado \\
+  \midrule
+  A        & \money{5}  & 10                 & 50              & Gana; paga \(3\times8/10+0.01=\money{2}.41\) \\
+  B        & \money{3}  & 8                  & 24              & Pierde \\
+  \bottomrule
+\end{tabular}
+\end{center}
+El oferente A obtiene un excedente del consumidor de \(\money{5}-\money{2}.41=\money{2}.59\) por clic.
+Si A redujera su calidad a \(Q_A=6\), la oferta efectiva caería a 30; la oferta efectiva de B de 24
+sigue perdiendo, pero el CPC de A sube a \(3\times8/6+0.01=\money{4}.01\), reduciendo el excedente
+a \money{0}.99. La mejora de calidad es inequívocamente rentable para el comprador.
+
+\Cref{eq:gsp} supone que el puntaje de calidad es fijo y conocido al momento de la subasta. En
+la práctica, tanto el Puntaje de Calidad de Google como la tasa de acción estimada de Meta
+(\cref{eq:metavalue}) se actualizan continuamente; un creativo de alta calidad hoy puede ser
+desplazado mañana por la predicción más baja de un modelo recién entrenado. El GSP no es
+incentive-compatible en el mismo sentido preciso que Vickrey: los oferentes pueden beneficiarse
+de reducir sus ofertas en entornos de múltiples posiciones \parencite{dranove7theconomics}. El
+mecanismo también supone valores privados independientes; los valores correlacionados (comunes en
+subastas de palabras clave de marca) abren espacio para la colusión o la coordinación tácita.
+
+\begin{example}[SaaS de referencia --- optimización de la subasta GSP]
+La empresa SaaS de referencia apunta a la palabra clave «software de gestión de proyectos» en
+Google. Un competidor (B) con AdRank~16 ocupa la posición 2. Con Puntaje de Calidad \(Q_A=8\):
+\[
+  \mathrm{CPC} = 16/8 + \$0.01 = \money{2.01}.
+\]
+Con un presupuesto mensual de \money{120000} y un CPC de \money{2.01}, la empresa compra
+\(\num{120000}/2.01\approx\num{59700}\) clics --- bien por encima del mínimo de la fase de
+aprendizaje. Si se optimiza el creativo y la página de destino y se eleva \(Q_A\) a 10:
+\[
+  \mathrm{CPC} = 16/10 + \$0.01 = \money{1.61},\quad
+  \text{clics} \approx \num{74500}\;\text{(+25\%)}.
+\]
+El mismo presupuesto compra un \qty{25}{\percent} más de tráfico a través de la calidad, no del
+gasto. Esta es la forma operacional de \cref{eq:gsp} y es consistente con la derivación de CPC
+en \cref{eq:ecpc}, \cref{ch:paid-acquisition-platforms}.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Ofertar por encima del valor verdadero para ganar la posición~1 en una subasta GSP reduce el
+excedente por clic y puede destruir valor si el incremento de CTR de la posición~1 frente a la
+posición~2 no compensa el CPC más alto. La decisión es un análisis marginal: ingreso incremental
+por mejor posición frente a costo incremental --- exactamente la condición \(\mathrm{MR}=\mathrm{MC}\)
+de \cref{eq:elasticity}.
+\end{admonition}
+
+El teorema de equivalencia de ingresos establece que, bajo condiciones estándar (oferentes neutros
+al riesgo, valores privados independientes, distribuciones simétricas) todas las subastas estándar
+--- de primer precio, segundo precio, inglesa, holandesa --- generan el mismo ingreso esperado para
+el vendedor. El uso de pesos de calidad por parte de Google y Meta es una desviación de este caso
+simétrico: permite a la plataforma extraer más ingresos clasificando a anunciantes de mayor calidad
+y menores ofertas que generan más valor para el usuario (y por lo tanto más excedente del productor
+del lado de la plataforma) de lo que el precio puro implicaría. La pregunta de diseño de mecanismos
+--- qué subasta maximiza una suma ponderada del bienestar del anunciante y la plataforma --- es activa
+en la literatura \parencite{mankiw2020}.
+
+La estructura GSP de \cref{eq:gsp} es la base teórica de la mecánica de plataformas en
+\cref{ch:paid-acquisition-platforms}; el puntaje de calidad es el componente de AdRank en
+\cref{eq:adrank} y la fórmula de CPC en \cref{eq:ecpc}. \textcite{mankiw2020} y
+\textcite{dranove7theconomics} cubren los fundamentos de la teoría de subastas; la implementación
+en plataformas se desarrolla en \cref{ch:paid-acquisition-platforms}.
+
+\section{Costos de transacción y fronteras de la empresa}\label{sec:transaction-costs}
+% complejidad: 3
+
+¿Debe la empresa construir su propio \emph{stack} de tecnología publicitaria, gestionar su propio
+\emph{pipeline} de datos o usar las plataformas? La economía de costos de transacción otorga a la
+decisión de fabricar-o-comprar un marco riguroso: internalizar cuando los mercados son demasiado
+costosos de usar; externalizar cuando no lo son. Los mercados son mecanismos de asignación
+eficientes, pero usarlos no es gratuito. Redactar y hacer cumplir contratos, monitorear el
+desempeño de la contraparte y cambiar de proveedor consumen recursos. Cuando esos costos de
+transacción superan los costos de gestionar una actividad dentro de la empresa, la internalización
+es la elección eficiente. La intuición de Coase de 1937 es que las fronteras de la empresa se
+fijan en el margen donde el costo de una transacción interna adicional iguala el costo de una
+transacción de mercado adicional.
+
+La decisión de fabricar-o-comprar se evalúa en cuatro dimensiones:
+\begin{description}
+  \item[Especificidad de activos] ¿Qué tan especializado es el activo para esta relación? Alta
+    especificidad (integraciones personalizadas, datos propietarios) crea riesgo de \emph{hold-up}
+    en una relación de mercado --- la contraparte puede extraer rentas en la renegociación.
+    Internalizar.
+  \item[Incertidumbre] Los entornos más difíciles de contratar (tecnología que cambia rápidamente,
+    volúmenes impredecibles) elevan el costo de los contratos de mercado. Internalizar o usar
+    contratación relacional (de largo plazo, basada en confianza).
+  \item[Frecuencia] Las transacciones frecuentes y estandarizadas reducen el costo por unidad de
+    la contratación de mercado en relación con el costo fijo del gobierno interno. Externalizar.
+  \item[Dificultad de medición] Cuando la calidad del resultado es difícil de observar y verificar,
+    los contratos de mercado generan riesgo moral (la contraparte no cumple porque la baja calidad
+    no se penaliza). Internalizar o invertir en monitoreo.
+\end{description}
+\parencite{coase1937nature}.
+
+El \emph{framework} supone que la internalización resuelve efectivamente el problema de gobierno.
+Las grandes empresas también enfrentan costos de transacción internos --- burocracia, incentivos
+desalineados, fallas de coordinación --- que pueden superar los costos de mercado a escala. La
+frontera óptima no es, por tanto, «empresa grande vs.\ mercado», sino una comparación continua de
+costos en cada margen del alcance organizacional. Los ecosistemas de plataforma crean un tercer
+modo: mercados gobernados (App Store, API de Google Ads) que combinan precios de mercado con
+estándares impuestos por la plataforma, internalizando parcialmente el riesgo de especificidad
+de activos sin integración vertical completa \parencite{dranove7theconomics}.
+
+\begin{example}[SaaS de referencia --- \emph{stack} de atribución propio vs. plataformas]
+La empresa SaaS evalúa si construir un \emph{stack} de atribución propia o depender de las APIs
+nativas de conversión de las plataformas. Aplicando el \emph{framework}:
+\begin{itemize}
+  \item \emph{Especificidad de activos}: los datos de conversión propios son altamente específicos
+    (identificadores de clientes propietarios, eventos del lado del servidor); alto riesgo de
+    \emph{hold-up} si se almacenan exclusivamente en una herramienta de terceros. Señal: construir.
+  \item \emph{Incertidumbre}: las regulaciones de privacidad (web sin \emph{cookies}) cambian
+    rápido; un \emph{stack} personalizado requiere inversión continua de ingeniería. Señal: comprar
+    o usar la API de la plataforma (menor mantenimiento).
+  \item \emph{Frecuencia}: los eventos de conversión ocurren continuamente a escala; las APIs
+    estandarizadas los manejan a bajo costo. Señal: comprar.
+  \item \emph{Dificultad de medición}: las conversiones reportadas por la plataforma pueden
+    sobrecontarse debido a las ventanas de atribución; la verificación requiere una capa de medición
+    independiente. Señal: construir la capa de verificación; externalizar la entrega.
+\end{itemize}
+Decisión: usar la API de Conversiones de la plataforma (\cref{ch:attribution-and-measurement}) para
+la entrega, construir una capa de datos propia para la verificación y el modelado. El enfoque
+híbrido minimiza tanto los costos de transacción como el riesgo de \emph{hold-up}.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Las decisiones de fabricar-o-comprar tomadas sobre costos hundidos en lugar de costos marginales
+futuros están sistemáticamente sesgadas. Una empresa que ya ha invertido en un \emph{stack}
+propietario subestimará el costo de mantenimiento continuo y sobreestimará el costo de cambio,
+ambos factores favorecen el \emph{statu quo} independientemente de la economía actual. La aversión
+a las pérdidas (\cref{eq:prospect}) amplifica esto: la perspectiva de «perder» la inversión existente
+se codifica como una pérdida cierta, ponderada en \(\lambda\approx2.25\).
+\end{admonition}
+
+La integración vertical y el gobierno de plataformas son extensiones del \emph{framework} de Coase
+aplicadas a los ecosistemas digitales. Una plataforma que posee tanto el mercado como un producto
+competidor enfrenta el mismo problema de fabricar-o-comprar que un comprador, pero invertido:
+internaliza cuando puede ganar más del autoabastecimiento que de la externalidad que genera al
+habilitar la competencia de terceros. Esta es la economía detrás de las disputas antimonopolio
+en las tiendas de aplicaciones: ¿la integración vertical de la plataforma (cobrar una comisión,
+favorecer sus propios productos) es una reducción de costos de transacción que mejora el bienestar
+o es un cierre anticompetitivo? \textcite{coase1937nature} proporciona el \emph{framework}
+fundacional; \textcite{dranove7theconomics} lo aplica a los mercados de plataformas.
+
+El análisis de fabricar-o-comprar reaparece en la estrategia de operaciones (\cref{ch:operations})
+y en la discusión de las decisiones de \emph{stack} de tecnología de \emph{marketing} en
+\cref{ch:attribution-and-measurement}. \textcite{coase1937nature} es el texto fundacional;
+\textcite{dranove7theconomics} lo extiende a los mercados digitales.

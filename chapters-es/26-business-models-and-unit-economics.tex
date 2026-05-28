@@ -1,0 +1,148 @@
+\chapter{Modelos de negocio y economía unitaria}\label{ch:business-models}
+
+% Alcance: el Business Model Canvas, el ciclo construir-medir-aprender del Lean Startup, y
+%   la mecánica del modelo de ingresos recurrentes SaaS (MRR, ARR, churn, NRR, quick ratio, Regla de 40).
+% Referencias cruzadas: las fichas de métricas de estos KPI se encuentran en \cref{ch:metrics-catalog};
+%   la economía unitaria remite a \cref{ch:customer-economics}.
+
+Un modelo de negocio es una teoría sobre cómo la empresa crea, entrega y captura valor. La economía unitaria comprueba si esa teoría se sostiene a nivel de transacción. Los dos elementos deben ser coherentes: un canvas convincente con un \qty{40}{\percent} de margen bruto es un plan estratégico que no puede financiarse a sí mismo.
+
+\section{El Business Model Canvas}\label{sec:bmc}
+% complexity: 3
+
+¿Cómo se representa la lógica del negocio en una sola página, y cuál de los nueve bloques es actualmente el eslabón más débil de la cadena de creación de valor? El canvas obliga a que las decisiones estratégicas coexistan visualmente. Una \emph{startup} puede describir todo su plan de entrada al mercado, su estructura de costos y su lógica de ingresos en un único documento, lo que hace visibles las contradicciones internas antes de que consuman capital. Su limitación es que es una fotografía, no un sistema dinámico.
+
+\textcite{osterwalder2010} definen nueve bloques interdependientes:
+\begin{description}
+  \item[Segmentos de clientes] ¿Quiénes son los usuarios y los compradores? Un canvas por segmento diferenciado si la economía difiere materialmente.
+  \item[Propuestas de valor] ¿Qué problema se resuelve o qué beneficio se entrega a cada segmento? El gancho de todo el lado derecho.
+  \item[Canales] ¿Cómo llega la propuesta de valor al cliente? Propios (sitio web, SDR) frente a socios (revendedor, integración de API).
+  \item[Relaciones con clientes] ¿Cómo se inicia, mantiene y desarrolla la relación? Autoservicio PLG frente a empresa de alto contacto.
+  \item[Flujos de ingresos] ¿Qué y cómo paga el cliente? Suscripción, uso, licencia, transaccional.
+  \item[Recursos clave] ¿Qué activos se requieren para entregar la propuesta de valor? Datos propietarios, marca, talento, propiedad intelectual.
+  \item[Actividades clave] ¿Qué debe hacer bien la empresa? Desarrollo de producto, generación de demanda, éxito del cliente.
+  \item[Asociaciones clave] ¿Qué es mejor obtener externamente? Infraestructura en la nube, pasarelas de pago, socios de distribución.
+  \item[Estructura de costos] ¿Cuáles son las mayores categorías de costo, y son fijas o variables? R\&D, S\&M, G\&A.
+\end{description}
+El lado derecho (segmentos, propuestas, canales, relaciones, ingresos) es la historia de creación y captura de valor. El lado izquierdo (recursos, actividades, asociaciones, costos) es el motor de entrega de valor. Ambos lados deben estar causalmente conectados: la estructura de costos debe financiar las actividades que entregan las propuestas que generan los ingresos.
+
+El canvas es una fotografía estática. No captura los ciclos de retroalimentación (efectos de red, costos de cambio, volantes de datos) que \textcite{zott2011business} consideran el núcleo dinámico de los modelos de negocio modernos. Tratar el canvas como una estrategia en lugar de como una hipótesis lleva a que supuestos con un mes de antigüedad se traten como hechos validados. Cada bloque debería llevar un nivel de confianza y una fecha.
+
+\begin{example}
+El canvas de la SaaS, destilado:
+\begin{itemize}
+  \item \textbf{Segmentos:} autoservicio PYME; objetivo mercado medio (50--500 empleados).
+  \item \textbf{Propuesta de valor:} eliminar el reporte manual; recuperación de la inversión en 30 días.
+  \item \textbf{Canales:} búsqueda orgánica, adquisición de pago (\money{120000}/mes), SDR outbound para el mercado medio.
+  \item \textbf{Ingresos:} suscripción de \money{50}/mes; nivel enterprise de \money{299}/mes (en prueba).
+  \item \textbf{Recurso clave:} datos de uso propios que permiten funciones de referencia comparativa.
+  \item \textbf{Estructura de costos:} R\&D \qty{30}{\percent}, S\&M \qty{50}{\percent}, G\&A \qty{20}{\percent} del ARR (\money{4000000}).
+\end{itemize}
+El bloque más débil es Canales: destinar el \qty{50}{\percent} del costo a S\&M con un CAC objetivo de \money{600} significa que el negocio se compra, no se atrae. Un Recurso Clave más sólido (el benchmark de datos propios) debería impulsar la referencia orgánica y reducir la intensidad de S\&M con el tiempo. Ese ciclo de retroalimentación no es visible en el canvas, pero sí queda recogido en el coeficiente viral (\cref{ch:growth}) y en la cascada de MRR que se detalla a continuación.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Completar el canvas como señal de progreso. Rellenar los nueve bloques con texto plausible no es validación. El canvas es un documento de hipótesis; cada bloque es una creencia sobre el mundo que debe probarse, preferiblemente con el ciclo Construir--Medir--Aprender de \cref{sec:lean-startup}.
+\end{admonition}
+
+\textcite{zott2011business} amplían el canvas para modelar el modelo de negocio como un sistema de actividades con interdependencias y retroalimentación. Sus «temas de diseño del modelo de negocio» --- novedad, bloqueo, complementariedades, eficiencia --- son los mecanismos por los que una descripción en el canvas se convierte en ventaja competitiva. Un modelo de negocio que puntúa alto en bloqueo (costos de cambio, efectos de red) sostiene márgenes más altos y menor \emph{churn}, lo que repercute directamente en la fórmula del valor de vida del cliente de \cref{eq:clv}.
+
+El canvas proporciona el vocabulario; la economía unitaria a continuación comprueba la aritmética. \textcite{osterwalder2010} definen el \emph{framework}; \textcite{zott2011business} aportan la extensión dinámica que vincula el diseño del canvas con la captura de valor.
+
+\section{Mecánica de ingresos recurrentes SaaS}\label{sec:saas-mrr}
+% complexity: 3
+
+¿El motor de ingresos recurrentes es saludable --- ¿los ingresos nuevos y por expansión superan materialmente la contracción y el churn, y a qué ritmo? El MRR es un stock, no un flujo. Cada mes atraviesa una cascada: los ingresos nuevos lo llenan, la expansión lo estira, la contracción y el churn lo drenan. Un negocio con alto churn bruto puede seguir mostrando un MRR plano si la expansión es fuerte, ocultando una base de clientes que se vacía por abajo mientras unos pocos clientes grandes inflan la parte superior.
+
+La cascada de MRR (\cref{eq:mrr-growth} en \cref{ch:growth}) descompone la variación mes a mes. El quick ratio resume la salud de la cascada en un único número:
+\begin{equation}\label{eq:quick-ratio}
+  \text{Quick Ratio} \;=\; \frac{\Delta\text{MRR}_{\text{new}} + \Delta\text{MRR}_{\text{expansion}}}{\Delta\text{MRR}_{\text{contraction}} + \Delta\text{MRR}_{\text{churn}}},
+\end{equation}
+donde los ingresos nuevos y por expansión son entradas, y la contracción (reducciones de plan) más el churn (cancelaciones) son salidas. Un quick ratio superior a 1 indica que el motor está creciendo; superior a 4 se considera de élite a escala. El quick ratio es una medida de eficiencia: premia los ingresos por expansión porque la expansión no requiere nuevo CAC, y penaliza el churn porque destruye el CAC previamente invertido (\cref{eq:cac} en \cref{ch:customer-economics}).
+
+La \cref{eq:quick-ratio} no distingue la composición de las entradas. Un quick ratio elevado impulsado íntegramente por la adquisición de nuevos clientes a CAC alto tiene menos valor que el mismo ratio impulsado por la expansión: la retención de ingresos netos (NRR $> \qty{100}{\percent}$) significa que la base existente crece sin gasto adicional en adquisición. Hay que seguir el quick ratio junto con el NRR y el churn bruto por separado. El quick ratio también puede manipularse: los descuentos agresivos en expansiones inflan el numerador a la vez que reducen el margen a largo plazo.
+
+\begin{example}
+En un mes determinado, la SaaS añade \money{30000} en nuevo MRR y \money{20000} en expansión (upsell y adiciones de licencias). La contracción es de \money{5000} y el churn de \money{22000}:
+\[
+  \text{Quick Ratio} \;=\; \frac{\money{30000}+\money{20000}}{\money{5000}+\money{22000}}
+    \;=\; \frac{50000}{27000} \;\approx\; 1.85.
+\]
+El crecimiento es positivo, pero queda por debajo del umbral de élite \(\ge 4\). El denominador (\money{27000} perdidos) se aproxima a la expansión (\money{20000} ganados), lo que significa que la base existente casi se autoderrota. La decisión: el churn de \money{22000}/mes es el cuello de botella (exactamente la lógica de restricción de \cref{ch:operations}). Una reducción de un punto porcentual en el churn mensual con una base MRR de \money{340000} ahorra \money{3400}/mes --- más que cualquier campaña de expansión razonable. Referencias cruzadas: el churn alimenta directamente la \cref{eq:clv} en \cref{ch:customer-economics} y la referencia de métricas en \cref{ch:metrics-catalog}.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Informar el crecimiento de MRR agregado sin descomponer la cascada. Un trimestre de MRR plano puede ocultar una fuerte adquisición nueva enmascarada por un churn catastrófico. La cascada es el diagnóstico; el agregado es el síntoma.
+\end{admonition}
+
+La retención de ingresos netos (NRR) es el análogo anual del quick ratio: NRR \(= (\text{ARR inicial} + \text{expansión} - \text{contracción} - \text{churn}) / \text{ARR inicial}\). Un NRR superior al \qty{120}{\percent} significa que la base de clientes existente se compone sin ninguna nueva adquisición --- la aproximación más cercana que el modelo SaaS alcanza al crecimiento autorreinforceante de la perpetuidad creciente (\cref{eq:gordon} en \cref{ch:corporate-finance-core}).
+
+El quick ratio es la compresión de la cascada en un único número; el cálculo completo del LTV que este alimenta es la \cref{eq:clv}. \textcite{bendle2020marketing} catalogan la métrica en su contexto operativo; \textcite{ries2011} conecta la salud de los ingresos recurrentes con el ciclo construir--medir--aprender.
+
+\section{El Lean Startup --- Construir--Medir--Aprender}\label{sec:lean-startup}
+% complexity: 2
+
+Antes de escalar un nuevo flujo de ingresos o un nivel de producto, ¿cómo se determina si los supuestos sobre el comportamiento del cliente son correctos al menor costo posible? Toda nueva iniciativa descansa sobre una pila de supuestos: el cliente tiene este problema, pagará este precio, usará la funcionalidad de esta manera. Cada supuesto es una hipótesis falsificable. La contribución del \emph{lean startup} es tratar a la empresa como una máquina de prueba de hipótesis en lugar de como una máquina de ejecución de planes.
+
+El ciclo CMA (\cref{sec:lean-bml} en \cref{ch:operations}) en su forma de estrategia de producto:
+\begin{description}
+  \item[Hipótesis] Articular un supuesto falsificable con un resultado medible: «el \qty{20}{\percent} de los ensayos del mercado medio actualizará al nivel enterprise de \money{299}/mes en 30 días si se le ofrece SSO y soporte prioritario».
+  \item[MVP] Construir la versión mínima que prueba la hipótesis --- no el producto completo. Para la prueba de precio: una \emph{landing page} con un ensayo aprovisionado de forma manual.
+  \item[Medir] Instrumentar la única métrica de la que depende la hipótesis. Usar la \emph{contabilidad de la innovación}: comparar la conversión real con la línea de base.
+  \item[Aprendizaje validado] ¿La métrica se movió en la dirección y magnitud hipotizadas? Pivotar (cambiar un supuesto) o perseverar (seguir construyendo).
+\end{description}
+La contabilidad de la innovación sustituye las métricas de vanidad (registros totales, páginas vistas) por métricas ancladas a una hipótesis específica. Una métrica de vanidad puede subir mientras todos los supuestos que sustentan los ingresos permanecen sin validar.
+
+El ciclo CMA en la estrategia de producto supone que cada hipótesis puede aislarse. En productos complejos con múltiples supuestos interdependientes, probar una variable cambia el contexto de las demás. El \emph{framework} también supone que el MVP es una prueba válida del producto completo: los clientes pueden convertir con un MVP elaborado manualmente que rechazarían en un sistema automatizado, generando una validación falsa.
+
+\begin{example}
+El equipo de la SaaS formula la hipótesis de un nivel enterprise de \money{299}/mes con SSO. MVP: aprovisionar manualmente SSO para cualquier ensayo del mercado medio que lo solicite, sin necesitar la ingeniería del flujo de autoservicio completo. Ofrecerlo como una casilla de verificación en el correo electrónico de actualización del ensayo.
+
+Resultados tras 4 semanas: \num{50} ensayos del mercado medio recibieron la oferta; \num{10} actualizaron (\qty{20}{\percent}). Hipótesis: \qty{20}{\percent}. Resultado: \qty{20}{\percent}. Decisión: perseverar --- el supuesto se confirma al nivel umbral. Siguiente hipótesis: ¿estos clientes retienen a tasas más altas que la cohorte de \money{50}/mes, lo que justifica el mayor LTV utilizado en el cálculo del techo de CAC (\cref{eq:ltv-cac} en \cref{ch:customer-economics})? Esa prueba se ejecuta en los meses 2--4.
+
+Costo del aprendizaje: aproximadamente \money{2000} en tiempo de aprovisionamiento manual frente a \money{60000} para construir el nivel SSO de autoservicio. Si la hipótesis hubiera fallado, el dinero ahorrado financia la siguiente prueba.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Tratar el MVP como el producto. Una vez validada una hipótesis, el MVP debe reemplazarse con una implementación escalable. Las organizaciones que lanzan MVPs y siguen adelante acumulan deuda técnica que eventualmente limita el rendimiento (\cref{eq:throughput} en \cref{ch:operations}).
+\end{admonition}
+
+\textcite{ries2011} conecta el ciclo CMA explícitamente con el sistema de extracción de la manufactura esbelta y la calidad incorporada de Toyota. La implicación más profunda es que el aprendizaje validado es el resultado del ciclo CMA, no las funcionalidades ni el código. Un equipo que produce diez hipótesis no validadas por trimestre está generando valor negativo; uno que produce dos validadas está acumulando conocimiento estratégico. Esta es la expresión en estrategia de producto del encuadre de producción de conocimiento de \cref{ch:decisions-under-uncertainty}.
+
+El ciclo CMA es el mecanismo operativo por el cual el canvas de \cref{sec:bmc} se convierte en un modelo de negocio probado en lugar de un conjunto de creencias plausibles. \textcite{ries2011} es el tratamiento definitivo.
+
+\section{Regla de 40 y múltiplo de quema}\label{sec:rule40-burn}
+% complexity: 3
+
+¿El negocio equilibra crecimiento y rentabilidad de manera eficiente, y se convierte cada dólar de capital en ingresos recurrentes a una tasa que justifica la inversión continuada? El SaaS en etapa temprana se valora por el crecimiento; en etapa tardía, por la rentabilidad; la Regla de 40 tiende un puente entre ambos al afirmar que su suma debe superar el \qty{40}{\percent}. El múltiplo de quema plantea la pregunta complementaria: ¿cuánto efectivo debe consumirse para añadir un dólar de nuevo ARR neto?
+
+Ambas métricas se definen a nivel de ARR:
+\begin{equation}\label{eq:rule40}
+  \text{Rule of 40} \;=\; \Delta\text{ARR\%} \;+\; \text{EBITDA margin\%},
+\end{equation}
+\begin{equation}\label{eq:burn-multiple}
+  \text{Burn Multiple} \;=\; \frac{\text{Net cash burned}}{\text{Net new ARR}}.
+\end{equation}
+En la \cref{eq:rule40}, el crecimiento del ARR y el margen EBITDA se expresan ambos como porcentajes del ARR actual. Un negocio con un \qty{40}{\percent} de crecimiento y un \qty{0}{\percent} de margen EBITDA puntúa 40; uno con un \qty{10}{\percent} de crecimiento y un \qty{30}{\percent} de margen EBITDA puntúa igual. El \emph{framework} es neutral entre ambas trayectorias siempre que la suma supere 40. En la \cref{eq:burn-multiple}, un múltiplo inferior a 1 significa que el negocio genera más ARR nuevo del que quema --- crecimiento autofinanciado. Por encima de 2 es una señal de alerta; por encima de 3 indica ineficiencia de capital. Ambas métricas se conectan con el \emph{framework} de ROIC de la \cref{eq:roic} en \cref{ch:value-creation}: la Regla de 40 es el indicador del sector SaaS para la prueba de ROIC aplicada al equilibrio entre crecimiento y rentabilidad.
+
+La \cref{eq:rule40} usa EBITDA, no flujo de caja libre, lo que favorece a los negocios SaaS intensivos en capital que tienen alto capex de infraestructura. Un negocio con un \qty{30}{\percent} de margen EBITDA pero una intensidad de capex del \qty{25}{\percent} tiene un margen de flujo de caja libre del \qty{5}{\percent} y una realidad financiera materialmente diferente. El múltiplo de quema (\cref{eq:burn-multiple}) sí usa efectivo y, por tanto, es menos manipulable --- aunque es sensible al momento: una gran inversión de infraestructura inicial en el mes 1 infla el múltiplo de ese período sin señalar ineficiencia estructural.
+
+\begin{example}
+El ARR actual es \money{4000000}; el negocio creció un \qty{30}{\percent} en los últimos 12 meses (añadiendo \money{1200000} de ARR neto nuevo). El EBITDA fue negativo con un margen de \(\qty{-15}{\percent}\) (\money{-600000}). Aplicando la \cref{eq:rule40}:
+\[
+  \text{Rule of 40} \;=\; 30 + (-15) \;=\; 15.
+\]
+Por debajo de 40, pero en la fase de crecimiento donde se prioriza el \qty{30}{\percent} de crecimiento. La distancia hasta 40 requiere acelerar el crecimiento o reducir las pérdidas. Múltiplo de quema: el efectivo neto quemado fue \money{1500000} (incluyendo \money{900000} de pérdida operativa y \money{600000} de capex) frente a \money{1200000} de ARR neto nuevo:
+\[
+  \text{Burn Multiple} \;=\; \frac{\money{1500000}}{\money{1200000}} \;=\; 1.25\times.
+\]
+Un múltiplo de quema de \(1.25\times\) es excelente --- el negocio es eficiente en capital incluso cuando la Regla de 40 está por debajo del umbral. La implicación: la vía hacia 40 es acelerar el crecimiento (el numerador), no recortar la quema (que ya es ajustada). Referencia cruzada: las definiciones completas de KPI y los benchmarks se encuentran en \cref{ch:metrics-catalog}.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Tratar la Regla de 40 como una compuerta de aprobado/reprobado. Un negocio con puntuación 39 no es cualitativamente diferente de uno con 41. El valor de la métrica radica en ser una tendencia direccional a lo largo del tiempo y en la comparación con pares en la misma etapa, no como umbral absoluto. Recortar la inversión en crecimiento para empujar la puntuación por encima de 40 destruye valor a largo plazo si la economía unitaria (\cref{eq:ltv-cac}) es sólida.
+\end{admonition}
+
+La Regla de 40 está conectada con la lógica del valor terminal de \cref{ch:valuation}: un negocio que mantiene la Regla de 40 $\ge$ 40 a escala puede justificar un supuesto de tasa de crecimiento en un DCF que supere la tasa libre de riesgo, porque la mitad de rentabilidad de la ecuación financia el crecimiento. Los negocios que puntúan únicamente en crecimiento están implícitamente suponiendo que eventualmente obtendrán el margen correcto a escala --- un supuesto que el múltiplo de quema puede validar o refutar en tiempo real.
+
+La economía unitaria y el diseño del modelo de negocio no son disciplinas separadas: el canvas determina la estructura de costos, el ciclo CMA valida los supuestos de ingresos, la cascada de MRR sigue los ingresos recurrentes resultantes, y la Regla de 40 y el múltiplo de quema evalúan la eficiencia de capital del sistema en su conjunto. \textcite{bendle2020marketing} sitúan estas métricas en el \emph{framework} más amplio de responsabilidad del \emph{marketing}.

@@ -1,0 +1,76 @@
+\chapter{Marketing Digital: \emph{Funnel}, Ciclo de Vida y Bucles de Crecimiento}\label{ch:digital-funnel-and-crm}
+
+% Alcance: el funnel como cadena de probabilidades; puntuación de leads y el pipeline CRM;
+%   bucles de crecimiento frente al volante de inercia. Precede a la mecánica de plataformas de \cref{ch:paid-acquisition-platforms}.
+
+Antes de comprar tráfico se necesita la arquitectura que lo convierte en clientes. El funnel digital no es una metáfora; es una cadena de probabilidades condicionales, y cada decisión posterior --- qué plataforma, qué puja, qué audiencia (\cref{ch:paid-acquisition-platforms}) --- es un intento de mover uno de sus términos.
+
+\section{El Funnel como Cadena de Probabilidades}\label{sec:funnel-chain}
+
+El gasto es un desperdicio si no supera cada etapa, desde la primera impresión hasta el cliente de pago. La restricción dominante casi nunca está donde los equipos creen que está, e identificarla cambia todas las decisiones presupuestarias que siguen.
+
+El conocimiento, la consideración y la conversión no son etapas por las que se «desciende»; son compuertas, cada una con una probabilidad de paso. El funnel completo es un producto, de modo que la compuerta de menor probabilidad domina el resultado --- doblar un paso del \qty{2}{\percent} supera a exprimir uno del \qty{40}{\percent}. La idea de que la persuasión avanza en etapas medibles es el modelo de jerarquía de efectos \parencite{lavidge1961model,barry1987development}.
+
+Descomponiendo el camino desde la impresión hasta la venta mediante la regla de la cadena de probabilidades (\cref{ch:decisions-under-uncertainty}):
+\begin{equation}\label{eq:funnel-chain}
+  P(\text{sale}) \;=\; P(\text{click}\mid\text{impression})\,\cdot\,P(\text{lead}\mid\text{click})\,\cdot\,P(\text{sale}\mid\text{lead}).
+\end{equation}
+Cada factor es una compuerta del funnel; el producto es la tasa de conversión de extremo a extremo. Los clientes nuevos esperados son simplemente impresiones $\times$ \cref{eq:funnel-chain}. La cadena supone que las compuertas son independientes y que el camino es lineal. Ninguna de las dos condiciones se cumple de forma exacta: un usuario reorientado (retargeted) vuelve a entrar a mitad del funnel, y una marca sólida eleva todas las compuertas a la vez. Tratar \cref{eq:funnel-chain} como el modelo de primer orden, no como el territorio --- la realidad multitáctil es el objeto de \cref{ch:attribution-and-measurement}.
+
+\begin{example}
+Nuestra empresa de suscripción de referencia envía \num{10000} sesiones a una página de prueba. El \qty{8}{\percent} inicia una prueba (\num{800}); el \qty{25}{\percent} de las pruebas convierte a pago (\num{200}). De extremo a extremo, eso equivale a una tasa sesión-a-cliente del \qty{2}{\percent}. Elevar el inicio de prueba del \qty{8}{\percent} al \qty{12}{\percent} produce \num{300} clientes --- una ganancia del \qty{50}{\percent} --- mientras que un esfuerzo equivalente en la compuerta de conversión de prueba a pago, que ya es saludable, mueve muchos menos.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Optimizar la compuerta más ruidosa, no la restricción dominante, hace que el presupuesto se pierda en silencio. Los equipos invierten gasto creativo en el clic-through de la cima del funnel mientras una compuerta rota de incorporación (\emph{onboarding}) de prueba reduce el producto a la mitad. Identificar primero la compuerta de menor probabilidad y mayor tráfico.
+\end{admonition}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.72\linewidth]{funnel-awareness-to-purchase}
+  \caption{El funnel de conocimiento a compra. Cada estrechamiento es una compuerta de probabilidad condicional en \cref{eq:funnel-chain}; las tasas de referencia varían ampliamente según categoría y canal.}
+  \label{fig:funnel}
+\end{figure}
+
+\section{Puntuación de \emph{Leads} y el \emph{Pipeline} CRM}\label{sec:lead-scoring}
+
+No todo lead merece la hora de un vendedor. La pregunta es cuáles trabajar ahora --- y cuánto vale el pipeline antes de que alguno cierre.
+
+Un pipeline CRM es el funnel hecho discreto: oportunidades nominadas en etapas, cada una con una probabilidad histórica de cierre. La puntuación de leads los clasifica por ajuste y comportamiento (el traspaso MQL$\to$SQL) de modo que el esfuerzo de ventas escaso recaiga en los leads más propensos a convertir \parencite{jarvinen2016harnessing}. La misma lógica reaparece a lo largo del ciclo de vida del cliente, no solo en la adquisición \parencite{lemon2016understanding,kumar2018customer}.
+
+Valuación del pipeline como suma ponderada por probabilidad de los acuerdos abiertos:
+\begin{equation}\label{eq:pipeline-ev}
+  \mathbb{E}[\text{pipeline}] \;=\; \sum_{i} D_i\,p_i,
+\end{equation}
+donde $D_i$ es el tamaño del acuerdo y $p_i$ la probabilidad de cierre de la etapa. El comportamiento pasado es el predictor más sólido del valor futuro; la recencia, la frecuencia y el valor monetario (RFM) siguen siendo las características de puntuación más utilizadas \parencite{fader2005rfm,bult1995optimal}.
+
+\begin{example}
+Cuarenta oportunidades con un promedio de \money{1200} y una tasa de cierre por etapa del \qty{30}{\percent}: \cref{eq:pipeline-ev} valúa el pipeline en $40\times\money{1200}\times0.30=\money{14400}$. Elevar el umbral MQL sube la tasa de cierre al \qty{45}{\percent} pero admite solo \num{28} acuerdos: $28\times\money{1200}\times0.45=\money{15120}$ --- más ingreso esperado con menos esfuerzo de ventas.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Puntuar solo por ajuste omite la intención. Una cuenta de ajuste perfecto que nunca abre un correo no está lista para ventas; el comportamiento determina la intención. Y retroalimentar leads crudos, no cualificados, a las plataformas de anuncios las enseña a encontrar más leads no cualificados (\cref{ch:paid-acquisition-platforms}) --- devolver la señal \emph{cualificada}.
+\end{admonition}
+
+\section{Bucles de Crecimiento y el Volante de Inercia}\label{sec:growth-loops}
+
+Un funnel gasta para llenarse y se detiene cuando el gasto cesa. La pregunta más duradera es si el producto de la adquisición puede financiar su propio siguiente ciclo.
+
+Un bucle realimenta: los clientes producen algo --- referencias, contenido, datos --- que adquiere a los siguientes clientes. Donde el funnel es lineal y permeable, un bucle compone; el volante de inercia de Collins es la misma imagen de impulso acumulado \parencite{collins2001good,ellis2017hacking}.
+
+Para un bucle de referencias, se define el coeficiente
+\begin{equation}\label{eq:viral-k}
+  k \;=\; i \times c,
+\end{equation}
+las invitaciones enviadas por usuario $i$ multiplicadas por la conversión por invitación $c$. Cuando $k>1$ cada cohorte se reemplaza más que a sí misma y el crecimiento es autosuficiente; cuando $k<1$ el bucle amplifica la adquisición de pago pero no la sustituye \parencite{leskovec2007dynamics}. El coeficiente $k$ es el gemelo en \emph{marketing} del multiplicador del efecto de red en \cref{ch:growth}: ambos preguntan si cada usuario hace al siguiente más barato o más probable. El rendimiento del bucle también obedece la misma lógica de cola que \cref{ch:operations} --- el tiempo de ciclo entre la invitación y la conversión limita la velocidad de giro del bucle.
+
+Si «funnel» o «volante de inercia» es el primitivo correcto está genuinamente en disputa \parencite{meyer2019marketing,vazirani2023flywheel}. La síntesis honesta: los bucles no aboleen el funnel, lo realimentan desde arriba --- aún se necesita \cref{eq:funnel-chain} para convertir el tráfico que un bucle entrega.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.62\linewidth]{growth-loop}
+  \caption{Un bucle de crecimiento: el producto de la adquisición (clientes) vuelve a entrar como insumo (referencias, contenido, datos). Con un coeficiente de bucle $k>1$ (\cref{eq:viral-k}) el ciclo es autosuficiente.}
+  \label{fig:growth-loop}
+\end{figure}
+
+Un funnel dimensionado por \cref{eq:funnel-chain}, un pipeline valuado por \cref{eq:pipeline-ev} y un bucle medido por \cref{eq:viral-k} son las tres formas de la demanda digital. Qué tráfico comprar para ellos, y cómo, es \cref{ch:paid-acquisition-platforms}. \textcite{kumar2018customer} desarrollan en profundidad el lado CRM y de valor del cliente.

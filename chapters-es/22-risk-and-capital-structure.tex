@@ -1,0 +1,329 @@
+\chapter{Riesgo y Estructura de Capital}\label{ch:risk-and-capital-structure}
+
+% Alcance: CAPM, beta, riesgo sistemático vs. idiosincrático, Modigliani–Miller, WACC.
+% Referencia cruzada: WACC es la tasa de descuento r en el DCF (\cref{ch:valuation}) y en la fórmula de CLV
+%   (\cref{ch:customer-economics}).
+
+\section{Riesgo Sistemático y CAPM}\label{sec:capm}
+% complexity: 4 -> figure capm-sml
+
+¿Qué retorno debe generar un negocio para justificar el riesgo que soportan sus inversores? CAPM responde
+descomponiendo el riesgo en la parte que el mercado valora y la parte que ignora, y derivando luego el
+retorno mínimo requerido en consecuencia. Los inversores pueden eliminar el riesgo idiosincrático
+(específico de la empresa) de forma gratuita mediante la diversificación. No pueden eliminar el riesgo
+sistemático --- la co-variación con el mercado amplio. Dado que solo el riesgo sistemático sobrevive en
+una cartera diversificada, solo el riesgo sistemático exige una prima de retorno. La beta mide esa
+co-variación; la línea del mercado de valores la valora.
+
+Sea \(R_f\) la tasa libre de riesgo, \(E(R_m)\) el retorno esperado del mercado y \(\beta\)
+el riesgo sistemático del activo --- la pendiente de la regresión de sus retornos en exceso sobre los
+retornos en exceso del mercado. El modelo de valoración de activos de capital (CAPM) proporciona el
+retorno requerido:
+\begin{equation}\label{eq:capm}
+  E(R_i) \;=\; R_f \;+\; \beta\,\bigl[E(R_m)-R_f\bigr].
+\end{equation}
+El término \([E(R_m)-R_f]\) es la prima de riesgo de capital (ERP). Para el mercado estadounidense en
+horizontes largos, la ERP es aproximadamente \qty{5}{\percent} (media geométrica). Todo activo con
+\(\beta>1\) amplifica los movimientos del mercado; \(\beta<1\) los amortigua.
+
+CAPM se basa en preferencias de media-varianza y distribuciones normales de retornos. Los retornos
+empíricos tienen colas gruesas; Fama--French documentan que el tamaño y el ratio precio-valor contable
+explican variaciones de retorno que \(\beta\) no captura. Las empresas SaaS de alto crecimiento suelen
+presentar beneficios contables negativos, lo que hace que las estimaciones históricas de beta sean
+ruidosas (los beneficios negativos producen series de retornos poco fiables). Los profesionales suelen
+utilizar la beta \emph{sectorial} --- desapalancar la beta de las empresas comparables y re-apalancarla
+en la estructura de capital objetivo --- para sortear el ruido específico de cada empresa.
+
+\begin{example}[Derivación del costo del capital propio para la SaaS de referencia]
+La SaaS B2B de referencia tiene una \(\beta=1.4\) estimada (superior al mercado, coherente con la
+volatilidad propia de las empresas de software en fase de crecimiento). La tasa libre de riesgo actual
+(bono del Tesoro a 10 años) es \qty{4}{\percent}; la ERP es \qty{5}{\percent}. Aplicando \cref{eq:capm}:
+\[
+  E(R_i) \;=\; \qty{4}{\percent} \;+\; 1.4\times\qty{5}{\percent}
+          \;=\; \qty{4}{\percent} + \qty{7}{\percent}
+          \;=\; \qty{11}{\percent}.
+\]
+Este \qty{11}{\percent} es el costo del capital propio que alimenta el WACC (\cref{eq:wacc})
+y cierra el ciclo de la tasa de descuento del libro: es la \(r\) de \cref{eq:gordon},
+\cref{eq:pv}, \cref{eq:npv} y \cref{eq:dcf} en todo el ejemplo de referencia.
+Implicación gerencial: elevar las proyecciones de crecimiento de forma que aumente la volatilidad
+percibida --- subiendo \(\beta\) de 1.4 a 1.7 --- añade \qty{1.5}{\percent} al retorno requerido,
+ensanchando el denominador \((\mathrm{WACC}-g)\) de 0.08 a 0.095
+y comprimiendo el múltiplo EV/Ingresos de aproximadamente \(2.6\times\) a \(2.2\times\)
+(\cref{eq:ev-revenue}).
+\end{example}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{capm-sml}
+  \caption{La Línea del Mercado de Valores. El retorno esperado aumenta linealmente con \(\beta\);
+  los activos por encima de la línea están infravalorados (alfa positivo), los que están por debajo
+  están sobrevalorados. La SaaS de referencia (\(\beta=1.4\)) se sitúa en el retorno requerido
+  del \qty{11}{\percent} que ancla todo el trabajo de DCF en este libro.}
+  \label{fig:capm-sml}
+\end{figure}
+
+\begin{admonition}{Advertencia}
+Tratar \(\beta\) como una propiedad estable e intrínseca. \emph{La beta se estima a partir de la
+co-variación histórica}, que cambia con el modelo de negocio, el apalancamiento y el régimen del
+mercado. Una empresa SaaS que era defensiva en 2019 (\(\beta=0.8\)) puede revalorizarse hasta
+\(\beta=1.6\) cuando las tasas de interés suben y su prima de crecimiento se convierte en el
+factor de riesgo dominante. Actualizar la beta en cada ciclo de asignación de capital --- en lugar
+de anclarse a una estimación histórica obsoleta --- es la disciplina que mantiene honesta la tasa de
+referencia.
+\end{admonition}
+
+Los modelos multifactoriales (tres factores de Fama--French, cuatro factores de Carhart, factor de
+calidad de AQR) añaden exposiciones de tamaño, valor y momentum al único \(\beta\) del CAPM. Para
+empresas privadas sin retornos cotizados, los analistas construyen una beta sintética a partir del
+apalancamiento operativo (razón de costos fijos sobre costos totales) y del apalancamiento financiero
+--- ambos multiplican directamente la componente sistemática de la volatilidad de los beneficios.
+
+CAPM proporciona el insumo del costo de \emph{equity} que necesita el WACC; los dos son inseparables.
+\textcite{brealey2020} derivan el CAPM a partir de la teoría de carteras de media-varianza;
+\textcite{ross2022} cubren la literatura empírica y las alternativas factoriales;
+\textcite{berk6thcorporate} es la referencia estándar para la metodología de beta sectorial
+utilizada en la práctica.
+
+\section{El Costo Promedio Ponderado de Capital}\label{sec:wacc}
+% complexity: 3
+
+La empresa está financiada tanto con equity como con deuda. Cada uno tiene un costo y un tratamiento
+fiscal diferente. El WACC es la tasa de descuento única que los pondera correctamente para su uso en un
+DCF, una regla de NPV o un modelo de CLV. Los accionistas soportan el riesgo residual y exigen un
+retorno en consecuencia; los tenedores de deuda tienen prioridad de cobro y aceptan un retorno menor,
+adicionalmente subsidiado por la deducibilidad fiscal de los intereses. El WACC combina estos costos
+ponderados por su participación en el capital total, produciendo el verdadero costo integral de financiar
+los activos de la empresa.
+
+Sean \(E\) y \(D\) los valores de mercado del equity y la deuda, \(V=E+D\), \(r_e\) el costo
+del capital propio derivado de \cref{eq:capm}, \(r_d\) el costo de la deuda antes de impuestos y
+\(T_c\) la tasa del impuesto corporativo. El escudo fiscal sobre los pagos de intereses reduce el
+costo efectivo de la deuda de \(r_d\) a \(r_d(1-T_c)\):
+\begin{equation}\label{eq:wacc}
+  \mathrm{WACC} \;=\; \frac{E}{V}\,r_e \;+\; \frac{D}{V}\,r_d\,(1-T_c).
+\end{equation}
+Con \(r_e\) de \cref{eq:capm}, el WACC se convierte en la tasa de descuento unificada que fluye hacia
+\cref{eq:dcf}, \cref{eq:terminal-value} y \cref{eq:ev-revenue} en \cref{ch:valuation}.
+También equivale a \(r\) en la fórmula de CLV \cref{eq:clv} de \cref{ch:customer-economics} y
+en la perpetuidad creciente \cref{eq:gordon}: cada cálculo de valor presente en este libro
+utiliza el mismo número subyacente.
+
+El WACC es estable solo si la estructura de capital es estable. Una empresa que ejecuta una
+recapitalización apalancada, un LBO o una amortización gradual de la deuda tiene un WACC que varía en
+el tiempo; el método del valor presente ajustado (APV) --- que descuenta por separado el FCF no
+apalancado y el valor presente del escudo fiscal --- maneja esto con mayor limpieza. Además, el WACC
+trata el escudo fiscal como cierto, lo que exige que la empresa sea suficientemente rentable para
+aprovecharlo. Una SaaS en fase de crecimiento con EBITDA cercano a cero obtiene poco beneficio del
+escudo fiscal, de modo que los primeros años financiados con equity soportan el costo íntegro del
+capital propio.
+
+\begin{example}[WACC con y sin deuda]
+La SaaS financiada únicamente con equity (\(D=0\)):
+\[
+  \mathrm{WACC} \;=\; \frac{E}{V}\times\qty{11}{\percent} \;+\; 0
+               \;=\; \qty{11}{\percent}.
+\]
+Supóngase ahora que los fundadores contemplan captar \money{1000000} de deuda al \qty{7}{\percent}
+con una tasa impositiva del \qty{25}{\percent}, mientras la empresa se valora en \money{18000000}.
+La nueva estructura de capital: \(E=\money{17000000}\), \(D=\money{1000000}\),
+\(V=\money{18000000}\):
+\[
+  \mathrm{WACC} \;=\; \frac{17}{18}\times\qty{11}{\percent}
+               \;+\; \frac{1}{18}\times\qty{7}{\percent}\times(1-0.25)
+               \;\approx\; \qty{10.68}{\percent}.
+\]
+La reducción es real pero pequeña --- \qty{32}{\percent} de un punto porcentual ---
+porque la deuda es modesta en relación con el valor del equity. Modigliani–Miller
+(\cref{sec:mm}) formaliza por qué esta cuasi-irrelevancia se sostiene en su forma más pura,
+y qué la rompe en la práctica.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Usar una estructura de capital a \emph{valor contable} en lugar de \emph{valor de mercado} en
+\cref{eq:wacc}. Los valores contables reflejan la contabilidad histórica, no el costo de oportunidad
+del capital actual. Una empresa con \money{5000000} de equity en libros pero una capitalización de
+mercado de \money{50000000} está financiada predominantemente con equity a pesos de mercado;
+aplicar pesos contables sobreestima drásticamente la fracción de equity y sobreestima el WACC,
+llevando a la empresa a rechazar proyectos con NPV positivo.
+\end{admonition}
+
+Para empresas con estructuras de capital complejas (múltiples tramos de deuda, equity preferente,
+garantías), cada instrumento entra en \cref{eq:wacc} con su propio costo y peso de mercado.
+Las notas convertibles requieren separar los componentes de deuda y equity (valor Black--Scholes
+de la opción de compra incorporada) antes de ponderarlos. La estimación del WACC para empresas
+privadas añade otra capa: dado que ni el equity ni la deuda cotizan en bolsa, tanto el costo del
+capital propio (utilizando el método de beta sectorial) como el costo de la deuda (utilizando una
+calificación sintética a partir de razones de cobertura de intereses) deben estimarse en lugar de
+observarse.
+
+El WACC es la columna vertebral de la arquitectura de tasas de descuento del libro: su componente de
+equity proviene de \cref{eq:capm}; alimenta \cref{eq:dcf} y \cref{eq:terminal-value} en
+\cref{ch:valuation}; y equivale a \(r\) en el modelo de economía del cliente
+(\cref{eq:clv}, \cref{eq:gordon}).
+\textcite{brealey2020} derivan el ajuste por escudo fiscal; \textcite{modigliani1958capital}
+es la proposición original.
+
+\section{Modigliani--Miller}\label{sec:mm}
+% complexity: 4
+
+¿Importa la forma en que se financia la empresa --- equity versus deuda? Modigliani–Miller establece
+las condiciones bajo las cuales no importa y, al mismo tiempo, las imperfecciones que hacen que la
+estructura de capital sí sea relevante. Comprender el teorema es un prerrequisito para saber cuándo
+ignorarlo. En un mundo sin impuestos, sin costos de quiebra, con información perfecta y sin fricciones
+de agencia, el valor total de la empresa está determinado únicamente por sus activos reales --- no por
+cómo divide las reclamaciones sobre esos activos en deuda y equity. La financiación es entonces una
+redistribución de suma cero, no un acto de creación de valor.
+
+\textbf{Proposición I (sin impuestos):} \(V_L = V_U\) --- el valor de una empresa apalancada
+equivale al de una empresa idéntica no apalancada. \textbf{Proposición II (sin impuestos):} a medida
+que el apalancamiento aumenta, los accionistas exigen un retorno mayor para compensar el riesgo
+adicional que asumen:
+\[
+  r_e \;=\; r_A \;+\; \frac{D}{E}(r_A - r_d),
+\]
+donde \(r_A\) es el costo del capital (de los activos) no apalancado. Con impuestos corporativos, el
+escudo fiscal sobre intereses tiene un valor presente de \(T_c\cdot D\), que incrementa el valor de
+la empresa:
+\begin{equation}\label{eq:mm-wacc}
+  V_L \;=\; V_U \;+\; T_c\,D,
+  \qquad
+  \mathrm{WACC} \;=\; r_A\,\bigl(1 - T_c\,D/V\bigr).
+\end{equation}
+\cref{eq:mm-wacc} muestra el WACC disminuyendo monotónicamente con el apalancamiento cuando solo se
+consideran los impuestos --- lo que implicaría un valor máximo al \qty{100}{\percent} de deuda, lo cual
+es evidentemente incorrecto. Las piezas que faltan son el objeto de \cref{sec:optimal-capital-structure}.
+
+El mundo sin fricciones de Modigliani–Miller omite tres fuerzas que dominan con apalancamiento
+moderado a elevado:
+(1) \emph{costos de dificultad financiera} --- costos legales, operativos y reputacionales
+desencadenados cuando la deuda se vuelve difícil de servir; (2) \emph{costos de agencia} --- a medida
+que la deuda aumenta, los accionistas obtienen un incentivo similar al de una opción para asumir riesgos
+excesivos (\textcite{jensen1976agency} lo formalizan como el problema de sustitución de activos);
+(3) \emph{información asimétrica} --- la teoría de la jerarquía de financiación
+(\textcite{brealey2020}) predice que las empresas prefieren primero los beneficios retenidos, luego la
+deuda y por último el equity, porque emitir equity señala que la dirección cree que las acciones
+están sobrevaloradas. Cada fricción crea una brecha entre la irrelevancia de Modigliani–Miller y el
+comportamiento financiero observado.
+
+\begin{example}[Escudo fiscal de Modigliani–Miller para la SaaS]
+Con la estructura de capital observada de la SaaS (\(D=0\), \(V=\money{18000000}\)) y una
+tasa impositiva del \qty{25}{\percent}, \cref{eq:mm-wacc} da:
+\[
+  \mathrm{WACC} \;=\; \qty{11}{\percent}\times(1-0.25\times0) \;=\; \qty{11}{\percent}.
+\]
+El escudo fiscal es cero porque no hay deuda. Si la empresa añadiera
+\money{5000000} de deuda permanente:
+\[
+  \mathrm{WACC} \;\approx\; \qty{11}{\percent}\times\!\left(1-0.25\times\tfrac{5}{18}\right)
+               \;\approx\; \qty{10.24}{\percent}.
+\]
+El WACC menor aumenta el valor de la empresa de forma mecánica, pero solo hasta el punto en que
+los costos de dificultad financiera comienzan a compensar el escudo fiscal --- la compensación que
+\cref{sec:optimal-capital-structure} desarrolla.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Concluir a partir de Modigliani–Miller que la estructura de capital \emph{nunca} importa. El valor
+del teorema no radica en su conclusión en el mundo sin fricciones, sino en su enumeración de las
+fricciones que hacen que la estructura de capital sí sea relevante en el mundo real: impuestos,
+costos de dificultad financiera, costos de agencia e información asimétrica. \emph{Toda decisión
+real de estructura de capital es una apuesta sobre qué fricción domina.}
+\end{admonition}
+
+El marco de costos de agencia de Jensen--Meckling añade dos distorsiones adicionales más allá de
+\textcite{modigliani1958capital}: la subinversión (el sobreendeudamiento reduce el incentivo del
+accionista para financiar proyectos con NPV positivo, porque las ganancias se acumulan en favor de los
+bonistas) y la sobreinversión/desplazamiento de riesgo (los accionistas prefieren proyectos arriesgados
+porque su posición se asemeja a una opción de compra con pérdidas limitadas). Estos efectos crean un
+nivel \emph{óptimo} de deuda incluso en ausencia de impuestos: aquel que minimiza los costos totales
+de agencia.
+
+Modigliani–Miller sigue siendo el fundamento de la teoría de estructura de capital precisamente porque
+obliga a esclarecer \emph{qué} fricciones importan en cada situación. \textcite{modigliani1958capital}
+es el trabajo original; \textcite{jensen1976agency} extiende el análisis a los costos de agencia;
+\textcite{brealey2020} proporciona el tratamiento unificado para profesionales.
+
+\section{Estructura de Capital Óptima}\label{sec:optimal-capital-structure}
+% complexity: 5 -> figure capital-structure
+
+¿Cuánta deuda debería asumir la empresa? La teoría del equilibrio sostiene que la respuesta está donde
+el beneficio marginal del escudo fiscal iguala el costo marginal de la dificultad financiera. La teoría
+de la jerarquía de financiación sostiene que la pregunta es casi irrelevante: las empresas se financian
+secuencialmente a partir del efectivo interno primero. Agregar deuda crea dos fuerzas opuestas: el
+escudo fiscal eleva el valor de la empresa; los costos de dificultad financiera lo reducen. La razón de
+apalancamiento que maximiza el valor se sitúa en el pico de la curva de beneficio neto --- donde el
+siguiente dólar de deuda añade más costo de dificultad financiera de lo que ahorra en impuestos. Para
+una empresa rentable y estable, ese pico puede estar en un apalancamiento sustancial; para una empresa
+en crecimiento con pérdidas, está cerca de cero.
+
+La teoría del equilibrio define la estructura de capital óptima como:
+\[
+  V^* \;=\; V_U \;+\; PV(\text{escudo fiscal}) \;-\; PV(\text{costos de dificultad financiera}).
+\]
+Este es un marco cualitativo: ni la función de costos de dificultad financiera ni la función de costos
+de agencia tiene solución de forma cerrada, de modo que la «derivación» es conceptual. \cref{eq:mm-wacc}
+muestra el escudo fiscal aumentando monotónicamente con \(D/V\); los costos de dificultad financiera
+son convexos en el apalancamiento (pequeños con deuda baja, crecientes abruptamente una vez que las
+razones de cobertura se deterioran). El óptimo es un nivel de \(D/V\) que no puede mejorarse mediante
+un intercambio marginal de deuda por equity.
+
+La teoría del equilibrio asume que la empresa puede predecir su función de costos de dificultad
+financiera, que depende de la tangibilidad de los activos (los activos físicos son más fáciles de
+liquidar, de modo que los costos son menores), la estabilidad de los beneficios y el costo de la
+renegociación. Los negocios intangibles de alto crecimiento (SaaS, biotecnología) tienen costos de
+dificultad financiera elevados porque sus activos (relaciones con clientes, propiedad intelectual,
+personal clave) se evaporan en situaciones de dificultad --- lo que empuja el \(D/V\) óptimo cerca
+de cero. La teoría de la jerarquía de financiación ofrece una explicación alternativa: las empresas no
+optimizan \(D/V\); simplemente utilizan la financiación más barata disponible, lo que para las
+empresas rentables significa primero el efectivo interno.
+
+\begin{example}[Estructura óptima para la SaaS en fase de crecimiento]
+La SaaS en fase de crecimiento tiene EBITDA negativo en los años 1--2, sin ingresos gravables que
+proteger, y activos de relación con clientes que perderían valor rápidamente en una situación de
+dificultad financiera (el \emph{churn} se acelera; el talento se va). La teoría del equilibrio predice
+por tanto un \(D/E\approx0\) óptimo, que es precisamente la financiación observada: financiada con
+equity a través de capital de riesgo, sin deuda. El WACC del \qty{11}{\percent} es el costo puro del
+capital propio (\cref{eq:capm}).
+La deuda pasa a ser relevante solo cuando la empresa alcanza una rentabilidad estable y obtiene un
+escudo fiscal que vale la pena proteger. Implicación gerencial: la decisión de mantenerse sin
+apalancamiento no es timidez --- es la lectura correcta del equilibrio para un negocio cuyo valor
+está concentrado en intangibles y opciones de crecimiento.
+\end{example}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{capital-structure}
+  \caption{Valor de la empresa frente a apalancamiento según la teoría del equilibrio.
+  El escudo fiscal eleva el valor por encima de la línea de referencia no apalancada;
+  los costos de dificultad financiera (convexos en el apalancamiento) lo erosionan con
+  un \(D/V\) elevado.
+  El pico es la estructura de capital óptima. Una SaaS en fase de crecimiento
+  con activos intangibles y beneficios volátiles se sitúa cerca de \(D/V=0\).}
+  \label{fig:capital-structure}
+\end{figure}
+
+\begin{admonition}{Advertencia}
+Comparar la estructura de capital con los promedios sectoriales sin ajustar por la etapa y la
+composición de activos propios de la empresa. Una empresa de software madura con márgenes brutos
+del \qty{60}{\percent} y flujo de caja libre estable puede soportar un apalancamiento significativo;
+una SaaS en fase previa a la rentabilidad no puede, aunque opere en el mismo sector. \emph{Las
+razones de apalancamiento sectoriales son una descripción, no una prescripción.}
+\end{admonition}
+
+La teoría del \emph{market timing} (\textcite{brealey2020}) propone que los gestores emiten equity
+cuando las valoraciones son altas y recompran cuando son bajas --- sin prestar atención a una razón
+objetivo óptima. La evidencia empírica de que el apalancamiento revierte a la media lentamente (en
+lugar de hacerlo rápidamente hacia un objetivo) es coherente tanto con el \emph{market timing} como
+con los costos de ajuste. Los modelos dinámicos de equilibrio permiten que el \(D/V\) objetivo varíe
+a medida que la empresa pasa de la fase de crecimiento a la madurez, capturando el patrón del ciclo
+de vida: equity de capital de riesgo → capacidad de deuda rentable → recapitalización apalancada →
+recompra de acciones.
+
+La estructura de capital es el puente entre el marco de costo de capital desarrollado en
+\cref{sec:capm,sec:wacc} y la mecánica de valoración de \cref{ch:valuation}: la estructura de
+capital correcta minimiza el WACC y maximiza el valor de la empresa, que es lo que el DCF de
+\cref{eq:dcf} y los múltiplos de \cref{eq:ev-revenue} están midiendo.
+\textcite{brealey2020} examinan la literatura empírica sobre la elección de la estructura de capital;
+\textcite{jensen1976agency} desarrolla la justificación de los costos de agencia para un óptimo
+interior.

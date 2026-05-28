@@ -1,0 +1,335 @@
+\chapter{Datos e IA como Capacidad Estratégica}\label{ch:data-and-ai-strategy}
+
+% Alcance: los datos como activo estratégico (*data asset* / ciclo de datos / efectos de red), IA construir vs comprar vs API,
+%   gobernanza de IA y riesgo de modelo, ESG como problema estratégico de datos (doble materialidad).
+%   Capítulo NUEVO (cierra la brecha de estrategia de datos e IA + parte de la profundidad ESG).
+% Operacionaliza VRIN (\cref{ch:advantage-and-disruption}) y los *moats* (\cref{ch:growth}) para el contexto de IA.
+% Borrador conforme al estilo de la colección: prosa continua + set-offs example/admonition; ejemplos trabajados con la SaaS de referencia.
+% Este capítulo es CUALITATIVO: no se definen nuevas ecuaciones aquí. Todas las ecuaciones se referencian con \cref de etiquetas existentes.
+
+\section{Los Datos como Activo Estratégico}\label{sec:data-asset}
+% complexity: 3
+
+¿Qué hace que un conjunto de datos sea competitivamente valioso? La intuición de que «más datos siempre es mejor»
+sobreestima el argumento: la mayoría de las colecciones de datos alcanza un tope en la precisión predictiva mucho antes
+de ser suficientemente grande para constituir un *moat*. El fenómeno más escaso — un \emph{data flywheel}
+(ciclo de datos) — es un bucle de retroalimentación autorreinforcionante en el que un producto atrae
+usuarios, los usuarios generan datos, los datos entrenan mejores predicciones, las mejores predicciones
+mejoran el producto y el producto mejorado atrae más usuarios. Cada ciclo amplía la brecha frente a un
+competidor que debe iniciar el bucle desde cero. La lógica del valor de red de \cref{eq:metcalfe}
+explica por qué esto se compone: a medida que la base de usuarios crece de manera lineal, el espacio
+combinatorio de señales de comportamiento crece de forma cuadrática, produciendo mejoras algorítmicas
+que ningún conjunto de datos estático puede replicar.
+
+La prueba estratégica para determinar si un \emph{data asset} (activo de datos) sostiene realmente la
+ventaja es el marco VRIN de \cref{sec:rbv-vrin}: ¿es \emph{Valioso} (¿mejora predicciones que los
+clientes valoran?), \emph{Raro} (¿pueden los competidores adquirir un corpus equivalente?),
+\emph{Inimitable} (¿dependen los datos de una trayectoria histórica o son contingentes al pasado?)
+y \emph{No sustituible} (¿puede un recurso distinto entregar el mismo resultado de producto?). Para
+la mayoría de los datos operativos internos — registros de servidor, tickets de soporte, actividad CRM
+genérica — la respuesta a al menos tres de esas cuatro pruebas es no, y la ventaja en datos es
+ilusoria. Un verdadero *moat* de datos requiere que las cuatro sean sí
+\parencite{agrawal2018prediction}.
+
+\begin{example}[Datos de referencia multi-tenant en SaaS y la prueba VRIN]
+Una plataforma SaaS con \money{4000000} ARR recopila telemetría de uso anonimizada en todos los
+tenants: tasas de adopción de funcionalidades, tiempos de completación de flujos de trabajo,
+frecuencias de errores y patrones de profundidad de sesión. El equipo de producto propone una
+funcionalidad de \emph{benchmarking} (referencia) que muestra a cada cliente cómo se compara su
+uso con la cohorte de pares de su vertical industrial. Se aplica la prueba VRIN de manera explícita.
+
+\textbf{¿Valioso?} Sí: las referencias reducen la incertidumbre de los clientes sobre si están
+extrayendo el valor total del producto, lo que aumenta la retención. La mejora en retention eleva
+CLV directamente a través de \cref{eq:roic}: si el churn mensual cae de \qty{0.65}{\percent} a
+\qty{0.55}{\percent} y la tasa de descuento es \qty{11}{\percent}, el valor presente de la base de
+clientes aumenta de manera material.
+
+\textbf{¿Raro?} Sí: los datos de uso multi-tenant con esta granularidad requieren una base de
+clientes activa y con consentimiento a escala. Un nuevo participante no puede sintetizarlos; debe
+ganárselos año tras año.
+
+\textbf{¿Inimitable?} Sí: el corpus incorpora contexto histórico — patrones estacionales,
+comportamiento durante migraciones de versión, rutas de onboarding específicas por industria —
+que tomó años acumular. Replicar el algoritmo es sencillo; replicar el conjunto de entrenamiento, no.
+
+\textbf{¿No sustituible?} Sí: ningún conjunto de datos públicamente disponible entrega telemetría
+de flujos de trabajo SaaS en tiempo real, a nivel de funcionalidad y por cuenta. Las referencias
+de encuestas y los informes de analistas son demasiado gruesos y demasiado tardíos para servir
+al mismo propósito.
+
+Las cuatro pruebas se superan. Este activo de datos sostiene ROIC\,>\,WACC (\cref{eq:roic}) más
+allá de la vida de cualquier funcionalidad individual, porque cada nueva cohorte de clientes enriquece
+el corpus y refuerza la señal de referencia que diferencia al producto.
+\end{example}
+
+\begin{admonition}{Advertencia}
+La ventaja en datos se degrada bajo la regulación de portabilidad de datos. El artículo~20 del RGPD
+otorga a las personas el derecho a recibir sus datos personales en un formato portátil y a
+transmitirlos a un proveedor competidor. La Ley de Mercados Digitales de la UE extiende una
+obligación estructuralmente similar a los guardianes de acceso. Un *moat* de datos cuya materia
+prima son datos personales, en lugar de señales de comportamiento agregadas, puede erosionarse
+por los derechos de portabilidad más rápido de lo que un nuevo ciclo de producto puede renovar
+la ventaja competitiva. Audite si su ciclo de datos sobrevive a un régimen de portabilidad antes
+de incorporarlo a su plan estratégico.
+\end{admonition}
+
+El ciclo de datos y el modelo de efectos de red de \cref{eq:metcalfe} comparten la misma lógica
+estructural: el valor se acumula de manera no lineal a medida que crece la base de usuarios, pero
+solo cuando el dato marginal mejora genuinamente el resultado central. Ambos mecanismos se conectan
+con el diferencial de ROIC sostenible de \cref{eq:economic-profit}: el activo de datos es valioso
+únicamente en la medida en que genera una mejora de producto que los clientes pagarán por conservar.
+\textcite{agrawal2018prediction} desarrollan la economía de la predicción como insumo de costo
+decreciente y sus implicaciones para la ventaja competitiva.
+
+\section{Construir vs Comprar vs API en IA}\label{sec:ai-build-buy}
+% complexity: 4
+
+Toda decisión de inversión en IA se reduce a una versión de la misma pregunta: ¿en qué nivel del
+stack debe la empresa poseer la capacidad en lugar de adquirirla? La economía de la IA ha cambiado
+drásticamente desde principios de la década de 2020: el costo de ejecutar inferencia en un modelo
+de propósito general potente ha caído en órdenes de magnitud, convirtiendo la opción de API en el
+valor predeterminado correcto para la mayoría de las tareas y elevando el listón para justificar
+la construcción de capacidad propietaria. La decisión se enmarca mejor como un mapeo de dos
+dimensiones: ¿qué tan propietarios son los datos de entrenamiento de la empresa? y ¿qué tan
+específica es la aplicación para esa tarea?
+
+El diagrama 2×2 de \cref{fig:ai-build-buy} organiza los cuatro cuadrantes. Cuando tanto los datos
+como la tarea son genéricos, usar un envoltorio de API es lo correcto: la economía de la inferencia
+de commodities domina y no existe ningún *moat* sostenible. Cuando la tarea es genérica pero la
+empresa posee datos propietarios, el ajuste fino (\emph{fine-tuning}) de un modelo base sobre esos
+datos puede ofrecer una diferenciación moderada a un costo razonable. Cuando ni los datos ni la
+tarea son propietarios, orquestar una capa de SaaS de proveedor suele ser la respuesta correcta:
+la empresa captura la ganancia de productividad sin la carga de mantenimiento. Solo en el cuadrante
+superior derecho — alta propietariedad de datos, alta especificidad de tarea — una construcción
+completa crea un activo defendible; este es el régimen del ciclo de datos positivo en VRIN de
+\cref{sec:data-asset}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.62\linewidth]{ai-build-buy}
+  \caption{Marco de adquisición de IA. Eje horizontal: especificidad de la tarea (genérica a
+           propietaria). Eje vertical: ventaja en datos propietarios (baja a alta). El cuadrante
+           de construcción es el único en el que la propiedad total genera un activo positivo en
+           VRIN; los otros tres favorecen comprar u orquestar capacidad externa.}
+  \label{fig:ai-build-buy}
+\end{figure}
+
+La disciplina financiera es \cref{eq:npv}: construir se justifica solo cuando el valor presente
+del beneficio diferenciado supera el valor presente del costo total de propiedad — entrenamiento
+inicial, inferencia continua y el costo de mantenimiento que se compone a medida que la
+degradación del modelo (riesgo de modelo) requiere reentrenamiento. La opción de comprar tiene un
+costo inicial cercano a cero y un precio por unidad completamente conocido; no genera *moat* pero
+tampoco deuda de ingeniería.
+
+\begin{example}[Resúmenes de informes con IA: API vs.\ ajuste fino]
+La empresa SaaS evalúa dos opciones para una funcionalidad de resumen narrativo generado por IA
+que aparece en el informe mensual de análisis de cada cliente.
+
+\textbf{Opción A — Envoltorio de API:} Usar un modelo de lenguaje grande de commodities a través
+de API a \money{0.002} por cada mil tokens. Con el volumen típico de informes, esto arroja
+aproximadamente \money{10} al mes en costos de inferencia (\money{120} al año). La implementación
+requiere dos semanas de ingeniería; no se crea ningún *moat*, porque cualquier competidor puede
+llamar al mismo endpoint.
+
+\textbf{Opción B — Ajuste fino sobre datos de uso:} Adaptar un modelo base sobre el corpus de
+telemetría multi-tenant propietario de la empresa. Costo único de entrenamiento: \money{15000}.
+Costos continuos de inferencia y reentrenamiento: \money{2000} al mes (\money{24000} al año).
+El modelo con ajuste fino genera resúmenes que citan los propios datos de referencia y patrones de
+flujo de trabajo del cliente — VRIN moderado, porque los datos de entrenamiento superan tres de
+las cuatro pruebas de \cref{sec:data-asset}.
+
+El horizonte de decisión es de tres años a la tasa WACC de la empresa del \qty{11}{\percent}. El
+costo incremental de la Opción B sobre la Opción A es el costo inicial de \money{15000} más el
+diferencial anual de \money{23880} (\money{24000} menos \money{120}), descontado al \qty{11}{\percent}:
+\[
+  \Delta\mathrm{Cost} \;=\; \money{15000}
+    \;+\; \money{23880}\times
+    \underbrace{\sum_{t=1}^{3}\frac{1}{(1.11)^{t}}}_{=\;2.4437}
+  \;\approx\; \money{73360}.
+\]
+
+El beneficio del modelo con ajuste fino fluye a través de la retención: un subconjunto de
+aproximadamente 600 clientes activos en informes responde a los resúmenes más ricos, y la
+diferenciación reduce el churn de esa cohorte. El NPV es positivo solo si el incremento en CLV
+derivado de esta retención supera aproximadamente \money{50} por cliente, porque
+\[
+  \underbrace{600\;\times\;\money{50}}_{\text{clientes}\;\times\;\Delta\mathrm{CLV}}
+  \;\times\; 2.4437
+  \;\approx\; \money{73300},
+\]
+lo que apenas supera el costo incremental. Si la funcionalidad produce solo una retención moderada
+— digamos \money{30} por cliente — el NPV es claramente negativo y la Opción A es la correcta.
+La implicación: no construya a menos que exista un mecanismo plausible por el cual el modelo con
+ajuste fino cree una retención diferenciada \emph{significativa}, no solo una mejora marginal
+de calidad.
+\end{example}
+
+\begin{admonition}{Nota}
+El costo total de propiedad de un sistema de IA personalizado se subestima sistemáticamente en la
+etapa de prototipo. El «último cinco por ciento» — endurecimiento de seguridad, SLAs de latencia,
+monitoreo de degradación del modelo, pipelines de reentrenamiento y registro de cumplimiento —
+representa habitualmente la mayor parte del gasto de ingeniería a lo largo de la vida del sistema.
+Un análisis de \cref{eq:npv} que captura solo el costo inicial de entrenamiento siempre favorecerá
+la construcción; uno que amortiza la carga total de mantenimiento, típicamente no lo hará.
+Modele el costo completo antes de comprometerse.
+\end{admonition}
+
+La elección construir vs API es estructuralmente una prueba de *moat*: construya solo cuando el
+resultado de la construcción supera el umbral VRIN de \cref{sec:rbv-vrin} y produce un diferencial
+sostenido de ROIC\,>\,WACC. En el contexto SaaS, el eje de datos propietarios de
+\cref{fig:ai-build-buy} se mapea directamente sobre la lógica del ciclo de datos de
+\cref{sec:data-asset}: sin datos propietarios, el ajuste fino compra una mejora temporal de
+calidad, no un *moat*. \textcite{agrawal2018prediction} analizan la complementariedad entre la
+predicción de bajo costo y el juicio humano escaso como la lógica rectora de la priorización de
+inversiones en IA.
+
+\section{Gobernanza de IA y Riesgo de Modelo}\label{sec:ai-governance}
+% complexity: 3
+
+Desplegar IA en un contexto comercial introduce una categoría de riesgo que no aparece en un registro
+de riesgos de software tradicional. Un error de software convencional produce una salida incorrecta
+de una manera conocida y verificable; un modelo de IA generativa produce una salida incorrecta
+\emph{con confianza}, en lenguaje natural, de una manera que parece correcta y puede no detectarse
+antes de que afecte una decisión. La taxonomía del riesgo tiene cuatro dimensiones principales:
+\emph{sesgo} (error sistemático correlacionado con atributos protegidos o sensibles),
+\emph{alucinación} (generación segura de contenido factualmente incorrecto), \emph{propiedad
+intelectual} (procedencia de los datos de entrenamiento y propiedad de las salidas) y
+\emph{regulatorio} (prohibiciones específicas de jurisdicción en casos de uso de IA de alto
+riesgo, ejemplificadas por el sistema de clasificación de riesgos de la Ley de IA de la UE).
+
+La pregunta de gobernanza es un problema de agencia en el sentido de \cref{sec:agency-theory}: el
+modelo es un agente cuya función objetivo (probabilidad del siguiente token) no está perfectamente
+alineada con el objetivo de la empresa (salida precisa y útil). El principal — la empresa que
+despliega el modelo — debe diseñar mecanismos de supervisión para detectar el desalineamiento antes
+de que cause daño. Esta es precisamente la lógica del sistema de control que \cref{sec:agency-theory}
+aplica a los agentes humanos: diseño de incentivos, monitoreo y discrecionalidad acotada. Para los
+sistemas de IA, la discrecionalidad acotada se convierte en \emph{humano en el bucle}
+(\emph{human-in-the-loop}) para salidas de alto riesgo, y el monitoreo se convierte en validación
+automatizada de salidas.
+
+El marco de valor esperado de \cref{sec:expected-value} proporciona la herramienta correcta de
+triaje de riesgos. Para cada categoría de salida asistida por IA, la empresa debe estimar la
+probabilidad de un error material, el valor en riesgo si ese error se propaga sin detectarse, y el
+costo de la capa de revisión humana. Los recursos de gobernanza deben concentrarse donde el
+producto de probabilidad y valor en riesgo es mayor.
+
+\begin{example}[Alucinación en proyecciones de ingresos y valor esperado en riesgo]
+La empresa SaaS ha desplegado la funcionalidad de resumen de IA de la sección anterior. En un caso,
+el modelo emite una proyección de ingresos formulada con seguridad en el informe de un cliente que
+sobreestima el crecimiento proyectado del cliente en un \qty{40}{\percent}. El cliente usa la
+proyección para planificar plantilla, descubre el error tres meses después y cancela el servicio (churn).
+
+El valor esperado en riesgo de un único incidente de este tipo es el CLV de un cliente que ha
+cancelado. Con los parámetros estándar de la empresa (\cref{eq:clv}: \money{252}/año de margen de
+contribución, WACC \qty{11}{\percent}, crecimiento \qty{3}{\percent}), CLV\,=\,\money{3150}. Si la
+tasa de errores materiales de proyección del modelo se estima en uno por cada 1{,}050 ejecuciones
+de informes al mes, y cada error tiene una probabilidad del \qty{50}{\percent} de desencadenar
+churn, el costo mensual esperado de churn atribuible a la funcionalidad es \(\money{3150}\times 0.50\approx\money{1575}\).
+
+Un diseño de gobernanza que detecte el error antes de entregarlo al cliente requiere que un analista
+revise todos los resúmenes con salidas financieras durante aproximadamente 30 minutos a la semana —
+un costo muy inferior a \money{1575} al mes. Más precisamente: el escenario de peor caso de tres
+errores no detectados simultáneamente que producen tres clientes cancelados crea un valor esperado
+en riesgo de \(3\times\money{3150}=\money{9450}\), que es el piso financiero para la inversión en
+gobernanza. La revisión con humano en el bucle de las salidas financieras es claramente de NPV
+positivo. Para los resúmenes operativos (adopción de funcionalidades, completaciones de flujos de
+trabajo) donde un error es visible para el cliente pero tiene baja consecuencia financiera, los
+controles automatizados y la corrección posterior son suficientes.
+\end{example}
+
+\begin{admonition}{Advertencia}
+«Generado por IA» no es una defensa legal. Si un modelo emite una proyección financiera
+materialmente engañosa, una recomendación médica incorrecta o una declaración difamatoria en un
+documento de cara al cliente, la responsabilidad recae sobre la empresa que desplegó el modelo, no
+sobre el modelo ni su proveedor. Los descargos de responsabilidad contractuales transfieren algo
+del riesgo comercial pero no desplazan la responsabilidad legal estatutaria o extracontractual.
+Esta es la dimensión regulatoria de la prueba VRIN: un *moat* de datos no sustituible puede ser
+simultáneamente una exposición regulatoria no sustituible.
+\end{admonition}
+
+El marco de gobernanza se conecta con la atribución en \cref{ch:attribution-and-measurement}: de la
+misma manera en que los modelos de atribución requieren un bucle de retroalimentación cerrado entre
+la salida del modelo y el resultado real, la gobernanza de IA requiere un mecanismo sistemático para
+señalar los errores del modelo, enrutarlos a revisión humana y usar la señal resultante para
+reentrenar o restringir el modelo. \textcite{jensen1976agency} establecen la estructura
+principal-agente que subyace a estos problemas de control; el contexto de la IA es una nueva
+instanciación del desafío de alineación que analizan.
+
+\section{ESG como Problema Estratégico de Datos}\label{sec:esg-data}
+% complexity: 3
+
+Los reportes de ESG (factores ambientales, sociales y de gobernanza) suelen enmarcarse como una
+obligación de cumplimiento. Su significado estratégico es diferente y mayor: ESG es un \emph{problema
+de medición} con la misma estructura que la atribución (\cref{ch:attribution-and-measurement}).
+Ambos requieren que la empresa rastree efectos causales de múltiples períodos a través de canales
+indirectos, agregue datos de fuentes heterogéneas e informe sobre métricas que afectan las decisiones
+de asignación de capital. Ambos están sujetos a mala atribución, selección arbitraria de datos y
+incertidumbre del modelo. La disciplina necesaria para medir la huella de carbono con precisión es
+exactamente la disciplina necesaria para medir la incrementalidad de marketing con precisión: contra-
+factuales claros, condiciones de frontera y auditabilidad.
+
+El marco rector es la \emph{doble materialidad}, codificada en las normas ISSB S1 y S2 y en las
+Normas Europeas de Información de Sostenibilidad (ESRS). La doble materialidad exige que una empresa
+divulgue temas de sostenibilidad desde dos perspectivas simultáneamente. La \emph{materialidad
+financiera} (perspectiva exterior-interior) pregunta cómo los factores ESG — riesgo climático
+físico, interrupciones en la cadena de suministro, escasez de talento, endurecimiento regulatorio —
+afectan el valor de empresa y los flujos de caja. La \emph{materialidad de impacto} (perspectiva
+interior-exterior) pregunta cómo las operaciones de la empresa afectan a las personas y al entorno,
+independientemente de si esos impactos actualmente fluyen de vuelta al estado de resultados. Un tema
+es reportable si supera el umbral en \emph{cualquiera} de las dos dimensiones; la unión, no la
+intersección, determina el perímetro de divulgación.
+
+La lógica del valor para las partes interesadas de \cref{sec:stakeholder-value} proporciona la
+justificación estratégica. \textcite{freeman2010strategic} argumenta que la creación de valor
+sostenible requiere gestionar simultáneamente las obligaciones con empleados, clientes, proveedores,
+comunidades e inversores. La doble materialidad es la arquitectura de reporte que hace esa
+obligación medible y auditable.
+
+\begin{example}[Alcances 1/2/3 y la diligencia debida de la Serie~A para la empresa SaaS]
+La empresa SaaS con \money{4000000} ARR opera sobre infraestructura en la nube. Las emisiones de
+Alcance~1 y Alcance~2 (combustión directa y electricidad adquirida) son casi nulas: la empresa no
+posee planta física y su proveedor de nube reporta una cobertura de energía renovable superior al
+\qty{90}{\percent}. En un análisis de materialidad puramente financiera, el riesgo climático no es
+material en esta etapa: ningún impuesto al carbono ni evento climático físico es plausiblemente
+suficientemente grande como para afectar un negocio de \money{4000000} ARR en un horizonte de cinco
+años.
+
+Los riesgos ESG materiales son de naturaleza diferente. Las emisiones de Alcance~3 en la cadena de
+suministro upstream (fabricación de hardware, carbono incorporado en los centros de datos) son
+difíciles de medir pero cada vez más esperadas en la diligencia debida de inversores. En la
+dimensión social, la equidad en el talento — equidad salarial por género y etnia, distribución de
+opciones sobre acciones — es un riesgo estratégico genuino: con \money{120000} al mes en gasto de
+adquisición y un objetivo de 200 clientes al mes, la empresa depende de un equipo pequeño de alta
+especialización; las disputas de equity o la rotación crean un riesgo operativo directo. Ninguno de
+los dos elementos es financieramente material frente a \money{4000000} ARR de forma aislada, pero
+la \emph{materialidad de impacto} requiere divulgación para la diligencia debida de Serie~A en el
+marco alineado con ISSB: los inversores institucionales y estratégicos que aplican ISSB S1/S2
+esperarán una evaluación de doble materialidad, incluso de una empresa muy por debajo del umbral de
+reporte CSRD.
+
+La identidad de beneficio económico de \cref{eq:economic-profit} es el numerador correcto para
+evaluar el gasto en ESG: cualquier inversión en ESG que no produzca una reducción en WACC (a través
+de menor riesgo regulatorio o menor costo de capital) o un aumento en NOPAT (a través de mejor
+retención de talento o menor churn) no crea beneficio económico y debe evaluarse en consecuencia.
+Con \money{4000000} ARR, la mayor parte del gasto en ESG cae en el canal del costo de capital —
+la reducción en la fricción de financiamiento — más que en el canal de NOPAT.
+\end{example}
+
+\begin{admonition}{Nota}
+Una puntuación ESG alta no implica ROIC\,>\,WACC. La relación entre el desempeño ESG y el
+beneficio económico transcurre a través de dos mecanismos específicos: reducción del costo de
+capital (menor prima de riesgo de los inversores que filtran la exposición ESG) y reducción del
+riesgo operativo (menor probabilidad de sanciones regulatorias o interrupción del talento). Ningún
+mecanismo es automático; ambos son medibles. La advertencia contra confundir las apariencias ante
+las partes interesadas con el valor para el accionista se desarrolla completamente en
+\cref{ch:value-creation} y no se reitera aquí.
+\end{admonition}
+
+El paralelismo con la atribución es más que estructural: las herramientas metodológicas son en gran
+medida las mismas. Medir las emisiones de Alcance~3 requiere un modelo de cadena de valor con líneas
+de base contrafactuales — ¿cuáles habrían sido las emisiones en ausencia de las operaciones de la
+empresa? — que es la misma pregunta que los modelos de atribución formulan sobre el gasto en medios.
+Desarrollar capacidad de medición de ESG se compone, por lo tanto, con la capacidad de medición de
+atribución; las dos inversiones comparten infraestructura.
+\textcite{freeman2010strategic} y \textcite{jensen1976agency} juntos definen la tensión entre
+gobernanza y creación de valor que la doble materialidad está diseñada para resolver.

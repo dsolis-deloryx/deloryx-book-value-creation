@@ -1,0 +1,363 @@
+\chapter{Canales, salida al mercado y ventas}\label{ch:channels-gtm-and-sales}
+
+% Alcance: estrategia de canales (la 4.ª P), movimiento GTM PLG frente a liderado por ventas,
+%   dimensionamiento y compensación de la fuerza de ventas, ventas B2B y gestión del pipeline.
+%   Capítulo nuevo (cierra la brecha de canales + ventas/GTM).
+% Se sitúa aguas arriba del funnel digital (\cref{ch:digital-funnel-and-crm}): dónde se vende
+%   determina qué funnel se construye.
+% Vínculos cruzados: \cref{eq:cac}, \cref{eq:ltv-cac}, \cref{eq:viral-k}, \cref{eq:pipeline-ev},
+%   \cref{eq:littles-law}, \cref{sec:kerr-trap}, \cref{eq:segment-score}.
+
+\section{Estrategia de canales y la 4.ª P}\label{sec:channel-strategy}
+% complejidad: 4
+
+¿Cómo debe una empresa hacer su producto física y comercialmente disponible para los clientes?
+La distribución --- la cuarta «P» de la mezcla de \emph{marketing} --- determina quién asume el
+costo de llegar al cliente, quién es dueño de la relación y, en última instancia, cuánto del
+margen unitario retiene la empresa. La decisión suele tratarse como una cuestión logística, pero
+es, antes que nada, una cuestión de margen: cada intermediario añadido a la cadena reduce el
+precio que recibe el fabricante y, a cambio, transfiere una porción del costo de alcance,
+inventario y servicio. La pregunta estratégica es si el margen que se cede es menor que el
+costo fijo de llegar a esos clientes de forma directa.
+
+Sea \(P\) el precio para el usuario final, \(C_{\text{var}}\) el costo variable por unidad, \(Q\) el
+volumen vendido y \(\Phi_{\text{fixed}}\) el costo fijo del canal directo (un equipo de ventas,
+una organización de soporte, infraestructura de transacciones). La contribución de cada ruta es:
+\begin{equation}\label{eq:channel-margin}
+  \Pi_{\text{direct}}   = (P - C_{\text{var}})\,Q, \qquad
+  \Pi_{\text{indirect}} = (P_w - C_{\text{var}})\,Q,
+\end{equation}
+donde \(P_w < P\) es el precio mayorista pagado por el intermediario. Tras descontar el costo fijo
+del canal directo, la empresa prefiere la distribución directa cuando
+\(\Pi_{\text{direct}} - \Phi_{\text{fixed}} > \Pi_{\text{indirect}}\), o de forma equivalente cuando
+\((P - P_w)\,Q > \Phi_{\text{fixed}}\): la prima de margen unitario de ir directo, escalada por
+el volumen, debe superar el costo fijo de operar el canal directo. A bajo volumen gana el
+intermediario; a alto volumen gana la ruta directa. El punto de cruce es el volumen de umbral de
+rentabilidad del canal.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.78\linewidth]{channel-structure}
+  \caption{Tres estructuras de canal: directa (fabricante a cliente), de un nivel (a través de un
+    único revendedor o VAR) y de dos niveles (a través de un distribuidor más revendedor). Cada
+    capa de intermediario captura un diferencial de margen conforme a \cref{eq:channel-margin},
+    reduciendo el ingreso neto unitario del proveedor. La estructura óptima minimiza el costo
+    total de distribución con la cobertura de mercado requerida.}
+  \label{fig:channel-structure}
+\end{figure}
+
+\begin{example}[Decisión entre canal directo y revendedor]
+La empresa SaaS de referencia cobra \money{50}/mes (\money{600}/año). Su costo variable es
+\money{29}/mes (alojamiento \money{15} más soporte, procesamiento de pagos y éxito del cliente
+\money{14}), lo que deja un margen de contribución de \money{21}/mes en el canal directo.
+
+Un revendedor regional propone tomar una participación de margen del \qty{30}{\percent} sobre el
+precio al usuario final, de modo que el proveedor recibe un precio mayorista de
+\(P_w = \money{50}\times0.70 = \money{35}/\)mes. El margen de contribución indirecto por cliente
+es entonces \(\money{35} - \money{29} = \money{6}/\)mes --- un tercio del margen directo. El
+sacrificio de margen es \(\money{21} - \money{6} = \money{15}\)/mes por cliente.
+
+Suponga que la empresa debe gastar \money{90000}/mes en costo fijo de ventas directas y de éxito
+del cliente para atender el territorio del revendedor sin él. El número incremental de clientes en
+el que el canal directo resulta preferible es:
+\[
+  Q^* \;=\; \frac{\Phi_{\text{fixed}}}{P - P_w} \;=\; \frac{\money{90000}}{\money{15}}
+       \;=\; \num{6000}\ \text{clientes}.
+\]
+La empresa atiende actualmente alrededor de \num{6667} clientes de pago (\money{4000000} ARR
+\(\div\) \money{600}/año). A esa escala, el canal directo aporta
+\(\num{6667}\times\money{21} = \money{140000}\)/mes tras los costos variables, frente a
+\(\num{6667}\times\money{6} = \money{40000}\)/mes de forma indirecta; la brecha de \money{90000}
+en costo fijo queda cubierta. La implicación: el acuerdo con el revendedor tenía sentido económico
+cuando la base instalada estaba por debajo de \num{6000}, pero la empresa ya ha cruzado el umbral
+donde construir un canal directo es rentable. Si el revendedor abre una nueva geografía que la
+empresa no puede alcanzar a costo comparable, el canal indirecto sigue creando valor allí --- el
+cálculo del umbral de rentabilidad se aplica segmento por segmento, no a nivel de compañía.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Operar simultáneamente un equipo de ventas directo y un revendedor en el mismo territorio crea
+\textit{conflicto de canal de distribución dual}: el revendedor compite por el mismo prospecto,
+hace descuentos para ganar y, con el tiempo, enseña a los clientes a esperar el precio indirecto
+más bajo. La empresa se ve entonces ante la disyuntiva de proteger la relación con el socio de
+canal o defender el precio directo. Los acuerdos de canal que definen exclusividad territorial o
+derechos de registro de \emph{deal} reducen este riesgo, pero sólo si se aplican de forma
+consistente; la aplicación inconsistente es peor que no tener ninguna política, porque genera
+incertidumbre para todas las partes.
+\end{admonition}
+
+\cref{eq:channel-margin} aplica igualmente a bienes físicos y a software, pero la estructura de
+costos difiere marcadamente: el \(C_{\text{var}}\) de una empresa SaaS está dominado por el
+alojamiento y la mano de obra de éxito del cliente, no por el inventario, de modo que el umbral
+de costo fijo \(\Phi_{\text{fixed}}\) --- el costo de una organización de ventas directas ---
+domina el cálculo a bajo volumen. Esa asimetría es lo que hace que el movimiento liderado por
+producto examinado en \cref{sec:gtm-motion} sea tan poderoso en términos económicos: construye
+un canal directo con un costo fijo casi nulo por cliente adquirido. \textcite{coughlan2006marketing}
+desarrollan el marco completo de diseño de canales; \textcite{kotler2021} lo sitúa dentro de la
+mezcla de \emph{marketing} integrada.
+
+
+\section{PLG frente a movimiento GTM liderado por ventas}\label{sec:gtm-motion}
+% complejidad: 4
+
+Una vez establecida la estructura de canales, la empresa debe decidir cómo entra la demanda en el
+canal: ¿el producto se vende a sí mismo mediante pruebas gratuitas y una incorporación
+(\emph{onboarding}) de autoservicio, o un equipo de ventas conduce todo el recorrido desde la
+conciencia hasta el cierre? Esta es la decisión sobre el movimiento de salida al mercado, y es una
+de las decisiones estratégicas de mayor impacto que toma una empresa de software en etapa temprana,
+porque determina la forma de \cref{eq:cac} --- el denominador de \cref{eq:ltv-cac} --- antes de
+que la empresa haya gastado un dólar en adquisición.
+
+En un movimiento de \textit{crecimiento liderado por producto} (PLG), el propio producto es el
+principal vehículo de adquisición: los usuarios se registran, experimentan el valor central dentro
+de una prueba de autoservicio y se convierten en clientes de pago sin intervención humana. El CAC
+es bajo porque no hay compensación de ventas incorporada en el costo de adquisición; el coeficiente
+viral (\cref{eq:viral-k}) puede multiplicar la base instalada a un costo marginal casi nulo cuando
+los usuarios existentes invitan a colegas. PLG domina cuando el producto entrega valor inmediato y
+tangible a un usuario individual que puede tomar o influir en una decisión de compra de forma
+autónoma --- típicamente compradores de pequeñas y medianas empresas (PYME) con valores de contrato
+anual (ACV) inferiores a \money{5000}.
+
+En un movimiento \textit{liderado por ventas}, el producto está restringido: un prospecto debe
+interactuar con un representante de ventas antes de acceder a una demostración significativa. El
+CAC es elevado porque incluye el salario base, la comisión y el costo indirecto de un SDR que
+califica el \emph{lead} antes de transferirlo a un ejecutivo de cuenta. El movimiento liderado
+por ventas se justifica cuando la decisión involucra a múltiples partes interesadas, una revisión
+de seguridad o legal, o un proceso de adquisición que una compra de autoservicio no puede
+gestionar --- típicamente ACV empresarial superior a \money{50000}.
+
+El movimiento híbrido, \textit{ventas lideradas por producto} (PLS), superpone un equipo de
+asistencia en ventas sobre un funnel de autoservicio. El catalizador de productividad es el
+\textit{lead} \textit{calificado por el producto} (PQL): un usuario activo que ha cruzado un
+umbral de participación demostrable se convierte en la señal que activa la prospección del SDR.
+Dado que el representante de ventas contacta a un usuario que ya ha experimentado el valor, la
+brecha de confianza se cierra antes de la primera conversación. La lógica de segmentación de
+\cref{eq:segment-score} se aplica directamente a la elección del movimiento: los segmentos con
+alto potencial de LTV pero baja conversión de autoservicio son candidatos a PLS; los segmentos con
+alta conversión de autoservicio y bajo LTV son candidatos a PLG puro.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{plg-vs-slg}
+  \caption{El espectro PLG--SLG. Al desplazarse hacia la derecha, el CAC sube, el ACV sube y el
+    ciclo de ventas se alarga. El disparador del PQL (línea discontinua) marca la transición del
+    autoservicio a la asistencia en ventas; suele ser un hito de participación dentro del
+    producto, no una puntuación de calificación de \emph{marketing}.}
+  \label{fig:plg-vs-slg}
+\end{figure}
+
+\begin{example}[Modelo híbrido PLG + SDR]
+La empresa adquiere actualmente \num{200} clientes por mes a través de un funnel de autoservicio
+con \(\text{CAC} = \money{600}\) (de \cref{eq:cac} en \cref{ch:customer-economics}).
+Segmentar la base de usuarios revela dos cohortes distintas: cuentas de PYME que se incorporan en
+autoservicio con CAC\,\(\approx\)\,\money{300}, y cuentas de mercado medio que se estancan antes
+de convertir. Un movimiento de SDR dirigido a los PQL de mercado medio tiene un
+CAC\,\(\approx\)\,\money{800}, pero el LTV de mercado medio es aproximadamente \(3\times\) el de
+PYME, de modo que la razón de \cref{eq:ltv-cac} aún supera el umbral de \(3\times\).
+
+El disparador de PQL elegido es \textit{más de cinco informes generados en los primeros catorce
+días de la prueba}. Los usuarios que alcanzan este umbral convierten al \qty{45}{\percent}; la
+tasa de conversión de referencia para todos los usuarios de prueba es del \qty{25}{\percent}.
+Redirigir un usuario activado a un SDR captura por lo tanto un incremento relativo del
+\qty{80}{\percent} en la probabilidad de conversión antes del primer contacto humano --- el
+producto ya ha hecho la venta. La implicación operativa: el \emph{pipeline} de analítica de
+producto debe hacer visible esta señal en el CRM en cuestión de minutos tras cruzar el umbral;
+un retraso de 24 horas hace perder aproximadamente la mitad de la ventaja de conversión a medida
+que la atención del usuario se desplaza a otros asuntos.
+\end{example}
+
+\begin{admonition}{Nota}
+La decisión entre PLG y liderado por ventas no es una elección binaria a nivel de empresa. La
+mayoría de las empresas por encima de \money{2000000} de ARR operan ambos movimientos en
+paralelo, segmentados por tipo de comprador. Imponer un único movimiento a todos los segmentos
+asigna mal los recursos: aplicar un SDR a un \emph{deal} de PYME de \money{600}/año destruye el
+margen; dejar un prospecto empresarial de \money{50000}/año en una prueba de autoservicio hace
+perder el \emph{deal} ante un competidor que tiene un defensor humano dentro de la cuenta. El
+diagnóstico correcto son los indicadores unitarios de cada movimiento por segmento, no una
+postura filosófica sobre PLG.
+\end{admonition}
+
+El movimiento GTM alimenta directamente la mecánica del funnel en \cref{ch:digital-funnel-and-crm}:
+un movimiento PLG llena la parte superior del funnel con activaciones de prueba medidas por
+\cref{eq:viral-k}; un movimiento liderado por ventas lo llena con transferencias de MQL desde
+\emph{marketing}; PLS usa ambos. La valoración del \emph{pipeline} en \cref{eq:pipeline-ev}
+aplica aguas abajo independientemente del movimiento, porque cada \emph{deal} en el CRM tiene un
+valor nominal y una probabilidad de etapa tanto si llegó por autoservicio como por prospección del SDR.
+
+
+\section{Gestión y compensación de la fuerza de ventas}\label{sec:salesforce-management}
+% complejidad: 3
+
+Construir un equipo de ventas requiere dos modelos separados: un \textit{modelo de
+dimensionamiento} que traduce un objetivo de ingresos en un requisito de dotación de personal, y
+un \textit{modelo de compensación} que alinea los incentivos del representante con los objetivos
+de creación de valor de la empresa. Equivocarse en cualquiera de los dos es costoso. Un equipo
+subdimensionado deja ARR sobre la mesa; un equipo sobredimensionado infla el gasto en ventas y
+\emph{marketing} sin ingresos proporcionales. Un plan de comisiones mal diseñado recompensa el
+comportamiento equivocado y, a través de la trampa de Kerr (\cref{sec:kerr-trap} en
+\cref{ch:organizational-behavior}), produce sistemáticamente resultados no deseados por la empresa.
+
+La fórmula de dotación de personal se deriva directamente del objetivo de ARR, la cuota por
+ejecutivo de cuenta y la tasa histórica de cumplimiento:
+\begin{equation}\label{eq:sales-productivity}
+  \text{reps} \;=\;
+    \left\lceil\frac{\text{ARR target}}{\text{quota}\times\text{attainment}}\right\rceil.
+\end{equation}
+La función techo garantiza que la empresa tenga suficiente capacidad para alcanzar el objetivo
+incluso cuando los representantes no llegan al \qty{100}{\percent} de cumplimiento. El factor de
+cumplimiento es el dato crítico: un plan construido sobre un \qty{100}{\percent} de cumplimiento
+fallará cada trimestre; la tasa combinada histórica, típicamente entre \qty{70}{\percent} y
+\qty{85}{\percent} para un equipo SaaS maduro, es el denominador correcto.
+
+La compensación se estructura como ingresos objetivo totales (OTE) divididos entre un salario
+base fijo y una parte variable vinculada al rendimiento:
+\begin{equation}\label{eq:ote-structure}
+  \text{OTE} \;=\; \text{base} \;+\; \text{variable}, \qquad
+  \text{variable} \;=\; \text{quota} \times \text{commission rate}.
+\end{equation}
+Una distribución \qty{50}{\percent}/\qty{50}{\percent} entre base y variable es estándar para un
+rol de AE empresarial; los roles de ventas internas y de SDR se acercan más a
+\qty{70}{\percent}/\qty{30}{\percent} porque la influencia individual sobre el tamaño del
+\emph{deal} es menor. La tasa de comisión en \cref{eq:ote-structure} es simplemente el objetivo
+variable dividido entre la cuota, y establece la pendiente de la curva de incentivos.
+
+\begin{example}[Dimensionamiento y costo del equipo de ventas para pasar de \money{4000000} a \money{6000000} de ARR]
+La empresa tiene como objetivo \money{6000000} de ARR frente a una base actual de \money{4000000},
+lo que requiere \money{2000000} en nuevo ARR. Cada ejecutivo de cuenta tiene una cuota de
+\money{500000}; con la tasa histórica de cumplimiento del \qty{80}{\percent} combinado,
+\cref{eq:sales-productivity} da:
+\[
+  \text{reps} \;=\;
+    \left\lceil\frac{\money{2000000}}{\money{500000}\times0.80}\right\rceil
+    \;=\; \lceil 5.00 \rceil \;=\; 5\ \text{AEs}.
+\]
+Cada AE tiene un OTE de \money{120000} con una distribución \qty{50}{\percent}/\qty{50}{\percent}:
+base \money{60000}, variable \money{60000}. De \cref{eq:ote-structure}, la tasa de comisión es
+\(\money{60000}/\money{500000} = \qty{12}{\percent}\) del ARR contratado. Cinco AEs representan
+\money{600000} en compensación total --- la línea incremental de ventas y \emph{marketing} para
+esta franja de crecimiento.
+
+¿Supera la inversión el umbral LTV:CAC? Con un cumplimiento del \qty{80}{\percent}, cinco AEs
+generan \(5\times\money{500000}\times0.80=\money{2000000}\) en nuevo ARR, es decir, aproximadamente
+\num{3333} nuevos clientes al ACV de \money{600}/año de la hoja de datos. El CAC blended asistido
+por ventas es \(\money{600000}/\num{3333}\approx\money{180}\). Frente al CLV de \money{3150}
+proveniente de \cref{ch:customer-economics}, la razón LTV:CAC es
+\(\money{3150}/\money{180}\approx17.5\times\), cómodamente por encima del piso de \(3\times\) de
+\cref{eq:ltv-cac}. La restricción vinculante no es, por lo tanto, la economía, sino la ejecución:
+encontrar cinco AEs que alcancen su cuota.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Las cláusulas de aceleración que multiplican las comisiones por encima del \qty{100}{\percent} de
+cumplimiento de cuota crean un incentivo racional para que los representantes guarden
+oportunidades al inicio del trimestre --- acumulando \emph{deal}s hasta tener suficiente
+\emph{pipeline} para garantizar el alcance del umbral del acelerador antes de presentarlos. La
+empresa entonces observa patrones de contratación irregulares concentrados al final del trimestre
+que comprimen la cola de implementación e incorporación, elevan el \emph{churn} en el trimestre
+siguiente y hacen el pronóstico poco fiable. La solución estructural es pagar la comisión sobre
+el ARR \textit{retenido} al final del primer período de renovación, en lugar de hacerlo sobre el
+ARR contratado en el momento de la firma: un representante cuyo cliente hace \emph{churn} en los
+primeros doce meses devuelve una parte de la comisión inicial. Esto aborda directamente la trampa
+de Kerr (\cref{sec:kerr-trap}): pagar sobre ARR contratado recompensa el cierre mientras se
+espera que la retención en la renovación llegue sola. \textcite{dixon2011challenger} documenta la
+taxonomía completa de distorsiones en el comportamiento de ventas que emergen de un diseño de
+comisiones mal alineado.
+\end{admonition}
+
+La fórmula de productividad de ventas y la estructura OTE son datos de entrada al modelo operativo
+en \cref{ch:operating-model}, donde aparecen como partidas en la proyección de gastos de ventas y
+\emph{marketing}. Vincular el diseño de la compensación al \emph{churn} garantiza que el
+crecimiento de ARR modelado en \cref{eq:mrr-growth} no sea erosionado por el \emph{churn}
+temprano inducido por ventas.
+
+
+\section{Ventas B2B y gestión del \emph{pipeline}}\label{sec:b2b-selling}
+% complejidad: 3
+
+Un equipo de ventas que no puede pronosticar sus propios ingresos es un pasivo, no un activo. El
+\emph{pipeline} en bruto --- la suma de los valores nominales de todos los \emph{deal}s abiertos
+--- es la métrica de vanidad canónica de las ventas empresariales: equipara un \emph{deal} en la
+primera llamada de descubrimiento con uno en revisión legal final. El \emph{pipeline} ponderado
+reemplaza el valor nominal por el valor esperado de cada oportunidad, donde la expectativa está
+condicionada a la etapa del funnel en que se encuentra el \emph{deal}:
+\begin{equation}\label{eq:pipeline-forecast}
+  \widehat{\text{ARR}} \;=\; \sum_{i=1}^{n} v_i \cdot p_{\,\text{stage}(i)},
+\end{equation}
+donde \(v_i\) es el valor nominal del \emph{deal} \(i\) y \(p_{\,\text{stage}(i)}\) es la
+probabilidad histórica de cierre para su etapa actual. \Cref{eq:pipeline-forecast} es el análogo
+en ARR de \cref{eq:pipeline-ev} en \cref{ch:digital-funnel-and-crm}: ambos aplican el operador
+de valor esperado a una cartera de conversiones probabilísticas. Las probabilidades de etapa deben
+calibrarse con las tasas de victorias observadas en cada etapa, no asignarse por optimismo
+directivo; un modelo de \emph{pipeline} construido sobre probabilidades de etapa infladas falla a
+la misma tasa que no tener modelo, con el daño adicional de generar una falsa confianza.
+
+Junto con la instantánea de valor esperado, la Ley de Little de \cref{eq:littles-law} proporciona
+la duración media del ciclo de ventas a partir del inventario de \emph{pipeline} y el rendimiento:
+\[
+  W \;=\; \frac{L}{\lambda},
+\]
+donde \(L\) es el número de \emph{deal}s abiertos, \(\lambda\) es el número de \emph{deal}s
+cerrados por período y \(W\) es el tiempo medio que un \emph{deal} permanece en el
+\emph{pipeline}. Un \(W\) creciente es una señal de alerta temprana de que los \emph{deal}s se
+están estancando, no de que el \emph{pipeline} sea saludable.
+
+La secuencia de preguntas SPIN (\textcite{rackham1988spin}) y la metodología Challenger
+(\textcite{dixon2011challenger}) operan a nivel de la llamada de ventas individual, pero producen
+la progresión de etapas que alimenta \cref{eq:pipeline-forecast}. El arco situación-problema-implicación-beneficio
+del SPIN hace aflorar el dolor económico que justifica una decisión de compra; el arco
+enseñar-adaptar-tomar-control del Challenger reencuadra el modelo mental del comprador antes de
+que un competidor pueda anclar su posición. Ambos marcos existen para mover los \emph{deal}s hacia
+la derecha a través de las etapas del \emph{pipeline}, incrementando \(p_{\,\text{stage}(i)}\)
+para la cartera en curso.
+
+\begin{example}[Pipeline ponderado y Ley de Little]
+El equipo de ventas tiene \num{40} \emph{deal}s abiertos distribuidos uniformemente en cuatro
+etapas del \emph{pipeline}: \num{10} en Descubrimiento, \num{10} en Demostración, \num{10} en
+Propuesta y \num{10} en Negociación. Cada \emph{deal} tiene un valor nominal de \money{8250} de
+ARR. Las tasas históricas de cierre por etapa son \qty{15}{\percent} en Descubrimiento,
+\qty{35}{\percent} en Demostración, \qty{60}{\percent} en Propuesta y \qty{85}{\percent} en
+Negociación. Aplicando \cref{eq:pipeline-forecast}:
+\begin{align*}
+  \widehat{\text{ARR}}
+    &= 10\times\money{8250}\times0.15
+    \;+\; 10\times\money{8250}\times0.35 \\
+    &\quad +\; 10\times\money{8250}\times0.60
+    \;+\; 10\times\money{8250}\times0.85 \\
+    &= \money{12375} + \money{28875} + \money{49500} + \money{70125}
+     \;\approx\; \money{161000}.
+\end{align*}
+El valor nominal bruto del \emph{pipeline} es \(40\times\money{8250}=\money{330000}\) --- más del
+doble del ARR esperado de \money{161000}. Un gerente de ventas que reportara el número bruto como
+«cobertura de \emph{pipeline}» estaría sobreestimando el pronóstico real en un \qty{105}{\percent}.
+
+Aplicando la Ley de Little: si el equipo cierra \num{10} \emph{deal}s por mes, el \emph{deal}
+promedio permanece \(W = 40/10 = 4\) meses en el \emph{pipeline}. Si el equipo añade \num{5}
+oportunidades generadas por SDR por mes pero cierra al mismo ritmo de \num{10}/mes, \(L\) crece a
+\num{60} dentro de cuatro meses y \(W\) se extiende a \(60/10 = 6\) meses. El \emph{pipeline}
+parece más saludable (más \emph{deal}s), pero la fecha esperada de cierre de cualquier
+\emph{deal} dado se ha demorado dos meses --- un problema de pronóstico que se disfraza de éxito
+del \emph{pipeline}.
+\end{example}
+
+\begin{admonition}{Nota}
+Los marcos de calificación --- como MEDDPICC (Métricas, Comprador Económico, Criterios de
+Decisión, Proceso de Decisión, Proceso Documental, Identificación del Dolor, Defensor,
+Competencia) --- cumplen para el \emph{pipeline} la misma función que la puntuación de segmentos
+(\cref{eq:segment-score}) cumple para el mercado direccionable: obligan a realizar una estimación
+explícita y medible de la calidad de la oportunidad antes de comprometer capacidad de ventas. Una
+oportunidad que no supera la lista de verificación de calificación debe retroceder de etapa o
+descalificarse, en lugar de mantenerse con una probabilidad optimista; el costo es un
+\emph{pipeline} temporalmente más pequeño, y el beneficio es un \cref{eq:pipeline-forecast} en
+el que la dirección puede confiar realmente.
+\end{admonition}
+
+La estructura de canales, el movimiento GTM, el diseño de la fuerza de ventas y la gestión del
+\emph{pipeline} son las cuatro capas de decisión que convierten un producto y un segmento objetivo
+en ingresos predecibles. Cada capa alimenta a la siguiente: el canal determina la estructura de
+costos de adquisición (\cref{eq:channel-margin}), el movimiento determina si ese costo está
+dominado por el costo fijo de ventas o por la inversión variable en producto, el diseño de la
+compensación determina si el comportamiento de los representantes se alinea con la maximización
+del LTV (\cref{eq:ltv-cac}), y el modelo de \emph{pipeline} determina si la organización puede
+leer su propio progreso. Las cuatro capas alimentan el funnel digital en
+\cref{ch:digital-funnel-and-crm} y, en última instancia, la línea de ingresos del modelo
+operativo en \cref{ch:operating-model}.

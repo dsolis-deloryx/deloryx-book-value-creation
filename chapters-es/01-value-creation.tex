@@ -1,0 +1,298 @@
+\chapter{Para qué sirve una empresa}\label{ch:value-creation}
+
+% Alcance: el valor, el beneficio económico como señal, ROIC vs. WACC como la prueba maestra.
+% Vínculo cruzado: LTV:CAC es la expresión por cliente del ROIC > WACC (\cref{ch:customer-economics}).
+
+Cada métrica financiera del libro --- LTV:CAC, ROAS, NOPAT, valor terminal --- es un indicador
+indirecto de una pregunta de fondo: ¿esta actividad genera retornos por encima del costo del
+capital que consume? El beneficio económico responde esa pregunta directamente; el resto del libro
+rastrea cómo aflora en cada dominio funcional.
+
+\section{Beneficio económico}\label{sec:economic-profit}
+% complejidad: 3
+
+¿Ganamos más que un retorno justo sobre el capital que desplegamos? La utilidad contable ignora
+el cargo al capital propio; el beneficio económico no. Esta brecha es donde la mayoría de las
+empresas destruye valor silenciosamente. Los acreedores cobran intereses, y ese cargo aparece en
+el estado de resultados. Los accionistas también tienen un costo de oportunidad --- podrían
+invertir en el mercado en su lugar. La utilidad contable omite ese cargo. El beneficio económico
+lo resta: un número positivo significa que la empresa ganó por encima de su costo de capital
+total; uno negativo significa que habría sido mejor devolver el dinero a los inversionistas,
+incluso si la utilidad contable fue positiva.
+
+Sea \(\mathrm{NOPAT}\) el beneficio operativo neto después de impuestos (ingreso operativo menos
+el escudo fiscal sobre las operaciones, antes de financiamiento), \(\mathrm{WACC}\) el costo de
+capital ponderado, e \(\mathrm{IC}\) el capital invertido (capital propio más deuda neta desplegada
+en la empresa). Entonces:
+\begin{equation}\label{eq:economic-profit}
+  \mathrm{EP}
+    \;=\; \mathrm{NOPAT} - \mathrm{WACC}\times\mathrm{IC}
+    \;=\; (\mathrm{ROIC}-\mathrm{WACC})\times\mathrm{IC}.
+\end{equation}
+La forma de la derecha separa el \emph{spread} (ROIC menos WACC) de la \emph{escala} (IC): un
+\emph{spread} alto sobre una base de capital pequeña genera menos beneficio económico que un
+\emph{spread} moderado sobre una grande. Ambas palancas importan.
+
+La fórmula es válida solo cuando el NOPAT es limpio: únicamente partidas operativas, después de
+impuestos, sin cargos extraordinarios. El WACC debe corresponder al riesgo de los flujos de caja
+que se evalúan --- usar el WACC corporativo para una división nueva y especulativa subestima el
+umbral requerido. El capital invertido debe capturar todo el capital consumido, incluidos los
+arrendamientos operativos y los costos capitalizados de I+D cuando sean significativos. El
+\emph{goodwill} de adquisiciones es especialmente peligroso: incluirlo infla IC y deprime el ROIC
+tras el cierre, haciendo que una operación positiva parezca destructiva de valor.
+
+\begin{example}
+La empresa SaaS de referencia gana \(\mathrm{NOPAT}\approx\money{600000}\) sobre capital
+invertido de \(\money{3000000}\), lo que da \(\mathrm{ROIC}=20\%\). Con \(\mathrm{WACC}=11\%\):
+\[
+  \mathrm{EP}
+    = (\underbrace{0.20}_{\text{return earned}} - \underbrace{0.11}_{\text{return required}})
+      \times \money{3000000}
+    = \money{270000}.
+\]
+La empresa crea \money{270000} de valor por año --- el spread del \qty{9}{\percent}
+sobre la base de capital. Duplicar IC manteniendo ROIC constante duplica el beneficio económico;
+mantener ROIC mientras el WACC sube (p.\,ej.\ porque la beta aumenta) lo erosiona sin ningún
+cambio operativo.
+\end{example}
+
+\begin{admonition}{Advertencia}
+El \emph{cash flow} libre y el beneficio económico no son la misma cosa. El FCF puede ser positivo
+mientras el beneficio económico es negativo: una empresa madura que monetiza una franquicia en
+declive genera caja pero puede ganar por debajo de su costo de capital. A la inversa, una empresa
+de alto crecimiento con FCF fuertemente negativo puede tener beneficio económico fuertemente
+positivo si despliega capital a retornos muy superiores al WACC. Ambas métricas responden
+preguntas distintas; ninguna sustituye a la otra.
+\end{admonition}
+
+El EVA (Economic Value Added) de Stern Stewart es una implementación registrada de
+\cref{eq:economic-profit} con ajustes a las cifras contables reportadas (capitalizar I+D, revertir
+reservas LIFO, etc.) para producir un número de capital económico. El MVA (Market Value Added)
+acumula el valor presente de los beneficios económicos futuros esperados --- equivale a la prima
+del valor de mercado sobre el capital invertido. La equivalencia DCF--beneficio económico es
+exacta: el NPV de todos los beneficios económicos futuros, descontados al WACC, es igual al NPV
+de todos los cash flows libres futuros \parencite{brealey2020}. Se utiliza el que sea más
+fácil de estimar; coinciden cuando los supuestos son consistentes.
+
+El spread ROIC--WACC de \cref{eq:economic-profit} reaparece a lo largo del libro: a nivel
+de cliente como LTV:CAC (\cref{ch:customer-economics}), a nivel de empresa como el spread
+de ventaja (\cref{ch:advantage-and-disruption}), y a nivel de portafolio en el DCF ponderado por
+escenarios (\cref{ch:valuation}). \textcite{ross2022} y \textcite{brealey2020} desarrollan los
+fundamentos de las finanzas corporativas; \textcite{berk6thcorporate} hace el puente hacia la
+valoración basada en el mercado.
+
+\section{ROIC vs.\ WACC --- la prueba maestra}\label{sec:roic-wacc}
+% complejidad: 3
+
+¿Está la empresa acumulando valor o consumiéndolo? Una razón --- ROIC en relación con WACC ---
+responde esa pregunta para toda la empresa y para cualquier inversión propuesta dentro de ella.
+El capital no es gratuito. Cuando una empresa gana más sobre cada dólar desplegado de lo que los
+inversionistas exigen para suministrarlo, multiplica riqueza. Cuando gana menos, destruye riqueza
+aunque sea rentable en sentido contable. La distancia entre ROIC y WACC, multiplicada por la base
+de capital, es el beneficio económico (\cref{eq:economic-profit}).
+
+El retorno sobre el capital invertido es simplemente la razón entre el retorno operativo y el
+capital desplegado:
+\begin{equation}\label{eq:roic}
+  \mathrm{ROIC} \;=\; \frac{\mathrm{NOPAT}}{\mathrm{IC}}.
+\end{equation}
+El valor se crea cuando \(\mathrm{ROIC}>\mathrm{WACC}\), se destruye cuando
+\(\mathrm{ROIC}<\mathrm{WACC}\), y es neutral cuando son iguales. El crecimiento amplifica
+cualquiera de las dos condiciones: invertir más capital con \(\mathrm{ROIC}>\mathrm{WACC}\)
+crea más beneficio económico de forma proporcional; invertir con \(\mathrm{ROIC}<\mathrm{WACC}\)
+lo destruye más rápido.
+
+El ROIC es sensible al denominador. Una empresa con activos ligeros (alta rotación de activos)
+puede mostrar un ROIC alto con márgenes modestos; una con activos pesados debe ganar márgenes
+gruesos solo para superar el WACC. Ambas lecturas son legítimas --- lo que importa es el
+spread, no el nivel absoluto de ninguna de las dos métricas. El ROIC también fluctúa con
+el ciclo económico; la cifra de un solo año puede ser engañosa; conviene usar un promedio
+normalizado o del ciclo completo.
+
+\begin{example}
+Continuando con el ejemplo de referencia: \(\mathrm{ROIC}=\money{600000}/\money{3000000}=20\%\)
+frente a \(\mathrm{WACC}=11\%\). El spread es del \qty{9}{\percent} --- fuertemente
+creador de valor.
+
+A nivel de cliente, \(\mathrm{LTV}:\mathrm{CAC}=\money{3150}/\money{600}=5.25\times\)
+es la forma por cliente de la misma prueba: el retorno de por vida sobre el capital de adquisición
+de clientes, comparado implícitamente con el umbral \(\mathrm{LTV}:\mathrm{CAC}=1\). Los detalles
+de ese cálculo se encuentran en \cref{ch:customer-economics}; la equivalencia es que ambos miden
+ROIC sobre un despliegue de capital definido a lo largo de su vida útil.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Optimizar el ROIC reduciendo el denominador es una vía confiable para destruir la empresa.
+Recortar el capital invertido --- posponer el mantenimiento, privar al \emph{marketing} de
+recursos, agotar el capital de trabajo --- eleva el ROIC medido en el corto plazo mientras
+agota la base productiva que genera el NOPAT futuro. La métrica parece mejorar precisamente
+a medida que el negocio se deteriora. Un ROIC al alza con NOPAT plano o decreciente es una señal
+de alerta, no de éxito.
+\end{admonition}
+
+El EVA y el MVA (presentados en \cref{sec:economic-profit}) cuantifican el efecto acumulado de
+los spreads sostenidos de ROIC--WACC. En un esquema de DCF, una empresa que sostiene
+\(\mathrm{ROIC}>\mathrm{WACC}\) indefinidamente tiene un valor terminal por encima del valor en
+libros; la que gana exactamente el WACC tiene un valor terminal igual al valor en libros. El
+marco de valoración de McKinsey convierte esto en el principio organizador central
+\parencite{damodaran2012}. En el nivel de adquisiciones, una operación crea valor solo si el ROIC
+post-cierre sobre el capital total invertido (incluida la prima pagada) supera el WACC --- la
+razón del rigoroso modelado de sinergias de integración antes de firmar.
+
+El ROIC ancla el tratamiento de finanzas corporativas de \cref{ch:corporate-finance-core} y la
+construcción completa del DCF en \cref{ch:valuation}. El costo de capital WACC se deriva desde
+primeros principios en \cref{ch:risk-and-capital-structure}. \textcite{damodaran2012} ofrece el
+tratamiento estándar de los impulsores de valor basados en ROIC.
+
+\section{Valor para el accionista vs.\ valor para las partes interesadas}\label{sec:stakeholder-value}
+% complejidad: 3
+
+¿Para quién debe optimizar la empresa? La respuesta moldea la asignación de capital, los
+incentivos ejecutivos y la estrategia --- y es genuinamente controvertida. La postura de primacía
+del accionista sostiene que el deber fiduciario de la administración recae en los propietarios del
+capital propio; cualquier beneficio para las partes interesadas es legítimo solo en la medida en
+que sirva a los retornos de los accionistas. La postura de las partes interesadas sostiene que
+clientes, empleados, proveedores y comunidades son co-creadores de valor cuyos intereses limitan
+y, en última instancia, hacen posibles esos retornos. Ambas posiciones coinciden en más de lo que
+el debate sugiere --- el valor sostenible para el accionista requiere clientes satisfechos y
+empleados motivados --- pero divergen marcadamente en gobernanza, estructuras de remuneración y
+concesiones aceptables.
+
+La postura de primacía del accionista se formula con precisión en \textcite{ross2022}: maximizar
+el valor presente de los cash flows libres futuros distribuibles al capital propio. La
+réplica de las partes interesadas --- el marco de gestión estratégica de Freeman --- sostiene que
+las relaciones con las partes interesadas son en sí mismas activos generadores de valor; ignorarlas
+subestima los flujos de caja a largo plazo:
+\begin{description}
+  \item[Primacía del accionista] Los accionistas son reclamantes residuales; maximizar su riqueza
+    es el objetivo inequívoco. Todas las demás relaciones con partes interesadas son insumos,
+    valorados por la competencia de mercado. \parencite{brealey2020}
+  \item[Teoría de las partes interesadas] La estrategia debe dar cuenta de las demandas de
+    clientes, empleados, proveedores, comunidades y reguladores. Ignorar estas relaciones genera
+    pasivos ocultos que se materializan como riesgo regulatorio, rotación de talento y defección
+    de clientes.
+  \item[Lógica dominante de servicio] \textcite{vargo2004service} reencuadra el valor como
+    co-creado entre la empresa y sus clientes en el acto de servicio: el producto es un recurso
+    operante, no un bien terminado. Bajo esta visión, el beneficio económico se acumula a partir
+    de relaciones, no de transacciones.
+\end{description}
+
+La primacía del accionista falla empíricamente cuando las externalidades son grandes (p.\,ej.\
+contaminación), cuando las relaciones son el activo principal (servicios profesionales,
+plataformas), o cuando la presión sobre las utilidades de corto plazo destruye la capacidad de
+inversión a largo plazo de la que depende el valor del capital propio. El modelo de partes
+interesadas falla cuando la lista de partes constituyen es tan amplia que la administración no
+tiene un objetivo de optimización claro y puede racionalizar cualquier decisión como si sirviera
+a alguien.
+
+\begin{example}
+Aplicado a la empresa SaaS de referencia: el razonamiento de primacía del accionista apoya
+aceptar cada dólar de adquisición de clientes cuyo LTV:CAC esperado supere el umbral del WACC
+(\cref{eq:roic}). El razonamiento de partes interesadas añade: ¿el producto mejora realmente el
+resultado del cliente y es la estructura de margen de contribución justa para los empleados que
+lo entregan? En la práctica, el modelo SaaS alinea ambos: la renovación de la suscripción es
+voluntaria, por lo que un LTV sostenido requiere entrega genuina de valor. El desalineamiento
+suele aparecer en contratos de bloqueo empresarial o en precios opacos --- no en un SaaS de uso
+transparente.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Tratar el reporte ESG como sustituto del análisis de beneficio económico confunde dos preguntas
+distintas. Una puntuación ESG alta no implica \(\mathrm{ROIC}>\mathrm{WACC}\); una baja no
+implica lo contrario. Cada una merece su propia métrica rigurosa: el beneficio económico para la
+productividad del capital, la medición explícita del impacto social para las externalidades.
+\end{admonition}
+
+La doctrina Friedman --- «la responsabilidad social de los negocios es aumentar sus utilidades»
+(\emph{New York Times}, 1970) --- sigue siendo el ancla estricta de la primacía del accionista.
+La declaración de la Business Roundtable de 2019, firmada por 181 directores ejecutivos, rechazó
+explícitamente la primacía del accionista en favor de compromisos con las partes interesadas. Si
+esto representa un cambio genuino en la gobernanza o una señal reputacional está activamente
+debatido; la literatura empírica encuentra evidencia mixta sobre si los compromisos con partes
+interesadas mejoran o perjudican los retornos para los accionistas en horizontes largos
+\parencite{kotler2021}.
+
+La lógica dominante de servicio (\cref{sec:stakeholder-value}) y el marco de trabajos por hacer
+(\cref{ch:segmentation-targeting-positioning}) convergen en una implicación común: la unidad de
+valor no es el producto sino el resultado que logra el cliente. Las empresas que diseñan en torno
+a resultados en vez de características tienden a ganar mayor \emph{retention} y menor CAC ---
+lo que se refleja en un LTV:CAC más alto, que es el beneficio económico a nivel de cliente. Los
+marcos son complementarios, no competidores, cuando el horizonte temporal es suficientemente largo.
+
+La tensión entre el valor para el accionista y el valor para las partes interesadas reaparece en
+gobernanza (\cref{ch:organizational-behavior}) y en la discusión de ética de precios de
+\cref{ch:pricing}. \textcite{vargo2004service} provee la base de la lógica dominante de servicio;
+\textcite{kotler2021} revisa las implicaciones para la estrategia de marketing.
+
+\section{ESG como disciplina de asignación de capital}\label{sec:esg-capital}
+% complejidad: 3
+
+¿Cuándo pertenece un factor ambiental, social o de gobernanza a una decisión de asignación de
+capital y no a un informe de sostenibilidad separado? La disciplina es rigurosa: un factor ESG
+gana un lugar en el cálculo de asignación de capital únicamente si afecta de forma medible al
+NOPAT, al WACC o al capital invertido --- las tres palancas de \cref{eq:roic} y
+\cref{eq:economic-profit}. Los factores que no superan esa prueba pueden valer la pena divulgarlos,
+pero pertenecen a un análisis distinto. Las normas IFRS S1 e S2 del ISSB formalizan esta lente de
+materialidad financiera a nivel de reporte: S1 exige la divulgación de riesgos de sostenibilidad
+que afecten el valor empresarial; S2 extiende eso específicamente al clima. El estándar europeo
+de doble materialidad (ESRS bajo la CSRD) va más lejos y requiere divulgación cuando el impacto
+en la sociedad es material \emph{incluso si} aún no se detecta ningún efecto financiero. Para
+propósitos de asignación de capital, el subconjunto financieramente material es el operativo.
+
+En la práctica, los factores ESG ingresan al modelo de capital a través de tres canales. Primero,
+un riesgo reprecia el costo de capital: una empresa con riesgo de transición significativo (costos
+regulatorios de carbono) o exposición física al clima encontrará que los prestamistas e
+inversionistas de capital propio exigen una prima de riesgo mayor, elevando el WACC directamente.
+Segundo, una ineficiencia operativa o un pasivo suprime el NOPAT: las fallas de salud y seguridad,
+la interrupción de la cadena de suministro por eventos climáticos y las demandas por
+discriminación reducen la utilidad operativa después de impuestos. Tercero, un factor infla el
+capital invertido sin un retorno proporcional: los activos varados, las obligaciones de
+remediación ambiental y los gastos de infraestructura diferidos aparecen todos en IC una vez que
+la contabilidad se depura. Cuando alguno de estos canales no es trivial, el análisis ESG es
+inseparable del análisis de beneficio económico.
+
+\begin{example}
+La empresa SaaS de referencia enfrenta un factor ESG que claramente supera el umbral de
+materialidad financiera: una brecha salarial de género concentrada en el equipo de ingeniería. El
+mecanismo es a través del NOPAT --- los ingenieros con salario inferior se van, lo que genera
+búsquedas de reemplazo. Cada salida de un ingeniero de nivel medio tiene un costo estimado de
+\money{80000} en reclutamiento, incorporación y pérdida de productividad. Un programa de auditoría
+de equidad salarial y remediación cuesta \money{20000} y previene una salida al año.
+
+La decisión es una aplicación estándar del NPV (\cref{eq:npv}). El beneficio anual es el costo de
+reemplazo evitado de \money{80000}; el costo anual adicional es la auditoría de \money{20000};
+el flujo de caja neto anual es \money{60000}. Tratando esto como una perpetuidad al WACC del
+\qty{11}{\percent} de la empresa,
+\[
+  \mathrm{NPV} \;=\; \frac{\money{80000} - \money{20000}}{0.11} \;\approx\; \money{545000}.
+\]
+La inversión tiene un NPV fuertemente positivo --- no por óptica ESG, sino porque la prueba de
+materialidad financiera se cumple. A la inversa, un programa de compensación de carbono que cuesta
+\money{30000} al año y no tiene efecto medible en el NOPAT, el WACC o el IC no supera la prueba
+y pertenece al presupuesto de RSE, no al plan de capital.
+\end{example}
+
+\begin{admonition}{Nota}
+La advertencia de este capítulo de que una puntuación ESG alta no implica
+\(\mathrm{ROIC}>\mathrm{WACC}\) --- y viceversa --- aplica directamente aquí. El ejemplo de
+equidad salarial de arriba supera la prueba de materialidad financiera; la mayoría de las
+puntuaciones ESG reportadas son agregados de factores, muchos de los cuales no la superan. La
+disciplina consiste en desagregar: evaluar cada factor ESG frente a los tres canales del modelo de
+capital (NOPAT, WACC, IC) antes de incluirlo en cualquier proyección.
+\end{admonition}
+
+Las relaciones con partes interesadas que \textcite{freeman2010strategic} identifica como activos
+estratégicos son precisamente las que superan la prueba de materialidad financiera: empleados cuyo
+compromiso sostiene el NOPAT, clientes cuya confianza sostiene la retention y limita el CAC,
+y reguladores cuya buena voluntad evita el riesgo de licencia que inflaría el WACC. La lente de
+co-creación de \textcite{vargo2004service} añade que la relación con el empleado es un recurso
+operante --- no puede reemplazarse con una transacción; su deterioro reduce la capacidad productiva
+que mide el NOPAT. Ambos marcos, leídos a través de la lente de asignación de capital, llegan a la
+misma conclusión: ESG no es un ejercicio de reporte paralelo sino un insumo anterior al cálculo de
+beneficio económico cuando se cumple la materialidad.
+
+La infraestructura de datos ESG requerida para ejecutar este análisis a escala es un problema del
+capítulo 17 (\cref{ch:data-and-ai-strategy}): qué métricas de sostenibilidad son de calidad para
+la toma de decisiones, cómo se recolectan y cómo las evaluaciones de doble materialidad se
+operacionalizan como un flujo de trabajo de datos. La supervisión del consejo sobre qué se divulga
+y qué entra al plan de capital se aborda en \cref{ch:organizational-behavior}.

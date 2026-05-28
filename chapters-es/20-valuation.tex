@@ -1,0 +1,294 @@
+\chapter{Valuación}\label{ch:valuation}
+
+% Alcance: DCF, múltiplos (EV/EBITDA, P/E, EV/Ingresos), valor terminal, ponderación por escenarios.
+% Referencia cruzada: la fórmula del valor terminal es una aplicación de la perpetuidad creciente --
+%   \cref{eq:gordon} en \cref{ch:corporate-finance-core}.
+
+\section{Flujo de caja descontado}\label{sec:dcf}
+% complejidad: 5 -> figura dcf-bridge
+
+¿Cuánto vale hoy la empresa en su totalidad? El DCF responde convirtiendo cada flujo de caja libre futuro
+--- a lo largo de un período de pronóstico explícito y de un valor terminal más allá de él --- en un único
+valor presente al costo de capital. La respuesta determina si conviene invertir, adquirir o vender. Una
+empresa es un conjunto de derechos futuros sobre efectivo: el FCF de cada año se descuenta individualmente,
+exactamente como en \cref{eq:pv}; el valor terminal captura todos los flujos de caja más allá del horizonte
+de pronóstico como una suma única. En la práctica, el valor terminal casi siempre domina, razón por la cual
+los supuestos de crecimiento que lo sustentan merecen mayor escrutinio que los pronósticos del período
+explícito.
+
+El flujo de caja libre es el efectivo generado después de impuestos (calculados sobre el EBIT, lo que
+preserva el escudo de depreciación) y de cubrir las necesidades de reinversión:
+\[
+  \mathrm{FCF}_t \;=\; \mathrm{EBITDA}_t \;-\; \text{taxes}_t
+                       \;-\; \Delta\mathrm{WC}_t \;-\; \mathrm{CapEx}_t.
+\]
+Se descuenta el FCF de cada año al WACC (\cref{eq:wacc}) y se suma el valor presente del valor terminal
+\(\mathrm{TV}\) en el año horizonte \(n\):
+\begin{equation}\label{eq:dcf}
+  EV \;=\; \sum_{t=1}^{n}\frac{\mathrm{FCF}_t}{(1+\mathrm{WACC})^{t}}
+           \;+\; \frac{\mathrm{TV}}{(1+\mathrm{WACC})^{n}}.
+\end{equation}
+El WACC (\cref{eq:wacc}) se deriva en \cref{ch:risk-and-capital-structure}; su componente de \emph{equity}
+es el costo de \emph{equity} del CAPM (\cref{eq:capm}). La fórmula del valor terminal se desarrolla en
+\cref{sec:terminal-value}. Nótese que \cref{eq:dcf} es la extensión multiperiodo de \cref{eq:npv} en
+\cref{ch:corporate-finance-core}: el desembolso inicial \(I_0\) es el precio de adquisición, y el valor
+empresarial es la suma que hace \(\mathrm{NPV}=0\).
+
+El DCF vale únicamente lo que valen sus insumos. El WACC se estima, no se observa; los pronósticos de FCF
+son narrativas disfrazadas de números; y el valor terminal --- típicamente
+\qty{60}{\percent}--\qty{80}{\percent} del EV --- hereda todos los supuestos del período explícito y los
+extrapola indefinidamente. La sensibilidad al WACC es no lineal: un aumento de un punto porcentual en la
+tasa de descuento puede reducir el valor empresarial en \qty{20}{\percent}--\qty{30}{\percent} en empresas
+de alto crecimiento, donde la mayor parte del valor reside en el período terminal.
+
+\begin{example}[DCF a cinco años para el B2B SaaS de referencia]
+Cinco años explícitos de pronóstico para el B2B SaaS de referencia. El FCF del año 1 es \money{600000},
+con crecimiento del \qty{30}{\percent} en los años 1--3 (fase de ajuste producto-mercado), que se
+desacelera al \qty{10}{\percent} en los años 4--5. El WACC es \qty{11}{\percent} (\cref{eq:wacc}
+en \cref{ch:risk-and-capital-structure}; equivale al costo de \emph{equity} porque el negocio
+se financia íntegramente con capital propio).
+
+\[
+\begin{array}{lrrrrrr}
+  & \mathrm{Y1} & \mathrm{Y2} & \mathrm{Y3} & \mathrm{Y4} & \mathrm{Y5} \\[2pt]
+  \mathrm{FCF} & \num{600000} & \num{780000} & \num{1014000} & \num{1115400} & \num{1226940} \\
+  \text{Factor de descuento} & 0.901 & 0.812 & 0.731 & 0.659 & 0.593 \\
+  \mathrm{PV} & \num{540541} & \num{633246} & \num{741379} & \num{735047} & \num{727612} \\
+\end{array}
+\]
+
+Suma de los valores presentes del período explícito: \(\approx\money{3377825}\).
+Valor terminal (FCF normalizado del año 5 con tasa de crecimiento estable del \qty{3}{\percent};
+calculado íntegramente en \cref{sec:terminal-value}): \(\approx\money{9400000}\) VP.
+Valor empresarial: \(\money{3377825}+\money{9400000}\approx\money{12800000}\).
+
+Implicación gerencial: los años explícitos aportan solo el \qty{26}{\percent} del EV total.
+Elevar el supuesto de crecimiento terminal del \qty{3}{\percent} al \qty{4}{\percent} añade más
+de \money{1000000}; reducir el WACC un punto agrega aún más. Los inversores que se concentran
+en el ingreso de corto plazo pasan por alto dónde reside realmente el valor.
+\end{example}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{dcf-bridge}
+  \caption{Cascada DCF: valor presente de cada FCF del período explícito apilado frente al valor presente del valor
+  terminal. El valor terminal domina (\(\approx\)\qty{74}{\percent} del valor empresarial),
+  lo que ilustra por qué los supuestos de tasa de crecimiento y tasa de descuento en el período
+  terminal superan en importancia a la precisión del pronóstico de corto plazo.}
+  \label{fig:dcf-bridge}
+\end{figure}
+
+\begin{admonition}{Advertencia}
+Tratar el resultado del DCF como \emph{el} valor en lugar de uno de los escenarios posibles. El modelo
+responde «¿cuál es el valor \emph{dados estos supuestos}?» --- no «¿cuánto pagará un comprador?»
+Un DCF preciso construido sobre crecimiento optimista y un WACC bajo es una forma sofisticada de confirmar
+una convicción preexistente. La disciplina consiste en ejecutar el modelo con supuestos que se defenderían
+ante un comité de crédito, no con los supuestos que hacen funcionar la operación.
+\end{admonition}
+
+El DCF apalancado descuenta los flujos de caja libres del \emph{equity} directamente al costo de \emph{equity};
+el DCF no apalancado descuenta los FCF de la firma al costo no apalancado y luego deduce la deuda. El valor
+presente ajustado (APV) separa el valor de la firma no apalancada del valor presente del escudo fiscal, lo cual
+resulta útil cuando el apalancamiento cambia materialmente a lo largo del horizonte de pronóstico --- como en
+una adquisición apalancada (LBO) o una construcción de infraestructura por etapas.
+
+El DCF formaliza la misma lógica que la regla del NPV en \cref{ch:corporate-finance-core}
+(\cref{eq:npv}) y la fórmula del CLV en \cref{ch:customer-economics} (\cref{eq:clv}):
+todos son valores presentes de flujos de caja futuros descontados al costo de capital apropiado.
+\textcite{brealey2020}, \textcite{damodaran2012} y
+\textcite{berk6thcorporate} desarrollan cada uno el \emph{framework} del DCF; \textcite{damodaran2012}
+es el tratamiento más riguroso de la mecánica del valor terminal.
+
+\section{Valor terminal}\label{sec:terminal-value}
+% complejidad: 4
+
+Más allá del horizonte de pronóstico explícito, la empresa no deja de existir. El valor terminal convierte
+los flujos de caja posteriores al horizonte en un único número anclado en el año \(n\), sin necesidad de
+extender una hoja de cálculo de veinte años. Al llegar al horizonte se asume que la empresa alcanza un estado
+estable: el crecimiento se estabiliza en una tasa de largo plazo \(g\) y los márgenes dejan de expandirse. La
+fórmula de la perpetuidad creciente (\cref{eq:gordon}) valora ese estado estable; descontarla al presente
+arroja la contribución del valor terminal al valor empresarial.
+
+Sea \(\mathrm{FCF}_{n+1}\) el primer flujo de caja posterior al horizonte (el FCF del año \(n\) crecido un
+período) y \(g\) la tasa de crecimiento de la perpetuidad. El valor terminal en el año \(n\) es una aplicación
+directa de \cref{eq:gordon}:
+\begin{equation}\label{eq:terminal-value}
+  \mathrm{TV} \;=\; \frac{\mathrm{FCF}_{n+1}}{\mathrm{WACC}-g}.
+\end{equation}
+Por eso \cref{eq:terminal-value} está implícita en todo DCF: al sustituir
+\(\mathrm{TV}/(1+\mathrm{WACC})^n\) en \cref{eq:dcf}, la fórmula completa se colapsa en una perpetuidad
+creciente de dos etapas. La fortaleza de marca eleva \(g\) al horizonte
+(\cref{ch:brand-growth}), que se multiplica a través de \cref{eq:terminal-value} en el valor empresarial.
+
+El valor terminal es mecánicamente correcto pero económicamente frágil. \(g\) debe ser inferior al WACC
+(condición de convergencia de \cref{eq:gordon}); también debe ser inferior al crecimiento nominal del PIB
+a largo plazo, ya que ninguna empresa puede crecer más que toda la economía de forma indefinida. Fijar
+\(g=\qty{5}{\percent}\) con un WACC de \qty{11}{\percent} es defendible; fijar
+\(g=\qty{9}{\percent}\) hace que el denominador se aproxime a cero y el valor terminal explote.
+
+\begin{example}[Valor terminal para el SaaS de referencia]
+El FCF normalizado del año 5 del SaaS es \money{1226940}; aplicando un período de crecimiento
+estable (\qty{3}{\percent}) se obtiene \(\mathrm{FCF}_{6}=\money{1263748}\).
+Con WACC de \qty{11}{\percent}:
+\[
+  \mathrm{TV} \;=\; \frac{\money{1263748}}{0.11-0.03} \;=\; \money{15796850}.
+\]
+Descontando ese valor terminal del año 5 cinco años atrás al \qty{11}{\percent}, se obtiene su
+contribución presente: \(\mathrm{PV}(\mathrm{TV})=\money{15796850}/1.11^5\approx\money{9400000}\).
+Sumado a los \money{3377825} de los valores presentes del período explícito, el valor empresarial es
+\(\approx\money{12800000}\); el valor terminal representa el \qty{74}{\percent} de ese total ---
+lo que confirma que la valuación es en gran medida una apuesta al estado estable, no a los
+próximos cinco años.
+\end{example}
+
+\begin{admonition}{Advertencia}
+\emph{El doble conteo del crecimiento} es el error canónico: incorporar crecimiento elevado en el período
+explícito \emph{y} en la perpetuidad terminal. La \(g\) terminal debe reflejar únicamente el período
+\emph{posterior} a los años explícitos, una vez que la dinámica competitiva ha comprimido los márgenes
+hacia el estado estable del sector. Reutilizar la misma tasa de crecimiento del \qty{30}{\percent}
+del año 1 en el valor terminal produce un absurdo. La misma trampa se señala para \cref{eq:gordon}
+en \cref{sec:growing-perpetuity}.
+\end{admonition}
+
+Una metodología alternativa para el valor terminal es el enfoque de múltiplo de salida: estimar el
+múltiplo de EBITDA que pagaría un comprador al horizonte y multiplicarlo por el EBITDA del año \(n\).
+Es importante señalar que este enfoque no es independiente del DCF --- un múltiplo es en sí mismo una
+perpetuidad creciente comprimida (\cref{sec:multiples}), por lo que ambos métodos convergen cuando sus
+supuestos de crecimiento y descuento incorporados son consistentes. Utilizarlos como verificación
+cruzada, y no como valuaciones independientes, es la mejor práctica.
+
+El valor terminal es el componente dominante del valor empresarial de cualquier empresa cuyo valor
+principal reside más allá del horizonte de pronóstico explícito --- es decir, la mayoría de las empresas
+en etapa de crecimiento. \textcite{damodaran2012} ofrece el tratamiento más sistemático; \textcite{brealey2020}
+cubre las condiciones de consistencia entre los enfoques de múltiplo de salida y perpetuidad.
+
+\section{Múltiplos}\label{sec:multiples}
+% complejidad: 3
+
+Se busca una valuación rápida anclada en el mercado sin construir un DCF completo. Los múltiplos ofrecen
+un atajo --- pero solo si se comprenden qué supuestos de crecimiento y rentabilidad están comprimiendo.
+Malinterpretar esa compresión lleva a pagar el precio equivocado. Un múltiplo EV/Ingresos parece una
+opinión del mercado, pero es un DCF disfrazado: el múltiplo incorpora supuestos sobre márgenes, crecimiento
+y tasas de descuento. Entender el álgebra permite auditar si un múltiplo negociado está barato o caro en
+relación con los fundamentos, y explicar por qué los múltiplos se contrajeron de 2021 a 2023.
+
+Se parte de \cref{eq:gordon}: \(EV = \mathrm{FCF}/(r-g)\). Se expresa el FCF como margen sobre
+los ingresos \(R\): \(\mathrm{FCF}=m\cdot R\). Se dividen ambos lados entre \(R\) y se permite un período
+de crecimiento para que \(\mathrm{FCF}_1 = m\cdot R\cdot(1+g)\):
+\begin{equation}\label{eq:ev-revenue}
+  \frac{EV}{R} \;=\; \frac{m\,(1+g)}{\mathrm{WACC}-g}.
+\end{equation}
+Este es el múltiplo de ingresos consistente con el DCF. Aumenta con el margen \(m\), aumenta con el
+crecimiento \(g\), y \emph{cae con el WACC} --- razón por la cual el alza de las tasas de interés
+comprime los múltiplos de forma mecánica, independientemente de cualquier cambio en el negocio subyacente.
+\cref{eq:ev-revenue} asume márgenes y crecimiento en estado estable; los múltiplos negociados también
+incorporan sentimiento, primas de liquidez y comportamiento de rebaño entre pares. Un múltiplo sin una
+posición sobre \(m\), \(g\) y el WACC no es una valuación --- es un precio, que puede o no reflejar el valor.
+
+\begin{example}[Múltiplo de ingresos versus DCF para el SaaS de referencia]
+El SaaS tiene un margen FCF del \qty{20}{\percent}, \(g=\qty{3}{\percent}\), WACC \qty{11}{\percent}.
+De \cref{eq:ev-revenue}:
+\[
+  \frac{EV}{R} \;=\; \frac{0.20\times1.03}{0.11-0.03} \;=\; \frac{0.206}{0.08} \;=\; 2.6\times.
+\]
+Con ARR de \money{4000000}:
+\[
+  EV \;=\; 2.6\times\money{4000000} \;=\; \money{10400000}.
+\]
+El DCF de \cref{sec:dcf} arroja \(\approx\money{12800000}\) --- la
+diferencia de \money{2400000} es la \emph{prima de crecimiento} que los múltiplos en estado estable
+no capturan: el modelo usa solo \(g=\qty{3}{\percent}\) (largo plazo), pero la empresa está creciendo
+actualmente al \qty{30}{\percent}. Un múltiplo calibrado con pares que crecen al
+\qty{30}{\percent} daría un resultado significativamente mayor. La disciplina consiste en entender
+qué tasa de crecimiento está incorporada antes de citar un múltiplo como evidencia de valor.
+\end{example}
+
+En 2021, el SaaS público cotizaba a 20--30$\times$ los ingresos; a finales de 2023 los múltiplos se habían
+comprimido a 5--8$\times$. El motor dominante no fue el deterioro de la economía unitaria, sino una
+repriorización mecánica: la tasa libre de riesgo subió del \qty{0}{\percent} al \qty{5}{\percent},
+elevando el WACC y colapsando el denominador de \cref{eq:ev-revenue}. Si los múltiplos de 2021
+reflejaban euforia irracional o si los de 2023 corrigieron en exceso es un asunto debatido; lo que no
+está en disputa es que \cref{eq:ev-revenue} rastrea la dirección y la magnitud aproximada de la
+compresión (\cref{ch:risk-and-capital-structure}).
+
+El múltiplo EV/EBITDA elimina la estructura de capital y la política de depreciación, haciendo la
+comparación entre empresas más limpia que el P/E. Su análogo en el DCF reemplaza \(m\cdot R\) con
+EBITDA\(\times(1-t)\times(1-\mathrm{reinvestment\,rate})\) --- económicamente idéntico una vez que
+los impuestos y la reinversión son consistentes. La ventaja práctica de los múltiplos es la rapidez y
+el anclaje en el mercado; el riesgo es confundir un precio de mercado con un modelo de valor intrínseco.
+
+Los múltiplos se tratan mejor como una verificación de cordura sobre un DCF, no como un reemplazo del mismo.
+\textcite{damodaran2012} descompone sistemáticamente el álgebra detrás de cada múltiplo habitual;
+el paralelismo con el modelo de Gordon (\cref{eq:gordon}) se hace explícito
+en su análisis del ratio PEG y la inversión del rendimiento por dividendo.
+
+\section{Análisis de escenarios}\label{sec:scenario-analysis}
+% complejidad: 3
+
+Un DCF de estimación puntual o un múltiplo implica certidumbre sobre un futuro incierto. El análisis de
+escenarios reemplaza esa ilusión con una distribución de valores empresariales ponderada por probabilidades,
+haciendo el riesgo explícito y la decisión defendible. En lugar de preguntar «¿cuál es el valor?», el
+análisis de escenarios pregunta «¿cuál es el valor \emph{condicionado a cada futuro plausible}?» Se ponderan
+los resultados por sus probabilidades y el valor esperado captura tanto el potencial alcista como el
+bajista en un único número procesable.
+
+Sea \(p_i\) la probabilidad del escenario \(i\) y \(EV_i\) el valor empresarial bajo ese escenario
+(calculado mediante \cref{eq:dcf} o un múltiplo de \cref{eq:ev-revenue}). El EV ponderado por escenarios es:
+\begin{equation}\label{eq:scenario-ev}
+  EV^* \;=\; \sum_{i} p_i \cdot EV_i.
+\end{equation}
+\cref{eq:scenario-ev} reutiliza la maquinaria del valor esperado de \cref{eq:ev} en
+\cref{ch:decisions-under-uncertainty}: es la misma ponderación por probabilidades aplicada a valuaciones
+en lugar de pagos. En el \emph{framework} de ese capítulo, un tomador de decisiones con aversión al riesgo
+ajustaría adicionalmente a la baja por la varianza; aquí el ajuste está incorporado en la tasa de descuento
+en lugar de en las probabilidades. El resultado depende enteramente de la calidad de las estimaciones de
+\(p_i\) y \(EV_i\). Las probabilidades de los escenarios rara vez son objetivas --- reflejan las
+convicciones previas del analista. La fórmula disciplina la \emph{estructura} del pensamiento (tres futuros,
+asignar pesos, calcular) pero no puede sustituir al buen juicio sobre qué futuros son plausibles.
+
+\begin{example}[Decisión de adquisición ponderada por escenarios]
+Tres escenarios para el SaaS ante una posible decisión de adquisición:
+
+\begin{description}
+  \item[Bajista (\(p=0.25\))] La competencia se intensifica; el crecimiento se estanca; EV \money{8000000}.
+  \item[Base (\(p=0.50\))] La trayectoria actual se mantiene; EV \money{15000000}.
+  \item[Alcista (\(p=0.25\))] Los efectos de red de la plataforma se activan; EV \money{28000000}.
+\end{description}
+
+Aplicando \cref{eq:scenario-ev}:
+\[
+  \begin{aligned}
+    EV^* &= 0.25\times\money{8000000}
+          + 0.50\times\money{15000000}
+          + 0.25\times\money{28000000} \\
+         &= \money{2000000}+\money{7500000}+\money{7000000}
+          = \money{16500000}.
+  \end{aligned}
+\]
+El EV esperado es \money{16500000} --- superior al DCF de estimación puntual de
+\money{12800000} porque el escenario alcista se pondera igual que el bajista pero se sitúa
+más lejos de la base.
+La asimetría entre escenarios determina el resultado; la sensibilidad a las asignaciones de \(p_i\)
+importa más que la precisión del modelo dentro de cada escenario.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Colapsar tres escenarios en un único «caso base» para evitar el malestar del escenario bajista.
+\emph{La ponderación por probabilidades no es pesimismo} --- es contabilizar el rango completo de
+resultados. Un escenario bajista con \(p=0.25\) no es un peor caso que se puede descartar;
+es la afirmación de que una de cada cuatro decisiones similares termina ahí.
+\end{admonition}
+
+La simulación Monte Carlo extiende el análisis de escenarios extrayendo de distribuciones de probabilidad
+continuas sobre cada insumo (WACC, \(g\), FCF del año 1) y calculando la distribución completa del EV.
+El resultado es un histograma de valores empresariales en lugar de tres estimaciones puntuales, lo que
+revela colas gruesas que los pesos de los escenarios pueden ocultar. La pregunta estructural --- qué
+insumos generan la mayor varianza --- se responde mejor mediante un análisis de sensibilidad de Sobol,
+que descompone la varianza total del EV atribuible a cada insumo.
+
+El análisis de escenarios enlaza con el \emph{framework} de decisiones de \cref{ch:decisions-under-uncertainty}
+y avanza hacia la elección de estructura de capital de \cref{ch:risk-and-capital-structure}:
+una mayor varianza en el EV argumenta a favor de un menor apalancamiento, dado que los costos de
+dificultades financieras resultan más probables. \textcite{damodaran2012} desarrolla la extensión de
+simulación; \textcite{brealey2020} cubre el enfoque de análisis de escenarios de punto de equilibrio
+como complemento.

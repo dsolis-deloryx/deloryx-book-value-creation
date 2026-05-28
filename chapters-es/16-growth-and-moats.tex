@@ -1,0 +1,379 @@
+\chapter{Crecimiento y \emph{moats}}\label{ch:growth}
+
+% Alcance: la matriz de Ansoff, la taxonomía de moats (costos de cambio, efectos de red,
+%   escala, intangibles), mecánica de los efectos de red, contabilidad del crecimiento.
+% Vínculo cruzado: los efectos de red son el moat estructural; el volante operativo que los
+%   genera está en \cref{ch:digital-funnel-and-crm}. Expansión de producto-mercado <-> STP
+%   (\cref{ch:segmentation-targeting-positioning}).
+
+Un diferencial de ventaja positivo (\cref{eq:advantage-spread}) responde si se tiene un
+\emph{moat}; no dice cómo se creció hasta él ni cómo se protege y amplía. La estrategia de
+\emph{growth} es el conjunto de decisiones sobre qué mercados y productos abordar a
+continuación; la estrategia de moat es el conjunto de decisiones estructurales que hacen
+defensible la posición resultante. Ambas operan a través del mismo cuello de botella
+financiero: cada movimiento de \emph{growth} debe generar un NPV de cohorte que supere su
+costo.
+
+\section{La Matriz de Ansoff}\label{sec:ansoff-matrix}
+% complexity: 3
+
+¿Cuál de los cuatro vectores de crecimiento --- vender más a clientes existentes, lanzar
+nuevos productos, entrar en nuevos mercados o diversificarse --- ofrece el mejor retorno por
+unidad de riesgo de ejecución? El crecimiento siempre implica una apuesta sobre algo
+desconocido. La matriz de Ansoff hace explícita esa apuesta: se apuesta por un producto
+conocido en un mercado conocido (riesgo bajo), un nuevo producto en un mercado conocido,
+un producto conocido en un nuevo mercado, o un nuevo producto en un nuevo mercado (riesgo
+alto). El riesgo aumenta en diagonal, y también el retorno requerido.
+
+\textcite{kotler2021} presentan la matriz como una estructura de decisión \(2\times2\)
+según la familiaridad con el producto (existente / nuevo) y la familiaridad con el mercado
+(existente / nuevo):
+\begin{description}
+  \item[Penetración de mercado] Producto existente, mercado existente. Aumentar cuota
+        mediante precio, promoción o distribución. Menor riesgo; mayor eficiencia de
+        recursos; techo limitado en un mercado maduro.
+  \item[Desarrollo de producto] Nuevo producto, mercado existente. Extender la plataforma
+        para clientes que la empresa ya conoce. Riesgo moderado (incertidumbre de producto,
+        pero se conserva el conocimiento del cliente).
+  \item[Desarrollo de mercado] Producto existente, nuevo mercado. Replicar la propuesta de
+        valor en una nueva geografía, vertical o segmento. Riesgo moderado (producto
+        conocido, cliente desconocido). Requiere una nueva decisión de STP
+        (\cref{ch:segmentation-targeting-positioning}).
+  \item[Diversificación] Nuevo producto, nuevo mercado. El cuadrante de mayor riesgo;
+        justificado sólo cuando los mercados principales están saturados o en declive, y
+        generalmente ejecutado vía M\&A en lugar de construcción orgánica.
+\end{description}
+
+«Mercado» y «producto» son elecciones definicionales, no hechos objetivos. El mismo
+movimiento puede etiquetarse como penetración («sólo estamos añadiendo funciones») o
+desarrollo de producto («es una nueva línea de producto») según el encuadre. La versión útil
+de la matriz obliga a un juicio concreto: ¿requiere la nueva oferta capacidades o
+movimientos de GTM que la empresa no tiene actualmente? Si es así, es un movimiento de
+nuevo producto o nuevo mercado; si no, es penetración. Sin ese rigor la matriz se convierte
+en vocabulario, no en herramienta.
+
+\begin{example}
+\emph{Decisión: ¿qué vector de crecimiento debe priorizar la empresa SaaS en los próximos
+18 meses?}
+
+Estado actual: \money{4000000} ARR, \num{200} clientes nuevos/mes, \money{340000} MRR.
+Las cuatro opciones evaluadas contra el NPV de cohorte:
+
+\begin{itemize}
+  \item \textbf{Penetración de mercado}: el \emph{funnel} convierte al \qty{2.5}{\percent}
+        (200/8000 sesiones calificadas). Hacer pruebas A/B en \emph{landing pages} y
+        mejorar el paso de conversión de prueba a pago (\cref{ch:digital-funnel-and-crm})
+        podría elevar la conversión al \qty{3}{\percent} --- 240 pagos/mes --- a un costo
+        incremental casi nulo. El NPV más alto por dólar invertido a la escala actual.
+  \item \textbf{Desarrollo de producto}: un complemento de informes a \money{20}/mes
+        elevaría el ARPU de \money{50} a \money{70}, aumentando el LTV de \money{3150} a
+        \(\money{70}\times 0.42/(0.11-0.03) = \money{4410}\). La restricción es si los
+        clientes existentes lo desean
+        (\cref{ch:segmentation-targeting-positioning}).
+  \item \textbf{Desarrollo de mercado}: entrar en el segmento europeo de pymes requiere
+        cumplimiento con GDPR, métodos de pago locales y un flujo de \emph{onboarding}
+        localizado --- costo de ejecución significativo con CAC incierto.
+  \item \textbf{Diversificación}: prematuro con \money{4000000} ARR; las reservas de
+        atención ejecutiva son la restricción vinculante.
+\end{itemize}
+
+La penetración y el desarrollo de producto son los primeros movimientos racionales; el
+desarrollo de mercado es una opción a 24 meses una vez demostradas las economías unitarias.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Usar la matriz de Ansoff como menú en lugar de herramienta de secuenciación. Las cuatro
+opciones siempre están disponibles en teoría; el valor de la matriz radica en forzar un
+ranking explícito por retorno ajustado al riesgo y capacidad de ejecución. Perseguir dos
+cuadrantes de alto riesgo simultáneamente diluye la atención gerencial por debajo de la
+dosis mínima eficaz en cualquiera de ellos.
+\end{admonition}
+
+La matriz de Ansoff es el análogo corporativo-estratégico de la decisión de segmentación en
+\cref{ch:segmentation-targeting-positioning}: ambas plantean la misma pregunta (¿a quién
+servimos y con qué?), una a nivel de portafolio y la otra a nivel de producto. La
+investigación en estrategia corporativa (\parencite{dranove7theconomics}) concluye que la
+diversificación \emph{relacionada} --- moverse a lo largo de una sola dimensión de la matriz
+a la vez --- genera retornos superiores a la diversificación no relacionada, consistente con
+el argumento VRIN de que la ventaja es específica al recurso y no se transfiere entre
+negocios no relacionados.
+
+La secuencia de Ansoff debe seguir la taxonomía de moats más adelante: penetración primero,
+desarrollo de producto una vez establecido el moat, desarrollo de mercado una vez probado el
+producto. \textcite{kotler2021} contextualizan la matriz dentro de la estrategia moderna de
+\emph{growth}.
+
+\section{La Taxonomía de Moats}\label{sec:moat-taxonomy}
+% complexity: 3
+
+¿Qué barrera estructural protegerá los retornos de la empresa una vez que un competidor
+tenga los recursos para igualar la calidad del producto y el precio? El moat debe construirse
+antes de que sea necesario. Un moat es cualquier ventaja estructural que hace irracional para
+un competidor bien capitalizado atacar directamente. A diferencia de una ventaja de producto,
+un moat es auto-reforzante: cuantos más clientes se sirven, más difícil resulta para un
+rival desplazarlos. Los moats convierten una ventaja temporal en un diferencial de valor
+positivo sostenido (\cref{eq:advantage-spread}).
+
+Cuatro tipos de moat sostienen ROIC $>$ WACC (\cref{eq:roic}) en un horizonte estratégico
+\parencite{porter1985,dranove7theconomics}:
+\begin{description}
+  \item[Costo de cambio] El costo directo e indirecto que un cliente incurre al migrar a
+        un rival. Incluye migración de datos, reentrenamiento, interrupción de flujos de
+        trabajo y reconstrucción de integraciones. El costo de cambio eleva el precio
+        efectivo de salida sin elevar el precio nominal de permanencia --- amplía la banda
+        de precios dentro de la cual el titular está protegido de la deserción.
+  \item[Efecto de red] Cada usuario adicional hace el producto más valioso para todos los
+        demás usuarios. Este es el moat más poderoso en los mercados tecnológicos
+        (formalizado en \cref{sec:network-effects}): es escala del lado de la demanda, no
+        del lado del costo, y se compone automáticamente.
+  \item[Escala del lado del costo] Reducción de costos unitarios a gran escala --- dilución
+        del costo fijo, apalancamiento de compras o efectos de la curva de aprendizaje.
+        Protege vía precio: los titulares pueden subcotizar rentablemente a un entrante que
+        aún no ha alcanzado la escala mínima eficiente.
+  \item[Activos intangibles] Patentes, licencias regulatorias o reputación de marca que los
+        competidores no pueden replicar rápidamente. La marca es el moat intangible más
+        débil en B2B SaaS (los compradores son profesionales y sensibles al precio); las
+        patentes requieren una inversión densa en propiedad intelectual.
+\end{description}
+
+Los moats se erosionan. Los costos de cambio colapsan cuando emerge una capa estándar de
+portabilidad de datos (por ejemplo, el derecho a la portabilidad de datos del GDPR en SaaS).
+Los efectos de red se revierten cuando una plataforma alcanza deseconomías de escala (spam,
+congestión). La escala del lado del costo es socavada por una tecnología disruptiva que
+resetea la estructura de costos. Tratar un moat como un activo en depreciación que requiere
+reinversión, no como una barrera permanente.
+
+\begin{example}
+\emph{Decisión: ¿cuál es el moat principal de la empresa SaaS y cuánto vale?}
+
+Moat principal: \emph{costo de cambio} derivado de la profundidad de las integraciones. Un
+cliente con 10 integraciones activas enfrenta un costo de migración estimado de
+\money{3000}--\money{6000} (tiempo de ingeniería, reentrenamiento, riesgo de tiempo de
+inactividad) --- muy por encima del valor anual de la suscripción de \money{600}. Esto
+significa que el costo de cambio efectivo del cliente supera un año completo de ingresos, lo
+que suprime materialmente el \emph{churn} por debajo del promedio estructural.
+
+Expresión financiera: si el moat de costo de cambio reduce el \emph{churn} anual del
+\qty{10}{\percent} al \qty{7}{\percent}, la tasa mensual neta de \emph{churn} se desplaza
+del \qty{0.87}{\percent} al \qty{0.60}{\percent} y el LTV aumenta:
+\[
+  \Delta\mathrm{LTV} \approx \frac{\money{252}}{0.08} - \frac{\money{252}}{0.11}
+                           = \money{3150} - \money{2291} \approx \money{860}.
+\]
+Un incremento de \money{860} en LTV significa que la empresa puede gastar \money{860} más
+por cliente adquirido sin violar el piso LTV:CAC (\cref{eq:ltv-cac}), lo que a 200
+clientes/mes desbloquea \money{172000}/mes de presupuesto incremental de CAC ---
+\qty{143}{\percent} del gasto publicitario actual.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Llamar \emph{retention} a un moat. La \emph{retention} es el síntoma; el moat es la causa
+estructural. Un producto que retiene clientes porque es excelente los pierde el día que un
+competidor construye un producto mejor. Un producto que retiene clientes porque las
+integraciones hacen dolorosa la migración los retiene incluso cuando existe un producto
+mejor. Invertir en la causa, no en el síntoma.
+\end{admonition}
+
+El análisis de moats conecta con la literatura de teoría de precios a través del índice de
+Lerner (\cref{eq:lerner}): una empresa con costos de cambio puede fijar precio por encima
+del costo marginal en una cantidad proporcional al costo de cambio dividido por el horizonte
+del contrato. El moat es, en términos de teoría de precios, una fuente de inelasticidad:
+reduce la elasticidad precio propia de la demanda (\cref{eq:elasticity}) del producto del
+titular sin cambiar la elasticidad de la categoría en su conjunto.
+
+Los costos de cambio son el moat principal de la empresa SaaS; los efectos de red
+(\cref{sec:network-effects}) son el moat secundario potencial si se construye un mercado de
+integraciones. Juntos generan el diferencial de valor sostenido que define
+\cref{ch:advantage-and-disruption}. \textcite{porter1985} y \textcite{dranove7theconomics}
+son las fuentes principales.
+
+\section{Mecánica de los Efectos de Red}\label{sec:network-effects}
+% complexity: 4 -> reutilizar figura growth-loop
+
+¿El producto tiene efectos de red, qué tan fuertes son y qué implica eso para el
+presupuesto de CAC y la trayectoria de \emph{growth}? Los efectos de red crean un moat del
+lado de la demanda que se compone: cada nuevo usuario eleva el valor del producto para todos
+los usuarios existentes, lo que facilita la venta al siguiente usuario y reduce el CAC con
+el tiempo. La implicación estructural es que las economías unitarias \emph{mejoran} con la
+escala --- lo opuesto a la mayoría de las estructuras de costo.
+
+La ley de Metcalfe aproxima el valor de una red de \(n\) nodos como proporcional al número
+de pares distintos:
+\begin{equation}\label{eq:metcalfe}
+  V(n) \;\propto\; n(n-1) \;\approx\; n^2 \quad\text{for large }n.
+\end{equation}
+La escala cuadrática es el núcleo económico: doblar usuarios más que dobla el valor, por lo
+que el valor por usuario aumenta con el tamaño de la red. Esto significa que la disposición
+a pagar aumenta a medida que la red crece, sin ningún cambio en el producto mismo --- la
+curva de demanda se desplaza hacia afuera únicamente por el tamaño de la base instalada.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{growth-loop}
+  \caption{El bucle de crecimiento auto-reforzante. Los nuevos clientes producen referidos,
+    contenido o datos que atraen a más clientes nuevos. Cuando el coeficiente viral
+    \(k > 1\) (\cref{eq:viral-k}), el bucle es autosustentable y el CAC de los canales
+    pagados cae a medida que aumenta la adquisición orgánica.}
+  \label{fig:network-effects}
+\end{figure}
+
+La \cref{eq:metcalfe} supone que todos los vínculos tienen igual valor, lo que es
+empíricamente falso. Las redes reales siguen una distribución de ley de potencia: un número
+reducido de nodos de alto valor (usuarios intensivos, cuentas empresariales) contribuyen de
+forma desproporcionada al valor de la red. La fórmula cuadrática sobreestima el valor en
+redes escasas y heterogéneas. También confunde los efectos de red \emph{directos} (el
+usuario se beneficia de otros usuarios directamente) con los \emph{indirectos} (el usuario
+se beneficia de los complementos atraídos por una base de usuarios grande). Los efectos
+directos son más fuertes pero más raros; los indirectos son más comunes en los mercados de
+plataformas (\cref{ch:business-models}).
+
+\begin{example}
+\emph{Decisión: si la empresa SaaS construye un mercado de integraciones que conecta
+proveedores, ¿cuál es el valor potencial con \(n = 100\) integraciones?}
+
+A partir de \cref{eq:metcalfe}, el número de pares distintos de proveedores con \(n = 100\):
+\[
+  \frac{n(n-1)}{2} = \frac{100 \times 99}{2} = 4{,}950 \text{ pairs}.
+\]
+Cada par representa una oportunidad potencial de intercambio de datos o automatización de
+flujos de trabajo que no existía con \(n = 50\) (que sólo ofrecía \num{1225} pares). El
+valor \emph{marginal} de la integración número 100 son \(99\) pares nuevos --- 99 veces el
+valor de la primera. Por eso los mercados de integraciones justifican una proporción
+desproporcionada de la inversión en ingeniería en las etapas tempranas: el valor de opción
+del nodo número 100 está embebido en la decisión del primer nodo de unirse.
+
+El bucle de crecimiento (\cref{fig:network-effects}) captura la expresión organizacional:
+cada integración atrae a más proveedores, cuya participación atrae a más clientes, cuyos
+datos mejoran el producto, que atrae a más integraciones. El coeficiente viral
+(\cref{eq:viral-k}) es la instanciación del lado de la demanda del mismo bucle aplicado a
+usuarios en lugar de integraciones. Ambos son canales hacia \cref{ch:digital-funnel-and-crm}.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Tratar efectos débiles del mismo lado como efectos de red a escala Metcalfe. Un producto
+SaaS utilizado de forma independiente por cada cliente (sin datos compartidos, sin
+interacciones entre usuarios) tiene efecto de red directo igual a cero independientemente
+del número de usuarios. La prueba relevante es: ¿cambia la experiencia del usuario \(j\)
+cuando se une el usuario \(k\)? Si no es así, no es un efecto de red; es una característica
+del producto que simplemente escala. Sobrestimar los efectos de red distorsiona la
+asignación de capital.
+\end{admonition}
+
+Los efectos de red directos frente a los indirectos tienen implicaciones diferentes para
+la masa crítica. Los efectos directos requieren una red mínima viable de usuarios activos
+antes de que el valor supere al del producto independiente; los efectos indirectos requieren
+un conjunto mínimo viable de complementadores. El problema del huevo y la gallina en el
+lanzamiento de plataformas (\cref{ch:business-models}) es la versión del lado de la demanda
+del requisito de masa crítica en \cref{eq:metcalfe}.
+\parencite{dranove7theconomics} desarrollan las implicaciones de bienestar y precios.
+
+Los efectos de red son el moat más sólido en los mercados tecnológicos pero el más difícil
+de construir desde cero. El coeficiente viral (\cref{eq:viral-k}) en
+\cref{ch:digital-funnel-and-crm} es el mecanismo del lado de la demanda; las métricas para
+su seguimiento están en \cref{ch:metrics-catalog}. \textcite{dranove7theconomics} aportan
+el fundamento teórico.
+
+\section{Contabilidad del Crecimiento}\label{sec:growth-accounting}
+% complexity: 4 -> figura mrr-waterfall
+
+¿La empresa realmente está creciendo, o los ingresos nuevos simplemente reemplazan los
+ingresos perdidos por \emph{churn}? La descomposición del crecimiento neto de MRR indica en
+qué canales invertir y dónde están las fugas. El crecimiento agregado de ingresos confunde
+cuatro actividades empresariales muy distintas. La adquisición de nuevos clientes, la
+expansión de cuentas existentes, la contracción de cuentas que bajan de plan y el
+\emph{churn} de cuentas perdidas se suman a un único titular que enmascara las dinámicas
+subyacentes. Una empresa con ventas nuevas sólidas y \emph{churn} alto parece idéntica en
+el titular a una empresa con ventas nuevas modestas y \emph{retention} sólida, pero
+requieren respuestas estratégicas completamente distintas.
+
+Sea el MRR al inicio de un período \(M_0\). El MRR al cierre es:
+\begin{equation}\label{eq:mrr-growth}
+  M_1 \;=\; M_0 \;+\; \Delta_{\text{new}}
+               \;+\; \Delta_{\text{expansion}}
+               \;-\; \Delta_{\text{contraction}}
+               \;-\; \Delta_{\text{churn}},
+\end{equation}
+donde cada \(\Delta\) es un número positivo. El nuevo MRR neto es
+\(\Delta_{\text{new}} + \Delta_{\text{expansion}} - \Delta_{\text{contraction}} - \Delta_{\text{churn}}\).
+La Retención Neta de Ingresos (NRR), derivada en \cref{ch:business-models}, es:
+\[
+  \mathrm{NRR} = \frac{M_0 + \Delta_{\text{expansion}} - \Delta_{\text{contraction}} - \Delta_{\text{churn}}}{M_0},
+\]
+es decir, cómo se ve la \emph{retention} de ingresos \emph{excluyendo} a los nuevos
+clientes. NRR $>$ 100\% significa que la base existente se expande en términos netos ---
+la empresa podría teóricamente cesar las ventas nuevas y seguir creciendo.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{mrr-waterfall}
+  \caption{Cascada de MRR para el ejemplo SaaS de referencia. El MRR inicial de
+    \money{340000} crece por clientes nuevos (\money{30000}) y expansión (\money{20000}),
+    y se reduce por contracción (\money{5000}) y \emph{churn} (\money{22000}), terminando
+    en \money{363000} --- una ganancia neta del \qty{6.8}{\percent}.}
+  \label{fig:mrr-waterfall}
+\end{figure}
+
+La \cref{eq:mrr-growth} es una identidad --- siempre se cumple por construcción. El poder
+diagnóstico proviene de evaluar si cada componente es saludable \emph{en relación con el
+modelo de negocio}. Un producto transaccional de alta velocidad (SaaS de comercio
+electrónico) se espera que tenga mayor \emph{churn} bruto y menor expansión; un producto
+empresarial de expansión de asientos se espera que tenga alta expansión y bajo \emph{churn}
+bruto. Comparar niveles absolutos de \emph{churn} sin ajustar por tipo de modelo de negocio
+produce referencias falsas. En relación con esto, la ecuación trata todo el MRR como
+igualmente valioso; un dólar de \emph{churn} de un cliente con 36 meses de antigüedad es
+más preocupante que uno de una cuenta de un mes (\cref{eq:clv}).
+
+\begin{example}
+\emph{Decisión: ¿dónde debe invertir el equipo --- en adquisición nueva o en reducción del
+\emph{churn}?}
+
+De la hoja de datos: MRR = \money{340000}. Movimientos mensuales observados:
+Movimientos mensuales observados (supuestos declarados; la combinación de planes y el empuje
+de expansión elevan \(\Delta_{\text{new}}\) por encima del simple producto
+\num{200}\(\times\)\money{50}):
+\[
+  \begin{aligned}
+    \Delta_{\text{new}} &= +\money{30000} \quad (\text{new customers across plan mix})\\
+    \Delta_{\text{expansion}} &= +\money{20000} \quad (\text{seat adds, plan upgrades})\\
+    \Delta_{\text{contraction}} &= -\money{5000} \quad (\text{downgrades})\\
+    \Delta_{\text{churn}} &= -\money{22000} \quad (\approx\qty{6.5}{\percent}\text{ of }\money{340000})
+  \end{aligned}
+\]
+MRR neto nuevo: $\money{30000}+\money{20000}-\money{5000}-\money{22000}=+\money{23000}$
+(+\qty{6.8}{\percent}/mes).
+\[
+  \mathrm{NRR} = \frac{\money{340000}+\money{20000}-\money{5000}-\money{22000}}{\money{340000}}
+               = \frac{\money{333000}}{\money{340000}} \approx \qty{97.9}{\percent}.
+\]
+Un NRR del \qty{97.9}{\percent} indica que la base existente se contrae levemente sin ventas
+nuevas --- la empresa es neta-negativa en \emph{retention}. Incluso mejoras modestas en la
+\emph{retention} se componen dramáticamente: reducir el \emph{churn} de \money{22000} a
+\money{15000}/mes eleva el NRR al \qty{99.7}{\percent} y aumenta el MRR al cierre en
+\money{7000}/mes sin adquirir un solo cliente nuevo. Ese \money{7000} se compone. La
+prioridad de inversión es la reducción del \emph{churn} --- específicamente los recursos
+VRIN (integraciones) que elevan los costos de cambio (\cref{sec:moat-taxonomy}).
+\end{example}
+
+\begin{admonition}{Advertencia}
+Optimizar el nuevo MRR \emph{bruto} ignorando el \emph{churn}. Una empresa que agrega
+\money{40000}/mes en nuevo MRR mientras pierde \money{40000}/mes por \emph{churn} está
+corriendo en el lugar: NRR $=$ \qty{100}{\percent} exactamente, pero la base de clientes se
+ha renovado por completo en un horizonte finito y el CAC se ha gastado con retorno compuesto
+nulo. El crecimiento \emph{neto} de MRR y el NRR son las métricas correctas; el nuevo MRR
+bruto es un número de vanidad sin el contexto de la \emph{retention}.
+\end{admonition}
+
+La cascada de MRR es la versión operativa del modelo de LTV a nivel de cohorte en
+\cref{ch:customer-economics}: la \cref{eq:clv} descuenta los flujos de caja esperados de
+una sola cohorte; la \cref{eq:mrr-growth} es la manifestación mensual agregada de todas las
+cohortes superpuestas sumadas en el tiempo calendario. El catálogo de métricas
+(\cref{ch:metrics-catalog}) proporciona referencias para cada componente.
+\textcite{ries2011} introdujo el encuadre de «contabilidad del crecimiento» para las
+métricas de producto; \textcite{bendle2020marketing} lo extienden al contexto de
+atribución de \emph{marketing}.
+
+La contabilidad del crecimiento cierra el ciclo entre las decisiones de estrategia de
+\emph{growth} (Ansoff) y las inversiones en moats (costos de cambio, efectos de red) al
+hacer visible en tiempo real el resultado financiero de cada una. La \cref{eq:mrr-growth} y
+el NRR son el panel de control principal para \cref{ch:metrics-catalog}.
+\textcite{ries2011} y \textcite{bendle2020marketing} son las fuentes principales.

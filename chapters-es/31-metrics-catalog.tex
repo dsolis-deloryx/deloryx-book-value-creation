@@ -1,0 +1,1796 @@
+\chapter{Referencia de métricas de negocio}\label{ch:metrics-catalog}
+
+% Alcance: referencia pedagógica estructurada --- fórmula, desglose de términos, qué mide,
+%   por qué importa, referencia, trampa y ejemplo trabajado para las 34 métricas.
+%   Seis secciones: Economía unitaria, SaaS e ingresos recurrentes, Embudo y marketing,
+%   Plataformas de publicidad, Producto y engagement, Métricas de vanidad.
+%   Estilo del libro: prosa fluida bajo encabezados; recuadros example y admonition.
+%   No se usa metriccard/mcfield/multicols en este archivo.
+
+Este capítulo es una referencia estructurada, no un argumento. Cada métrica recibe una
+definición, una fórmula con cada término explicado, un enunciado en lenguaje llano de lo
+que el número mide en realidad, la decisión que informa, una referencia de orden de magnitud
+donde exista y la trampa que hace que la métrica mienta. Las definiciones siguen a
+\textcite{bendle2020marketing}; las derivaciones viven en los capítulos correspondientes ---
+CAC y LTV en \cref{ch:customer-economics}, la mecánica de ROAS/CPA en
+\cref{ch:paid-acquisition-platforms}, las métricas de ingresos recurrentes en
+\cref{ch:business-models}. Una referencia es un ancla de orden de magnitud, nunca un
+objetivo en sí misma.
+
+
+%% ============================================================
+\section{Economía unitaria}
+
+La economía unitaria responde una pregunta antes que cualquier otra: ¿gana dinero una sola
+transacción --- un cliente, un pedido, un contrato --- y en qué medida? Si la unidad es
+correcta, la escala es una palanca; si es incorrecta, la escala es un acelerador de pérdidas.
+
+\subsection{CAC --- Costo de adquisición de clientes}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{CAC} = \frac{\text{Sales \& marketing spend}}{\text{New customers acquired}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Sales \& marketing spend] Todos los costos en un período en que incurre el negocio
+    para ganar nuevos clientes --- medios pagados, salarios del equipo de ventas (incluidas
+    prestaciones y cargas sociales), suscripciones a herramientas, producción de contenido,
+    agencias y gastos generales atribuibles. Completamente cargado; \emph{no} solo gasto en
+    publicidad.
+  \item[New customers acquired] Clientes pagantes (no prospectos, pruebas ni registros)
+    ganados en el mismo período utilizado para la cifra de gasto.
+\end{description}
+
+\textbf{Qué mide.} El precio completamente cargado que paga el negocio para convertir un
+prospecto en cliente pagante.
+
+\textbf{Por qué importa.} El CAC es una de las dos mitades de la prueba de viabilidad de
+adquisición. Comparado con el LTV (\cref{eq:ltv-cac}), establece el límite de cuán
+agresivamente puede gastar la empresa antes de que la economía unitaria se vuelva negativa.
+Un negocio que no conoce su CAC completamente cargado no puede saber si crea o destruye valor
+con cada venta. La derivación completa aparece en \cref{ch:customer-economics}.
+
+\textbf{Referencia.} Juzgarlo únicamente contra el LTV (objetivo LTV:CAC $\ge 3$). Un «CAC
+bueno» como cifra aislada no existe --- el mismo \money{600} es excelente para un acuerdo
+empresarial y ruinoso para una suscripción de consumo de \money{10}/mes.
+
+\textbf{Trampa.} Excluir los salarios de ventas y \emph{marketing}, las herramientas y los
+honorarios de agencias subestima el CAC e infla silenciosamente la razón LTV:CAC --- el
+truco más común de embellecimiento de economía unitaria en los \emph{decks} de etapa
+temprana.
+
+\begin{example}[CAC para la SaaS de referencia]
+Gasto mensual en la SaaS B2B de referencia: medios pagados \money{90000} + salarios
+completamente cargados de AE/SDR \money{25000} + herramientas \money{5000} = \money{120000}.
+Nuevos clientes pagantes ganados en el mes: 200.
+\[
+  \mathrm{CAC} = \frac{\money{120000}}{200} = \money{600}.
+\]
+Excluir salarios y herramientas haría caer la cifra reportada a \money{450} --- una
+subestimación del \qty{25}{\percent} que inflaría la razón LTV:CAC de 5.25$\times$ a
+7$\times$, posiblemente desencadenando un aumento del presupuesto de adquisición que destruye
+valor con la economía unitaria real.
+\end{example}
+
+
+\subsection{LTV --- Customer Lifetime Value}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{LTV} = \frac{m}{r - g}
+\]
+donde esta es la forma de perpetuidad creciente (\cref{eq:gordon}) evaluada a nivel de
+cliente.
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[$m$] Margen de contribución anual por cliente --- ingreso menos los costos variables
+    directamente atribuibles a atender a ese cliente. Usar margen, no ingreso; la fórmula
+    mide el valor económico que acumula la empresa, no la facturación.
+  \item[$r$] La tasa de descuento de la empresa (WACC o costo de capital propio) --- el
+    costo de oportunidad del capital comprometido en atender clientes. Para la SaaS de
+    referencia, $r = \qty{11}{\percent}$.
+  \item[$g$] La tasa de crecimiento anual esperada de ese margen, que captura tanto la
+    expansión de precio como de volumen dentro de la cuenta. Debe ser estrictamente menor
+    que $r$ o la fórmula devuelve un resultado sin sentido.
+\end{description}
+
+\textbf{Qué mide.} El valor presente de todo el margen de contribución futuro que se espera
+que genere un solo cliente, descontado a la tasa de costo de capital de la empresa.
+
+\textbf{Por qué importa.} El LTV establece el \emph{techo} de cuánto debería estar dispuesta
+a pagar la empresa por adquirir un cliente. Es matemáticamente idéntico a un valor terminal
+de flujo de caja descontado (\cref{eq:gordon}) con el cliente reemplazando a la empresa; la
+derivación completa está en \cref{ch:customer-economics}.
+
+\textbf{Referencia.} $\mathrm{LTV} \ge 3 \times \mathrm{CAC}$. Esto no es arbitrario: una
+razón de 3$\times$ deja margen para el costo de atender a los clientes durante su vida
+(soporte, gasto en retención, gestión de cuentas) sin erosionar la economía de adquisición.
+
+\textbf{Trampa.} Sustituir ingreso en lugar de margen en $m$ sobreestima el LTV de forma
+dramática --- un negocio con \qty{42}{\percent} de margen de contribución que comete este
+error infla el LTV en un \qty{138}{\percent}. Igualmente, usar una tasa de crecimiento $g$
+elevada que se acerque a $r$ puede hacer el LTV arbitrariamente grande e inutilizar la
+métrica para presupuestar.
+
+\begin{example}[LTV para la SaaS de referencia]
+El ARPU es \money{600}/año; el margen de contribución es \qty{42}{\percent}, por lo que $m =
+\money{252}$/cliente/año. Tasa de descuento $r = \qty{11}{\percent}$; crecimiento del margen
+a largo plazo $g = \qty{3}{\percent}$.
+\[
+  \mathrm{LTV} = \frac{\money{252}}{0.11 - 0.03} = \frac{\money{252}}{0.08} = \money{3150}.
+\]
+Si se hubiera usado el ingreso en lugar del margen: $\money{600}/0.08 = \money{7500}$ --- una
+sobreestimación del \qty{138}{\percent} que distorsionaría el presupuesto de adquisición por
+el mismo factor.
+\end{example}
+
+
+\subsection{LTV:CAC --- Razón entre el valor del ciclo de vida y el costo de adquisición}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{LTV:CAC} = \frac{\mathrm{LTV}}{\mathrm{CAC}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[LTV] Valor del ciclo de vida del cliente tal como se define arriba --- valor presente
+    del margen futuro, no del ingreso.
+  \item[CAC] Costo de adquisición de clientes completamente cargado tal como se define
+    arriba.
+\end{description}
+
+\textbf{Qué mide.} La eficiencia de capital de la adquisición: ¿cuántos dólares de valor de
+cliente crea la empresa por cada dólar gastado en ganar ese cliente?
+
+\textbf{Por qué importa.} LTV:CAC es la prueba de economía unitaria más citada en la
+suscripción de capital de riesgo y de crecimiento. Una razón inferior a 1 significa que el
+negocio pierde dinero con cada cliente antes de contar siquiera los costos fijos. La fórmula
+está completamente derivada como \cref{eq:ltv-cac} en \cref{ch:customer-economics}.
+
+\textbf{Referencia.}
+\begin{itemize}
+  \item $\ge 3$: saludable; la referencia institucional estándar.
+  \item 3--5: rango normal para SaaS bien gestionadas.
+  \item $> 5$: con frecuencia indica subinversión en crecimiento --- la empresa está dejando
+    valor sobre la mesa al no adquirir clientes que podría atender de forma rentable.
+  \item $< 1$: cada nuevo cliente destruye valor; corregir la economía unitaria antes de
+    escalar.
+\end{itemize}
+
+\textbf{Trampa.} Un LTV:CAC superior a 5 no es simplemente «muy bueno» --- típicamente
+significa que la empresa gasta demasiado poco en adquisición en relación con la oportunidad.
+Tratar una razón alta como recompensa en lugar de señal para aumentar el gasto es un error
+frecuente en la fase de crecimiento.
+
+\begin{example}[LTV:CAC para la SaaS de referencia]
+De los cálculos anteriores, LTV $= \money{3150}$ y CAC $= \money{600}$.
+\[
+  \mathrm{LTV:CAC} = \frac{\money{3150}}{\money{600}} = 5.25.
+\]
+Esta cifra supera el rango saludable de 3--5, lo que sugiere que la empresa debería probar
+aumentar el gasto en adquisición --- siempre que el cliente incremental tenga el mismo perfil
+de LTV que el promedio.
+\end{example}
+
+
+\subsection{CAC Payback --- Período de recuperación en meses}
+
+\textbf{Fórmula.}
+\[
+  \text{CAC Payback} = \frac{\mathrm{CAC}}{\text{Monthly margin per customer}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[CAC] Costo de adquisición completamente cargado por cliente (\money{600} en la SaaS
+    de referencia).
+  \item[Monthly margin per customer] Margen de contribución mensual --- ARPU mensual
+    multiplicado por la tasa de margen de contribución. Es el flujo de caja que genera el
+    cliente cada mes para recuperar la inversión de adquisición.
+\end{description}
+
+\textbf{Qué mide.} Cuántos meses debe permanecer un cliente antes de que el margen
+acumulado de ese cliente reembolse el costo de adquirirlo. Los períodos de recuperación más
+cortos reducen el riesgo del ciclo de caja y los requerimientos de financiamiento de la
+empresa.
+
+\textbf{Por qué importa.} El período de recuperación traduce el LTV:CAC en una verificación
+de la realidad del flujo de caja. Un LTV:CAC elevado es tranquilizador pero carece de
+sentido si los clientes sufren \emph{churn} antes del mes de recuperación. También es el
+principal determinante de cuánto capital necesita la empresa para sostener una tasa de
+crecimiento dada; un negocio creciendo al \qty{20}{\percent} mensual con 24 meses de
+período de recuperación es mucho más intensivo en capital que uno con 8 meses. La derivación
+completa es \cref{eq:cac-payback} en \cref{ch:customer-economics}.
+
+\textbf{Referencia.}
+\begin{itemize}
+  \item $< 12$ meses: saludable para SaaS enfocadas en pequeñas y medianas empresas.
+  \item $< 18$ meses: aceptable para mercado medio.
+  \item $< 24$ meses: en el límite para empresa; por encima de 24 meses se requieren datos
+    sólidos de retención para justificar el ciclo de caja.
+\end{itemize}
+
+\textbf{Trampa.} La fórmula cuenta a todos los clientes en el denominador, incluidos los que
+sufren \emph{churn} antes del mes de recuperación. Si el \emph{churn} mensual es elevado, el
+cliente promedio nunca alcanza la recuperación, convirtiendo la cifra declarada en una ficción
+optimista. Verificar la recuperación contra el inverso del \emph{churn} mensual (la vida
+media del cliente en meses).
+
+\begin{example}[CAC Payback para la SaaS de referencia]
+ARPU mensual $= \money{50}$; margen de contribución $= \qty{42}{\percent}$; margen mensual
+por cliente $= \money{50} \times 0.42 = \money{21}$. CAC $= \money{600}$.
+\[
+  \text{CAC Payback} = \frac{\money{600}}{\money{21}} \approx 29 \text{ meses}.
+\]
+Con un \emph{churn} mensual de \qty{0.65}{\percent}, la vida media del cliente es
+aproximadamente $1/0.0065 \approx 154$ meses, por lo que casi todos los clientes sobreviven
+hasta la recuperación. Sin embargo, la cifra de 29 meses supera el umbral empresarial de
+24 meses --- señal para reducir el CAC o encontrar palancas de expansión del margen
+(venta adicional, aumento de precio) que compriman el período de recuperación.
+\end{example}
+
+
+\subsection{Contribution Margin --- Margen de contribución}
+
+\textbf{Fórmula.}
+\[
+  \text{Contribution Margin} = \text{Price} - \text{Variable cost per unit}
+\]
+Expresado como tasa: $\text{CM\%} = (\text{Price} - \text{Variable cost})/\text{Price}$.
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Price] Ingreso por unidad (por asiento de suscripción, por transacción, por artículo
+    vendido).
+  \item[Variable cost per unit] Costos que escalan directamente con cada unidad adicional
+    atendida: procesamiento de pagos, incrementos de alojamiento en la nube, APIs de terceros
+    por asiento, material directo y mano de obra para bienes físicos. Los costos fijos
+    (alquiler, salarios base, licencias anuales) se \emph{excluyen}.
+\end{description}
+
+\textbf{Qué mide.} El flujo de caja que genera cada unidad adicional una vez cubiertos los
+costos variables --- el fondo de dinero disponible para cubrir los costos fijos y
+eventualmente generar beneficio.
+
+\textbf{Por qué importa.} El margen de contribución es el motor económico de la unidad. Un
+margen de contribución positivo significa que cada venta incremental acerca la empresa al
+umbral de rentabilidad; uno negativo significa que vender más acelera las pérdidas
+independientemente del volumen. Se incorpora directamente al LTV (el término $m$) y a los
+cálculos del período de recuperación del CAC. La relación con el margen bruto y el beneficio
+operativo se desarrolla en \cref{ch:business-models}.
+
+\textbf{Referencia.} Positivo y creciente con la escala a medida que mejora el apalancamiento
+de los costos fijos. Para software, \qty{60}{\percent}+ es típico a nivel de unidad antes de
+los gastos generales de plataforma; para bienes físicos, márgenes por debajo del
+\qty{30}{\percent} hacen que la aritmética de economía unitaria sea muy ajustada.
+
+\textbf{Trampa.} Confundir el margen de contribución con el margen bruto. El margen bruto
+deduce el costo de los bienes vendidos tal como se reporta en el estado de resultados (que
+puede incluir partidas semifijas como la depreciación del equipo de producción); el margen
+de contribución es un concepto de contabilidad de gestión que aísla únicamente los costos
+verdaderamente variables. Convergen para negocios de software puro pero divergen
+materialmente para cualquier producto con componentes físicos o gran infraestructura de
+producción fija.
+
+\begin{example}[Margen de contribución en la SaaS de referencia]
+Precio de suscripción mensual: \money{50}. Costos variables por asiento: procesamiento de
+pagos \money{1.50} + alojamiento incremental en la nube \money{1.75} + costos de API por
+asiento \money{0.75} = \money{4.00} total.
+\[
+  \text{CM} = \money{50} - \money{4} = \money{46}; \quad
+  \text{CM\%} = \frac{\money{46}}{\money{50}} = \qty{92}{\percent}.
+\]
+Espera --- ¿por qué el \emph{fact sheet} de referencia usa \qty{42}{\percent}? Porque la
+SaaS de referencia atribuye una parte de los salarios de éxito del cliente y las herramientas
+de incorporación como costos variables en sus cuentas de gestión (un tratamiento completamente
+cargado legítimo), elevando el costo variable por asiento a \money{29}. La cifra del
+\qty{42}{\percent} (\money{21}/mes) es el número que fluye hacia el LTV y el período de
+recuperación del CAC a lo largo de este libro.
+\end{example}
+
+
+\subsection{Gross Margin --- Margen bruto}
+
+\textbf{Fórmula.}
+\[
+  \text{Gross Margin} = \frac{\text{Revenue} - \text{COGS}}{\text{Revenue}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Revenue] Ingreso total reconocido en el período.
+  \item[COGS (Cost of Goods Sold)] Los costos directos de entregar el producto o servicio
+    tal como se reportan bajo GAAP/IFRS: mano de obra directa, materiales directos,
+    alojamiento, licencias de terceros integradas en el producto, amortización de costos de
+    desarrollo capitalizados directamente vinculados a la entrega de ingresos.
+  \item[Gross Margin (como razón)] La proporción de cada dólar de ingreso que queda tras los
+    costos directos de entrega; el punto de partida para todo análisis de rentabilidad
+    posterior.
+\end{description}
+
+\textbf{Qué mide.} La rentabilidad estructural de la oferta principal de la empresa antes de
+los gastos operativos --- ventas, \emph{marketing}, I+D y G\&A. Responde: ¿genera el
+producto suficiente excedente para sostener la estructura operativa del negocio?
+
+\textbf{Por qué importa.} El margen bruto es el techo estructural de la rentabilidad
+operativa. Una empresa con \qty{40}{\percent} de margen bruto no puede, aritméticamente,
+alcanzar un margen EBITDA del \qty{45}{\percent} --- ninguna eficiencia operativa supera ese
+techo. Para los inversores en SaaS, el margen bruto señala escalabilidad: márgenes altos
+($>\qty{70}{\percent}$) indican que el negocio puede crecer en ingresos sin aumentar
+proporcionalmente los costos de entrega.
+
+\textbf{Referencia.}
+\begin{itemize}
+  \item $>\qty{70}{\percent}$: rango saludable típico para software puro.
+  \item $>\qty{80}{\percent}$: élite; característico de SaaS empresarial de alto valor.
+  \item \qty{40}--\qty{60}{\percent}: común para software con componentes significativos de
+    servicios gestionados o implementación.
+  \item $<\qty{30}{\percent}$: típico para negocios de bienes físicos o \emph{marketplaces}
+    donde el apalancamiento a nivel de unidad es menor.
+\end{itemize}
+
+\textbf{Trampa.} Enterrar los costos de alojamiento, los salarios del equipo de soporte o
+los honorarios de APIs de terceros en los gastos operativos (en lugar de en COGS) embellece
+el margen bruto en el estado de resultados pero engaña a cualquiera que modele la
+escalabilidad. Esta reclasificación es una preparación estándar previa a la captación de
+fondos en algunas \emph{startups}; un analista escéptico debería reconstruir el COGS a
+partir del detalle de costos, no aceptar la cifra titular.
+
+\begin{example}[Margen bruto en la SaaS de referencia]
+ARR $= \money{4000000}$ (MRR \money{340000} $\times$ 12 aproximadamente). COGS reportado:
+alojamiento \money{480000} + APIs de terceros \money{240000} + amortización de desarrollo
+capitalizado \money{120000} = \money{840000}.
+\[
+  \text{Gross Margin} = \frac{\money{4000000} - \money{840000}}{\money{4000000}}
+    = \frac{\money{3160000}}{\money{4000000}} = \qty{79}{\percent}.
+\]
+Si los salarios del equipo de soporte (\money{400000}) también se clasificaran correctamente
+en COGS, el margen bruto caería a $(\money{4000000} - \money{1240000})/\money{4000000} =
+\qty{69}{\percent}$ --- aún saludable pero por debajo del umbral de élite, cambiando el
+relato para el inversor.
+\end{example}
+
+
+%% ============================================================
+\section{SaaS e ingresos recurrentes}
+
+Las métricas de ingresos recurrentes miden la salud del motor de suscripción. Son
+indicadores adelantados: reflejan lo que hace la base de clientes hoy y predicen lo que
+mostrará el estado de resultados en doce meses. Un fundador que observa únicamente los
+ingresos sin estas métricas está mirando por el espejo retrovisor.
+
+\subsection{MRR --- Monthly Recurring Revenue}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{MRR} = \sum_{\text{active subscriptions}} \text{monthly subscription value}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Monthly subscription value] El cargo recurrente normalizado por suscripción por mes.
+    Los contratos anuales se dividen entre 12; los contratos plurianuales, entre el total de
+    meses. Los honorarios por uso, los ingresos puntuales por servicios profesionales y las
+    ventas de hardware se excluyen.
+  \item[$\sum$ sobre suscripciones activas] Toda suscripción que esté activa (superada la
+    prueba, sin \emph{churn}, sin pausa) en la fecha de medición.
+\end{description}
+
+\textbf{Qué mide.} La tasa de ejecución mensual predecible del negocio a partir de los
+contratos de suscripción. Es el pulso de un negocio de ingresos recurrentes, actualizado
+mensualmente a medida que se añaden nuevos clientes, los clientes existentes se expanden o
+contraen y los clientes que sufren \emph{churn} salen.
+
+\textbf{Por qué importa.} El MRR es la base de todo modelo financiero SaaS: ARR, NRR, burn
+multiple y la Regla de 40 se derivan todos de él. Los inversores utilizan la tasa de
+crecimiento del MRR --- no el crecimiento de ingresos --- como la señal de crecimiento
+primaria para las empresas SaaS previas a la rentabilidad. El modelo de cascada completo del
+MRR (nuevo + expansión $-$ contracción $-$ \emph{churn}) se deriva como \cref{eq:mrr-growth}
+en \cref{ch:business-models}.
+
+\textbf{Referencia.} La tasa de crecimiento importa más que el nivel. Un MRR de \money{340000}
+creciendo al \qty{15}{\percent}/mes es fundamentalmente diferente de un MRR de \money{5000000}
+creciendo al \qty{1}{\percent}/mes, aunque el segundo sea mayor en volumen.
+
+\textbf{Trampa.} Contar ingresos no recurrentes --- honorarios de implementación puntuales,
+excedentes de uso variable o compromisos de servicios profesionales --- como MRR. Esto infla
+la métrica y, peor aún, crea una suavidad falsa: cuando esos proyectos puntuales terminan,
+el MRR reportado cae y el negocio parece estar sufriendo \emph{churn}.
+
+\begin{example}[Descomposición del MRR para la SaaS de referencia]
+La empresa tiene \num{6700} clientes pagantes a \money{50}/mes de promedio.
+\[
+  \mathrm{MRR} = \num{6700} \times \money{50} = \money{335000}.
+\]
+El \emph{fact sheet} de referencia usa \money{340000} MRR, reflejando el recuento real de
+clientes de \num{6800} en la fecha de medición (crecimiento en el cohorte respecto a los
+\num{6700} del mes anterior). Los honorarios de implementación puntuales de \money{45000}
+de este mes se excluyen; incluirlos sobreestimaría el MRR en un \qty{13}{\percent}.
+\end{example}
+
+
+\subsection{ARR --- Annual Recurring Revenue}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{ARR} = \mathrm{MRR} \times 12
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[MRR] Ingreso recurrente mensual tal como se define arriba --- solo suscripciones.
+  \item[$\times 12$] La anualización supone que la tasa de ejecución actual se mantiene
+    durante doce meses. Es una \emph{instantánea}, no una previsión.
+\end{description}
+
+\textbf{Qué mide.} La tasa de ejecución recurrente anualizada del negocio en un momento
+dado. El ARR es la unidad estándar para los múltiplos de valoración SaaS (múltiplo de ARR,
+derivado como \cref{eq:arr-multiple} en \cref{ch:business-models}) y para la comparación del
+crecimiento año contra año.
+
+\textbf{Por qué importa.} El ARR convierte la instantánea del MRR al lenguaje que usan los
+inversores y adquirentes para los comparables. En el nivel de \money{4000000} ARR, la SaaS
+de referencia está en el rango en el que los inversores institucionales de crecimiento
+típicamente inician una diligencia debida seria; por debajo de \money{1000000} ARR, la
+mayoría de los fondos institucionales de Serie A consideran que el conjunto de datos es
+demasiado pequeño para extrapolar.
+
+\textbf{Trampa.} Anualizar ingresos no recurrentes. Si un negocio factura \money{500000} en
+consultoría puntual este mes y reporta un ARR de \money{6000000} multiplicando el ingreso
+total por 12, ese «ARR» desaparecerá el mes siguiente. Los inversores que descubren el error
+revalúan el negocio a su base recurrente real.
+
+\begin{example}[ARR para la SaaS de referencia]
+MRR $= \money{340000}$.
+\[
+  \mathrm{ARR} = \money{340000} \times 12 = \money{4080000}.
+\]
+El \emph{fact sheet} de referencia usa \money{4000000} ARR, representando una línea base de
+MRR de \money{333333} --- el redondeo menor refleja la cifra normalizada usada para
+modelización. Si la empresa hubiera incluido los honorarios de implementación del mes
+anterior, el ARR reportado habría sido \money{4620000} --- una sobreestimación del
+\qty{15}{\percent} sin sustancia recurrente.
+\end{example}
+
+
+\subsection{Logo Churn --- Tasa de cancelación de clientes}
+
+\textbf{Fórmula.}
+\[
+  \text{Logo Churn} = \frac{\text{Customers lost in period}}{\text{Customers at start of period}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Customers lost in period] Suscripciones que cancelaron o no renovaron durante el
+    período de medición (típicamente mensual o anual). Excluye las reducciones de plan
+    (que son contracción, no \emph{churn}).
+  \item[Customers at start of period] La base de la cohorte. Medir al inicio del período,
+    antes de las nuevas incorporaciones.
+\end{description}
+
+\textbf{Qué mide.} La tasa a la que el negocio pierde clientes por número, independientemente
+del tamaño de sus ingresos.
+
+\textbf{Por qué importa.} El Logo Churn es la señal de desgaste más intuitiva: si el
+\qty{5}{\percent} de los clientes se va cada mes, toda la base rota en aproximadamente
+20 meses. Con un \emph{churn} mensual del \qty{0.65}{\percent}, la vida media del cliente
+de la SaaS de referencia es $1/0.0065 \approx 154$ meses --- más de 12 años --- un relato
+de retención muy sólido. El \emph{churn} se incorpora directamente al LTV: cada mejora de
+un punto porcentual en el \emph{churn} mensual extiende la vida del cliente y eleva el LTV
+de forma no lineal a través del denominador de la perpetuidad. La derivación de retención es
+\cref{eq:retention} en \cref{ch:customer-economics}.
+
+\textbf{Referencia.}
+\begin{itemize}
+  \item $<\qty{1}{\percent}$/mes (\qty{12}{\percent}/año): aceptable para SaaS enfocadas en
+    pequeñas y medianas empresas.
+  \item $<\qty{0.5}{\percent}$/mes (\qty{6}{\percent}/año): bueno para mercado medio.
+  \item $<\qty{0.2}{\percent}$/mes: retención empresarial de élite.
+  \item Los contratos anuales suprimen naturalmente las cifras de \emph{churn} mensual;
+    comparar sobre una base consistente.
+\end{itemize}
+
+\textbf{Trampa.} Ignorar que los clientes perdidos pueden ser cuentas pequeñas. Si los diez
+clientes más grandes (cada uno a \money{10000}/mes) se van pero se añaden doscientas cuentas
+pequeñas (cada una a \money{50}/mes), el Logo Churn parece saludable mientras el \emph{churn}
+por ingresos es catastrófico. Siempre combinar el Logo Churn con la retención neta de ingresos
+(\cref{sec:saas-mrr} a continuación) para obtener el panorama completo.
+
+\begin{example}[Logo Churn en la SaaS de referencia]
+Recuento de clientes al inicio: \num{6700}. Cancelaciones en el mes: 44.
+\[
+  \text{Logo Churn} = \frac{44}{\num{6700}} = \qty{0.657}{\percent}/\text{mes}.
+\]
+El \emph{fact sheet} de referencia usa \qty{0.65}{\percent}/mes. A esta tasa, la vida media
+del cliente $\approx 154$ meses; el período de recuperación del CAC de 29 meses queda bien
+dentro de esa ventana.
+\end{example}
+
+
+\subsection{NRR --- Net Revenue Retention}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{NRR} = \frac{\text{MRR}_\text{start} + \text{Expansion MRR} - \text{Contraction MRR} - \text{Churned MRR}}{\text{MRR}_\text{start}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[MRR$_\text{start}$] Ingreso recurrente mensual de la base de clientes existentes al
+    inicio del período --- sin incluir nuevos clientes.
+  \item[Expansion MRR] MRR adicional de clientes existentes mediante ventas adicionales,
+    ventas cruzadas o expansión de asientos.
+  \item[Contraction MRR] MRR perdido de clientes existentes que redujeron su plan sin
+    cancelar.
+  \item[Churned MRR] MRR de clientes que cancelaron completamente.
+\end{description}
+
+\textbf{Qué mide.} El porcentaje de los ingresos iniciales que el negocio retiene de su
+base de clientes existentes tras doce meses, neto de expansiones, contracciones y
+cancelaciones.
+
+\textbf{Por qué importa.} Un NRR superior al \qty{100}{\percent} significa que la base de
+clientes existente hace crecer los ingresos incluso con cero adquisición de nuevos clientes.
+Esta es la característica definitoria de un negocio SaaS de capitalización compuesta: el
+crecimiento no requiere llenar perpetuamente un cubo con fugas. Con
+$\mathrm{NRR} = \qty{120}{\percent}$, una empresa que comience con \money{4000000} ARR
+alcanzaría \money{4800000} ARR solo desde su base actual en doce meses. Véase
+\cref{ch:business-models} para la mecánica completa.
+
+\textbf{Referencia.}
+\begin{itemize}
+  \item $>\qty{100}{\percent}$: expansión neta --- la base existente se hace crecer a sí
+    misma.
+  \item $>\qty{110}{\percent}$: bueno; referencia de SaaS de mercado medio.
+  \item $>\qty{120}{\percent}$: élite; característico de las mejores empresas SaaS
+    empresariales.
+  \item $<\qty{100}{\percent}$: la base se está contrayendo incluso antes del Logo Churn;
+    una señal de alerta grave que requiere atención inmediata.
+\end{itemize}
+
+\textbf{Trampa.} Un NRR elevado puede enmascarar un Logo Churn intenso. Si el negocio está
+perdiendo muchos clientes pequeños pero los pocos clientes grandes se están expandiendo, el
+NRR se ve sólido mientras la base de clientes se concentra en un número reducido de cuentas
+grandes --- una fragilidad que es invisible en la cifra de NRR por sí sola.
+
+\begin{example}[NRR para la SaaS de referencia]
+MRR inicial de los \num{6700} clientes existentes: \money{335000}. Expansión (venta adicional
+a nivel superior): \money{12000}. Contracción (reducciones de plan): \money{3500}. MRR por
+\emph{churn} (44 clientes $\times$ \money{50}): \money{2200}.
+\[
+  \mathrm{NRR} = \frac{\money{335000} + \money{12000} - \money{3500} - \money{2200}}
+    {\money{335000}}
+  = \frac{\money{341300}}{\money{335000}} \approx \qty{102}{\percent}.
+\]
+El negocio está en expansión neta --- aunque modestamente. Duplicar el movimiento de
+expansión (llevando el NRR al \qty{104}{\percent}) añadiría aproximadamente \money{13000}/mes
+en crecimiento orgánico de ARR solo desde la base existente.
+\end{example}
+
+
+\subsection{Rule of 40 --- Regla de 40}
+
+\textbf{Fórmula.}
+\[
+  \text{Rule of 40} = \text{Revenue growth rate (\%)} + \text{Profit margin (\%)}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Revenue growth rate] Crecimiento de ARR o ingresos año contra año expresado como
+    porcentaje.
+  \item[Profit margin] Típicamente margen EBITDA o, para empresas en etapas más tempranas,
+    margen de flujo de caja libre. Los dos no son intercambiables; aclarar cuál se usa antes
+    de comparar entre empresas.
+\end{description}
+
+\textbf{Qué mide.} El equilibrio entre crecimiento y rentabilidad. Una empresa que gasta de
+forma agresiva para crecer (margen de beneficio negativo) puede seguir satisfaciendo la Regla
+de 40 si su tasa de crecimiento es suficientemente alta, y viceversa.
+
+\textbf{Por qué importa.} La Regla de 40 es la heurística principal que los inversores en
+SaaS usan para evaluar la compensación entre crecimiento y eficiencia a escala. Reconoce que
+la combinación «correcta» de crecimiento y margen no es fija --- una empresa con
+\qty{60}{\percent} de crecimiento a $-\qty{20}{\percent}$ de margen y una con
+\qty{10}{\percent} de crecimiento a \qty{30}{\percent} de margen obtienen la misma
+puntuación, y ambas son aceptables en diferentes fases. La derivación formal es
+\cref{eq:rule40} en \cref{ch:business-models}.
+
+\textbf{Referencia.} $\ge 40$: el umbral en el que los inversores típicamente asignan
+múltiplos premium. Por encima de 60 es de élite. Por debajo de 40 plantea preguntas sobre
+la sostenibilidad del perfil crecimiento-margen.
+
+\textbf{Trampa.} Manipular la puntuación con partidas de margen puntuales (una gran venta de
+activos, un crédito por reestructuración, una recuperación de ingresos diferidos) que inflan
+el margen de beneficio en un solo período sin cambiar el negocio subyacente. Examinar siempre
+los últimos doce meses en múltiples trimestres para suavizar los elementos excepcionales.
+
+\begin{example}[Regla de 40 para la SaaS de referencia]
+El ARR creció de \money{3000000} a \money{4000000} en doce meses: tasa de crecimiento
+$= \qty{33}{\percent}$. Margen EBITDA del año: \qty{9}{\percent} (próximo al NOPAT,
+consistente con \money{600000} NOPAT sobre \money{4000000} de ingresos, margen NOPAT del
+\qty{15}{\percent} aproximado al \qty{9}{\percent} EBITDA tras ajustes).
+\[
+  \text{Rule of 40} = 33 + 9 = 42.
+\]
+El negocio supera el umbral --- por poco. Para alcanzar 50 sin acelerar el crecimiento, la
+empresa necesitaría expandir el margen EBITDA al \qty{17}{\percent}, lo que al ingreso actual
+significa \money{680000} adicionales de beneficio operativo --- alcanzable únicamente mediante
+poder de fijación de precios o apalancamiento de costos fijos, no mediante volumen incremental
+a los márgenes actuales.
+\end{example}
+
+
+\subsection{Burn Multiple --- Múltiplo de quema}
+
+\textbf{Fórmula.}
+\[
+  \text{Burn Multiple} = \frac{\text{Net cash burn}}{\text{Net new ARR}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Net cash burn] Efectivo consumido por el negocio en el período --- salida de caja
+    operativa neta de cualquier entrada de caja procedente de operaciones (cobros, no
+    captación de fondos).
+  \item[Net new ARR] El ARR incremental añadido en el mismo período: ARR de nuevos clientes
+    + ARR de expansión $-$ ARR por \emph{churn} $-$ ARR por contracción. Es el ARR que la
+    quema «compró».
+\end{description}
+
+\textbf{Qué mide.} Cuántos dólares de caja quema el negocio para generar cada dólar de ARR
+neto nuevo. Es una métrica de eficiencia de capital para el crecimiento --- cuanto menor,
+mejor.
+
+\textbf{Por qué importa.} El Burn Multiple conecta el estado de resultados con el balance:
+un negocio puede estar haciendo crecer el ARR rápidamente mientras quema caja a una tasa que
+agotará la \emph{runway} antes del siguiente evento de financiación. Con \$1 de quema por
+\$1 de ARR nuevo, la empresa paga un dólar de capital por un dólar de ingreso futuro ---
+eficiente. Con \$5 por \$1, gasta \$5 para adquirir \$1 de ARR, lo que implica o bien un
+movimiento de crecimiento de muy baja calidad o un problema estructural de economía unitaria.
+La definición formal es \cref{eq:burn-multiple} en \cref{ch:business-models}.
+
+\textbf{Referencia.}
+\begin{itemize}
+  \item $< 1$: excelente eficiencia de capital; el negocio está cerca de ser positivo en
+    flujo de caja desde la perspectiva del crecimiento.
+  \item $< 1.5$: bueno; la mayoría de SaaS en etapa de crecimiento bien gestionadas.
+  \item $1.5$--$3$: aceptable en una fase de expansión territorial deliberada con NRR sólido.
+  \item $> 3$: preocupante; sugiere que el crecimiento es costoso en relación con su calidad.
+\end{itemize}
+
+\textbf{Trampa.} La métrica empeora en fases de expansión territorial deliberada donde la
+empresa está invirtiendo por delante de los ingresos en cobertura de mercado, ingeniería o
+plantilla de éxito del cliente. El contexto importa: un múltiplo de quema de \$2.5 junto con
+un NRR del \qty{150}{\percent} es una situación fundamentalmente diferente a un múltiplo de
+\$2.5 con un NRR del \qty{90}{\percent}.
+
+\begin{example}[Burn Multiple para la SaaS de referencia]
+Quema de caja neta en el T1: \money{450000}. ARR neto nuevo en el T1: nuevos clientes
+(\num{200} clientes $\times$ \money{600}/año) = \money{120000}; expansión \money{48000};
+pérdida por \emph{churn} \money{26400}; ARR neto nuevo $= \money{141600}$.
+\[
+  \text{Burn Multiple} = \frac{\money{450000}}{\money{141600}} \approx 3.18.
+\]
+Esta cifra supera el umbral «bueno». Descomponiendo la quema se revelan \money{120000} en
+contrataciones de I+D por delante del lanzamiento de una funcionalidad empresarial --- si ese
+lanzamiento eleva el NRR en 4 puntos porcentuales, el múltiplo efectivo a futuro caerá a
+aproximadamente 1.8.
+\end{example}
+
+
+%% ============================================================
+\section{Embudo y marketing}
+
+Las métricas de \emph{funnel} rastrean la conversión de atención en ingresos en cada etapa
+del recorrido del cliente. Ninguna métrica de \emph{funnel} debe optimizarse de forma
+aislada --- una tasa de conversión que sube mientras cae el valor medio de pedido puede
+representar una pérdida neta; un CPA que cae pero trae prospectos de menor calidad erosiona
+silenciosamente el LTV.
+
+\subsection{CTR --- Click-Through Rate}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{CTR} = \frac{\text{Clicks}}{\text{Impressions}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Clicks] El número de veces que un usuario hizo clic en el anuncio o enlace durante
+    el período de medición.
+  \item[Impressions] El número de veces que el anuncio o enlace se mostró a los usuarios
+    (incluidos aquellos que no hicieron clic).
+\end{description}
+
+\textbf{Qué mide.} La proporción de personas que vieron el anuncio o contenido y optaron por
+interactuar. El CTR es una señal directa de la resonancia creativa y de segmentación ---
+si el mensaje es suficientemente relevante para interrumpir la atención.
+
+\textbf{Por qué importa.} El CTR es un diagnóstico de la parte alta del \emph{funnel}. Un
+CTR alto indica que el creativo, el titular o la oferta es convincente \emph{para la
+audiencia que se le está mostrando}. No indica la calidad de la conversión posterior. Monitorear
+el CTR junto a la tasa de conversión (más adelante) revela si el problema de una campaña
+está en la etapa de atención o en la etapa de aterrizaje/oferta. El CTR en plataformas de
+pago también alimenta el Índice de Calidad y la mecánica de eCPC, desarrollados en
+\cref{ch:paid-acquisition-platforms}.
+
+\textbf{Referencia.} Varía ampliamente según el canal y el formato; los anuncios de búsqueda
+suelen rondar el \qty{2}{\percent}--\qty{6}{\percent}, los anuncios de display el
+\qty{0.1}{\percent}--\qty{0.3}{\percent}, los enlaces de email el
+\qty{1}{\percent}--\qty{3}{\percent}. Comparar únicamente dentro de los mismos canales y
+contra la propia línea base histórica.
+
+\textbf{Trampa.} Un CTR alto con una tasa de conversión posterior baja significa que el
+anuncio está atrayendo a la audiencia equivocada --- o prometiendo algo que la página de
+destino no entrega. Optimizar solo para CTR (escribiendo titulares engañosos o
+sensacionalistas) es una manera segura de destruir la eficiencia del CAC mientras se alcanza
+una métrica de vanidad.
+
+\begin{example}[CTR en la SaaS de referencia]
+Una campaña de LinkedIn dirigida a directores de operaciones: \num{240000} impresiones;
+\num{4800} clics.
+\[
+  \mathrm{CTR} = \frac{4800}{240000} = \qty{2}{\percent}.
+\]
+De esos \num{4800} clics, \num{96} se convirtieron en registros de prueba (tasa de conversión
+\qty{2}{\percent}) y \num{20} en clientes pagantes. El CTR parece saludable, pero la tasa
+de clic a prueba revela un problema en la página de destino --- la oferta resuena en el
+feed pero no convierte una vez que se llega a ella.
+\end{example}
+
+
+\subsection{CPC --- Cost Per Click}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{CPC} = \frac{\text{Total ad spend}}{\text{Total clicks}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Total ad spend] El importe pagado a la plataforma por la campaña durante el período
+    de medición.
+  \item[Total clicks] El número de clics entregados por la plataforma en el mismo período.
+\end{description}
+
+\textbf{Qué mide.} El precio efectivo que paga el negocio por una sola visita desde un
+anuncio de pago. El CPC lo establece la subasta de la plataforma y el Índice de Calidad del
+anunciante (el mecanismo \cref{eq:ecpc} de \cref{ch:paid-acquisition-platforms}).
+
+\textbf{Por qué importa.} El CPC es el costo de entrada para toda la economía del tráfico
+de pago. Con una tasa de conversión y un valor medio de pedido dados, el CPC determina si
+el tráfico de pago es rentable. La relación es: $\mathrm{CPA} = \mathrm{CPC} /
+\mathrm{CVR}$, por lo que un CPC elevado requiere una tasa de conversión alta o un CLV alto
+para justificarse.
+
+\textbf{Referencia.} No existe una referencia universal; comparar contra el techo de CPA
+implícito por el LTV. Google Search en SaaS B2B suele rondar \money{15}--\money{60} por clic
+para términos competitivos; LinkedIn puede rondar \money{8}--\money{25} por clic.
+
+\textbf{Trampa.} Optimizar para el CPC más bajo posible en lugar del CPA más bajo. El CPC
+puede reducirse pujando por palabras clave más baratas y de menor intención --- pero si esos
+clics convierten a una cuarta parte de la tasa, el CPA sube aunque el CPC baje. Evaluar
+siempre el CPC en el contexto de la conversión posterior.
+
+\begin{example}[CPC en la SaaS de referencia]
+Campaña de LinkedIn: gasto \money{12000}; \num{4800} clics.
+\[
+  \mathrm{CPC} = \frac{\money{12000}}{4800} = \money{2.50}.
+\]
+Con una tasa de conversión de clic a pagante de $20/4800 = \qty{0.42}{\percent}$:
+$\mathrm{CPA} = \money{2.50}/0.0042 \approx \money{595}$ --- casi exactamente el CAC de
+\money{600}. Esta campaña opera en el umbral de rentabilidad de la economía unitaria.
+\end{example}
+
+
+\subsection{CPM --- Cost Per Thousand Impressions}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{CPM} = \frac{\text{Total ad spend}}{\text{Total impressions}} \times 1000
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Total ad spend] Importe pagado a la plataforma durante el período de medición.
+  \item[Total impressions] Número de veces que el anuncio se mostró (sirvió) a los usuarios.
+  \item[$\times 1000$] Normaliza la cifra a una base por mil --- la unidad estándar de la
+    industria para comparar los costos de alcance entre canales.
+\end{description}
+
+\textbf{Qué mide.} El costo de llegar a mil espectadores con una impresión de anuncio. El
+CPM es la unidad principal de compra y fijación de precios para campañas de
+marca/notoriedad donde el alcance y la frecuencia importan más que la conversión directa.
+
+\textbf{Por qué importa.} El CPM gobierna el costo de construir notoriedad en la parte alta
+del \emph{funnel}. Cuando una marca hace publicidad en televisión, display, audio en
+streaming o display programático, el CPM determina cuánto alcance de audiencia compra un
+presupuesto dado. En \emph{marketing} de respuesta directa, el CPM es un derivado del CTR
+y el CPC más que un objetivo de optimización primario.
+
+\textbf{Referencia.} Display programático: CPM de \money{2}--\money{8}. Feeds de redes
+sociales: CPM de \money{6}--\money{20}. LinkedIn: CPM de \money{30}--\money{80} (la
+segmentación B2B premium conlleva una gran prima). TV conectada: CPM de
+\money{20}--\money{50}.
+
+\textbf{Trampa.} Optimizar para un CPM barato en una audiencia de escaso valor. Una campaña
+con CPM de \money{1} que llega a usuarios sin interés en el producto desperdicia cada
+impresión; una campaña de LinkedIn con CPM de \money{40} que llega exactamente al perfil de
+quien toma la decisión puede ser dramáticamente más eficiente en términos de costo por
+resultado.
+
+\begin{example}[CPM en la SaaS de referencia]
+Una campaña de retargeting programático en display: gasto \money{3000}; impresiones
+\num{500000}.
+\[
+  \mathrm{CPM} = \frac{\money{3000}}{500000} \times 1000 = \money{6}.
+\]
+Clics: \num{750} (CTR \qty{0.15}{\percent}); conversiones a pago: 3.
+$\mathrm{CPA} = \money{3000}/3 = \money{1000}$ --- significativamente por encima del CAC.
+El CPM barato está comprando impresiones de escaso valor; la audiencia de retargeting
+necesita afinar su definición.
+\end{example}
+
+
+\subsection{CPA / CPL --- Cost Per Acquisition / Cost Per Lead}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{CPA} = \frac{\text{Ad spend}}{\text{Conversions}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Ad spend] El costo de medios de la campaña (excluye los costos de producción a
+    menos que se especifique como CPA completamente cargado).
+  \item[Conversions] La acción específica que se mide --- un cliente pagante (CPA), un
+    prospecto calificado por ventas (CPL), un registro de prueba, un formulario enviado,
+    dependiendo del contexto de medición. La definición debe ser fija antes de comparar el
+    CPA entre campañas.
+\end{description}
+
+\textbf{Qué mide.} El costo promedio de impulsar una acción objetivo desde los medios de
+pago. El CPA es la métrica de eficiencia primaria del profesional de \emph{marketing} de
+respuesta directa, situada un nivel por encima de CTR/CPC y directamente comparable al CAC
+cuando la acción es un cliente pagante.
+
+\textbf{Por qué importa.} El CPA es el nexo entre el gasto en medios y la economía unitaria:
+si $\mathrm{CPA} < \mathrm{LTV}/3$, el canal es económicamente viable al LTV:CAC objetivo.
+El techo para el CPA se deriva del LTV en \cref{ch:paid-acquisition-platforms}.
+
+\textbf{Referencia.} El techo implícito por el LTV: $\mathrm{CPA}_{\max} = \mathrm{LTV} / 3$
+para un LTV:CAC de 3. Para la SaaS de referencia,
+$\mathrm{CPA}_{\max} = \money{3150}/3 = \money{1050}$ por cliente pagante.
+
+\textbf{Trampa.} Definir las conversiones de manera demasiado laxa para embellecer la
+métrica. Contar formularios enviados (CPL a \money{20}) en lugar de prospectos calificados
+por ventas (CPSQL a \money{200}) puede hacer que una campaña parezca 10$\times$ más eficiente
+de lo que realmente es a nivel de ingresos. Cada cifra de CPA requiere una definición clara
+y estable del evento de conversión.
+
+\begin{example}[CPA para la SaaS de referencia]
+Campaña de Google Search para el mes: gasto \money{52000}; nuevos clientes pagantes: 87.
+\[
+  \mathrm{CPA} = \frac{\money{52000}}{87} \approx \money{598}.
+\]
+Esta cifra queda justo por debajo del CAC combinado de \money{600}, confirmando que el canal
+de Google Search contribuye aproximadamente a la eficiencia media de adquisición. El techo
+implícito por el LTV de \money{1050} significa que hay margen significativo para aumentar las
+pujas antes de que el canal se vuelva no económico.
+\end{example}
+
+
+\subsection{ROAS --- Return on Ad Spend}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{ROAS} = \frac{\text{Conversion value (revenue)}}{\text{Ad spend}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Conversion value] Ingresos atribuidos a las conversiones impulsadas por la campaña,
+    tal como reporta la plataforma publicitaria. El modelo de atribución de la plataforma
+    (típicamente último clic) determina qué ingresos se acreditan.
+  \item[Ad spend] El costo de medios de la campaña durante el período de medición.
+\end{description}
+
+\textbf{Qué mide.} Ingresos devueltos por dólar de gasto publicitario, medidos por la
+atribución propia de la plataforma. El ROAS es la métrica estándar de eficiencia para
+campañas de comercio electrónico y respuesta directa donde la plataforma puede rastrear los
+ingresos directamente.
+
+\textbf{Por qué importa.} El ROAS traduce el costo de medios en un múltiplo de ingresos,
+permitiendo una comparación rápida entre campañas y canales. Se conecta directamente con la
+rentabilidad: un ROAS de 3 con un margen bruto del \qty{40}{\percent} significa que la
+campaña está en el umbral de rentabilidad del beneficio bruto ($3 \times 0.40 = 1.20$ de
+beneficio bruto por dólar gastado, menos el dólar de gasto mismo deja \money{0.20} de
+cobertura de margen bruto, que debe absorber los costos fijos).
+
+\textbf{Referencia.} Para comercio electrónico: 3--5$\times$ es ampliamente aceptable;
+5--8$\times$ es fuerte. El objetivo de ROAS correcto debe derivarse del margen bruto:
+$\mathrm{ROAS}_{\min} = 1/\text{margen bruto}$ para el umbral de rentabilidad del beneficio
+bruto. Todas las cifras de ROAS reportadas por las plataformas están sujetas a inflación por
+atribución (\cref{ch:attribution-and-measurement}).
+
+\textbf{Trampa.} El ROAS reportado por la plataforma acredita sistemáticamente en exceso a
+la propia plataforma. El modelo de atribución de cada canal reclama crédito por conversiones
+que también aparecen en los reportes de otros canales (doble conteo), y los créditos por
+visualización inflan el ROAS en canales con muchas impresiones. Usar el ROAS como herramienta
+de gestión de campañas, no como comparación de eficiencia entre canales; usar el iROAS para
+la medición causal.
+
+\begin{example}[ROAS para un caso ilustrativo de consumo directo]
+Una \textit{marca de suplementos de consumo} (no SaaS, a título ilustrativo) lanza una
+campaña Meta Advantage+: gasto \money{25000}; ingresos reportados por la plataforma:
+\money{125000}; ROAS $= 5\times$. Una prueba de incrementalidad (retención geográfica)
+revela los ingresos incrementales reales: \money{60000}; iROAS $= 2.4\times$ --- apenas por
+encima del umbral de rentabilidad con el margen bruto del \qty{45}{\percent} de la empresa.
+La plataforma sobrecreditó el ROAS en más de un \qty{100}{\percent}.
+\end{example}
+
+
+\subsection{MER --- Marketing Efficiency Ratio}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{MER} = \frac{\text{Total revenue}}{\text{Total marketing spend}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Total revenue] Todos los ingresos del período --- no solo los ingresos atribuidos. La
+    facturación total del negocio.
+  \item[Total marketing spend] Todo el gasto de \emph{marketing} en todos los canales de
+    pago en el mismo período.
+\end{description}
+
+\textbf{Qué mide.} La eficiencia combinada y global de la inversión en \emph{marketing}.
+A diferencia del ROAS por canal (que depende de modelos de atribución), el MER es libre de
+modelos: simplemente pregunta cuántos ingresos genera el negocio por dólar de gasto total
+en \emph{marketing}.
+
+\textbf{Por qué importa.} El MER esquiva completamente el debate de atribución. Cuando las
+cifras de ROAS por canal de Meta, Google y TikTok suman más que los ingresos totales del
+negocio (porque cada plataforma sobrecontabiliza), el MER proporciona la verificación
+honesta. Un negocio con MER de \money{4} sabe que por cada dólar de gasto total en
+\emph{marketing}, el negocio genera \money{4} de ingreso total --- independientemente de
+qué canal lo «causó».
+
+\textbf{Referencia.} Varía ampliamente según el modelo de negocio y la estructura de
+márgenes. Para SaaS: un MER de 10--20$\times$ sobre el gasto de \emph{marketing} para nuevos
+clientes es típico a escala (porque el LTV es alto y el CAC es bajo en relación con el ACV).
+Para comercio electrónico con márgenes escasos, un MER de 3--6$\times$ puede ser el rango
+viable.
+
+\textbf{Trampa.} El MER oculta qué canal impulsó realmente los ingresos. Una empresa que
+desactiva su canal de mejor desempeño y traslada el presupuesto a uno peor puede mantener el
+MER a corto plazo (porque el capital de marca del buen canal sostiene los ingresos
+brevemente) mientras degrada sistemáticamente el desempeño futuro. Usar el MER como
+verificación de salud agregada, no como herramienta de asignación de canales.
+
+\begin{example}[MER para la SaaS de referencia]
+MRR total este mes: \money{340000} (todos los ingresos, nuevos y recurrentes). Gasto total
+en \emph{marketing}: \money{120000} (el numerador del CAC combinado).
+\[
+  \mathrm{MER} = \frac{\money{340000}}{\money{120000}} \approx 2.83.
+\]
+Este MER es deliberadamente bajo porque divide el ingreso \emph{mensual} total entre el gasto
+solo de adquisición (la mayor parte de los ingresos proviene de clientes existentes, no de
+nuevas adquisiciones). En una base de solo ingresos por nuevos clientes (200 nuevos clientes
+$\times$ \money{50}/mes $= \money{10000}$): $\mathrm{MER}_\text{adquisición} =
+\money{10000}/\money{120000} = 0.08$ --- lo cual es esperable, dado que el modelo de negocio
+es recurrente y el período de recuperación es de 29 meses.
+\end{example}
+
+
+\subsection{AOV --- Average Order Value}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{AOV} = \frac{\text{Total revenue}}{\text{Number of orders}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Total revenue] Ingresos de todas las transacciones en el período de medición.
+  \item[Number of orders] Número de transacciones de compra distintas en el mismo período.
+\end{description}
+
+\textbf{Qué mide.} El tamaño promedio de una sola transacción. El AOV es principalmente una
+métrica de comercio minorista y electrónico; en SaaS el equivalente es el ARPU (ingreso
+medio por usuario).
+
+\textbf{Por qué importa.} El AOV determina directamente el CPA máximo viable: un canal que
+atrae compradores con un AOV de \money{30} y un margen bruto del \qty{40}{\percent} tiene
+como máximo \money{12} de beneficio bruto para financiar la adquisición. Elevar el AOV
+mediante ventas adicionales, ventas cruzadas o agrupación de productos es una de las
+intervenciones de mayor apalancamiento en el comercio electrónico porque mejora la
+rentabilidad sin cambiar el volumen de tráfico ni la tasa de conversión.
+
+\textbf{Referencia.} Completamente dependiente de la categoría. Las referencias de AOV solo
+tienen sentido dentro de una misma vertical (p. ej., comercio electrónico de moda,
+suscripciones de software B2B). La tendencia a lo largo del tiempo importa más que el nivel
+absoluto.
+
+\textbf{Trampa.} La media oculta una cola larga y sesgada. Un número reducido de pedidos
+grandes puede elevar el AOV muy por encima del gasto típico del cliente, haciendo que el
+promedio sea inútil para las decisiones de fijación de precios y agrupación. Examinar siempre
+la mediana y la distribución, no solo la media.
+
+\begin{example}[AOV para un caso ilustrativo de comercio electrónico]
+Una \textit{marca de café de venta directa al consumidor} (ilustrativo): \num{4200} pedidos
+en el mes; ingresos \money{189000}.
+\[
+  \mathrm{AOV} = \frac{\money{189000}}{4200} = \money{45}.
+\]
+La media es \money{45} pero el pedido mediano es \money{32} --- la brecha está impulsada por
+200 pedidos de paquetes de suscripción con un promedio de \money{120}. Orientar la
+publicidad hacia los compradores de paquetes eleva el AOV y mejora drásticamente la
+viabilidad del CPA.
+\end{example}
+
+
+\subsection{Conversion Rate --- Tasa de conversión}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{CVR} = \frac{\text{Conversions}}{\text{Sessions (or visitors)}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Conversions] La acción objetivo específica: una compra de pago, un registro de
+    prueba, una demo reservada o cualquier otro evento definido. La acción debe coincidir con
+    el propósito de la métrica.
+  \item[Sessions] El número de sesiones de usuario distintas (visitas) a la página o etapa
+    del \emph{funnel} medida en el mismo período.
+\end{description}
+
+\textbf{Qué mide.} La eficiencia de una etapa específica del \emph{funnel} --- la fracción
+de visitantes que realizan la acción objetivo. El CVR puede medirse en cada etapa: sesión a
+prueba, prueba a pago, demo a cierre, etc.
+
+\textbf{Por qué importa.} El CVR vincula el volumen de tráfico con los resultados de
+ingresos y, por lo tanto, vincula el CPC con el CPA ($\mathrm{CPA} = \mathrm{CPC}/\mathrm{CVR}$).
+Una mejora del \qty{1}{\percent} en la tasa de conversión tiene el mismo efecto sobre el CPA
+que una reducción del \qty{1}{\percent} en el CPC --- pero la mejora de la tasa de conversión
+típicamente cuesta tiempo de I+D y diseño en lugar de gasto en medios. La cadena completa
+del \emph{funnel} se formaliza como \cref{eq:funnel-chain} en \cref{ch:digital-funnel-and-crm}.
+
+\textbf{Referencia.} Altamente dependiente del contexto. Sesión a prueba para SaaS B2B:
+\qty{2}{\percent}--\qty{5}{\percent}. Prueba a pago: \qty{15}{\percent}--\qty{30}{\percent}
+con incorporación activa. CVR de comercio electrónico a nivel de sitio:
+\qty{1}{\percent}--\qty{4}{\percent}.
+
+\textbf{Trampa.} El CVR a nivel de sitio no tiene casi ningún significado sin segmentación
+por fuente de tráfico, dispositivo, página de destino e intención del usuario. Los visitantes
+de búsqueda de marca convierten a 5--10$\times$ la tasa del tráfico de display en frío;
+promediarlos produce un número que no describe con precisión a ninguno de los dos grupos y
+distorsiona las decisiones de optimización en ambas direcciones.
+
+\begin{example}[Tasa de conversión en la SaaS de referencia]
+Del \emph{fact sheet} de referencia: \num{10000} sesiones mensuales $\to$ \num{800} pruebas
+$\to$ \num{200} clientes pagantes.
+\[
+  \mathrm{CVR}_{\text{sesión a prueba}} = \frac{800}{10000} = \qty{8}{\percent}; \qquad
+  \mathrm{CVR}_{\text{prueba a pago}} = \frac{200}{800} = \qty{25}{\percent}.
+\]
+La tasa de sesión a prueba es sólida (por encima de la referencia típica), lo que sugiere
+una buena intención de SEO orgánico. La tasa de prueba a pago está en el extremo superior
+del rango saludable, indicando una incorporación efectiva. La restricción es el volumen de
+tráfico en la parte alta del \emph{funnel}, no la eficiencia de conversión.
+\end{example}
+
+
+%% ============================================================
+\section{Plataformas de publicidad}
+
+Las métricas de plataformas publicitarias viven dentro de los mecanismos de subasta de los
+canales de pago. Diagnostican la eficiencia y cobertura de la presencia de la empresa dentro
+de una plataforma específica, e informan la estrategia de puja más que la estrategia de
+\emph{marketing} global.
+
+\subsection{eCPM --- Effective Cost Per Thousand Impressions}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{eCPM} = \frac{\text{Total cost}}{\text{Total impressions}} \times 1000
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Total cost] Gasto publicitario total, cualquiera que sea el tipo de compra utilizado
+    --- costo por clic, costo por acción o CPM directo --- para la campaña o el período.
+  \item[Total impressions] Todas las impresiones servidas bajo ese gasto, independientemente
+    del tipo de compra.
+\end{description}
+
+\textbf{Qué mide.} El costo realizado total por mil impresiones en múltiples tipos de compra.
+El eCPM normaliza diferentes mecanismos de subasta (compras CPC, CPA, CPM) en una única
+cifra comparable de costo de alcance.
+
+\textbf{Por qué importa.} Cuando un negocio ejecuta campañas bajo diferentes tipos de compra
+--- algunas optimizadas para clics, otras para conversiones, otras para alcance --- el eCPM
+proporciona una comparación consistente entre campañas de cuán eficientemente está comprando
+audiencia cada una. También es la métrica de ingresos del editor: el lado de la oferta de la
+subasta programática siempre cotiza en términos de eCPM.
+
+\textbf{Referencia.} Usar el eCPM solo para comparar dentro del mismo tipo de posición y
+segmento de audiencia. Las posiciones premium (bloques de portada, en el feed de redes
+sociales) tienen eCPMs estructuralmente más altos que el display a nivel general de la red,
+haciendo engañosas las comparaciones de eCPM entre posiciones.
+
+\textbf{Trampa.} Comparar el eCPM en posiciones o audiencias muy diferentes trata a todas
+las impresiones como equivalentes cuando no lo son. Un eCPM de \money{1.50} en display de
+inventario residual y un eCPM de \money{60} en el feed ejecutivo de LinkedIn pueden ser
+ambos apropiados para sus respectivos propósitos; la comparación no dice nada útil sobre la
+eficiencia relativa en términos de resultado.
+
+\begin{example}[eCPM en la SaaS de referencia]
+Una campaña de Google de compra mixta: gasto total \money{30000}; \num{2000000} impresiones
+entregadas entre Search (\num{400000}) y Display (\num{1600000}).
+\[
+  \mathrm{eCPM} = \frac{\money{30000}}{2000000} \times 1000 = \money{15}.
+\]
+Solo las impresiones de Search: gasto \money{20000} / \num{400000} impresiones $\times$ 1000
+$= \money{50}$ eCPM. Solo Display: \money{10000} / \num{1600000} $\times$ 1000
+$= \money{6.25}$ eCPM. El combinado de \money{15} oculta la diferencia estructural ---
+comparar el eCPM de Search solo contra otras campañas de Search, y el de Display solo
+contra Display.
+\end{example}
+
+
+\subsection{Impression Share --- Cuota de impresiones}
+
+\textbf{Fórmula.}
+\[
+  \text{Impression Share} = \frac{\text{Impressions won}}{\text{Impressions eligible}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Impressions won] El número de subastas en las que el anuncio se mostró efectivamente
+    a un usuario.
+  \item[Impressions eligible] El número estimado de subastas en las que el anuncio era
+    elegible para participar, basado en su configuración de segmentación, presupuesto y
+    señales de calidad.
+\end{description}
+
+\textbf{Qué mide.} Qué fracción de las impresiones elegibles disponibles está capturando
+realmente la campaña. Una cuota de impresiones por debajo del \qty{100}{\percent} significa
+que la campaña está perdiendo subastas para las que está calificada --- bien porque el
+presupuesto se agotó (IS limitada por presupuesto) o porque la calidad o el rango del anuncio
+fue demasiado bajo (IS limitada por rango).
+
+\textbf{Por qué importa.} La cuota de impresiones diagnostica el cuello de botella en la
+cobertura de pago. Si la IS es baja por presupuesto, añadir presupuesto aumentará directamente
+la cobertura. Si la IS es baja por rango (calidad del anuncio o puja), aumentar el presupuesto
+no sirve de nada; se requiere mejora del Índice de Calidad o aumento de la puja. Dividir la
+IS perdida en sus dos componentes (presupuesto vs rango) antes de cambiar la estrategia
+previene el error frecuente de añadir presupuesto a una campaña limitada por rango.
+
+\textbf{Referencia.} El objetivo saludable depende de la intensidad competitiva. Perseguir
+una IS del \qty{100}{\percent} en palabras clave amplias es una trampa de presupuesto;
+una IS del \qty{80}{\percent}+ en los términos de mayor intención y mayor conversión es un
+objetivo más defendible.
+
+\textbf{Trampa.} Apuntar a una cuota de impresiones del \qty{100}{\percent} a cualquier
+precio. En el margen, ganar cada impresión posible requiere superar las pujas de todos los
+competidores en todos los términos, incluidos los de baja intención que convierten poco. Las
+impresiones incrementales en el margen cuestan más y convierten menos que el promedio ---
+rendimientos decrecientes clásicos de la maximización de IS.
+
+\begin{example}[Cuota de impresiones en la SaaS de referencia]
+Campaña de Google Search dirigida a «software de gestión de proyectos» y cinco términos
+relacionados. Impresiones ganadas: \num{32000}; impresiones elegibles estimadas: \num{50000}.
+\[
+  \text{IS} = \frac{32000}{50000} = \qty{64}{\percent}.
+\]
+Desglose de IS perdida: \qty{20}{\percent} perdida por presupuesto, \qty{16}{\percent}
+perdida por rango. Estrategia: aumentar el presupuesto para capturar primero el \qty{20}{\percent}
+de IS perdida por presupuesto (inmediato, controlable) y ejecutar pruebas de texto de anuncio
+para mejorar el Índice de Calidad para la parte perdida por rango (más lento, pero reduce el
+CPC promedio).
+\end{example}
+
+
+\subsection{ACOS --- Advertising Cost of Sales}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{ACOS} = \frac{\text{Ad spend}}{\text{Attributed sales revenue}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Ad spend] El costo publicitario del producto o campaña medida.
+  \item[Attributed sales revenue] Ingresos por ventas atribuidos al anuncio, típicamente
+    dentro de una ventana de atribución definida. El ACOS es la métrica principal en la
+    plataforma publicitaria de Amazon; la ventana de atribución la define la plataforma.
+\end{description}
+
+\textbf{Qué mide.} El costo publicitario expresado como proporción de las ventas atribuidas
+--- el inverso del ROAS. Un ACOS del \qty{25}{\percent} significa que se gastaron \money{0.25}
+en publicidad por cada \money{1.00} de ventas.
+
+\textbf{Por qué importa.} El ACOS es la métrica de eficiencia nativa de Amazon Sponsored
+Products y plataformas de medios minoristas similares. Se usa para determinar si el gasto
+publicitario de un producto está dentro del margen de umbral de rentabilidad. Como es el
+inverso del ROAS, la interpretación es «menor es mejor» --- a diferencia del ROAS donde
+mayor es mejor.
+
+\textbf{Referencia.} El objetivo de ACOS $=$ margen bruto del producto. Si el margen del
+producto es \qty{35}{\percent}, un ACOS objetivo del \qty{35}{\percent} significa que el
+gasto publicitario iguala el beneficio bruto --- el producto alcanza el umbral de
+rentabilidad a nivel de contribución. Un ACOS por debajo del objetivo de margen genera
+beneficio bruto de la publicidad; por encima, destruye margen.
+
+\textbf{Trampa.} Establecer objetivos de ACOS sin anclarlos al margen del producto. Un ACOS
+del \qty{20}{\percent} en un producto con \qty{15}{\percent} de margen significa que cada
+venta publicitada destruye dinero; el mismo ACOS del \qty{20}{\percent} en un producto con
+\qty{50}{\percent} de margen es altamente rentable. El objetivo debe derivarse de la economía
+del producto específico.
+
+\begin{example}[ACOS para un caso ilustrativo de vendedor en Amazon]
+Una \textit{marca de hardware de consumo} (ilustrativo, no SaaS): el producto se vende a
+\money{89}; COGS \money{32}; margen bruto \qty{64}{\percent}. Gasto en Sponsored Products:
+\money{4450}; ventas atribuidas: \money{22250}.
+\[
+  \mathrm{ACOS} = \frac{\money{4450}}{\money{22250}} = \qty{20}{\percent}.
+\]
+Dado que \qty{20}{\percent} $<$ margen del \qty{64}{\percent}, la campaña genera
+$(\qty{64}{\percent} - \qty{20}{\percent}) = \qty{44}{\percent}$ de margen bruto sobre las
+ventas publicitadas --- publicidad rentable. El ACOS de umbral de rentabilidad es
+\qty{64}{\percent}; el negocio tiene margen significativo antes de que la campaña destruya
+valor.
+\end{example}
+
+
+\subsection{iROAS --- Incremental Return on Ad Spend}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{iROAS} = \frac{\text{Incremental revenue caused by the ad}}{\text{Ad spend}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Incremental revenue] Ingresos que \emph{no habrían ocurrido} sin la publicidad ---
+    medidos mediante un experimento de retención (prueba geográfica, retención de usuarios o
+    \emph{switchback}) que aísla la causalidad de la correlación.
+  \item[Ad spend] El costo de la publicidad en la celda de prueba.
+\end{description}
+
+\textbf{Qué mide.} El retorno causal del gasto publicitario --- cuántos ingresos adicionales
+causó genuinamente el anuncio, frente a los ingresos que habrían ocurrido de forma orgánica
+o que fueron atribuidos por el modelo de último clic de la plataforma con independencia del
+papel del anuncio.
+
+\textbf{Por qué importa.} El iROAS es el estándar de oro para la medición publicitaria
+porque responde la única pregunta que importa para la asignación de presupuesto: si gastamos
+\money{1} más en este canal, ¿recupera el negocio más de \money{1}? El ROAS reportado por la
+plataforma no puede responder esta pregunta porque atribuye conversiones orgánicas y asistidas
+a los medios de pago. La metodología de medición se desarrolla completamente en
+\cref{ch:attribution-and-measurement}.
+
+\textbf{Referencia.} El iROAS debe superar 1 para que el gasto sea positivo en flujo de
+caja. Debe superar $1/\text{margen bruto}$ para que el gasto sea positivo en beneficio bruto.
+Para la SaaS de referencia con margen bruto aproximado del \qty{79}{\percent},
+$\mathrm{iROAS}_{\min} = 1/0.79 \approx 1.27$.
+
+\textbf{Trampa.} El iROAS requiere una retención o prueba geográfica --- no puede leerse en
+los \emph{dashboards} de la plataforma. Sin un experimento, el iROAS no es observable. Las
+afirmaciones de iROAS derivadas de modelos de atribución (incluso modelos sofisticados de
+MMM) son salidas del modelo, no mediciones causales; conllevan incertidumbre del modelo que
+debe divulgarse junto a la cifra.
+
+\begin{example}[iROAS para la SaaS de referencia]
+Una prueba de retención geográfica: los mercados de prueba reciben \money{40000} en gasto de
+marca incremental durante seis semanas; los mercados de control reciben el gasto normal.
+Ingresos en mercados de prueba: \money{1800000}; ingresos del mercado de control en
+contrafactual (escalados): \money{1620000}. Ingresos incrementales: \money{180000}.
+\[
+  \mathrm{iROAS} = \frac{\money{180000}}{\money{40000}} = 4.5.
+\]
+ROAS reportado por la plataforma para la misma campaña: $7\times$ --- una sobreestimación del
+\qty{56}{\percent}. El iROAS de 4.5 sigue superando el piso de margen bruto de 1.27,
+confirmando que el gasto de marca crea valor; pero la decisión presupuestaria habría sido
+distorsionada por la cifra reportada por la plataforma.
+\end{example}
+
+
+%% ============================================================
+\section{Producto y engagement}
+
+Las métricas de producto miden si los usuarios encuentran valor duradero en el producto, no
+solo si lo visitan. Un motor de adquisición que llena un producto con fugas no es un motor
+de crecimiento --- es una fábrica de \emph{churn}. Estas métricas diagnostican la sujeción
+del producto sobre el comportamiento del usuario y la durabilidad de la relación con el
+cliente.
+
+\subsection{Stickiness --- Razón DAU/MAU}
+
+\textbf{Fórmula.}
+\[
+  \text{Stickiness} = \frac{\mathrm{DAU}}{\mathrm{MAU}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[DAU] Usuarios Activos Diarios: el recuento de usuarios únicos que realizaron al menos
+    una acción significativa en el producto en un día determinado. «Significativa» debe
+    definirse (un inicio de sesión suele ser una señal demasiado débil; una interacción con
+    una funcionalidad central es más defendible).
+  \item[MAU] Usuarios Activos Mensuales: el recuento de usuarios únicos que realizaron al
+    menos una acción significativa en el producto en cualquier momento del mes calendario.
+\end{description}
+
+\textbf{Qué mide.} La fracción de usuarios activos mensuales que regresan diariamente ---
+un indicador directo de cuán habitual e integrado se ha vuelto el producto en los flujos de
+trabajo diarios de los usuarios.
+
+\textbf{Por qué importa.} La adherencia predice la retención. Un producto con
+\qty{50}{\percent} de adherencia está genuinamente integrado en la rutina diaria; con
+\qty{10}{\percent}, los usuarios visitan ocasionalmente y están a una mala experiencia de
+sufrir \emph{churn}. Para SaaS B2B, la adherencia también impulsa los ingresos de expansión:
+los equipos que usan un producto diariamente tienen mucha más probabilidad de añadir asientos
+y hacer mejoras de plan que los usuarios ocasionales.
+
+\textbf{Referencia.}
+\begin{itemize}
+  \item $>\qty{50}{\percent}$: élite; característico de productos de utilidad diaria (Slack,
+    Gmail, Notion).
+  \item $>\qty{20}{\percent}$: aceptable para herramientas B2B no diseñadas para uso diario
+    (herramientas de planificación trimestral, de reporte anual se sitúan naturalmente más
+    bajo).
+  \item $<\qty{10}{\percent}$: engagement bajo; típicamente predice un \emph{churn} alto y
+    poca expansión.
+\end{itemize}
+
+\textbf{Trampa.} Las cuentas de bots y las cuentas de usuario duplicadas inflan el DAU y el
+MAU de forma independiente, pero la razón puede seguir pareciendo saludable incluso cuando
+el engagement real de los usuarios cae. Validar siempre los recuentos de usuarios activos
+mediante deduplicación de inicios de sesión y acciones antes de reportar la adherencia.
+
+\begin{example}[Adherencia en la SaaS de referencia]
+En el mes de medición: MAU $=$ \num{5500} (de \num{6700} clientes pagantes; algunos equipos
+comparten inicios de sesión o usan el producto con poca frecuencia). Promedio de usuarios
+activos diarios a lo largo del mes: \num{1650}.
+\[
+  \text{Stickiness} = \frac{1650}{5500} = \qty{30}{\percent}.
+\]
+Esta cifra supera el umbral aceptable B2B. Los \num{1200} clientes pagantes fuera del MAU se
+señalan para una intervención proactiva del equipo de éxito del cliente --- las cuentas de
+bajo uso son el indicador adelantado del \emph{churn}, no el retrasado.
+\end{example}
+
+
+\subsection{D30 Retention --- Tasa de retención al día 30}
+
+\textbf{Fórmula.}
+\[
+  \text{D30 Retention} = \frac{\text{Users active at day 30}}{\text{Cohort size at day 0}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Users active at day 30] Usuarios de la cohorte de adquisición que realizaron al
+    menos una acción significativa en el producto el día 30 (o dentro de una ventana definida
+    alrededor del día 30, p. ej., días 27--33).
+  \item[Cohort size at day 0] El número de usuarios que se incorporaron (o activaron) en la
+    cohorte. Una «cohorte» es un grupo definido por un evento de inicio compartido ---
+    típicamente la semana de registro o la semana del primer inicio de sesión.
+\end{description}
+
+\textbf{Qué mide.} La fracción de una cohorte de nuevos usuarios que sigue interactuando con
+el producto 30 días después de incorporarse. La retención D30 es la primera señal duradera
+de si el producto ha creado valor duradero para los nuevos usuarios --- la retención en días
+tempranos (D1, D7) suele estar inflada por la novedad.
+
+\textbf{Por qué importa.} La retención D30 es el predictor temprano más sólido del LTV a
+largo plazo del cliente. Una cohorte que retiene al \qty{40}{\percent} en el día 30 tendrá
+una curva de retención a largo plazo muy diferente a la que retiene al \qty{15}{\percent}.
+También diagnostica el \emph{funnel} de incorporación: una caída en D30 concentrada en las
+primeras dos semanas señala un problema de incorporación; una caída en las semanas tres y
+cuatro señala un problema de realización de valor (los usuarios llegaron al producto pero no
+encontraron su valor central). El análisis completo de la curva de retención está en
+\cref{ch:digital-funnel-and-crm}.
+
+\textbf{Referencia.} Altamente dependiente de la categoría de producto. Móvil de consumo:
+una retención D30 del \qty{20}{\percent} es un piso razonable. SaaS B2B con incorporación
+activa: una retención D30 del \qty{60}{\percent}+ es alcanzable e importante para que
+funcione la economía unitaria.
+
+\textbf{Trampa.} Promediar la retención D30 entre fuentes de adquisición enmascara la
+diferencia de calidad entre canales. Las cohortes de SEO orgánico pueden retener al
+\qty{70}{\percent} mientras las cohortes de redes sociales de pago de una campaña de
+audiencia amplia retienen al \qty{25}{\percent}; la cifra combinada del \qty{45}{\percent}
+no describe con precisión a ninguna cohorte y envía al equipo de adquisición una señal
+engañosa sobre la calidad del canal de pago.
+
+\begin{example}[Retención D30 en la SaaS de referencia]
+Una cohorte de registro de febrero de \num{800} usuarios de prueba (procedentes de
+\num{10000} sesiones $\to$ \num{800} pruebas). Activos en el día 30: \num{520}.
+\[
+  \text{D30 Retention} = \frac{520}{800} = \qty{65}{\percent}.
+\]
+Dentro de esta cohorte, los registros de Google orgánico (600): retención en el día 30 del
+\qty{74}{\percent}. Registros de LinkedIn de pago (200): retención en el día 30 del
+\qty{41}{\percent}. La cifra combinada del \qty{65}{\percent} oculta una diferencia de
+calidad significativa que debería informar cómo se asigna el presupuesto mensual de
+adquisición de \money{120000}.
+\end{example}
+
+
+\subsection{NPS --- Net Promoter Score}
+
+\textbf{Fórmula.}
+\[
+  \mathrm{NPS} = \%\,\text{Promoters} - \%\,\text{Detractors}
+\]
+donde los Promotores son los encuestados que puntúan 9--10 en la pregunta de «recomendaría»,
+y los Detractores puntúan 0--6.
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[\% Promoters] Proporción de encuestados que otorgan una puntuación de 9 o 10 sobre
+    10 en la pregunta: «¿Con qué probabilidad recomendaría [producto] a un colega?»
+  \item[\% Detractors] Proporción de encuestados que otorgan una puntuación de 0--6
+    (inclusive). Las puntuaciones de 7--8 son «Pasivos» y quedan excluidas del cálculo.
+\end{description}
+
+\textbf{Qué mide.} Un indicador proxy grueso y comprimido de la satisfacción del cliente y
+la propensión al boca a boca. El NPS va de $-100$ (todos Detractores) a $+100$ (todos
+Promotores).
+
+\textbf{Por qué importa.} El NPS se usa ampliamente como indicador de primer nivel del
+sentimiento del cliente y para la comparación con pares del sector. Es predictivo del
+\emph{churn} a nivel de cohorte --- las cohortes de Detractores sufren \emph{churn} a tasas
+materialmente más altas que las cohortes de Promotores --- y captura el componente de boca a
+boca del modelo de crecimiento.
+
+\textbf{Referencia.} Depende del sector. SaaS: por encima de 30 es positivo, por encima de
+50 es sólido. Por debajo de 0 es una señal de alerta que requiere investigación cualitativa
+inmediata.
+
+\textbf{Trampa.} Leer una encuesta de 11 puntos como un número preciso. Un cambio en el NPS
+de 42 a 47 en una muestra de 300 encuestados es estadísticamente indistinguible del ruido
+--- el intervalo de confianza típicamente abarca 10--15 puntos. La dirección de la tendencia
+a lo largo de los trimestres importa más que la precisión en un momento dado. Además: el
+sesgo de respuesta a la encuesta representa sistemáticamente en exceso a los clientes muy
+satisfechos y muy insatisfechos, perdiendo al grupo ambivalente del medio.
+
+\begin{example}[NPS en la SaaS de referencia]
+Encuesta NPS trimestral enviada a \num{6700} clientes; \num{1340} respuestas (tasa de
+respuesta del \qty{20}{\percent}). Promotores (9--10): 670 (\qty{50}{\percent}). Pasivos
+(7--8): 469 (\qty{35}{\percent}). Detractores (0--6): 201 (\qty{15}{\percent}).
+\[
+  \mathrm{NPS} = 50 - 15 = 35.
+\]
+Las 201 cuentas Detractoras se cruzan con los datos de uso: el \qty{78}{\percent} de ellas
+tiene una adherencia inferior al \qty{10}{\percent}, confirmando el bajo engagement como
+principal impulsor de la insatisfacción y priorizando la intervención del equipo de éxito
+del cliente.
+\end{example}
+
+
+\subsection{Activation Rate --- Tasa de activación}
+
+\textbf{Fórmula.}
+\[
+  \text{Activation Rate} = \frac{\text{Users who reach the ``aha moment''}}{\text{Total signups}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[«Aha moment»] La acción o hito específico dentro del producto que se correlaciona
+    más fuertemente con la retención a largo plazo. Para una SaaS de gestión de proyectos,
+    podría ser «creó el primer proyecto con 3+ colaboradores». Para CRM: «registró el primer
+    acuerdo y programó un seguimiento». El momento «aha» se define empíricamente a partir
+    del análisis de retención de cohortes, no por suposición.
+  \item[Total signups] Todos los usuarios que se registraron durante el período de medición,
+    incluidas pruebas y cuentas gratuitas.
+\end{description}
+
+\textbf{Qué mide.} La fracción de nuevos usuarios que alcanzan con éxito el momento de valor
+central del producto durante la incorporación. La tasa de activación es la bisagra entre
+adquisición y retención: los usuarios que se activan retienen a 3--5$\times$ la tasa de los
+que no lo hacen.
+
+\textbf{Por qué importa.} Mejorar la tasa de activación multiplica el valor de cada dólar
+de adquisición: si 30 de cada 100 registros de prueba se activan, duplicar la activación a
+60 duplica efectivamente el rendimiento de la adquisición sin gastar un dólar adicional en
+medios. Es la intervención de incorporación de mayor apalancamiento disponible. El \emph{funnel}
+de activación se conecta directamente con \cref{ch:digital-funnel-and-crm}.
+
+\textbf{Referencia.} Las tasas de activación sólidas varían según la complejidad del
+producto. Herramientas de consumo simples: \qty{60}{\percent}+ es alcanzable. Plataformas
+B2B complejas: \qty{30}{\percent}--\qty{50}{\percent} es saludable; por debajo del
+\qty{20}{\percent} típicamente señala un problema de incorporación suficientemente grave como
+para anular la inversión en adquisición.
+
+\textbf{Trampa.} Definir «activado» de manera demasiado laxa infla la métrica sin predecir
+la retención. Si la activación se define como «inició sesión al menos una vez», casi todos
+los registros «se activan» pero la métrica no predice nada. La definición correcta es el
+evento que diferencia de forma máxima las curvas de retención a largo plazo de los usuarios
+activados frente a los no activados.
+
+\begin{example}[Tasa de activación en la SaaS de referencia]
+El equipo de producto define la activación como: «creó un espacio de trabajo, añadió al
+menos dos integraciones e invitó a un colaborador dentro de los primeros 7 días». De
+\num{800} registros de prueba este mes, \num{296} alcanzaron este hito.
+\[
+  \text{Activation Rate} = \frac{296}{800} = \qty{37}{\percent}.
+\]
+El análisis de retención muestra que los usuarios activados retienen al \qty{82}{\percent}
+en el día 30; los no activados al \qty{19}{\percent}. La tasa de activación del 37\% significa
+que 504 usuarios de prueba están en la trayectoria de baja retención. Una secuencia de emails
+de incorporación dirigida con un \qty{30}{\percent} de mejora en la activación añadiría
+aproximadamente 151 usuarios activados por mes, elevando las conversiones a pago esperadas
+de 200 a 238 sin gasto adicional en adquisición --- equivalente a un \qty{19}{\percent} de
+incremento en el ROI efectivo de \emph{marketing}.
+\end{example}
+
+
+%% ============================================================
+\section{Métricas de vanidad --- Lo que ocultan}
+
+Las métricas de vanidad se mueven con el esfuerzo, no con los resultados. Cada una en esta
+sección distorsiona activamente la toma de decisiones en lugar de ser simplemente imprecisa:
+puede aumentar mientras el negocio se deteriora, y optimizar para ella acelera el
+deterioro. Cada métrica que sigue lleva una \textbf{admonition} en lugar de un ejemplo
+trabajado, más un indicador de la métrica de resultado que debería reemplazarla.
+
+\subsection{Raw Impressions --- Impresiones brutas}
+
+\textbf{Fórmula.}
+\[
+  \text{Raw Impressions} = \text{total ad views (served impressions)}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Served impressions] El número de veces que un anuncio se entregó técnicamente a un
+    dispositivo. Esto incluye impresiones nunca vistas realmente por un humano (debajo del
+    pliegue, reproducción automática sin verificación de visualizabilidad, tráfico no válido).
+\end{description}
+
+\textbf{Qué mide.} Gasto, no alcance. El volumen de impresiones brutas escala mecánicamente
+con el presupuesto; no indica que un humano real viera el anuncio, que fuera relevante o que
+produjera algún efecto.
+
+\textbf{Por qué engaña.} Una campaña puede multiplicar el recuento de impresiones aumentando
+el presupuesto, ampliando la segmentación o comprando inventario residual barato --- ninguno
+de lo cual mejora los resultados del negocio. Usar \emph{alcance único con visualizabilidad}
+(el número de humanos distintos que vieron una impresión verificada como visible) y
+\emph{frecuencia} (impresiones por usuario único) en su lugar.
+
+\begin{admonition}{Advertencia}
+Las impresiones brutas pueden aumentar un \qty{300}{\percent} mientras el alcance efectivo
+permanece plano --- simplemente comprando la misma audiencia tres veces en lugar de llegar
+a tres veces más personas. Una campaña que reporta «500 millones de impresiones» podría
+representar 50 millones de personas viendo el anuncio 10 veces cada una (frecuencia excesiva,
+probablemente con rendimientos decrecientes a partir de la impresión 4) o 500 millones de
+personas distintas viéndolo una vez (alcance amplio y de contacto ligero). El recuento de
+impresiones es idéntico; la implicación para el negocio es opuesta.
+Usar el alcance y la frecuencia como la unidad de reporte combinada, nunca las impresiones
+solas.
+\end{admonition}
+
+
+\subsection{Email Open Rate --- Tasa de apertura de correo electrónico}
+
+\textbf{Fórmula.}
+\[
+  \text{Open Rate} = \frac{\text{Opens}}{\text{Emails delivered}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Opens] Tradicionalmente rastreado por una imagen de seguimiento de 1 píxel que se
+    carga cuando el email se muestra. Desde que Apple lanzó la Protección de Privacidad del
+    Correo (MPP) en septiembre de 2021, Apple Mail precarga este píxel en nombre del usuario
+    independientemente de si abrió el email.
+  \item[Emails delivered] Enviados menos los rebotes duros.
+\end{description}
+
+\textbf{Qué mide.} Casi nada desde la MPP de Apple. Para listas con uso significativo de
+Apple Mail (\qty{50}{\percent}+), las tasas de apertura reportadas son en gran medida función
+de cuántos suscriptores usan Apple Mail, no de si realmente leyeron el email.
+
+\textbf{Por qué engaña.} Las tasas de apertura reportadas en la mayoría de los ESP se han
+inflado sistemáticamente desde septiembre de 2021 por los proxies de privacidad de Apple.
+Una lista que muestra una tasa de apertura del \qty{48}{\percent} puede tener una tasa de
+apertura humana real del \qty{20}{\percent}. Optimizar las líneas de asunto para la tasa de
+apertura usando estos datos optimiza para lo que el proxy de Apple recupera, no para el
+comportamiento humano. Usar la \emph{tasa de clics} (clics por email entregado) y la
+\emph{tasa de respuesta} como métricas de engagement primarias; para emails de respuesta
+directa, usar \emph{ingreso por email enviado}.
+
+\begin{admonition}{Advertencia}
+Una SaaS B2B medía el rendimiento del email por tasa de apertura y celebró un aumento del
+\qty{32}{\percent} al \qty{47}{\percent} tras una prueba de línea de asunto. Las tasas de
+clics eran planas. El ingreso por email enviado era plano. La mejora en la tasa de apertura
+era completamente atribuible a un cambio en la composición de la lista hacia usuarios de
+Apple Mail --- el proxy infló el denominador a una tasa diferente. Las decisiones tomadas
+con estos datos reasignaron el presupuesto hacia el email y alejándolo de canales con datos
+medibles de clic y conversión, dañando el ROI general de \emph{marketing}. Reportar las
+tasas de apertura únicamente como un artefacto histórico; nunca tomar decisiones de
+asignación de recursos a partir de ellas.
+\end{admonition}
+
+
+\subsection{Last-Click ROAS --- ROAS de último clic}
+
+\textbf{Fórmula.}
+\[
+  \text{Last-Click ROAS} = \frac{\text{Revenue attributed to last click}}{\text{Ad spend}}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Revenue attributed to last click] Ingresos de las conversiones en las que el canal
+    reportado recibió el último clic antes de la compra. Todos los canales anteriores
+    (notoriedad, consideración, asistencias de retargeting) reciben cero crédito.
+  \item[Ad spend] El costo de la campaña que se mide.
+\end{description}
+
+\textbf{Qué mide.} Quién cerró la venta, no quién la causó. El ROAS de último clic
+identifica el canal que resultó estar en contacto en el momento de la conversión, que en un
+recorrido de múltiples puntos de contacto suele ser una campaña de búsqueda de marca o
+retargeting que interceptó una demanda generada por un punto de contacto anterior.
+
+\textbf{Por qué engaña.} La atribución de último clic sobreacredita sistemáticamente al
+último punto de contacto (búsqueda de marca, directo, retargeting) y subacredita a los
+canales que crearon la notoriedad e intención iniciales (prospección en redes sociales,
+contenido, PR). El presupuesto optimizado en ROAS de último clic traslada el gasto hacia
+los canales de \emph{captura} de demanda y desfinancia los canales de \emph{creación} de
+demanda, agotando eventualmente la parte alta del \emph{funnel} y causando que el propio ROAS
+de último clic decaiga a medida que se erosiona la base de notoriedad subyacente. Usar
+\emph{iROAS de experimentos de incrementalidad} como alternativa causal
+(\cref{ch:attribution-and-measurement}).
+
+\begin{admonition}{Advertencia}
+Una conocida marca de comercio electrónico optimizó exclusivamente en ROAS de último clic
+durante 18 meses. El ROAS de búsqueda de marca aumentó de $6\times$ a $11\times$ (estaba
+capturando la demanda creada por un capital de marca construido durante años).
+Simultáneamente, el gasto en la parte alta del \emph{funnel} se redujo del \qty{35}{\percent}
+al \qty{12}{\percent} del presupuesto. El volumen de adquisición de nuevos clientes cayó un
+\qty{40}{\percent} durante el período; la base de clientes existente envejeció y los ingresos
+declinaron dos años después. La cifra de ROAS de último clic era la más alta que había sido
+jamás el día en que el tráfico orgánico de búsqueda de la marca comenzó su declive
+estructural. Las pruebas de iROAS, realizadas demasiado tarde, mostraron que los canales de
+la parte alta del \emph{funnel} tenían un iROAS de 3.8 --- altamente rentable y privados de
+presupuesto hasta cero.
+\end{admonition}
+
+
+\subsection{Unqualified Leads --- Prospectos no calificados}
+
+\textbf{Fórmula.}
+\[
+  \text{Unqualified Leads} = \text{form fills or contact requests}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Form fills] Cualquier envío de un formulario web, descarga de contenido restringido,
+    clic en solicitud de demo o solicitud de contacto, independientemente de la intención de
+    compra, el encaje con la empresa o la autoridad de compra.
+\end{description}
+
+\textbf{Qué mide.} Interés, no demanda. Un prospecto no calificado ha expresado alguna forma
+de interés pero no ha sido evaluado contra los criterios que hacen a un prospecto un comprador
+viable (tamaño de empresa, presupuesto, autoridad, necesidad, timing --- BANT o un marco
+equivalente).
+
+\textbf{Por qué engaña.} El volumen de prospectos no calificados escala con el gasto en la
+parte alta del \emph{funnel} y el volumen de contenido restringido, ambos de los cuales
+pueden aumentarse mecánicamente sin ninguna mejora en la calidad del \emph{pipeline}. Un
+equipo de contenido que publica una descarga viral de «Calculadora de ROI Gratis» puede
+generar 5,000 formularios en un mes con cero intención de compra. Reportar el volumen de
+prospectos a la dirección crea presión para generar más prospectos, no mejores, lo que
+resulta en equipos de ventas sepultados en contactos de baja calidad. Devolver \emph{el
+valor del pipeline calificado} (oportunidades calificadas por ventas con ingresos adjuntos)
+al equipo de \emph{marketing} en su lugar, y atribuir ingresos contra gasto en lugar de
+prospectos contra gasto. Véase \cref{ch:paid-acquisition-platforms} para la mecánica
+completa de conversión de CPL a CPA.
+
+\begin{admonition}{Advertencia}
+Un equipo de \emph{marketing} de SaaS B2B era medido por el volumen mensual de prospectos.
+Para alcanzar 2,000 prospectos por mes, el equipo compró una lista de emails de terceros y
+promocionó un libro blanco genérico. Los prospectos llegaron a 2,500 --- un récord. Prospectos
+aceptados por ventas (SAL): 48. Ganados y cerrados: 3. Costo por cliente cerrado desde esta
+campaña: más de \money{15000}, frente al CAC combinado de \money{600}. El número de
+prospectos subió; el negocio fue perjudicado. Medir \emph{el pipeline calificado generado}
+y los \emph{ingresos influenciados} en su lugar --- métricas en las que los equipos de ventas
+y \emph{marketing} deben ponerse de acuerdo antes del lanzamiento de la campaña.
+\end{admonition}
+
+
+\subsection{Follower Count --- Número de seguidores}
+
+\textbf{Fórmula.}
+\[
+  \text{Follower Count} = \text{total followers on a social platform}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Followers] Cuentas de usuario que han hecho clic en «Seguir» en el perfil social de
+    la marca. En la mayoría de las plataformas, la mayoría de los \emph{followers} ven menos
+    del \qty{5}{\percent} de las publicaciones orgánicas debido a los límites de distribución
+    algorítmica.
+\end{description}
+
+\textbf{Qué mide.} Tamaño de audiencia en una plataforma, no valor de audiencia. El número
+de seguidores mide una acumulación histórica de clics en «Seguir» --- no mide el engagement,
+el alcance del contenido actual ni ningún vínculo con los ingresos.
+
+\textbf{Por qué engaña.} El número de seguidores puede crecer mediante tácticas de
+seguir/dejar de seguir, adquisición pagada de seguidores, contenido viral fuera de tema y
+campañas de sorteos --- todos los cuales añaden seguidores sin ninguna relación comercial
+con la marca. Una marca con un millón de seguidores que alcanza al \qty{0.5}{\percent}
+orgánicamente (5,000 personas) puede ser menos efectiva que un competidor con 50,000
+seguidores altamente comprometidos que alcanza al \qty{20}{\percent} (10,000 personas).
+Rastrear \emph{el alcance con engagement por publicación}, la \emph{tasa de conversión del
+tráfico de redes sociales} y los \emph{ingresos atribuibles al contenido de redes sociales}
+en su lugar.
+
+\begin{admonition}{Advertencia}
+Una empresa de software B2B hizo crecer su número de seguidores de LinkedIn de 8,000 a
+42,000 en seis meses mediante una serie de contenido viral de «memes de la industria».
+Tráfico web desde LinkedIn: plano. Solicitudes de demo desde LinkedIn: sin cambios. Los
+seguidores adquiridos eran en su mayoría colaboradores individuales de industrias adyacentes
+que nunca comprarían el producto. La estrategia de contenido fue posteriormente reestructurada
+en torno a publicaciones de liderazgo de pensamiento dirigidas al perfil real del comprador
+(VP de Operaciones, Jefe de Gabinete), reduciendo la tasa de crecimiento de seguidores pero
+aumentando la atribución de solicitudes de demo desde LinkedIn en un \qty{220}{\percent}.
+\end{admonition}
+
+
+\subsection{App Downloads --- Descargas de aplicación}
+
+\textbf{Fórmula.}
+\[
+  \text{App Downloads} = \text{total installs from app store}
+\]
+
+\textbf{Qué significa cada término.}
+\begin{description}
+  \item[Downloads / Installs] El recuento de veces que la aplicación fue instalada en un
+    dispositivo. Esto incluye instalaciones abandonadas de inmediato, instalaciones en
+    dispositivos que nunca se abren y reinstalaciones por el mismo usuario tras eliminar la
+    aplicación.
+\end{description}
+
+\textbf{Qué mide.} Prueba, no adopción. Una descarga es el inicio del recorrido del cliente,
+no un punto en la curva de retención.
+
+\textbf{Por qué engaña.} Los recuentos de descargas en la tienda de aplicaciones pueden
+inflarse mediante trucos de optimización de la tienda, campañas de instalación de audiencia
+amplia e instalaciones incentivadas («descarga para ganar un premio»). Una aplicación de
+consumo con 10 millones de descargas y una retención D30 del \qty{5}{\percent} tiene 500,000
+usuarios; la misma aplicación con 1 millón de descargas y una retención D30 del
+\qty{40}{\percent} tiene 400,000 usuarios. La primera parece 10$\times$ mayor; los negocios
+son comparables en usuarios activos. Reportar \emph{la tasa de activación}, \emph{la
+retención en el día 30} y \emph{los usuarios activos mensuales} junto a los recuentos de
+descargas; nunca usar las descargas como métrica de éxito de forma aislada.
+
+\begin{admonition}{Advertencia}
+Una \emph{startup} de juegos para móvil celebró 5 millones de descargas en sus primeros tres
+meses, atrayendo una extensión de \emph{seed} a una valoración de \money{15000000} anclada
+en la velocidad de descargas. La retención D30 era del \qty{3}{\percent}; MAU al mes cuatro:
+\num{48000}. Al mes ocho, el DAU había caído por debajo de \num{10000} y la velocidad de
+nuevas instalaciones se había estancado a medida que la campaña de instalación de audiencia
+amplia agotó el mercado direccionable. La métrica de vanidad impulsó una decisión de
+financiación basada en premisas falsas; la métrica de resultado (retención D30 $\times$ tamaño
+de cohorte) estaba disponible desde el primer día y predijo la trayectoria con precisión.
+\end{admonition}

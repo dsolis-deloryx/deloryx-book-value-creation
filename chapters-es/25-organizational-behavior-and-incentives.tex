@@ -1,0 +1,153 @@
+\chapter{Comportamiento organizacional e incentivos}\label{ch:organizational-behavior}
+
+% Alcance: teoría de agencia, motivación, diseño de incentivos.
+% Cruce de referencias: el costo de agencia (\cref{eq:agency-cost}) se vincula a la lógica del
+%   límite de la empresa en \cref{ch:microeconomics}; la trampa de Kerr reaparece en cualquier
+%   contexto donde se recompensa una métrica desalineada --- véase \cref{ch:attribution-and-measurement}.
+
+Las empresas no son optimizadores monolíticos; son conjuntos de agentes cuyos incentivos privados solo se superponen parcialmente con los de los propietarios. La brecha entre lo que los principales desean y lo que los agentes hacen es el problema central del diseño organizacional, y no puede resolverse mediante aspiraciones.
+
+\section{Teoría de agencia}\label{sec:agency-theory}
+% complejidad: 3
+
+Cuando los intereses privados de un empleado divergen de los de la empresa, ¿qué mecanismos contractuales y de gobernanza cierran esa brecha al menor costo? La respuesta comienza con la información: el principal contrata a un agente para que actúe en su nombre, pero no puede observar cada acción. El agente sabe más sobre su propio esfuerzo que el principal. Esta asimetría de información es la raíz de todo problema de gobernanza, desde la supervisión del consejo hasta la compensación en ventas.
+
+\textcite{jensen1976agency} definen el costo de agencia total como tres componentes:
+\begin{equation}\label{eq:agency-cost}
+  C_{\text{agency}} \;=\; C_{\text{monitor}} \;+\; C_{\text{bond}} \;+\; C_{\text{residual}},
+\end{equation}
+donde \(C_{\text{monitor}}\) es el costo del principal de observar al agente (auditorías, \emph{dashboards}, tiempo de gestión), \(C_{\text{bond}}\) es el costo del agente de comprometerse de forma creíble con un comportamiento alineado (\emph{equity} diferida, compensación diferida, reputación comprometida) y \(C_{\text{residual}}\) es la pérdida de bienestar que persiste incluso después de un monitoreo y compromiso óptimos --- la divergencia irreducible. La tarea del diseño de incentivos es minimizar \(C_{\text{agency}}\), no solo uno de sus componentes: reducir los costos de monitoreo eliminando \emph{dashboards} eleva la pérdida residual. La ecuación trata los costos de agencia como sumables, lo que oculta su interacción; un monitoreo más intenso socava la confianza y puede elevar simultáneamente los costos de compromiso y residuales. El modelo es más útil como marco de descomposición que como herramienta de cálculo.
+
+\begin{example}
+Un vicepresidente de ventas recibe compensación sobre ARR contratado. Cada \emph{deal} que cierra agrega \money{50} al mes al MRR. El problema: los clientes adquiridos al cierre del trimestre mediante descuentos agresivos realizan \emph{churn} en el tercer mes, dejando \money{0} al mes en el cuarto. El incentivo de la vicepresidenta está máximamente desalineado respecto al valor a largo plazo.
+
+Solución: pagar sobre ARR \emph{retenido a 3 meses}. Un \emph{deal} contratado que realiza \emph{churn} aporta \money{0} al fondo de bonos. Esto desplaza \(C_{\text{residual}}\) hacia cero al costo de un \(C_{\text{bond}}\) más alto (la vicepresidenta debe esperar 3 meses para conocer su pago) y un \(C_{\text{monitor}}\) más alto (finanzas debe rastrear la \emph{retention} por cohorte para calcular el bono). La pregunta es si la reducción de la pérdida residual supera los mayores costos de monitoreo y compromiso --- casi siempre sí cuando el \emph{churn} es material.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Medir resultados que son fáciles de contabilizar en lugar de resultados que capturan valor. Cuando la métrica y el objetivo divergen, el agente optimiza la métrica. Esta es la insensatez de Kerr (\cref{sec:kerr-trap}): premiar A mientras se espera B.
+\end{admonition}
+
+El modelo formal principal--agente introduce una restricción de participación (el agente debe preferir el contrato a las opciones externas) y una restricción de compatibilidad de incentivos (el agente debe preferir la acción deseada a cualquier alternativa). La distribución óptima del riesgo implica una disyuntiva entre el seguro (el agente es adverso al riesgo, por lo que asume menos compensación variable) y la provisión de incentivos (suficiente pago variable para motivar el esfuerzo). Esta tensión explica por qué un salario fijo no funciona ni tampoco una comisión del \qty{100}{\percent}.
+
+Los costos de agencia no se limitan a los contratos laborales; aparecen en cualquier contexto donde la propiedad está separada del control --- accionistas frente a directivos, inversores frente a fundadores, franquiciante frente a franquiciado. \textcite{jensen1976agency} es el tratamiento fundacional; \textcite{robbins2022} integra la literatura conductual.
+
+\section{Diseño de incentivos --- la trampa de Kerr}\label{sec:kerr-trap}
+% complejidad: 3
+
+¿La métrica que se recompensa es realmente el comportamiento que se desea, y qué distorsiones genera la propia recompensa? Toda medición crea un incentivo para optimizar la medición en lugar del objetivo subyacente. La brecha entre lo que se recompensa y lo que se desea no es un fracaso de gestión; es una consecuencia estructural de cualquier métrica que pueda ser manipulada. La disciplina consiste en diseñar métricas que sean simultáneamente medibles, difíciles de manipular y estrechamente correlacionadas con el valor.
+
+La trampa de Kerr es un diagnóstico cualitativo. Se evalúa cualquier sistema de incentivos a lo largo de tres ejes:
+\begin{description}
+  \item[Medida] ¿Qué se está rastreando y recompensando realmente? ¿Es observable y atribuible al individuo?
+  \item[Recompensa] ¿Qué comportamiento produce racionalmente la maximización de la medida? Seguir el incentivo, no el objetivo declarado.
+  \item[Deseo] ¿Qué comportamiento necesita realmente la organización para crear valor?
+\end{description}
+Cuando Medida $\ne$ Deseo, el agente que optimiza la Recompensa está haciendo exactamente lo que se le pidió --- y exactamente lo que no se necesitaba. La solución es rediseñar la Medida, no dar lecciones a los agentes sobre alineación. El desempeño multidimensional es difícil de reducir a una única Medida sin distorsión; las puntuaciones compuestas (\emph{balanced scorecards}) ayudan, pero introducen decisiones de ponderación que son en sí mismas manipulables. El marco también supone que el agente tiene información y control sobre el resultado; recompensar una métrica que el agente no puede influir materialmente produce desplazamiento del esfuerzo, no alineación.
+
+\begin{example}
+El área de \emph{marketing} es recompensada por volumen de MQL. El equipo ejecuta campañas amplias de bajo CPM y genera \num{10000} MQLs al mes. Ventas califica el \qty{5}{\percent}: \num{500} SQLs. El CAC se dispara a \money{1200} (\money{120000} de presupuesto $\div$ \num{100} \emph{deals} cerrados al \qty{20}{\percent} de SQL-a-cierre). La Medida era el recuento de MQLs; el Deseo era ingreso cerrado con un CAC igual o inferior a \money{600}.
+
+Solución: recompensar la \emph{tasa de conversión} MQL$\to$SQL (actualmente \qty{5}{\percent}; objetivo \qty{15}{\percent}). \emph{Marketing} tiene ahora un incentivo para calificar la intención antes de transferir los \emph{leads}, orientando las campañas hacia canales de mayor intención. El volumen cae de \num{10000} a \num{3000} MQLs, pero la producción de SQLs sube a \num{450}, la tasa SQL-a-cierre se mantiene en \qty{20}{\percent} y \num{90} \emph{deals} cerrados con \money{120000} de gasto arrojan \money{1333} de CAC --- peor aún. La solución correcta es recompensar sobre \emph{ingreso cerrado por dólar de gasto en MQL}, vinculando la métrica de \emph{marketing} al resultado al que contribuye.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Añadir más métricas para parchear una métrica primaria rota. Cada métrica adicional es otra cosa a optimizar, lo que produce estrategias de manipulación cada vez más elaboradas. La respuesta correcta es una mejor métrica primaria, no un cuadro de mando más largo.
+\end{admonition}
+
+\begin{admonition}{Controvertido}
+Las recompensas extrínsecas (dinero, reconocimiento) pueden desplazar la motivación intrínseca --- la teoría de la autodeterminación de Deci y Ryan. La evidencia es más robusta para tareas con interés inherente y respuestas correctas claras: pagar a una persona creativa por idea reduce la calidad de las ideas. La prescripción de la teoría de agencia --- aumentar la paga variable para cerrar la brecha residual --- puede por lo tanto contraproducir cuando el trabajo requiere motivación intrínseca. La conciliación: usar pago variable para resultados medibles y compatibles con la extrínseca (cuotas de ventas, tasas de error); usar señales de autonomía y propósito para el trabajo complejo y creativo. \textcite{kerr1975folly} señala el problema de medición; \textcite{robbins2022} revisa la evidencia sobre motivación.
+\end{admonition}
+
+La trampa de Kerr es cómo la pérdida residual de \cref{eq:agency-cost} se materializa en la práctica: la brecha entre lo que se recompensa y lo que se desea es el residual. El diseño de la medición es por tanto diseño de incentivos, con consecuencias directas sobre el CAC (\cref{ch:customer-economics}) y la atribución (\cref{ch:attribution-and-measurement}).
+
+\section{Estructura organizacional}\label{sec:org-structure}
+% complejidad: 3
+
+A medida que la empresa crece, ¿qué forma estructural minimiza los costos de coordinación de la especialización sin sacrificar la velocidad de un equipo más pequeño? La estructura determina quién se comunica con quién, quién es responsable de qué decisiones y qué información llega a quién. La lógica de Coase (\cref{ch:microeconomics}) --- que las empresas existen para economizar en costos de transacción --- se aplica internamente: la estructura correcta minimiza el costo de coordinar roles especializados preservando la rendición de cuentas.
+
+Cuatro formas canónicas, cada una con un equilibrio diferente entre costo de coordinación y especialización:
+\begin{description}
+  \item[Funcional] Roles agrupados por habilidad: ingeniería, ventas, \emph{marketing}, finanzas. Alta especialización; coordinación interfuncional lenta; adecuada para productos estables y bien definidos.
+  \item[Divisional] Roles agrupados por producto o segmento: cada división es una mini-empresa. Coordinación interna rápida; gastos generales duplicados; adecuada para carteras de productos grandes y diferenciadas.
+  \item[Matricial] Doble reporte: sede funcional más propietario de proyecto o producto. Acceso a la especialización sin duplicación; la autoridad ambigua genera conflictos; adecuada para proyectos complejos con ciclos de vida cortos.
+  \item[Plana / Pod] Pods autónomos interfuncionales, cada uno con un segmento de usuario o resultado a su cargo. Iteración rápida; el costo de coordinación lo asume el diseño del producto (APIs, datos compartidos) en lugar de la jerarquía; adecuada para negocios orientados al producto con experimentación intensiva.
+\end{description}
+Estos arquetipos son idealizaciones. Las organizaciones reales son híbridos y la forma óptima cambia con la escala: una estructura plana de pods se desintegra por encima de aproximadamente 150 personas (el número de Dunbar) sin mecanismos explícitos de coordinación. La tipología también ignora las dinámicas de poder y la inercia cultural, que a menudo determinan qué estructura opera realmente al margen del organigrama.
+
+\begin{example}
+Con 50 personas, la SaaS opera de forma funcional: un equipo de ingeniería, un equipo de ventas, un equipo de \emph{marketing}. El costo de coordinación es bajo porque el producto es una sola SKU --- \money{50}/mes --- vendida de una sola manera. A medida que la empresa considera agregar un \emph{tier} empresarial a \money{299}/mes con distinto \emph{onboarding}, SLAs de soporte y movimiento de ventas, la estructura funcional genera cuellos de botella: ventas empresariales necesita funcionalidades de producto que el equipo de ingeniería encola como tiques estándar, y \emph{marketing} no puede segmentar el mensaje sin un recurso dedicado.
+
+La solución es un pod por segmento: un \emph{pod de autoservicio} (movimiento PLG, \emph{tier} \money{50}) y un \emph{pod empresarial} (ventas asistidas, \emph{tier} \money{299}), cada uno con un ingeniero, un profesional de \emph{marketing} y un representante de ventas dedicados. Los gastos generales aumentan ligeramente; el costo de coordinación del nuevo segmento cae abruptamente. La prueba: ¿supera el valor de una iteración empresarial más rápida los gastos generales duplicados? Con un LTV de \money{3150} por cliente empresarial y un objetivo de \num{200} clientes al mes, los números casi siempre dicen que sí.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Reorganizar como sustituto de la estrategia. Un organigrama nuevo no arregla un producto roto ni un incentivo desalineado; simplemente redirige los costos de coordinación. La estructura debe seguir a la estrategia, no precederla.
+\end{admonition}
+
+\textcite{coase1937nature} enmarca el límite de la empresa como el punto en que el costo de transacción de usar mercados es igual al costo de coordinación de internalizar una actividad. La misma lógica se aplica a los límites internos: una división existe cuando el costo de coordinarla dentro de la empresa es menor que el costo de adquirir su producción externamente. La economía de los costos de transacción de Williamson extiende esto a las decisiones de integración vertical.
+
+La estructura, los incentivos y los costos de agencia son interdependientes: una estructura plana de pods con incentivos basados en resultados puede reducir sustancialmente el componente de monitoreo de \cref{eq:agency-cost}, pero solo si las métricas de resultado están bien diseñadas (evitando la trampa de Kerr de \cref{sec:kerr-trap}). \textcite{robbins2022} revisa la literatura empírica; \textcite{coase1937nature} proporciona el fundamento teórico.
+
+\section{Motivación y desempeño}\label{sec:motivation}
+% complejidad: 2
+
+¿Qué palancas no financieras sostienen realmente un alto desempeño una vez que la compensación financiera es adecuada? Los puntos de entrada clásicos son Maslow y Herzberg, pero ambos han sido revisados sustancialmente. La conclusión duradera de Herzberg es la distinción entre factores de higiene y motivadores: una remuneración adecuada, las condiciones de trabajo y la seguridad laboral previenen la insatisfacción, pero no generan compromiso. Los impulsores del compromiso son intrínsecos. La teoría de la autodeterminación de Deci y Ryan ofrece la explicación empíricamente más robusta en la actualidad.
+
+Tres marcos canónicos, en orden de durabilidad empírica:
+\begin{description}
+  \item[La jerarquía de Maslow] Fisiológico $\to$ seguridad $\to$ pertenencia $\to$ estima $\to$ autorrealización. Ampliamente citada; escaso respaldo empírico para la jerarquía fija. Útil como mapa de prioridades aproximado, no como modelo causal.
+  \item[La teoría de los dos factores de Herzberg] Los factores de higiene (remuneración, condiciones) previenen la insatisfacción; los motivadores (logro, reconocimiento, crecimiento) generan compromiso. La distinción es más robusta que el ordenamiento de Maslow; la afirmación de que el dinero es solo un factor de higiene es controvertida en los roles de ventas.
+  \item[Teoría de la autodeterminación (TAD)] La motivación intrínseca es impulsada por tres necesidades universales: \textbf{autonomía} (control sobre el propio trabajo), \textbf{maestría} (crecimiento en competencia) y \textbf{propósito} (conexión con un objetivo significativo). La TAD tiene la base experimental más sólida y las implicaciones de diseño más directas: estructurar los puestos para satisfacer estas tres necesidades.
+\end{description}
+El modelo de características del puesto de Hackman y Oldham operacionaliza la TAD: la variedad de habilidades, la identidad de la tarea, la importancia de la tarea (sustitutos de autonomía y maestría), junto con la retroalimentación y la autonomía directas, predicen la experiencia de sentido y, por tanto, la motivación intrínseca. Las predicciones de la TAD son más sólidas para el trabajo cognitivo complejo; para tareas muy repetitivas o externamente restringidas, los incentivos extrínsecos dominan y el marco autonomía-maestría-propósito agrega poco. El modelo también supone que la compensación base es adecuada; por debajo de un umbral de saciación, los incentivos financieros superan a los intrínsecos.
+
+\begin{example}
+La SaaS retiene a sus ingenieros de manera efectiva: la permanencia mediana es de 3,2 años, por encima del promedio del sector, a pesar de pagar en el percentil \qty{60}{\percent} del mercado en lugar del percentil \qty{80}{\percent}. Las entrevistas de salida atribuyen la \emph{retention} a la alta autonomía (los ingenieros poseen las decisiones de producto de principio a fin en su pod), la progresión clara de maestría (escalafón técnico público) y la conexión con la misión (el producto sirve a un sector que al equipo le importa).
+
+La rotación se concentra en el equipo de ventas: la rotación anual es del \qty{45}{\percent}. Los representantes de ventas reportan la mayor compensación financiera de la empresa, pero baja autonomía (demostraciones con guión, precios rígidos), bajo crecimiento de maestría (sin trayectoria clara de seniority más allá del \emph{tier} de cuota) y débil conexión con el propósito. Agregar \money{10000} al OTE no resuelve un problema de TAD. La solución es estructural: una trayectoria de seniority con responsabilidades de \emph{coaching}, discreción en la estructura del \emph{deal} dentro de una banda y propiedad explícita del territorio.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Confundir \emph{retention} con motivación. Un empleado que permanece pero se desvincula (la «renuncia silenciosa») aparece en el recuento de personal, no en el desempeño. Las métricas de \emph{retention} pasan la revisión; las métricas de producción revelan la brecha.
+\end{admonition}
+
+La trampa de Kerr (\cref{sec:kerr-trap}) y la TAD interactúan: las recompensas extrínsecas por trabajo intrínsecamente motivado pueden desplazar la motivación intrínseca precisamente cuando el trabajo es de alta calidad y difícil de medir. Un ingeniero destacado al que se le ofrece un bono por función puede producir más funciones y menos buenas decisiones. La implicación es utilizar incentivos financieros a nivel de equipo o empresa (beneficio compartido, \emph{equity}) en lugar de a nivel de tarea individual para los trabajadores del conocimiento.
+
+La teoría de la motivación se conecta directamente con el diseño de incentivos a través de la trampa de Kerr: la medida correcta, recompensada correctamente, puede satisfacer simultáneamente la restricción de agencia (\cref{eq:agency-cost}) y las condiciones de la TAD. \textcite{robbins2022} sintetiza la literatura completa; \textcite{kerr1975folly} sigue siendo la advertencia del practicante.
+
+\section{Estructura del consejo y mecanismos de gobernanza}\label{sec:board-governance}
+% complejidad: 3
+
+¿Quién supervisa a los supervisores? Una vez que la propiedad está separada del control, el consejo de administración se convierte en el mecanismo institucional primario para cerrar la brecha principal--agente entre los accionistas y la dirección. Su eficacia no depende del mero hecho de su existencia, sino de su composición, independencia y autoridad estructural. Un consejo que funcione meramente como ratificador ceremonial de las decisiones de la dirección no puede reducir el componente de monitoreo de \cref{eq:agency-cost}; un consejo bien estructurado sí puede.
+
+La arquitectura de gobernanza canónica descansa en tres características estructurales. En primer lugar, los consejeros independientes --- los que no tienen relaciones comerciales materiales con la empresa ni con sus directivos --- aportan una credibilidad de supervisión que los internos no pueden ofrecer: no tienen incentivo financiero para aprobar retribuciones ejecutivas o adquisiciones que destruyen valor para los accionistas. En segundo lugar, la separación de los cargos de consejero delegado y presidente del consejo elimina el conflicto principal--agente en su vértice: un CEO que también preside el consejo supervisa su propia supervisión, lo que eleva estructuralmente el costo de agencia residual. En tercer lugar, los comités especializados --- de auditoría, de compensación y de nombramientos --- concentran la experiencia pertinente donde la rendición de cuentas es más profunda. La autoridad del comité de auditoría sobre los estados financieros (véase \cref{ch:financial-statements}) es la principal herramienta del consejo para garantizar que las cifras de NOPAT e IC que sustentan los cálculos de ROIC sean correctas. El comité de compensación traduce el marco del costo de agencia en el diseño de la retribución ejecutiva: el salario base, el incentivo anual y las concesiones de \emph{equity} a largo plazo se calibran de modo que la riqueza del CEO se mueva conjuntamente con la riqueza de los accionistas, reduciendo \(C_{\text{residual}}\) al costo de cierta imposición de riesgo.
+
+La cadena de rendición de cuentas va de los accionistas, a través del consejo, hasta el CEO. En cada eslabón se da una relación principal--agente. Los accionistas eligen el consejo (de manera imperfecta, dados los problemas de acción colectiva entre los titulares dispersos). El consejo contrata, evalúa y, si es necesario, destituye al CEO. El CEO gestiona los equipos operativos. La descomposición de \cref{eq:agency-cost} se aplica en cada eslabón: los costos de monitoreo se acumulan, los mecanismos de compromiso se superponen y las pérdidas residuales persisten. El hallazgo empírico de la literatura de gobernanza es que los consejeros independientes, particularmente en los comités de auditoría y compensación, sí reducen la pérdida residual en promedio --- aunque el efecto es más fuerte cuando los consejeros tienen experiencia relevante en el sector o en finanzas, y más débil cuando la independencia es formal pero los consejos están socialmente capturados por el CEO.
+
+\begin{example}
+La SaaS alcanza la Serie~A con una tasa de ARR de \money{4000000}. Sus inversores exigen un consejo formal como condición del término. La configuración fundacional es un consejo de cinco personas: dos fundadores (consejeros ejecutivos), dos representantes de los inversores (consejeros afiliados) y un consejero independiente. El puesto independiente es la adición clave de gobernanza: el consejero independiente preside el comité de auditoría, revisa los estados financieros de \cref{ch:financial-statements} y proporciona al sindicato de inversores la garantía de que las cifras reportadas de ARR y NOPAT son fiables --- reduciendo el componente de costo de monitoreo de \cref{eq:agency-cost} que cada inversor asumiría individualmente de otro modo.
+
+El comité de compensación, presidido por uno de los consejeros inversores, diseña el calendario de \emph{vesting} de \emph{equity} del CEO: cuatro años de \emph{vesting} con un acantilado de un año, vinculado a hitos de ARR. Este es un mecanismo de compromiso: la riqueza del CEO está bloqueada en el desempeño a largo plazo, elevando \(C_{\text{bond}}\) voluntariamente para reducir \(C_{\text{residual}}\). La calidad del consejo --- específicamente la presencia del consejero independiente y el rigor de su función de auditoría --- es en sí misma una señal de valoración pre-\emph{money} en la siguiente ronda de financiamiento (\cref{sec:investor-metrics}): los inversores valoran el riesgo de gobernanza, y un consejo que ofrece supervisión genuina merece un menor descuento por riesgo.
+\end{example}
+
+\begin{admonition}{Advertencia}
+Confundir la independencia formal con la independencia genuina. Un consejero que es legalmente no afiliado pero que fue contratado por el CEO, quien preside el comité de nombramientos, está socialmente capturado: no votará para destituir a la persona que lo seleccionó. Esta captura del consejo es endémica y es la explicación principal de la brecha entre lo que los códigos de gobernanza prescriben y lo que los consejos ofrecen en la práctica. La independencia del comité de auditoría respecto a la dirección debe evaluarse conductualmente, no solo estructuralmente.
+\end{admonition}
+
+Los fundamentos teóricos se encuentran en \textcite{jensen1976agency}: demuestran que las estructuras de deuda, \emph{equity} y los mecanismos de monitoreo son todos sustitutos parciales para reducir los costos de agencia, y que el consejo es un nodo en una red de dispositivos de gobernanza que también incluye auditores, analistas y la disciplina del mercado. \textcite{robbins2022} integra la literatura organizacional sobre la dinámica del consejo: la composición del grupo, la cohesión y el procesamiento de la información determinan si la estructura nominal del consejo se traduce en una supervisión efectiva.
+
+\section{Gobernanza ESG y el papel del consejo}\label{sec:esg-governance}
+% complejidad: 2
+
+Si los factores ESG son un insumo de asignación de capital cuando superan la prueba de materialidad financiera (\cref{sec:esg-capital}), entonces la gobernanza ESG es un problema del consejo, no solo de la dirección. El papel de supervisión del consejo es doble: recibe los datos ESG y decide qué divulgar, e integra los riesgos ESG financieramente materiales en los procesos de asignación de capital y gestión de riesgos de la empresa. Las normas IFRS~S1 y S2 del ISSB --- y, para las empresas dentro del alcance, las ESRS bajo la CSRD --- hacen de esto una responsabilidad a nivel del consejo, no un ejercicio de informes del equipo de sostenibilidad.
+
+En la estructura principal--agente de \cref{eq:agency-cost}, la gobernanza ESG añade un problema específico de asimetría de información. La dirección observa los riesgos ESG que son materiales para las operaciones --- una tasa de rotación creciente en el equipo de ingeniería, una concentración en una región de centros de datos expuesta al clima, una exposición de cumplimiento bajo la Ley de IA de la UE --- antes que el consejo. La tarea de monitoreo del consejo consiste en recibir datos ESG oportunos y de calidad para la toma de decisiones, y distinguir entre las divulgaciones que representan una valoración genuina del riesgo y las que representan señalización reputacional sin impacto en el capital. Los mecanismos de protección de denunciantes son un instrumento concreto de gobernanza en este caso: reducen el costo para los empleados de revelar riesgos ESG materiales que la dirección puede tener incentivos para suprimir, elevando la calidad de la información que recibe el consejo.
+
+La infraestructura de datos que hace disponible la información ESG de calidad para la toma de decisiones es objeto de \cref{sec:esg-data} en \cref{ch:data-and-ai-strategy}: las evaluaciones de materialidad, los \emph{pipelines} de datos para las emisiones de Alcance~1/2, el análisis de equidad salarial y los registros de riesgo de gobernanza requieren los mismos estándares de calidad de datos que la información financiera. El consejo que cumple su función de supervisión ESG está, en efecto, exigiendo que el \emph{pipeline} de datos ESG cumpla con estándares de calidad de auditoría --- la misma exigencia que su comité de auditoría hace al \emph{pipeline} de datos financieros.
+
+\begin{admonition}{Nota}
+La supervisión del consejo de la divulgación ESG no resuelve la controvertida pregunta empírica de si los compromisos ESG mejoran o deterioran los rendimientos para los accionistas. Resuelve una pregunta más acotada: quién es responsable de garantizar que lo que se divulga es exacto y que lo que es financieramente material se refleja en el plan de capital. La respuesta --- el consejo --- es la misma que para cualquier otra divulgación financiera material.
+\end{admonition}
+
+\textcite{jensen1976agency} demuestran que las estructuras de gobernanza son complementos de los mecanismos de mercado y contractuales para reducir los costos de agencia; la supervisión de la divulgación ESG es la extensión de esa lógica a una clase de riesgos que antes se trataban como externalidades. \textcite{freeman2010strategic} proporciona el fundamento de la teoría de las partes interesadas que explica por qué la circunscripción del consejo es más amplia que los accionistas: las mismas relaciones con las partes interesadas que generan flujos de caja a largo plazo también generan las exposiciones ESG que el consejo debe gobernar.

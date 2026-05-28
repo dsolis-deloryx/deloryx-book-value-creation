@@ -1,0 +1,143 @@
+\chapter{Segmentación, Targeting y Posicionamiento}\label{ch:segmentation-targeting-positioning}
+
+% Alcance: STP, mapas perceptuales, puntos de entrada a la categoría, jobs-to-be-done.
+% Vínculo cruzado: el segmento objetivo se operacionaliza como audiencia de pago (\cref{ch:paid-acquisition-platforms}).
+
+Los mercados no son homogéneos. STP es el mecanismo que convierte un mercado heterogéneo en una posición de cabeza de playa única: segmentarlo, puntuar y elegir un objetivo, y luego reclamar un lugar en la mente del cliente que los competidores no puedan replicar fácilmente.
+
+\section{Segmentación}\label{sec:segmentation}
+% complejidad: 3
+
+¿Qué cortes del mercado son suficientemente distintos para requerir propuestas de valor y movimientos de \emph{marketing} diferentes --- y cuáles son simplemente ruido que una sola oferta puede abarcar? Un segmento sólo es útil si es direccionable y accionable. Ordenar clientes por estatura es una partición válida, pero no una útil. El objetivo es encontrar agrupamientos en los que los clientes dentro de un segmento respondan a la misma oferta, y los clientes entre segmentos respondan de forma suficientemente distinta como para justificar una oferta diferente.
+
+Cuatro bases complementarias identifican el corte dominante para la mayoría de los mercados B2B y B2C:
+
+\begin{description}
+  \item[Demográfico / firmográfico] Edad, ingreso, tamaño de empresa, vertical de industria, banda de ARR. Fácil de medir; predictor débil de la necesidad.
+  \item[Psicográfico] Valores, tolerancia al riesgo, orientación al crecimiento. Predictor más sólido; difícil de operacionalizar en la compra de medios.
+  \item[Conductual] Tasa de uso, adopción de funcionalidades, recencia de compra, historial de cambio de proveedor. El predictor más fuerte de respuesta; directamente observable en los datos del producto.
+  \item[Basado en necesidades] La tarea subyacente que el cliente intenta realizar. Atraviesa grupos demográficos; se alinea limpiamente con el enfoque JTBD (\cref{sec:jtbd}).
+\end{description}
+
+Un segmento útil supera los criterios \emph{MASAD}: \textbf{M}edible (se puede dimensionar), \textbf{A}ccesible (se puede alcanzar con un canal), \textbf{S}ustancial (suficientemente grande para justificar una oferta dedicada), \textbf{A}ccionable (se puede responder a sus necesidades) y \textbf{D}iferenciado (responde de manera distinta a los segmentos adyacentes). Los segmentos demasiado granulares producen ofertas demasiado estrechas para escalar; los demasiado amplios hacen que la propuesta de valor única no satisfaga a nadie plenamente. La segmentación basada en necesidades depende de la capacidad de articulación del cliente --- los clientes frecuentemente no saben o no pueden expresar qué tarea están contratando al producto para realizar.
+
+\begin{example}[Segmentación de un SaaS B2B]
+La empresa SaaS B2B de referencia atiende dos segmentos candidatos: \emph{SMB} (1--50 asientos, ARR mediano \money{6000}, movimiento de autoservicio) y \emph{mercado medio} (50--500 asientos, ARR mediano \money{60000}, movimiento de ventas de campo). Ambos superan el filtro MASAD. La diferencia conductual es decisiva: los clientes SMB se activan en una semana mediante autoservicio; el mercado medio requiere una implementación de 90 días con un líder de incorporación. La misma oferta no puede atender a ambos sin degradar a uno. La decisión es a cuál priorizar --- eso requiere la puntuación (\cref{sec:targeting}).
+\end{example}
+
+\begin{admonition}{Advertencia}
+La segmentación demográfica disfrazada de segmentación basada en necesidades. Dividir por tamaño de empresa es un corte firmográfico, no un corte por necesidades. Dos empresas de 200 personas pueden querer resultados completamente distintos del software de gestión de proyectos. Preguntarse siempre: ¿responden de forma diferente al mismo mensaje, o simplemente son visualmente distintas?
+\end{admonition}
+
+El análisis de clases latentes y el agrupamiento k-means sobre telemetría conductual pueden revelar segmentos que el equipo de producto desconocía. El resultado aún requiere el filtro MASAD: un clúster estadísticamente coherente no es automáticamente un segmento comercialmente viable. La segmentación establece el menú de posibles objetivos. Si cada segmento candidato puede sostener la economía requerida --- en particular el umbral de LTV:CAC de \cref{ch:customer-economics} --- se determina en el paso de puntuación que sigue. \textcite{kotler2021} proporciona el tratamiento canónico de bases y criterios.
+
+\section{Targeting --- Puntuación ponderada}\label{sec:targeting}
+% complejidad: 3
+
+Dados múltiples segmentos que superan el filtro MASAD, ¿cuál maximiza el retorno ajustado al riesgo sobre la inversión en recursos de \emph{go-to-market}? No todos los segmentos son iguales. Uno puede ser grande pero ferozmente competitivo; otro pequeño pero alcanzable y de alto margen. Un modelo de puntuación ponderada hace que la disyuntiva sea legible y auditable --- cada segmento obtiene una puntuación, y el segmento con mayor puntuación recibe el presupuesto de salida al mercado.
+
+Se asignan \(n\) criterios de evaluación, cada uno con un peso \(w_i\) (los pesos suman 1), y se califica cada segmento candidato en el criterio \(i\) con una puntuación \(r_i \in [0,10]\). La puntuación del segmento es:
+\begin{equation}\label{eq:segment-score}
+  S \;=\; \sum_{i=1}^{n} w_i\, r_i .
+\end{equation}
+Los criterios típicos incluyen: tamaño de mercado, intensidad competitiva (inversa --- baja intensidad puntúa alto), ajuste estratégico y potencial de LTV. Los pesos codifican las prioridades estratégicas de la empresa; las calificaciones codifican los hechos del mercado.
+
+La ecuación \cref{eq:segment-score} es tan buena como sus insumos. La ponderación por consenso puede enmascarar desacuerdos internos sobre la estrategia. Las calificaciones deben anclarse a variables observables (por ejemplo, intensidad competitiva = número de competidores directos bien financiados), no a la intuición. El modelo no captura los costos de cambio de reposicionamiento a mitad del proceso.
+
+\begin{example}[Puntuación de SMB frente a mercado medio]
+Puntuación de SMB frente al mercado medio en cuatro criterios (pesos entre paréntesis):
+
+\medskip
+{\small
+\begin{tabular}{lrrrrr}
+  \toprule
+  Criterio & Peso & Punt. SMB & SMB pond. & Punt. MM & MM pond. \\
+  \midrule
+  Tamaño de mercado              & 0.30 & 7 & 2.10 & 9 & 2.70 \\
+  Intensidad competitiva (inv.)  & 0.25 & 6 & 1.50 & 7 & 1.75 \\
+  Potencial de LTV               & 0.25 & 4 & 1.00 & 9 & 2.25 \\
+  Ajuste al ciclo de ventas      & 0.20 & 8 & 1.60 & 5 & 1.00 \\
+  \midrule
+  \textbf{Total}                 &      &   & \textbf{6.20} & & \textbf{7.70} \\
+  \bottomrule
+\end{tabular}}
+\medskip
+
+El mercado medio gana según \cref{eq:segment-score} = 7.70 frente a 6.20. Los factores determinantes son el potencial de LTV (el ARR del mercado medio es 10$\times$ el de SMB) y el tamaño del mercado. La implicación: dirigir el presupuesto publicitario de \money{120000}/mes a audiencias de mercado medio en LinkedIn y canales directos, en lugar de \emph{paid social} de autoservicio (\cref{ch:paid-acquisition-platforms}). Verificar esto contra la prueba ROIC en \cref{ch:value-creation}: ¿el CAC del mercado medio deja un margen suficiente sobre el WACC para justificar el compromiso de capital (\cref{eq:roic})?
+\end{example}
+
+\begin{admonition}{Advertencia}
+Elegir el segmento con el que el equipo se siente cómodo y luego reingenierar los pesos para justificarlo. El modelo requiere que los criterios y los pesos se definan antes de ingresar las calificaciones. Fijar los pesos primero.
+\end{admonition}
+
+El targeting de portafolio --- atender múltiples segmentos simultáneamente con propuestas de valor distintas --- es factible, pero exige P\&L separados para prevenir el canibalismo de recursos. La mayoría de las empresas en etapa temprana deberían resistirlo: un segmento dominado vale más que tres segmentos a medias. La puntuación convierte la elección de segmento en una definición operativa de audiencia. En Meta, el segmento de mercado medio se convierte en una audiencia Lookalike sembrada con contactos del CRM; en LinkedIn, se convierte en un filtro de tamaño de empresa y seniority. La mecánica de subasta se explica en \cref{ch:paid-acquisition-platforms}. \textcite{kotler2021} desarrolla el marco de targeting multifactor; el vínculo financiero con el ROIC pasa por \cref{eq:roic}.
+
+\section{Posicionamiento --- Mapas perceptuales y Jobs-to-be-Done}\label{sec:positioning}
+% complejidad: 4 -> figura perceptual-map
+
+¿En qué dos o tres atributos debería la empresa reclamar superioridad --- y cómo hace que ese reclamo sea creíble para los compradores del mercado medio que evalúan alternativas? Una posición es una ubicación en el mapa mental del cliente respecto a la categoría. No es posible ser propietario de todas las dimensiones simultáneamente, por lo que se eligen los ejes en los que existe una ventaja genuina y en los que el segmento objetivo pondera más. Un mapa perceptual hace visible el espacio en blanco competitivo.
+
+El posicionamiento es cualitativo, pero su estructura es precisa. Una declaración de posicionamiento bien formada toma la siguiente estructura:
+
+\begin{description}
+  \item[Para] \textit{[segmento objetivo]},
+  \item[que] \textit{[la tarea que necesitan realizar / el problema que tienen]},
+  \item[nuestro producto es] \textit{[marco de referencia / categoría]},
+  \item[que] \textit{[punto de diferenciación / beneficio prometido]},
+  \item[a diferencia de] \textit{[alternativa / competidor]},
+  \item[nosotros] \textit{[razón para creer]}.
+\end{description}
+
+El enfoque \emph{Jobs-to-be-Done} (\cref{sec:jtbd}) proporciona las cláusulas «quién» y «tarea»; el análisis competitivo (\cref{ch:competitive-analysis}) proporciona la cláusula «a diferencia de». Se eligen como máximo dos ejes de diferenciación; más diluye la notoriedad. Una declaración de posicionamiento que es verdadera pero indistinguible de las de los competidores no confiere ninguna ventaja. La diferenciación reclamada debe ser (a) valorada por el segmento objetivo, (b) entregable por la empresa, y (c) difícil de copiar rápidamente por los competidores. Omitir cualquiera de estas tres condiciones hace que la posición sea inestable.
+
+\begin{example}[Posicionamiento del SaaS de mercado medio]
+El SaaS se posiciona frente a Salesforce (empresarial, costoso, alta carga de implementación) y HubSpot (orientado a SMB, funcionalidades limitadas a escala). Los dos ejes que los compradores del mercado medio ponderan: \emph{facilidad de implementación} y \emph{precio por asiento}. El mapa perceptual (\cref{fig:perceptual-map}) muestra al SaaS ocupando el cuadrante de bajo precio / alta facilidad --- un espacio en blanco en el nivel de mercado medio. Borrador de declaración de posicionamiento: \emph{Para los equipos de operaciones de ingresos de mercado medio (50--500 asientos) que necesitan visibilidad de pipeline de nivel empresarial sin una implementación de seis meses, [SaaS] es el CRM que se despliega en dos semanas a la mitad del costo por asiento de Salesforce, porque nuestras herramientas de migración manejan automáticamente el 90\% del mapeo de datos.}
+\end{example}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\linewidth]{perceptual-map}
+  \caption{Mapa perceptual de precio frente a facilidad de implementación para la categoría de CRM de mercado medio. El SaaS ocupa el cuadrante de bajo precio / alta facilidad --- espacio en blanco entre los actores de SMB (HubSpot) y el stack empresarial (Salesforce). Los ejes reflejan las ponderaciones de los compradores de mercado medio según el modelo de targeting (\cref{eq:segment-score}).}
+  \label{fig:perceptual-map}
+\end{figure}
+
+\begin{admonition}{Advertencia}
+Confundir las prioridades internas del roadmap de producto con los ejes de posicionamiento externo. Los ejes de posicionamiento deben reflejar lo que \emph{el segmento objetivo} pondera, no lo que el equipo de producto considera impresionante. Validar los ejes con entrevistas a clientes antes de comprometerse.
+\end{admonition}
+
+Los mapas perceptuales se estiman empíricamente a partir del escalamiento multidimensional de datos de encuestas a clientes o de las importancias de atributos del análisis conjunto. La versión de dos ejes mostrada aquí es un resumen para la dirección, no el resultado sin procesar. Los mapas dinámicos rastrean cómo cambian las posiciones a medida que los competidores responden --- un cuadrante estable hoy puede estar saturado en 18 meses.
+
+La crítica de Sharp (\cref{sec:sharp}) cuestiona si la diferenciación es el objetivo correcto. Sharp argumenta que la diferenciación es menos importante que los \emph{activos distintivos} y la \emph{disponibilidad mental} entre todos los compradores de la categoría --- no sólo el segmento objetivo. Desde esta perspectiva, el posicionamiento estrecho hacia compradores de mercado medio perjudica activamente el crecimiento de marca a largo plazo al reducir el alcance mental de la marca. La tradición Keller/posicionamiento responde que la notoriedad sin diferenciación produce paridad de precios y compresión de márgenes. El debate se resuelve de forma diferente según la madurez de la categoría: las empresas en etapa temprana se benefician de un posicionamiento ajustado; las empresas en etapa de escala corren el riesgo de sobresegmentar. Véase \cref{ch:brand-growth} para la evidencia empírica de Sharp.
+
+El mapa perceptual no es estático: los competidores se reposicionan, las ponderaciones de los compradores cambian, y los nuevos entrantes ocupan cuadrantes vacantes. Actualizar el mapa anualmente con datos actualizados de análisis conjunto o encuestas es una práctica estándar. \textcite{ries2001} formalizan el modelo de mapa mental; \textcite{kotler2021} cubre la secuencia STP completa; \textcite{sharp2010} proporciona el contrapeso empírico desde \cref{ch:brand-growth}.
+
+\section{Puntos de entrada a la categoría}\label{sec:jtbd}
+% complejidad: 3
+
+¿En qué situaciones de consumo debería la marca ser la primera que viene a la mente --- y cómo ingenia la empresa esa disponibilidad mental en todas ellas? Los clientes no piensan en las marcas constantemente. Piensan en ellas en el momento en que un \emph{punto de entrada a la categoría} (CEP, por sus siglas en inglés) se activa: una situación, objetivo o contexto social que desencadena la necesidad de la categoría. Estar mentalmente vinculado a más CEPs significa ser recuperado en más situaciones de compra --- independientemente de si el comprador está en el segmento objetivo estrictamente definido de la empresa.
+
+Los CEPs se pueden tipificar en tres ejes:
+
+\begin{description}
+  \item[Funcional] La tarea que realiza el producto. \emph{«Necesitamos hacer seguimiento del pipeline.»} La marca que se activa primero gana el conjunto de evaluación.
+  \item[Situacional] El contexto de uso. \emph{«Se incorpora un nuevo VP de Ventas --- necesitamos un sistema que todos ya conozcan.»} La familiaridad con la marca reduce el riesgo de cambio.
+  \item[Social] El referente de pares o identidad. \emph{«¿Qué usa un equipo de RevOps serio?»} La asociación de categoría con la identidad profesional (cf.\ JTBD: «cuando incorporo a un nuevo vendedor, quiero parecer competente»).
+\end{description}
+
+El presupuesto de contenido y \emph{marketing} de marca de la empresa debería asignarse proporcionalmente a la frecuencia con que cada CEP se activa en el segmento objetivo y a cuán débil es el vínculo mental actual. Los CEPs son el insumo del lado de la demanda para el sistema de seguimiento de marca (\cref{sec:brand-tracking}). El mapeo de CEPs requiere investigación primaria (encuesta o entrevista en profundidad) para identificar cuáles situaciones experimentan realmente los compradores, no cuáles imagina la empresa. Las suposiciones internas sobre los CEPs con frecuencia son incorrectas.
+
+\begin{example}[Mapeo de CEPs para un CRM de mercado medio]
+Tres CEPs de alta frecuencia para el SaaS de CRM de mercado medio:
+\begin{enumerate}
+  \item \textbf{Funcional:} «Nuestro CRM en hoja de cálculo está colapsando --- necesitamos un sistema real antes del consejo directivo del Q3.» Implicación: contenido orientado a este CEP = casos de estudio «migrar desde Excel en 48 horas».
+  \item \textbf{Situacional:} «Acabamos de contratar a un VP de Ventas y necesitamos algo que se vea serio.» Implicación: colocación en informes de analistas (Gartner Peer Insights) y prueba social en LinkedIn.
+  \item \textbf{Social:} «La nueva gerente de RevOps de la empresa adquirida usó [SaaS] en su trabajo anterior.» Implicación: presencia en conferencias y contenido de comunidad --- la marca viaja con la persona.
+\end{enumerate}
+Cada CEP se alinea con un tipo de contenido y canal distinto. Dividir el presupuesto de la parte superior del \emph{funnel} por frecuencia de CEP evita sobreinvertir en el más obvio (funcional) mientras se ignora el de mayor conversión (social).
+\end{example}
+
+\begin{admonition}{Advertencia}
+Las listas de CEP que son aspiracionales en lugar de medidas. Una empresa que \emph{quiere} estar asociada con un CEP no es lo mismo que una empresa que \emph{está} asociada con él. Comenzar con los CEPs en los que ya existe recordación espontánea de marca, y luego expandir.
+\end{admonition}
+
+El marco JTBD (\textcite{christensen1997}) y el constructo CEP de Byron Sharp son complementarios pero no idénticos. JTBD se centra en el mecanismo causal del cambio de proveedor; los CEPs se centran en la frecuencia y diversidad de los momentos de recuperación mental. Juntos proporcionan tanto una teoría del cambio como un mapa de cobertura para la inversión en marca. Los CEPs son el complemento del lado de la demanda de la audiencia de pago (\cref{ch:paid-acquisition-platforms}): un CEP identifica \emph{cuándo} los compradores están en el mercado; una audiencia de pago identifica \emph{quiénes} son. Alinear ambos --- activar el mensaje correcto en el momento CEP adecuado --- es la traducción operativa del STP en la planificación de medios. \textcite{sharp2010} desarrolla el marco CEP empíricamente; \textcite{kotler2021} lo sitúa dentro de la doctrina de posicionamiento más amplia.

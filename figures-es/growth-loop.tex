@@ -1,0 +1,28 @@
+% figures-es/growth-loop.tex
+% Standalone TikZ: un ciclo de growth autorreforzante (ch.08).
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+
+\definecolor{loopteal}{HTML}{0E6655}
+\definecolor{loopblue}{HTML}{1A5276}
+
+\begin{document}
+\begin{tikzpicture}[
+  node distance=20mm,
+  stage/.style={draw=loopteal, line width=0.9pt, rounded corners=2pt, fill=loopteal!6,
+                font=\sffamily\small, align=center, minimum width=30mm, minimum height=9mm, text=black!85},
+  flow/.style={-{Stealth[length=4pt]}, loopblue, line width=0.9pt},
+]
+  \node[stage] (cust)  {Clientes};
+  \node[stage, right=28mm of cust] (out) {Referencias /\\contenido / datos};
+  \node[stage, below=16mm of $(cust)!0.5!(out)$] (new) {Nuevos clientes};
+
+  \draw[flow] (cust.east) -- node[above, font=\scriptsize\sffamily, text=black!55] {generan} (out.west);
+  \draw[flow] (out.south) .. controls +(down:12mm) and +(right:12mm) .. (new.east);
+  \draw[flow] (new.west) .. controls +(left:12mm) and +(down:12mm) .. (cust.south);
+
+  \node[font=\sffamily\itshape\scriptsize, text=black!55, below=2mm of new]
+    {autosostenible cuando $k>1$};
+\end{tikzpicture}
+\end{document}
