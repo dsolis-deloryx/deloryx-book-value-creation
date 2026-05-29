@@ -9,13 +9,25 @@ A single-volume **LaTeX book** — *Value Creation: An Applied Distillation of M
 ## Build
 
 ```bash
-latexmk                  # LuaLaTeX + biber → book/main.pdf (English, driven by ./latexmkrc)
-latexmk main-es.tex      # → book/main-es.pdf (Spanish edition)
-latexmk -c               # remove aux files, keep PDFs
-latexmk -C               # remove aux files AND PDFs
+latexmk                          # LuaLaTeX + biber → book/value-creation.pdf      (English; default)
+latexmk creacion-de-valor.tex    #                  → book/creacion-de-valor.pdf   (Spanish)
+latexmk -c                       # remove aux files, keep PDFs
+latexmk -C                       # remove aux files AND PDFs
 ```
 
-All `latexmk` output (PDFs, aux, log) is routed to `book/` via `$out_dir = 'book'` in `latexmkrc`. Aux/log files are gitignored at any depth; only `book/main.pdf` and `book/main-es.pdf` are tracked. Pre-built figures stay in `figures/` and `figures-es/`.
+All `latexmk` output (PDFs, aux, log) is routed to `book/` via `$out_dir = 'book'` in `latexmkrc`. Aux/log files are gitignored at any depth; only the PDFs and EPUBs are tracked.
+
+**EPUB generation** (via pandoc; complete 32-chapter content; some `\cref` cross-refs render as raw fragments — the PDF is canonical for cross-referencing):
+```bash
+pandoc value-creation.tex --citeproc --bibliography=references.bib \
+  --resource-path=.:figures --metadata title="Value Creation" \
+  --metadata author="Daniel Solis" -o book/value-creation.epub
+pandoc creacion-de-valor.tex --citeproc --bibliography=references.bib \
+  --resource-path=.:figures-es:figures --metadata title="Creación de Valor" \
+  --metadata author="Daniel Solis" --metadata lang=es -o book/creacion-de-valor.epub
+```
+
+Pre-built figures stay in `figures/` and `figures-es/`.
 
 Toolchain: TeX Live with `luatex`, `mathscience`, `bibtexextra`, `fontsrecommended`, `binextra`, `biber`.
 
